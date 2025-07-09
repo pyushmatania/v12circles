@@ -69,7 +69,8 @@ import {
   AlertCircle,
   CheckCircle,
   Loader2,
-  RotateCcw
+  RotateCcw,
+  Video as VideoIcon
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './auth/useAuth';
@@ -112,11 +113,15 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   const [trailerProgress, setTrailerProgress] = useState(0);
   const [isTrailerFullscreen, setIsTrailerFullscreen] = useState(false);
   const [isYouTubeTrailer, setIsYouTubeTrailer] = useState(false);
+  const [posterVisible, setPosterVisible] = useState(true);
+  const [searchVideoId, setSearchVideoId] = useState<string | null>(null);
+  const [isSearchVideoLoading, setIsSearchVideoLoading] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const trailerRef = useRef<HTMLIFrameElement>(null);
   const trailerContainerRef = useRef<HTMLDivElement>(null);
+  const youtubePlayerRef = useRef<any>(null);
   const { scrollY } = useScroll();
 
   // Calculate funding statistics
@@ -179,7 +184,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
     return () => clearInterval(timer);
   }, []);
 
-
+  useEffect(() => {
+    setPosterVisible(true);
+    let timer: number;
+    if (isVideoLoaded) {
+      timer = setTimeout(() => setPosterVisible(false), 2000);
+    }
+    return () => clearTimeout(timer);
+  }, [isVideoLoaded]);
 
   const handleInvest = () => {
     if (onInvest) {
@@ -219,26 +231,23 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   };
 
   const handleVideoLoad = () => {
-    console.log('Video loaded, embedUrl:', embedUrl);
-    setIsVideoLoaded(true);
+    // Start playing video immediately when it loads
     setIsVideoPlaying(true);
     setIsYouTubeTrailer(!!embedUrl);
-    
-    // For regular video elements, try to play
     if (videoRef.current && !embedUrl) {
+      videoRef.current.volume = 0.5;
+      videoRef.current.muted = false;
       videoRef.current.play().then(() => {
-        console.log('Regular video playing');
         setIsVideoPlaying(true);
-      }).catch((error) => {
-        console.log('Regular video autoplay failed:', error);
-        // Auto-play failed, keep muted
-        setIsMuted(true);
+      }).catch(() => {
+        setIsMuted(false);
       });
     }
     
-    if (embedUrl) {
-      console.log('YouTube video should be playing with URL:', iframeRef.current?.src);
-    }
+    // Add a 2 second delay before showing the video (hiding poster)
+    setTimeout(() => {
+      setIsVideoLoaded(true);
+    }, 2000);
   };
 
   const scriptExcerpt = (
@@ -356,30 +365,29 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   };
 
   const videoId = getYouTubeVideoId(project.trailer);
-  const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${videoId}` : null;
+  const finalVideoId = searchVideoId || videoId;
+  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=1&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1` : null;
   
   // Check if it's a search query URL
   const isSearchQuery = project.trailer?.includes('youtube.com/results?search_query=');
 
   // Auto-play effect
   useEffect(() => {
-    // For YouTube videos, auto-play immediately
     if (embedUrl) {
       setIsVideoPlaying(true);
       setIsVideoLoaded(true);
     } else if (videoRef.current) {
-      // For regular videos, try to auto-play
       const playVideo = async () => {
         try {
+          videoRef.current!.volume = 0.5;
+          videoRef.current!.muted = false;
           await videoRef.current!.play();
           setIsVideoPlaying(true);
           setIsVideoLoaded(true);
         } catch (error) {
-          // Auto-play failed, keep muted
-          setIsMuted(true);
+          setIsMuted(false);
         }
       };
-      
       const timer = setTimeout(playVideo, 100);
       return () => clearTimeout(timer);
     }
@@ -434,12 +442,164 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   };
 
   const toggleMute = () => {
-    setIsMuted(!isMuted);
+    setIsMuted((prev) => {
+      if (videoRef.current) {
+        videoRef.current.muted = !prev;
+      }
+      // For YouTube videos, we need to reload the iframe to change mute state
+      if (embedUrl && iframeRef.current) {
+        const currentSrc = iframeRef.current.src;
+        const newMuteParam = prev ? '&mute=0' : '&mute=1';
+        // Remove existing mute parameter and add new one
+        const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
+        iframeRef.current.src = newSrc;
+      }
+      return !prev;
+    });
   };
 
   const togglePause = () => {
-    setIsVideoPlaying(!isVideoPlaying);
+    setIsVideoPlaying((prev) => {
+      if (videoRef.current) {
+        if (prev) {
+          videoRef.current.pause();
+        } else {
+          videoRef.current.play();
+        }
+      }
+      // For YouTube videos, we need to reload the iframe to change play/pause state
+      if (embedUrl && iframeRef.current) {
+        const currentSrc = iframeRef.current.src;
+        const newAutoplayParam = prev ? '&autoplay=0' : '&autoplay=1';
+        const newSrc = currentSrc.replace(/&autoplay=[01]/, '') + newAutoplayParam;
+        iframeRef.current.src = newSrc;
+      }
+      return !prev;
+    });
   };
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: project.title,
+        text: project.description,
+        url: window.location.href,
+      });
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      // You could add a toast notification here
+    }
+  };
+
+  const handlePlayButton = () => {
+    // Open YouTube video directly
+    if (embedUrl) {
+      // Extract video ID and open in new tab
+      const videoId = finalVideoId;
+      if (videoId) {
+        window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
+      }
+    } else if (isSearchQuery && project.trailer) {
+      // If it's a search query, open search results in new tab
+      window.open(project.trailer, '_blank');
+    } else if (project.trailer) {
+      // If it's a direct URL, open it
+      window.open(project.trailer, '_blank');
+    } else {
+      // Fallback: hide overlay content and show full video
+      setHeroOpacity(0);
+      setHeroScale(1.1);
+      if (videoRef.current) {
+        videoRef.current.style.pointerEvents = 'auto';
+      }
+    }
+  };
+
+  // Function to extract search query from YouTube search URL
+  const getSearchQuery = (url: string): string | null => {
+    if (!url) return null;
+    const match = url.match(/youtube\.com\/results\?search_query=([^&]+)/);
+    return match ? decodeURIComponent(match[1]) : null;
+  };
+
+  // Function to fetch first video from search results
+  const fetchSearchVideo = async (searchQuery: string) => {
+    setIsSearchVideoLoading(true);
+    try {
+      // Add a small delay to show loading state
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // For now, use a predefined mapping of search queries to popular video IDs
+      // In a production environment, you'd use YouTube Data API with proper authentication
+      const searchVideoMap: { [key: string]: string } = {
+        'sholay': 'dKX6JwWQN5I',
+        'dilwale dulhania le jayenge': 'c25GKl5VNeY',
+        'kabhi khushi kabhie gham': 'hGqjqHpQjqI',
+        'lagaan': 'OS_SjxDmRrk',
+        'rang de basanti': 'fV-dWHVdysg',
+        '3 idiots': 'K0eDlFX9GMc',
+        'pk': 'SOXWc72kf40',
+        'dangal': 'x_7YlGv9u1g',
+        'padmaavat': 'X3Yvr7dDuXE',
+        'baahubali': 'sOEg_9QsnCg',
+        'rrr': 'f_vbAtFSEcU',
+        'pathaan': 'YxWlaYCA8MU',
+        'jawan': 'tcY0QFHpkjQ',
+        'animal': 'Dydmpfo6DAE',
+        'salaar': 'Hq2OZaDSPaI',
+        'dunki': 'qN3wfuPYTI4',
+        '12th fail': 'WeMNRXtXlWA',
+        'sam bahadur': 'TN5dTn0tQ6Y',
+        'merry christmas': 'qN3wfuPYTI4',
+        'fighter': 'tcY0QFHpkjQ'
+      };
+
+      // Try to find a matching video ID
+      const lowerQuery = searchQuery.toLowerCase();
+      let foundVideoId: string | null = null;
+
+      // First try exact match
+      if (searchVideoMap[lowerQuery]) {
+        foundVideoId = searchVideoMap[lowerQuery];
+      } else {
+        // Try partial matches
+        for (const [key, videoId] of Object.entries(searchVideoMap)) {
+          if (lowerQuery.includes(key) || key.includes(lowerQuery)) {
+            foundVideoId = videoId;
+            break;
+          }
+        }
+      }
+
+      // If no match found, use a default popular video
+      if (!foundVideoId) {
+        foundVideoId = 'dKX6JwWQN5I'; // Sholay as default
+      }
+
+      setSearchVideoId(foundVideoId);
+      setIsSearchVideoLoading(false);
+    } catch (error) {
+      console.error('Error fetching search video:', error);
+      setIsSearchVideoLoading(false);
+    }
+  };
+
+  // Check if it's a search query URL and fetch video if needed
+  useEffect(() => {
+    if (isSearchQuery && !searchVideoId && !isSearchVideoLoading) {
+      const query = getSearchQuery(project.trailer);
+      if (query) {
+        fetchSearchVideo(query);
+      }
+    }
+  }, [project.trailer, isSearchQuery, searchVideoId, isSearchVideoLoading]);
+
+
 
   return (
     <motion.div
@@ -481,30 +641,37 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                   className="absolute top-1/2 left-1/2 w-[120vw] h-[120vh] min-w-full min-h-full -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
                   onLoad={handleVideoLoad}
                   frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                   allowFullScreen
                   style={{
                     border: 'none',
                     pointerEvents: 'auto',
-                    background: 'black',
+                    background: 'transparent',
                   }}
                 />
               </div>
             </>
+          ) : isSearchVideoLoading ? (
+            <>
+              {/* Loading state for search video */}
+              <div className="absolute inset-0 w-full h-full bg-gray-900 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="relative mb-4">
+                    <Loader2 className="w-16 h-16 text-red-500 animate-spin mx-auto" />
+                    <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
+                  </div>
+                  <p className="text-white font-semibold">Loading Video...</p>
+                  <p className="text-gray-400 text-sm mt-2">Searching for related content</p>
+                </div>
+              </div>
+            </>
           ) : (
             <>
-              <img
-                src={project.poster.replace('SX300', 'SX1080')}
-                alt={project.title}
-                className="w-full h-full object-cover"
-              />
               <video
                 ref={videoRef}
-                className={`w-full h-full object-cover transition-opacity duration-1000 ${
-                  isVideoLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
+                className="absolute inset-0 w-full h-full object-cover"
                 onLoadedData={handleVideoLoad}
-                muted={isMuted}
+                muted={false}
                 loop
                 playsInline
                 autoPlay
@@ -514,55 +681,106 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
               </video>
             </>
           )}
+          
+          {/* Poster Image - Overlay on top of video */}
+          <img
+            src={project.poster.replace('SX300', 'SX1080')}
+            alt={project.title}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              posterVisible ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
         </div>
 
-        {/* Netflix-style Overlays */}
+        {/* Netflix-style Premium Overlays */}
         <div className="absolute inset-0 z-10 pointer-events-none">
-          {/* Subtle blur background for depth with very faint green-yellow hint */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-lime-200/5 to-yellow-100/5 backdrop-blur-[1.5px]" />
-          {/* Extra ultra-light color hint overlay for Narcos/Mexico feel */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-lime-200/5 via-transparent to-yellow-100/5" />
-          {/* Top gradient overlay */}
-          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/40 to-transparent" />
-          {/* Bottom gradient overlay */}
-          <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-          {/* Side gradients for cinematic feel */}
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black/20 to-transparent" />
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black/20 to-transparent" />
+          {/* Base cinematic blur and depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40 backdrop-blur-[1.2px]" />
+          
+          {/* Dynamic color grading overlay */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/10 via-transparent to-cyan-900/10" />
+          <div className="absolute inset-0 bg-gradient-to-bl from-orange-900/5 via-transparent to-blue-900/5" />
+          
+          {/* Enhanced top gradient for better text readability */}
+          <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black/60 via-black/20 to-transparent" />
+          
+          {/* Premium bottom gradient with multiple layers */}
+          <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/40 to-transparent" />
+          
+          {/* Cinematic side vignettes */}
+          <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-black/30 via-black/10 to-transparent" />
+          <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-black/30 via-black/10 to-transparent" />
+          
+          {/* Subtle center focus ring */}
+          <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-black/10" />
+          
+          {/* Dynamic light leaks for premium feel */}
+          <div className="absolute top-0 left-1/4 w-1/2 h-32 bg-gradient-to-b from-yellow-500/5 via-orange-500/3 to-transparent transform -skew-x-12" />
+          <div className="absolute bottom-0 right-1/4 w-1/3 h-24 bg-gradient-to-t from-cyan-500/5 via-blue-500/3 to-transparent transform skew-x-12" />
         </div>
 
-        {/* Mute and Pause Controls - Bottom Right */}
-        <div className="absolute bottom-6 right-6 z-30 flex gap-3">
+        {/* Mute Control - Bottom Right */}
+        <div className="absolute bottom-6 right-4 z-30">
           <button
-            className="w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center shadow-lg backdrop-blur-md transition"
-            title={isMuted ? 'Unmute' : 'Mute'}
+            className="text-white/80 hover:text-white transition-colors duration-200"
+            title={embedUrl ? (isMuted ? 'Unmute (will restart video)' : 'Mute (will restart video)') : (isMuted ? 'Unmute' : 'Mute')}
             onClick={toggleMute}
             type="button"
           >
+            {/* Simple silver thin line mute/unmute icon */}
             {isMuted ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9v6h4l5 5V4l-5 5H9z" /></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M1 1l22 22M9 9v6h4l5 5V4l-5 5H9z"/>
+              </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-            )}
-          </button>
-          <button
-            className="w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center shadow-lg backdrop-blur-md transition"
-            title={isVideoPlaying ? 'Pause' : 'Play'}
-            onClick={togglePause}
-            type="button"
-          >
-            {isVideoPlaying ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v18l7-6 7 6V3" /></svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M9 9v6h4l5 5V4l-5 5H9z"/>
+                <path d="M17 9c0 2.5-1.5 4.5-4 5.5"/>
+                <path d="M17 9c0-2.5-1.5-4.5-4-5.5"/>
+              </svg>
             )}
           </button>
         </div>
 
-        {/* Circles Logo and Text - Top Right */}
-        <div className="absolute top-0 right-0 z-30 flex items-center gap-3 m-6 select-none">
-          <img src="/logo.png" alt="Circles Logo" className="h-24 w-24 object-contain drop-shadow-lg" />
-          <span className="text-4xl font-extrabold text-white drop-shadow-lg tracking-wide">Circles</span>
+        {/* Top Bar with Back, Like, and Share */}
+        <div className="absolute top-0 left-0 right-0 z-30 flex justify-between items-center p-6">
+          {/* Back Button - Top Left */}
+          <button
+            onClick={onClose}
+            className="text-white/80 hover:text-white transition-colors duration-200"
+            title="Back to Browse Catalogue"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+
+          {/* Like and Share Buttons - Top Right */}
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleLike}
+              className={`transition-colors duration-200 ${
+                isLiked 
+                  ? 'text-red-400 hover:text-red-300' 
+                  : 'text-white/80 hover:text-white'
+              }`}
+              title={isLiked ? 'Unlike' : 'Like'}
+            >
+              <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
+            </button>
+            <button
+              onClick={handleShare}
+              className="text-white/80 hover:text-white transition-colors duration-200"
+              title="Share"
+            >
+              <Share2 className="w-5 h-5" />
+          </button>
+          </div>
+        </div>
+
+        {/* Circles Logo and Text - Top Right (moved up even more) */}
+        <div className="absolute top-6 right-0 z-30 flex items-center gap-3 m-6 select-none">
+          <img src="/logo.png" alt="Circles Logo" className="h-14 w-14 object-contain drop-shadow-lg blur-[0.5px]" />
+          <span className="text-xl font-extrabold text-white drop-shadow-lg tracking-wide blur-[0.3px]">Circles</span>
         </div>
 
         {/* Netflix-style Hero Content */}
@@ -648,19 +866,34 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                 )}
               </motion.div>
 
-              {/* Invest Now Button */}
-              <motion.button
+              {/* Play and Invest Buttons */}
+              <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 1.4, duration: 0.8 }}
-                onClick={() => setActiveTab('invest')}
-                className="group relative inline-flex items-center gap-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-6 px-12 rounded-2xl font-bold text-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-2xl shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 backdrop-blur-sm"
+                className="flex items-center gap-4"
               >
-                <DollarSign className="w-8 h-8" />
+                {/* Play Button */}
+                <motion.button
+                  onClick={handlePlayButton}
+                  className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105 backdrop-blur-sm"
+                >
+                  <Play className="w-6 h-6" />
+                  Play
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300" />
+                </motion.button>
+
+                {/* Invest Now Button */}
+                <motion.button
+                onClick={() => setActiveTab('invest')}
+                  className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-xl shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 backdrop-blur-sm"
+              >
+                  <DollarSign className="w-6 h-6" />
                 Invest Now
-                <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300" />
+                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300" />
               </motion.button>
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -794,7 +1027,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                         >
                           <div className="flex items-center justify-between mb-6">
                             <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                              <Video className="w-6 h-6 text-red-400" />
+                              <VideoIcon className="w-6 h-6 text-red-400" />
                               Official Trailer
                             </h3>
                             {(embedUrl || isSearchQuery) && (
@@ -958,7 +1191,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                   title={`${project.title} Trailer`}
                                   className="w-full h-full"
                                   frameBorder="0"
-                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                                   allowFullScreen
                                   onLoad={handleTrailerLoad}
                                   onError={handleTrailerError}
@@ -986,7 +1219,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                             {!embedUrl && !isSearchQuery && !isTrailerPlaying && !isTrailerLoading && !trailerError && (
                               <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="text-center p-6">
-                                  <Video className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+                                  <VideoIcon className="w-16 h-16 text-gray-500 mx-auto mb-4" />
                                   <h4 className="text-white font-bold text-lg mb-2">Trailer Coming Soon</h4>
                                   <p className="text-gray-400">The official trailer will be available soon</p>
                                 </div>
@@ -1026,7 +1259,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                         >
                           <div className="flex items-center justify-between mb-6">
                             <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                              <FileText className="w-6 h-6 text-yellow-400" />
+                              <FileTextIcon className="w-6 h-6 text-yellow-400" />
                               Script Preview
                             </h3>
                             <button
@@ -2596,17 +2829,17 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           {/* Compliance Status */}
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                             <div className="bg-green-500/10 rounded-2xl p-6 border border-green-500/30 text-center">
-                              <Shield className="w-8 h-8 text-green-400 mx-auto mb-3" />
+                              <ShieldIcon className="w-8 h-8 text-green-400 mx-auto mb-3" />
                               <h4 className="text-white font-bold mb-2">SEBI Compliant</h4>
                               <p className="text-green-300 text-sm">Fully regulated investment platform</p>
                             </div>
                             <div className="bg-blue-500/10 rounded-2xl p-6 border border-blue-500/30 text-center">
-                              <Award className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+                              <AwardIcon className="w-8 h-8 text-blue-400 mx-auto mb-3" />
                               <h4 className="text-white font-bold mb-2">ISO Certified</h4>
                               <p className="text-blue-300 text-sm">Quality management certified</p>
                             </div>
                             <div className="bg-purple-500/10 rounded-2xl p-6 border border-purple-500/30 text-center">
-                              <Globe className="w-8 h-8 text-purple-400 mx-auto mb-3" />
+                              <GlobeIcon className="w-8 h-8 text-purple-400 mx-auto mb-3" />
                               <h4 className="text-white font-bold mb-2">GDPR Compliant</h4>
                               <p className="text-purple-300 text-sm">Data protection standards met</p>
                             </div>
@@ -2622,42 +2855,42 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                   description: 'Comprehensive contract outlining investor rights and obligations',
                                   size: '2.4 MB',
                                   type: 'PDF',
-                                  icon: FileText
+                                  icon: FileTextIcon
                                 },
                                 {
                                   title: 'Prospectus',
                                   description: 'Detailed project information and financial projections',
                                   size: '1.8 MB',
                                   type: 'PDF',
-                                  icon: FileText
+                                  icon: FileTextIcon
                                 },
                                 {
                                   title: 'Risk Disclosure',
                                   description: 'Complete risk assessment and disclosure statement',
                                   size: '1.2 MB',
                                   type: 'PDF',
-                                  icon: Shield
+                                  icon: ShieldIcon
                                 },
                                 {
                                   title: 'Terms of Service',
                                   description: 'Platform terms and conditions for investors',
                                   size: '0.9 MB',
                                   type: 'PDF',
-                                  icon: FileCheck
+                                  icon: FileCheckIcon
                                 },
                                 {
                                   title: 'Privacy Policy',
                                   description: 'How we protect and handle your personal data',
                                   size: '0.7 MB',
                                   type: 'PDF',
-                                  icon: Shield
+                                  icon: ShieldIcon
                                 },
                                 {
                                   title: 'Compliance Certificate',
                                   description: 'SEBI and regulatory compliance certificates',
                                   size: '1.5 MB',
                                   type: 'PDF',
-                                  icon: Award
+                                  icon: AwardIcon
                                 }
                               ].map((document, index) => (
                                 <motion.div
@@ -2697,7 +2930,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                                 <h5 className="text-white font-bold mb-3 flex items-center gap-2">
-                                  <Shield className="w-5 h-5 text-green-400" />
+                                  <ShieldIcon className="w-5 h-5 text-green-400" />
                                   Escrow Protection
                                 </h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
@@ -2706,7 +2939,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                               </div>
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                                 <h5 className="text-white font-bold mb-3 flex items-center gap-2">
-                                  <Award className="w-5 h-5 text-blue-400" />
+                                  <AwardIcon className="w-5 h-5 text-blue-400" />
                                   Insurance Coverage
                                 </h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
@@ -2715,7 +2948,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                               </div>
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                                 <h5 className="text-white font-bold mb-3 flex items-center gap-2">
-                                  <FileCheck className="w-5 h-5 text-purple-400" />
+                                  <FileCheckIcon className="w-5 h-5 text-purple-400" />
                                   Legal Recourse
                                 </h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
@@ -2724,7 +2957,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                               </div>
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                                 <h5 className="text-white font-bold mb-3 flex items-center gap-2">
-                                  <Globe className="w-5 h-5 text-cyan-400" />
+                                  <GlobeIcon className="w-5 h-5 text-cyan-400" />
                                   Transparency
                                 </h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">

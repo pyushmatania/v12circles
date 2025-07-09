@@ -17,6 +17,7 @@ import { useAuth } from './components/auth/useAuth';
 import { useToast } from './hooks/useToast';
 import DebugPanel from './components/DebugPanel';
 import ErrorBoundary from './components/ErrorBoundary';
+import { Project } from './types';
 
 // Lazy load heavy components for better performance
 const Dashboard = lazy(() => import('./components/Dashboard'));
@@ -47,6 +48,7 @@ function AppContent() {
   const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
   const { isAuthenticated } = useAuth();
   const { toasts, toast, removeToast } = useToast();
+  const [catalogScroll, setCatalogScroll] = useState(0);
 
   // Handle logout redirect
   useEffect(() => {
@@ -87,6 +89,13 @@ function AppContent() {
     setCurrentView(view);
   }, [handleAuthRequired, toast]);
 
+  const handleProjectSelect = (project: Project, tab?: 'overview' | 'invest') => {
+    setCatalogScroll(window.scrollY);
+    setSelectedProject(project);
+    setProjectDetailTab(tab || 'overview');
+    setCurrentView('project-detail');
+  };
+
   // If admin view is selected, render the admin dashboard
   if (currentView === 'admin') {
     return (
@@ -103,11 +112,7 @@ function AppContent() {
           <Suspense fallback={<LoadingSpinner />}>
             <ProjectCatalog 
               onTrackInvestment={() => handleViewChange('dashboard')}
-              onProjectSelect={(project, tab) => {
-                setSelectedProject(project);
-                setProjectDetailTab(tab || 'overview');
-                setCurrentView('project-detail');
-              }}
+              onProjectSelect={handleProjectSelect}
             />
           </Suspense>
         );
@@ -179,7 +184,10 @@ function AppContent() {
           <Suspense fallback={<LoadingSpinner />}>
             <ProjectDetailPage 
               project={selectedProject} 
-              onClose={() => setCurrentView('projects')}
+              onClose={() => {
+                setCurrentView('projects');
+                setTimeout(() => window.scrollTo(0, catalogScroll), 0);
+              }}
               onInvest={() => handleViewChange('dashboard')}
               initialTab={projectDetailTab}
             />

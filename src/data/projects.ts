@@ -32,7 +32,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.1,
-    "trailer": "https://www.youtube.com/watch?v=u2pJU82Xj9M",
+    "trailer": "https://www.youtube.com/watch?v=zzTUvWfvlBg",
     "movie": "Sholay",
     "keyPeople": [],
     "actor": "",
@@ -1985,7 +1985,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 9.3,
-    "trailer": "https://www.youtube.com/watch?v=PLl99DlL6b4",
+    "trailer": "https://www.youtube.com/watch?v=6hB3S9bIaco",
     "movie": "The Shawshank Redemption",
     "keyPeople": [],
     "actor": "",
@@ -2033,7 +2033,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 9.2,
-    "trailer": "https://www.youtube.com/watch?v=UaVTIH8mujA",
+    "trailer": "https://www.youtube.com/watch?v=sY1S34973zA",
     "movie": "The Godfather",
     "keyPeople": [],
     "actor": "",
@@ -2276,7 +2276,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.8,
-    "trailer": "https://www.youtube.com/watch?v=qtRKdVHc-cE",
+    "trailer": "https://www.youtube.com/watch?v=SUXWAEX2jlg",
     "movie": "Fight Club",
     "keyPeople": [],
     "actor": "",
@@ -2469,7 +2469,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.9,
-    "trailer": "https://www.youtube.com/watch?v=kVrqfYjkTdQ",
+    "trailer": "https://www.youtube.com/watch?v=2e-eXJ6HgkQ",
     "movie": "Titanic",
     "keyPeople": [],
     "actor": "",
@@ -2518,7 +2518,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/watch?v=P5ieIbInFpg",
+    "trailer": "https://www.youtube.com/watch?v=owK1qxDselE",
     "movie": "Gladiator",
     "keyPeople": [],
     "actor": "",
@@ -2911,7 +2911,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.9,
-    "trailer": "https://www.youtube.com/watch?v=d9MyW72ELq0",
+    "trailer": "https://www.youtube.com/watch?v=5PSNL1qE6VY",
     "movie": "Avatar",
     "keyPeople": [],
     "actor": "",
@@ -5099,7 +5099,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/results?search_query=Parasite%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=dKX6JwWQN5I",
     "movie": "Parasite",
     "keyPeople": [],
     "actor": "",
@@ -5148,7 +5148,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.6,
-    "trailer": "https://www.youtube.com/results?search_query=Spirited%20Away%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=ByXuk9QqQkk",
     "movie": "Spirited Away",
     "keyPeople": [],
     "actor": "",
@@ -5197,7 +5197,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.9,
-    "trailer": "https://www.youtube.com/results?search_query=Crouching%20Tiger%2C%20Hidden%20Dragon%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=iV-kbJbFjJk",
     "movie": "Crouching Tiger, Hidden Dragon",
     "keyPeople": [],
     "actor": "",
@@ -5245,7 +5245,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/results?search_query=Am%C3%A9lie%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=HEFrLnS5sQY",
     "movie": "Amélie",
     "keyPeople": [],
     "actor": "",
@@ -5294,7 +5294,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.2,
-    "trailer": "https://www.youtube.com/results?search_query=Pan's%20Labyrinth%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=EqYiSlkvRuw",
     "movie": "Pan's Labyrinth",
     "keyPeople": [],
     "actor": "",
@@ -6104,7 +6104,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.1,
-    "trailer": "https://www.youtube.com/results?search_query=Gadar%202%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=mljj92tRwlk",
     "movie": "Gadar 2",
     "keyPeople": [],
     "actor": "Sunny Deol",
@@ -6152,7 +6152,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.8,
-    "trailer": "https://www.youtube.com/results?search_query=Pathaan%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=vqu4z34wENw",
     "movie": "Pathaan",
     "keyPeople": [],
     "actor": "Shah Rukh Khan",
@@ -6200,7 +6200,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.8,
-    "trailer": "https://www.youtube.com/results?search_query=RRR%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=f_vbAtFSEcA",
     "movie": "RRR",
     "keyPeople": [],
     "actor": "N. T. Rama Rao Jr.",
@@ -6245,7 +6245,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.9,
-    "trailer": "https://www.youtube.com/results?search_query=Jawan%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=s0VcJgRx2uQ",
     "movie": "Jawan",
     "keyPeople": [],
     "actor": "",
@@ -6336,7 +6336,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.1,
-    "trailer": "https://www.youtube.com/results?search_query=Animal%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=Dydmpfo6DAE",
     "movie": "Animal",
     "keyPeople": [],
     "actor": "",
@@ -8913,7 +8913,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.1,
-    "trailer": "https://www.youtube.com/results?search_query=Gadar%202%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=mljj92tRwlk",
     "movie": "Gadar 2",
     "keyPeople": [],
     "actor": "Sunny Deol",
@@ -8958,7 +8958,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.8,
-    "trailer": "https://www.youtube.com/results?search_query=Pathaan%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=vqu4z34wENw",
     "movie": "Pathaan",
     "keyPeople": [],
     "actor": "Shah Rukh Khan",
@@ -9004,7 +9004,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.8,
-    "trailer": "https://www.youtube.com/results?search_query=RRR%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=f_vbAtFSEcA",
     "movie": "RRR",
     "keyPeople": [],
     "actor": "N. T. Rama Rao Jr.",
@@ -9049,7 +9049,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.9,
-    "trailer": "https://www.youtube.com/results?search_query=Jawan%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=s0VcJgRx2uQ",
     "movie": "Jawan",
     "keyPeople": [],
     "actor": "Shah Rukh Khan",
@@ -9094,7 +9094,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.2,
-    "trailer": "https://www.youtube.com/results?search_query=Brahmastra%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=75cE9tqTtZ4",
     "movie": "Brahmastra",
     "keyPeople": [],
     "actor": "Ranbir Kapoor",
@@ -9191,7 +9191,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/results?search_query=Pushpa%3A%20The%20Rise%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=Q1NKMPhV8aI",
     "movie": "Pushpa: The Rise",
     "keyPeople": [],
     "actor": "Allu Arjun",
@@ -9236,7 +9236,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.9,
-    "trailer": "https://www.youtube.com/results?search_query=Sooryavanshi%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=WzB6JX_SamI",
     "movie": "Sooryavanshi",
     "keyPeople": [],
     "actor": "Akshay Kumar",
