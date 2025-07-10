@@ -9,7 +9,7 @@ export const projects: Project[
     "id": "1",
     "title": "Sholay",
     "type": "film",
-    "category": "Hollywood",
+    "category": "Bollywood",
     "language": "Hindi",
     "status": "active",
     "fundedPercentage": 23,
@@ -58,7 +58,7 @@ export const projects: Project[
     "id": "2",
     "title": "Dilwale Dulhania Le Jayenge",
     "type": "film",
-    "category": "Hollywood",
+    "category": "Bollywood",
     "language": "Hindi",
     "status": "active",
     "fundedPercentage": 70,
@@ -106,7 +106,7 @@ export const projects: Project[
     "id": "3",
     "title": "3 Idiots",
     "type": "film",
-    "category": "Hollywood",
+    "category": "Bollywood",
     "language": "Hindi",
     "status": "active",
     "fundedPercentage": 42,
@@ -203,7 +203,7 @@ export const projects: Project[
     "id": "5",
     "title": "Dangal",
     "type": "film",
-    "category": "Hollywood",
+    "category": "Bollywood",
     "language": "Hindi",
     "status": "active",
     "fundedPercentage": 25,
@@ -4047,7 +4047,7 @@ export const projects: Project[
     "id": "82",
     "title": "Breaking Bad",
     "type": "webseries",
-    "category": "Bollywood",
+    "category": "Hollywood",
     "language": "Hindi",
     "status": "active",
     "fundedPercentage": 34,
@@ -6226,7 +6226,7 @@ export const projects: Project[
     "id": "124",
     "title": "Jawan",
     "type": "film",
-    "category": "Hollywood",
+    "category": "Bollywood",
     "language": "Hindi",
     "status": "active",
     "fundedPercentage": 6,
@@ -8022,7 +8022,7 @@ export const projects: Project[
     "id": "163",
     "title": "Money Heist: Korea – Joint Economic Area",
     "type": "film",
-    "category": "Hollywood",
+    "category": "Bollywood",
     "language": "Hindi",
     "status": "active",
     "fundedPercentage": 94,
@@ -10928,6 +10928,81 @@ export const projects: Project[
  
 
 ];
+
+// Diverse, Randomized Arrays for Different Sections
+export const trendingNow = projects
+  .filter(project => project.rating >= 7.5 && project.fundedPercentage >= 30)
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 12);
+
+export const bollywoodSection = projects
+  .filter(project => project.category === "Bollywood")
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 15);
+
+export const hollywoodSection = projects
+  .filter(project => project.category === "Hollywood")
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 15);
+
+export const actionThrillers = projects
+  .filter(project => 
+    project.genre?.includes("Action") || 
+    project.genre?.includes("Thriller") ||
+    project.tags?.includes("Action") ||
+    project.tags?.includes("Thriller")
+  )
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 12);
+
+export const dramaRomance = projects
+  .filter(project => 
+    project.genre?.includes("Drama") || 
+    project.genre?.includes("Romance") ||
+    project.tags?.includes("Drama") ||
+    project.tags?.includes("Romance")
+  )
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 12);
+
+export const comedyEntertainment = projects
+  .filter(project => 
+    project.genre?.includes("Comedy") || 
+    project.genre?.includes("Adventure") ||
+    project.tags?.includes("Comedy") ||
+    project.tags?.includes("Adventure")
+  )
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 12);
+
+export const sciFiFantasy = projects
+  .filter(project => 
+    project.genre?.includes("Sci-Fi") || 
+    project.genre?.includes("Fantasy") ||
+    project.genre?.includes("Animation") ||
+    project.tags?.includes("Sci-Fi") ||
+    project.tags?.includes("Fantasy")
+  )
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 12);
+
+export const allProjects = projects
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 50);
+
+export const highRatedProjects = projects
+  .filter(project => project.rating >= 8.0)
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 12);
+
+export const newlyAddedProjects = projects
+  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  .slice(0, 12);
+
+export const mostFundedProjects = projects
+  .filter(project => project.fundedPercentage >= 50)
+  .sort((a, b) => b.fundedPercentage - a.fundedPercentage)
+  .slice(0, 12);
 
 // Testimonial data (can be kept separate or merged if relevant)
 export const testimonials: Testimonial[] = [

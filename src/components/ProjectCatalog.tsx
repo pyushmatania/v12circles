@@ -3,7 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { Film, Music, Tv, Search, Star, Clock, ChevronLeft, ChevronRight, Play, Info, Siren as Fire, Filter, Heart, Share2, X, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { projects } from '../data/projects';
+import { 
+  projects, 
+  trendingNow, 
+  bollywoodSection, 
+  hollywoodSection, 
+  actionThrillers, 
+  dramaRomance, 
+  comedyEntertainment, 
+  sciFiFantasy, 
+  allProjects, 
+  highRatedProjects, 
+  newlyAddedProjects, 
+  mostFundedProjects 
+} from '../data/projects';
 
 import { Project } from '../types';
 import ProjectCard from './ProjectCard';
@@ -130,9 +143,8 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
         case 'funding-low':
           return a.fundedPercentage - b.fundedPercentage;
         case 'ending-soon': {
-          const aTime = a.timeLeft ? parseInt(a.timeLeft) : 999;
-          const bTime = b.timeLeft ? parseInt(b.timeLeft) : 999;
-          return aTime - bTime;
+          // Sort by funding percentage for ending soon (higher percentage = more urgent)
+          return b.fundedPercentage - a.fundedPercentage;
         }
         case 'rating':
           return (b.rating || 0) - (a.rating || 0);
@@ -148,16 +160,18 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
     });
   }, [searchTerm, selectedCategory, selectedType, selectedLanguage, selectedGenre, fundingRange, sortBy]);
 
-  // Memoized categorized projects for Netflix-style layout
+  // Memoized categorized projects for Netflix-style layout using diverse arrays
   const categorizedProjects = useMemo(() => {
-    const trendingProjects = projects
-      .filter(p => p.fundedPercentage > 70)
-      .sort((a, b) => b.fundedPercentage - a.fundedPercentage)
-      .slice(0, 10);
-
-    const bollywoodFilms = projects
-      .filter(p => p.type === 'film' && p.category === 'Bollywood')
-      .slice(0, 10);
+    const trendingProjects = trendingNow;
+    const bollywoodFilms = bollywoodSection;
+    const hollywoodProjects = hollywoodSection;
+    const actionThrillerContent = actionThrillers;
+    const dramaRomanceContent = dramaRomance;
+    const comedyEntertainmentContent = comedyEntertainment;
+    const sciFiFantasyContent = sciFiFantasy;
+    const highRatedContent = highRatedProjects;
+    const newlyAddedContent = newlyAddedProjects;
+    const mostFundedContent = mostFundedProjects;
 
     const regionalContent = projects
       .filter(p => p.category === 'Regional')
@@ -169,22 +183,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
 
     const webSeries = projects
       .filter(p => p.type === 'webseries')
-      .slice(0, 10);
-
-    const hollywoodProjects = projects
-      .filter(p => p.category === 'Hollywood')
-      .slice(0, 10);
-
-    const newReleases = projects
-      .filter(p => p.timeLeft && parseInt(p.timeLeft) < 15)
-      .slice(0, 10);
-
-    const highRatedProjects = projects
-      .filter(p => p.rating && p.rating >= 4.5)
-      .slice(0, 10);
-
-    const endingSoon = projects
-      .filter(p => p.timeLeft && parseInt(p.timeLeft) <= 7)
       .slice(0, 10);
 
     let featuredProjects = projects
@@ -219,16 +217,20 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
     }
 
     return {
-      trendingProjects,
-      bollywoodFilms,
-      regionalContent,
-      musicProjects,
-      webSeries,
-      hollywoodProjects,
-      newReleases,
-      highRatedProjects,
-      endingSoon,
-      featuredProjects
+      trending: trendingProjects,
+      bollywood: bollywoodFilms,
+      hollywood: hollywoodProjects,
+      actionThrillers: actionThrillerContent,
+      dramaRomance: dramaRomanceContent,
+      comedyEntertainment: comedyEntertainmentContent,
+      sciFiFantasy: sciFiFantasyContent,
+      highRated: highRatedContent,
+      newlyAdded: newlyAddedContent,
+      mostFunded: mostFundedContent,
+      regional: regionalContent,
+      music: musicProjects,
+      webseries: webSeries,
+      featured: featuredProjects
     };
   }, []);
 
@@ -330,17 +332,21 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   const genres = FILTER_OPTIONS.genres;
   const sortOptions = FILTER_OPTIONS.sortOptions;
 
-  // Organize projects by categories for Netflix-style layout
-  const trendingProjects = categorizedProjects.trendingProjects;
-  const bollywoodFilms = categorizedProjects.bollywoodFilms;
-  const regionalContent = categorizedProjects.regionalContent;
-  const musicProjects = categorizedProjects.musicProjects;
-  const webSeries = categorizedProjects.webSeries;
-  const hollywoodProjects = categorizedProjects.hollywoodProjects;
-  const newReleases = categorizedProjects.newReleases;
-  const highRatedProjects = categorizedProjects.highRatedProjects;
-  const endingSoon = categorizedProjects.endingSoon;
-  const featuredProjects = categorizedProjects.featuredProjects;
+  // Organize projects by categories for Netflix-style layout using diverse arrays
+  const trendingProjects = categorizedProjects.trending;
+  const bollywoodFilms = categorizedProjects.bollywood;
+  const hollywoodProjects = categorizedProjects.hollywood;
+  const actionThrillers = categorizedProjects.actionThrillers;
+  const dramaRomance = categorizedProjects.dramaRomance;
+  const comedyEntertainment = categorizedProjects.comedyEntertainment;
+  const sciFiFantasy = categorizedProjects.sciFiFantasy;
+  const highRatedProjects = categorizedProjects.highRated;
+  const newlyAdded = categorizedProjects.newlyAdded;
+  const mostFunded = categorizedProjects.mostFunded;
+  const regionalContent = categorizedProjects.regional;
+  const musicProjects = categorizedProjects.music;
+  const webSeries = categorizedProjects.webseries;
+  const featuredProjects = categorizedProjects.featured;
 
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -830,22 +836,70 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
               onInvestClick={handleInvestClick}
               onHeaderClick={() => handleSectionClick('trending')}
             />
-            {endingSoon.length > 0 && (
-              <ProjectRow
-                title="⏰ Ending Soon - Last Chance!"
-                projects={endingSoon}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
-                onHeaderClick={() => handleSectionClick('ending-soon')}
-                urgent
-              />
-            )}
             <ProjectRow
               title="🎬 Bollywood Blockbusters"
               projects={bollywoodFilms}
               onProjectClick={handleProjectClick}
               onInvestClick={handleInvestClick}
               onHeaderClick={() => handleSectionClick('bollywood')}
+            />
+            {hollywoodProjects.length > 0 && (
+              <ProjectRow
+                title="🌟 Hollywood International"
+                projects={hollywoodProjects}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('hollywood')}
+              />
+            )}
+            <ProjectRow
+              title="💥 Action & Thrillers"
+              projects={actionThrillers}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
+              onHeaderClick={() => handleSectionClick('action-thrillers')}
+            />
+            <ProjectRow
+              title="💕 Drama & Romance"
+              projects={dramaRomance}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
+              onHeaderClick={() => handleSectionClick('drama-romance')}
+            />
+            <ProjectRow
+              title="😂 Comedy & Entertainment"
+              projects={comedyEntertainment}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
+              onHeaderClick={() => handleSectionClick('comedy-entertainment')}
+            />
+            <ProjectRow
+              title="🚀 Sci-Fi & Fantasy"
+              projects={sciFiFantasy}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
+              onHeaderClick={() => handleSectionClick('sci-fi-fantasy')}
+            />
+            <ProjectRow
+              title="🏆 Highly Rated Projects"
+              projects={highRatedProjects}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
+              onHeaderClick={() => handleSectionClick('high-rated')}
+            />
+            <ProjectRow
+              title="🆕 Newly Added"
+              projects={newlyAdded}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
+              onHeaderClick={() => handleSectionClick('newly-added')}
+            />
+            <ProjectRow
+              title="💰 Most Funded"
+              projects={mostFunded}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
+              onHeaderClick={() => handleSectionClick('most-funded')}
             />
             <ProjectRow
               title="🎵 Music & Albums"
@@ -868,29 +922,14 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
               onInvestClick={handleInvestClick}
               onHeaderClick={() => handleSectionClick('regional')}
             />
+            {/* All Projects Section */}
             <ProjectRow
-              title="🏆 Highly Rated Projects"
-              projects={highRatedProjects}
+              title="🎬 All Projects"
+              projects={allProjects}
               onProjectClick={handleProjectClick}
               onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('high-rated')}
+              onHeaderClick={() => setShowAllProjects('all')}
             />
-            <ProjectRow
-              title="🆕 Fresh Releases"
-              projects={newReleases}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('new-releases')}
-            />
-            {hollywoodProjects.length > 0 && (
-              <ProjectRow
-                title="🌟 Hollywood International"
-                projects={hollywoodProjects}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
-                onHeaderClick={() => handleSectionClick('hollywood')}
-              />
-            )}
           </div>
         )}
       </div>
