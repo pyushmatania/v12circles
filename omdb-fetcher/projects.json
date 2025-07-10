@@ -10,9 +10,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.421Z",
     "updatedAt": "2025-07-07T12:37:14.421Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMDAyY2FhYjctNDc5OS00MDNlLThiMGUtY2UxYWVkNGY2ZjljXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Frank Darabont",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -21,7 +21,7 @@
       "Premiere Invite"
     ],
     "rating": 4.6,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Shawshank%20Redemption%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=PLl99DlL6b4",
     "movie": "The Shawshank Redemption",
     "keyPeople": [],
     "actor": "",
@@ -38,7 +38,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Frank Darabont"
       }
     ]
   },
@@ -53,9 +53,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.421Z",
     "updatedAt": "2025-07-07T12:37:14.421Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BNGEwYjgwOGQtYjg5ZS00Njc1LTk2ZGEtM2QwZWQ2NjdhZTE5XkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Francis Ford Coppola",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -64,7 +64,7 @@
       "Premiere Invite"
     ],
     "rating": 4,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Godfather%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=UaVTIH8mujA",
     "movie": "The Godfather",
     "keyPeople": [],
     "actor": "",
@@ -81,7 +81,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Francis Ford Coppola"
       }
     ]
   },
@@ -96,9 +96,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.421Z",
     "updatedAt": "2025-07-07T12:37:14.421Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Christopher Nolan",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -107,7 +107,7 @@
       "Premiere Invite"
     ],
     "rating": 3.1,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Dark%20Knight%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=EXeTwQWrcwY",
     "movie": "The Dark Knight",
     "keyPeople": [],
     "actor": "",
@@ -124,7 +124,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Christopher Nolan"
       }
     ]
   },
@@ -139,9 +139,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.421Z",
     "updatedAt": "2025-07-07T12:37:14.421Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BYTViYTE3ZGQtNDBlMC00ZTAyLTkyODMtZGRiZDg0MjA2YThkXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Quentin Tarantino",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -150,7 +150,7 @@
       "Premiere Invite"
     ],
     "rating": 3.4,
-    "trailer": "https://www.youtube.com/results?search_query=Pulp%20Fiction%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=s7EdQ4FqbhY",
     "movie": "Pulp Fiction",
     "keyPeople": [],
     "actor": "",
@@ -167,7 +167,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Quentin Tarantino"
       }
     ]
   },
@@ -182,9 +182,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.421Z",
     "updatedAt": "2025-07-07T12:37:14.421Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BNDYwNzVjMTItZmU5YS00YjQ5LTljYjgtMjY2NDVmYWMyNWFmXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Robert Zemeckis",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -193,7 +193,7 @@
       "Premiere Invite"
     ],
     "rating": 4.7,
-    "trailer": "https://www.youtube.com/results?search_query=Forrest%20Gump%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=bLvqoHBptjg",
     "movie": "Forrest Gump",
     "keyPeople": [],
     "actor": "",
@@ -210,7 +210,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Robert Zemeckis"
       }
     ]
   },
@@ -225,9 +225,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.421Z",
     "updatedAt": "2025-07-07T12:37:14.421Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Christopher Nolan",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -236,7 +236,7 @@
       "Premiere Invite"
     ],
     "rating": 4.5,
-    "trailer": "https://www.youtube.com/results?search_query=Inception%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=YoHD9XEInc0",
     "movie": "Inception",
     "keyPeople": [],
     "actor": "",
@@ -253,7 +253,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Christopher Nolan"
       }
     ]
   },
@@ -268,9 +268,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.421Z",
     "updatedAt": "2025-07-07T12:37:14.421Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BOTgyOGQ1NDItNGU3Ny00MjU3LTg2YWEtNmEyYjBiMjI1Y2M5XkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "David Fincher",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -279,7 +279,7 @@
       "Premiere Invite"
     ],
     "rating": 3.2,
-    "trailer": "https://www.youtube.com/results?search_query=Fight%20Club%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=qtRKdVHc-cE",
     "movie": "Fight Club",
     "keyPeople": [],
     "actor": "",
@@ -296,7 +296,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "David Fincher"
       }
     ]
   },
@@ -311,9 +311,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.421Z",
     "updatedAt": "2025-07-07T12:37:14.421Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BN2NmN2VhMTQtMDNiOS00NDlhLTliMjgtODE2ZTY0ODQyNDRhXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Lana Wachowski, Lilly Wachowski",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -322,7 +322,7 @@
       "Premiere Invite"
     ],
     "rating": 3.5,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Matrix%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
     "movie": "The Matrix",
     "keyPeople": [],
     "actor": "",
@@ -339,7 +339,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Lana Wachowski, Lilly Wachowski"
       }
     ]
   },
@@ -354,9 +354,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Christopher Nolan",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -365,7 +365,7 @@
       "Premiere Invite"
     ],
     "rating": 3.1,
-    "trailer": "https://www.youtube.com/results?search_query=Interstellar%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=zSWdZVtXT7E",
     "movie": "Interstellar",
     "keyPeople": [],
     "actor": "",
@@ -382,7 +382,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Christopher Nolan"
       }
     ]
   },
@@ -397,9 +397,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BYWQ4YmNjYjEtOWE1Zi00Y2U4LWI4NTAtMTU0MjkxNWQ1ZmJiXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Ridley Scott",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -408,7 +408,7 @@
       "Premiere Invite"
     ],
     "rating": 4,
-    "trailer": "https://www.youtube.com/results?search_query=Gladiator%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=P5ieIbInFpg",
     "movie": "Gladiator",
     "keyPeople": [],
     "actor": "",
@@ -425,7 +425,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Ridley Scott"
       }
     ]
   },
@@ -440,9 +440,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BYzYyN2FiZmUtYWYzMy00MzViLWJkZTMtOGY1ZjgzNWMwN2YxXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "James Cameron",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -451,7 +451,7 @@
       "Premiere Invite"
     ],
     "rating": 4.7,
-    "trailer": "https://www.youtube.com/results?search_query=Titanic%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=kVrqfYjkTdQ",
     "movie": "Titanic",
     "keyPeople": [],
     "actor": "",
@@ -468,7 +468,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "James Cameron"
       }
     ]
   },
@@ -483,9 +483,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMjM2MDgxMDg0Nl5BMl5BanBnXkFtZTgwNTM2OTM5NDE@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Steven Spielberg",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -494,7 +494,7 @@
       "Premiere Invite"
     ],
     "rating": 4.5,
-    "trailer": "https://www.youtube.com/results?search_query=Jurassic%20Park%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=jan5CFWs9ic",
     "movie": "Jurassic Park",
     "keyPeople": [],
     "actor": "",
@@ -511,7 +511,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Steven Spielberg"
       }
     ]
   },
@@ -526,9 +526,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMDEzMmQwZjctZWU2My00MWNlLWE0NjItMDJlYTRlNGJiZjcyXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "James Cameron",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -537,7 +537,7 @@
       "Premiere Invite"
     ],
     "rating": 4.1,
-    "trailer": "https://www.youtube.com/results?search_query=Avatar%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=5PSNL1qE6VY",
     "movie": "Avatar",
     "keyPeople": [],
     "actor": "",
@@ -554,7 +554,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "James Cameron"
       }
     ]
   },
@@ -569,9 +569,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMTZkMjBjNWMtZGI5OC00MGU0LTk4ZTItODg2NWM3NTVmNWQ4XkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Peter Jackson",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -580,7 +580,7 @@
       "Premiere Invite"
     ],
     "rating": 3.7,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Lord%20of%20the%20Rings%3A%20The%20Return%20of%20the%20King%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=r5X-hFf6Bwo",
     "movie": "The Lord of the Rings: The Return of the King",
     "keyPeople": [],
     "actor": "",
@@ -597,7 +597,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Peter Jackson"
       }
     ]
   },
@@ -612,9 +612,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMTkxNGFlNDktZmJkNC00MDdhLTg0MTEtZjZiYWI3MGE5NWIwXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Irvin Kershner",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -623,7 +623,7 @@
       "Premiere Invite"
     ],
     "rating": 3.7,
-    "trailer": "https://www.youtube.com/results?search_query=Star%20Wars%3A%20Episode%20V%20-%20The%20Empire%20Strikes%20Back%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=JNwNXF9Y6kY",
     "movie": "Star Wars: Episode V - The Empire Strikes Back",
     "keyPeople": [],
     "actor": "",
@@ -640,7 +640,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Irvin Kershner"
       }
     ]
   },
@@ -655,9 +655,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BZmM3ZjE0NzctNjBiOC00MDZmLTgzMTUtNGVlOWFlOTNiZDJiXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Robert Zemeckis",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -666,7 +666,7 @@
       "Premiere Invite"
     ],
     "rating": 3.2,
-    "trailer": "https://www.youtube.com/results?search_query=Back%20to%20the%20Future%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=qvsgGtivCgs",
     "movie": "Back to the Future",
     "keyPeople": [],
     "actor": "",
@@ -683,7 +683,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Robert Zemeckis"
       }
     ]
   },
@@ -698,9 +698,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BNDdhOGJhYzctYzYwZC00YmI2LWI0MjctYjg4ODdlMDExYjBlXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Jonathan Demme",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -709,7 +709,7 @@
       "Premiere Invite"
     ],
     "rating": 4.9,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Silence%20of%20the%20Lambs%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=6iB21hsprAQ",
     "movie": "The Silence of the Lambs",
     "keyPeople": [],
     "actor": "",
@@ -726,7 +726,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Jonathan Demme"
       }
     ]
   },
@@ -741,9 +741,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BZGZhZGQ1ZWUtZTZjYS00MDJhLWFkYjctN2ZlYjE5NWYwZDM2XkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Steven Spielberg",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -752,7 +752,7 @@
       "Premiere Invite"
     ],
     "rating": 4.2,
-    "trailer": "https://www.youtube.com/results?search_query=Saving%20Private%20Ryan%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=S1Qj_AVu2pA",
     "movie": "Saving Private Ryan",
     "keyPeople": [],
     "actor": "",
@@ -769,7 +769,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Steven Spielberg"
       }
     ]
   },
@@ -784,9 +784,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BZGRiZDZhZjItM2M3ZC00Y2IyLTk3Y2MtMWY5YjliNDFkZTJlXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Roger Allers, Rob Minkoff",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -795,7 +795,7 @@
       "Premiere Invite"
     ],
     "rating": 3.9,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Lion%20King%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=7TavVZMewpY",
     "movie": "The Lion King",
     "keyPeople": [],
     "actor": "",
@@ -812,7 +812,7 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
-        "director": ""
+        "director": "Roger Allers, Rob Minkoff"
       }
     ]
   },
@@ -827,9 +827,9 @@
     "raisedAmount": 0,
     "createdAt": "2025-07-07T12:37:14.422Z",
     "updatedAt": "2025-07-07T12:37:14.422Z",
-    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "poster": "https://m.media-amazon.com/images/M/MV5BNjM1ZDQxYWUtMzQyZS00MTE1LWJmZGYtNGUyNTdlYjM3ZmVmXkEyXkFqcGc@._V1_SX300.jpg",
     "description": "A compelling film that explores themes of love, life, and human connection.",
-    "director": "",
+    "director": "Steven Spielberg",
     "genre": "Drama, Action",
     "tags": [],
     "perks": [
@@ -838,7 +838,7 @@
       "Premiere Invite"
     ],
     "rating": 4.4,
-    "trailer": "https://www.youtube.com/results?search_query=Schindler's%20List%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=mxphAlJID9U",
     "movie": "Schindler's List",
     "keyPeople": [],
     "actor": "",
@@ -855,7 +855,315 @@
         "keyPeople": [],
         "actor": "",
         "actress": "",
+        "director": "Steven Spielberg"
+      }
+    ]
+  },
+  {
+    "id": "21",
+    "title": "Yeh Jawaani Hai Deewani",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.455Z",
+    "updatedAt": "2025-07-10T16:10:34.455Z",
+    "poster": "https://m.media-amazon.com/images/M/MV5BODA4MjM2ODk4OF5BMl5BanBnXkFtZTcwNDgzODk1OQ@@._V1_SX300.jpg",
+    "description": "Kabir and Naina bond during a trekking trip. Before Naina can express herself, Kabir leaves India to pursue his career. They meet again years later, but he still cherishes his dreams more than bonds.",
+    "director": "Ayan Mukerji",
+    "genre": "Comedy, Drama, Musical",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 7.3,
+    "trailer": "https://www.youtube.com/watch?v=Rbp2XUSeUNE",
+    "movie": "Yeh Jawaani Hai Deewani",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_21",
+        "movieId": "21",
+        "movieName": "Yeh Jawaani Hai Deewani",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
+        "director": "Ayan Mukerji"
+      }
+    ]
+  },
+  {
+    "id": "22",
+    "title": "Stree",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://m.media-amazon.com/images/M/MV5BODhiZjI1MDMtZjFjOS00NjZiLWI5N2YtZTM2NWIxNmE3MjMzXkEyXkFqcGc@._V1_SX300.jpg",
+    "description": "In the small town of Chanderi, the menfolk live in fear of an evil spirit named \"Stree\" who abducts men in the night. Based on the urban legend of \"Nale Ba\" that went viral in Karnataka in the 1990s.",
+    "director": "Amar Kaushik",
+    "genre": "Comedy, Horror",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 7.5,
+    "trailer": "https://www.youtube.com/watch?v=gzeaGcLLl_A",
+    "movie": "Stree",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_22",
+        "movieId": "22",
+        "movieName": "Stree",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
+        "director": "Amar Kaushik"
+      }
+    ]
+  },
+  {
+    "id": "23",
+    "title": "Tu Jhooti Main Makkaar",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.4,
+    "trailer": "https://www.youtube.com/watch?v=JzGGF4JPFIQ",
+    "movie": "Tu Jhooti Main Makkaar",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_23",
+        "movieId": "23",
+        "movieName": "Tu Jhooti Main Makkaar",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": ""
+      }
+    ]
+  },
+  {
+    "id": "24",
+    "title": "Superman",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMzFlZDJjMDAtZDYxZS00NzZhLTk2ODMtZWRlODA3Njk3ZTdmXkEyXkFqcGc@._V1_SX300.jpg",
+    "description": "An alien orphan is sent from his dying planet to Earth, where he grows up to become his adoptive home's first and greatest superhero.",
+    "director": "Richard Donner",
+    "genre": "Action, Adventure, Sci-Fi",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 7.4,
+    "trailer": "https://www.youtube.com/watch?v=Ox8ZLF6cGM0",
+    "movie": "Superman",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_24",
+        "movieId": "24",
+        "movieName": "Superman",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
+        "director": "Richard Donner"
+      }
+    ]
+  },
+  {
+    "id": "25",
+    "title": "The Flash",
+    "type": "webseries",
+    "category": "Webseries",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMjU0ZjZhNDQtMDhkYi00OWQyLWE3NGYtNzBlY2VmM2I4ZDg5XkEyXkFqcGc@._V1_SX300.jpg",
+    "description": "After being struck by lightning, Barry Allen wakes up from his coma to discover he's been given the power of super speed, becoming the Flash, and fighting crime in Central City.",
+    "director": "",
+    "genre": "Action, Adventure, Drama",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 7.5,
+    "trailer": "https://www.youtube.com/watch?v=UMRBs0-OXCA",
+    "movie": "The Flash",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_25",
+        "movieId": "25",
+        "movieName": "The Flash",
+        "productionHouse": "",
+        "keyPeople": [
+          "Grant Gustin",
+          "Candice Patton",
+          "Danielle Panabaker",
+          "Greg Berlanti",
+          "Geoff Johns",
+          "Andrew Kreisberg"
+        ],
+        "actor": "Grant Gustin",
+        "actress": "Candice Patton",
+        "director": ""
+      }
+    ]
+  },
+  {
+    "id": "26",
+    "title": "Krrish 3",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://m.media-amazon.com/images/M/MV5BMjI0MzU3MTM1Ml5BMl5BanBnXkFtZTgwOTk2MjQ0MDE@._V1_SX300.jpg",
+    "description": "Krrish and his scientist father must save the world and their own family from an evil man named Kaal and his gang of mutants, led by the ruthless Kaya.",
+    "director": "Rakesh Roshan",
+    "genre": "Action, Adventure, Sci-Fi",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 5.3,
+    "trailer": "https://www.youtube.com/watch?v=_6Ix1VF_yWM",
+    "movie": "Krrish 3",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_26",
+        "movieId": "26",
+        "movieName": "Krrish 3",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
+        "director": "Rakesh Roshan"
+      }
+    ]
+  },
+  {
+    "id": "27",
+    "title": "Kalki",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://m.media-amazon.com/images/M/MV5BNjYwMGQ5MGItNzg5MC00NmJmLWI4NDktYzI0OWU4YjI5OWMzXkEyXkFqcGc@._V1_SX300.jpg",
+    "description": "Nanchenkotta is beset by problems and civilian life there is a nightmare. However, the arrival of a fearless police officer with a strong sense of justice is about to change Nanchenkotta's law-and-order situation--once and for all.",
+    "director": "Praveen Prabharam",
+    "genre": "Action, Comedy, Crime",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.9,
+    "trailer": "https://www.youtube.com/watch?v=aninoDcPWo4",
+    "movie": "Kalki",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_27",
+        "movieId": "27",
+        "movieName": "Kalki",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
+        "director": "Praveen Prabharam"
       }
     ]
   }

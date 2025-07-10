@@ -40,6 +40,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "3 crore 37 lakh",
     "raisedAmountHuman": "78 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_1",
@@ -52,7 +53,7 @@ export const projects: Project[
         "director": "Ramesh Sippy"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "2",
@@ -100,7 +101,7 @@ export const projects: Project[
         "director": "Aditya Chopra"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "3",
@@ -148,7 +149,7 @@ export const projects: Project[
         "director": "Rajkumar Hirani"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "4",
@@ -234,6 +235,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "7 crore 45 lakh",
     "raisedAmountHuman": "1 crore 86 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_5",
@@ -246,7 +248,7 @@ export const projects: Project[
         "director": "Nitesh Tiwari"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "6",
@@ -1520,7 +1522,7 @@ export const projects: Project[
     "id": "32",
     "title": "Stree",
     "type": "film",
-    "category": "Hollywood",
+    "category": "Bollywood",
     "language": "Hindi",
     "status": "active",
     "fundedPercentage": 84,
@@ -2138,6 +2140,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "74 lakh",
     "raisedAmountHuman": "73 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_44",
@@ -2150,7 +2153,7 @@ export const projects: Project[
         "director": "Quentin Tarantino"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "45",
@@ -2186,6 +2189,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "3 crore 73 lakh",
     "raisedAmountHuman": "2 crore 83 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_45",
@@ -2198,7 +2202,7 @@ export const projects: Project[
         "director": "Robert Zemeckis"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "46",
@@ -2235,6 +2239,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "4 crore 23 lakh",
     "raisedAmountHuman": "2 crore 3 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_46",
@@ -2247,7 +2252,7 @@ export const projects: Project[
         "director": "Christopher Nolan"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "47",
@@ -2284,6 +2289,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "5 crore 8 lakh",
     "raisedAmountHuman": "4 crore 17 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_47",
@@ -2296,7 +2302,7 @@ export const projects: Project[
         "director": "David Fincher"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "48",
@@ -2332,6 +2338,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "7 crore 70 lakh",
     "raisedAmountHuman": "1 crore 85 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_48",
@@ -2344,7 +2351,7 @@ export const projects: Project[
         "director": "Lana Wachowski, Lilly Wachowski"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "49",
@@ -2429,6 +2436,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "86 lakh",
     "raisedAmountHuman": "76 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_50",
@@ -2441,7 +2449,7 @@ export const projects: Project[
         "director": "Martin Scorsese"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "51",
@@ -2477,6 +2485,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "8 crore 19 lakh",
     "raisedAmountHuman": "1 crore 97 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_51",
@@ -2489,7 +2498,7 @@ export const projects: Project[
         "director": "James Cameron"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "52",
@@ -2674,6 +2683,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "10 crore 46 lakh",
     "raisedAmountHuman": "3 crore 70 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_55",
@@ -2686,7 +2696,7 @@ export const projects: Project[
         "director": "Ryan Coogler"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "56",
@@ -2736,7 +2746,7 @@ export const projects: Project[
         "director": "Scott Derrickson"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "57",
@@ -2773,6 +2783,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "8 crore 85 lakh",
     "raisedAmountHuman": "3 crore 72 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_57",
@@ -2785,7 +2796,7 @@ export const projects: Project[
         "director": "Jon Favreau"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "58",
@@ -2821,6 +2832,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "2 crore 34 lakh",
     "raisedAmountHuman": "1 crore 1 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_58",
@@ -2833,7 +2845,7 @@ export const projects: Project[
         "director": "Joss Whedon"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "59",
@@ -2870,6 +2882,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "4 crore 37 lakh",
     "raisedAmountHuman": "2 crore 97 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_59",
@@ -2882,7 +2895,7 @@ export const projects: Project[
         "director": "Anthony Russo, Joe Russo"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "60",
@@ -2919,6 +2932,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "3 crore 76 lakh",
     "raisedAmountHuman": "2 crore 7 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_60",
@@ -2931,7 +2945,7 @@ export const projects: Project[
         "director": "James Cameron"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "61",
@@ -2968,6 +2982,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "4 crore 92 lakh",
     "raisedAmountHuman": "44 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_61",
@@ -2985,7 +3000,7 @@ export const projects: Project[
         "director": "N/A"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "62",
@@ -3022,6 +3037,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "2 crore 27 lakh",
     "raisedAmountHuman": "1 crore 29 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_62",
@@ -3041,7 +3057,7 @@ export const projects: Project[
         "director": "N/A"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "63",
@@ -4041,7 +4057,7 @@ export const projects: Project[
         "director": "N/A"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "82",
@@ -5053,6 +5069,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "8 crore 32 lakh",
     "raisedAmountHuman": "8 crore 32 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_100",
@@ -5071,7 +5088,7 @@ export const projects: Project[
         "director": "N/A"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "101",
@@ -6006,6 +6023,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "2 crore 12 lakh",
     "raisedAmountHuman": "1 crore 65 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_119",
@@ -6023,7 +6041,7 @@ export const projects: Project[
         "director": "N/A"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "120",
@@ -6060,6 +6078,7 @@ export const projects: Project[
     "productionHouse": "",
     "targetAmountHuman": "4 crore 19 lakh",
     "raisedAmountHuman": "1 crore 93 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_120",
@@ -6076,7 +6095,7 @@ export const projects: Project[
         "director": "N/A"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "121",
@@ -9024,7 +9043,7 @@ export const projects: Project[
         "director": "S.S. Rajamouli"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "185",
@@ -9057,6 +9076,7 @@ export const projects: Project[
     "productionHouse": "Red Chillies Entertainment",
     "targetAmountHuman": "3 crore 59 lakh",
     "raisedAmountHuman": "2 crore 94 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_185",
@@ -9069,7 +9089,7 @@ export const projects: Project[
         "director": "Atlee"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "186",
@@ -9695,6 +9715,7 @@ export const projects: Project[
     "productionHouse": "Marvel Studios",
     "targetAmountHuman": "7 crore 8 lakh",
     "raisedAmountHuman": "85 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_199",
@@ -9707,7 +9728,7 @@ export const projects: Project[
         "director": "Jon Watts"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "200",
@@ -9740,6 +9761,7 @@ export const projects: Project[
     "productionHouse": "Paramount Pictures",
     "targetAmountHuman": "9 crore 81 lakh",
     "raisedAmountHuman": "8 crore 14 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_200",
@@ -9752,7 +9774,7 @@ export const projects: Project[
         "director": "Joseph Kosinski"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "201",
@@ -9888,7 +9910,7 @@ export const projects: Project[
         "director": "Matt Reeves"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "204",
@@ -10428,7 +10450,7 @@ export const projects: Project[
         "director": "Karan Anshuman"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "216",
@@ -10518,7 +10540,7 @@ export const projects: Project[
         "director": "Vikramaditya Motwane"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
   {
     "id": "218",
@@ -10911,6 +10933,7 @@ export const projects: Project[
     "productionHouse": "Excel Entertainment",
     "targetAmountHuman": "3 crore 82 lakh",
     "raisedAmountHuman": "2 crore 75 lakh",
+    "featured": true,
     "keyCommunityData": [
       {
         "id": "kc_226",
@@ -10923,7 +10946,7 @@ export const projects: Project[
         "director": "Zoya Akhtar"
       }
     ],
-    "disabled": true
+    "disabled": false
   },
  
 
@@ -10931,7 +10954,7 @@ export const projects: Project[
 
 // Diverse, Randomized Arrays for Different Sections
 export const trendingNow = projects
-  .filter(project => project.rating >= 7.5 && project.fundedPercentage >= 30)
+  .filter(project => project.rating >= 7.0 && project.fundedPercentage >= 20)
   .sort(() => Math.random() - 0.5)
   .slice(0, 12);
 
@@ -10947,41 +10970,41 @@ export const hollywoodSection = projects
 
 export const actionThrillers = projects
   .filter(project => 
-    project.genre?.includes("Action") || 
-    project.genre?.includes("Thriller") ||
-    project.tags?.includes("Action") ||
-    project.tags?.includes("Thriller")
+    project.genre?.toLowerCase().includes("action") || 
+    project.genre?.toLowerCase().includes("thriller") ||
+    project.tags?.some(tag => tag.toLowerCase().includes("action")) ||
+    project.tags?.some(tag => tag.toLowerCase().includes("thriller"))
   )
   .sort(() => Math.random() - 0.5)
   .slice(0, 12);
 
 export const dramaRomance = projects
   .filter(project => 
-    project.genre?.includes("Drama") || 
-    project.genre?.includes("Romance") ||
-    project.tags?.includes("Drama") ||
-    project.tags?.includes("Romance")
+    project.genre?.toLowerCase().includes("drama") || 
+    project.genre?.toLowerCase().includes("romance") ||
+    project.tags?.some(tag => tag.toLowerCase().includes("drama")) ||
+    project.tags?.some(tag => tag.toLowerCase().includes("romance"))
   )
   .sort(() => Math.random() - 0.5)
   .slice(0, 12);
 
 export const comedyEntertainment = projects
   .filter(project => 
-    project.genre?.includes("Comedy") || 
-    project.genre?.includes("Adventure") ||
-    project.tags?.includes("Comedy") ||
-    project.tags?.includes("Adventure")
+    project.genre?.toLowerCase().includes("comedy") || 
+    project.genre?.toLowerCase().includes("adventure") ||
+    project.tags?.some(tag => tag.toLowerCase().includes("comedy")) ||
+    project.tags?.some(tag => tag.toLowerCase().includes("adventure"))
   )
   .sort(() => Math.random() - 0.5)
   .slice(0, 12);
 
 export const sciFiFantasy = projects
   .filter(project => 
-    project.genre?.includes("Sci-Fi") || 
-    project.genre?.includes("Fantasy") ||
-    project.genre?.includes("Animation") ||
-    project.tags?.includes("Sci-Fi") ||
-    project.tags?.includes("Fantasy")
+    project.genre?.toLowerCase().includes("sci-fi") || 
+    project.genre?.toLowerCase().includes("fantasy") ||
+    project.genre?.toLowerCase().includes("animation") ||
+    project.tags?.some(tag => tag.toLowerCase().includes("sci-fi")) ||
+    project.tags?.some(tag => tag.toLowerCase().includes("fantasy"))
   )
   .sort(() => Math.random() - 0.5)
   .slice(0, 12);
@@ -10991,7 +11014,7 @@ export const allProjects = projects
   .slice(0, 50);
 
 export const highRatedProjects = projects
-  .filter(project => project.rating >= 8.0)
+  .filter(project => project.rating >= 7.5)
   .sort(() => Math.random() - 0.5)
   .slice(0, 12);
 
@@ -11000,7 +11023,7 @@ export const newlyAddedProjects = projects
   .slice(0, 12);
 
 export const mostFundedProjects = projects
-  .filter(project => project.fundedPercentage >= 50)
+  .filter(project => project.fundedPercentage >= 30)
   .sort((a, b) => b.fundedPercentage - a.fundedPercentage)
   .slice(0, 12);
 

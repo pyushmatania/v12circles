@@ -84,6 +84,8 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   const [isPaused, setIsPaused] = useState(false);
   const autoSlideRef = useRef<number | null>(null);
   const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
+  const [lastSlideChange, setLastSlideChange] = useState(Date.now());
   
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -95,6 +97,22 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   const [showAllProjects, setShowAllProjects] = useState<string | null>(null);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Get featured projects directly from the projects array
+  const featuredProjects = projects.filter(p => p.featured === true && p.disabled === false && p.poster && p.title && p.rating && !isNaN(p.rating)).slice(0, 30);
+  
+  // Fallback to high-rated projects if no featured projects available
+  const fallbackProjects = projects.filter(p => p.disabled === false && p.poster && p.title && p.rating && !isNaN(p.rating) && p.rating >= 6.0).slice(0, 30);
+  const finalFeaturedProjects = featuredProjects.length > 0 ? featuredProjects : fallbackProjects;
+  
+  // Ultimate fallback - if still no projects, take any valid projects
+  const ultimateFallback = finalFeaturedProjects.length === 0 ? projects.filter(p => p.disabled === false && p.poster && p.title).slice(0, 30) : finalFeaturedProjects;
+  
+  // Debug logging
+  console.log('Featured projects count:', ultimateFallback.length);
+  console.log('Featured projects:', ultimateFallback.map(p => ({ title: p.title, rating: p.rating, disabled: p.disabled, featured: p.featured })));
+  console.log('Total projects with featured=true:', projects.filter(p => p.featured === true).length);
+  console.log('Total projects with disabled=false:', projects.filter(p => p.disabled === false).length);
 
   // Memoized callback functions to prevent unnecessary re-renders
   const handleProjectClick = useCallback((project: Project, tab: 'overview' | 'invest' = 'overview') => {
@@ -178,22 +196,22 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
     featured: Project[];
   } => {
     try {
-      const regionalContent = projects
-        .filter(p => p.category === 'Regional')
-        .slice(0, 10);
+    const regionalContent = projects
+      .filter(p => p.category === 'Regional')
+      .slice(0, 10);
 
-      const musicProjects = projects
-        .filter(p => p.type === 'music')
-        .slice(0, 10);
+    const musicProjects = projects
+      .filter(p => p.type === 'music')
+      .slice(0, 10);
 
-      const webSeries = projects
-        .filter(p => p.type === 'webseries')
-        .slice(0, 10);
+    const webSeries = projects
+      .filter(p => p.type === 'webseries')
+      .slice(0, 10);
 
-      const featuredProjects = projects
-        .filter(p => p.featured)
-        .sort((a, b) => b.fundedPercentage - a.fundedPercentage)
-        .slice(0, 10);
+          const featuredProjects = projects
+      .filter(p => p.featured === true && p.disabled === false && p.poster && p.title && p.rating && !isNaN(p.rating))
+      .sort((a, b) => b.fundedPercentage - a.fundedPercentage)
+      .slice(0, 30);
 
       return {
         trending: trendingNow || [],
@@ -214,7 +232,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
     } catch (error) {
       console.error('Error in categorizedProjects:', error);
       // Return empty arrays as fallback
-      return {
+    return {
         trending: [],
         bollywood: [],
         hollywood: [],
@@ -229,21 +247,54 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
         music: [],
         webseries: [],
         featured: []
-      };
+    };
     }
   }, []);
+
+  // Function to reset auto-slide timer
+  const resetAutoSlideTimer = useCallback(() => {
+    if (autoSlideRef.current) {
+      clearInterval(autoSlideRef.current);
+      autoSlideRef.current = null;
+    }
+    
+    if (isAutoPlaying && !isPaused && ultimateFallback.length > 1) {
+      autoSlideRef.current = setInterval(() => {
+        setCurrentSlide((prev) => {
+          const nextSlide = (prev + 1) % ultimateFallback.length;
+          return nextSlide;
+        });
+      }, 5000);
+    }
+  }, [isAutoPlaying, isPaused, ultimateFallback.length]);
 
   // Memoized callback functions for carousel controls
   const handleSlideChange = useCallback((index: number) => {
     setCurrentSlide(index);
-  }, []);
+    setLastSlideChange(Date.now());
+    resetAutoSlideTimer();
+  }, [resetAutoSlideTimer]);
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % categorizedProjects.featured.length);
-  }, [categorizedProjects.featured.length]);
+    setCurrentSlide((prev) => {
+      const nextIndex = (prev + 1) % ultimateFallback.length;
+      console.log('Next slide:', { prev, nextIndex, totalLength: ultimateFallback.length, project: ultimateFallback[nextIndex]?.title });
+      return nextIndex;
+    });
+    setLastSlideChange(Date.now());
+    resetAutoSlideTimer();
+  }, [ultimateFallback.length, resetAutoSlideTimer]);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide(prev => prev === 0 ? categorizedProjects.featured.length - 1 : prev - 1);
+    setCurrentSlide(prev => prev === 0 ? Math.max(0, ultimateFallback.length - 1) : prev - 1);
+    setLastSlideChange(Date.now());
+    resetAutoSlideTimer();
+  }, [ultimateFallback.length, resetAutoSlideTimer]);
+
+  const goToBatch = useCallback((batchIndex: number) => {
+    const maxBatch = Math.floor((categorizedProjects.featured.length - 1) / 6);
+    const clampedBatch = Math.max(0, Math.min(maxBatch, batchIndex));
+    setCurrentSlide(clampedBatch * 6);
   }, [categorizedProjects.featured.length]);
 
   const clearFilters = useCallback(() => {
@@ -309,21 +360,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
     }
   }, []);
 
-  // Auto-slide functionality
-  React.useEffect(() => {
-    if (isAutoPlaying && !isPaused) {
-      autoSlideRef.current = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % categorizedProjects.featured.length);
-      }, 2500);
-    }
-
-    return () => {
-      if (autoSlideRef.current) {
-        clearInterval(autoSlideRef.current);
-      }
-    };
-  }, [isAutoPlaying, isPaused, categorizedProjects.featured.length]);
-
   // Filter options
   const categories = FILTER_OPTIONS.categories;
   const types = FILTER_OPTIONS.types;
@@ -331,32 +367,114 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   const genres = FILTER_OPTIONS.genres;
   const sortOptions = FILTER_OPTIONS.sortOptions;
 
+
+
   // Organize projects by categories for Netflix-style layout using diverse arrays
-  const trendingProjects = categorizedProjects.trending;
-  const bollywoodFilms = categorizedProjects.bollywood;
-  const hollywoodProjects = categorizedProjects.hollywood;
-  const actionThrillers = categorizedProjects.actionThrillers;
-  const dramaRomance = categorizedProjects.dramaRomance;
-  const comedyEntertainment = categorizedProjects.comedyEntertainment;
-  const sciFiFantasy = categorizedProjects.sciFiFantasy;
-  const highRatedProjects = categorizedProjects.highRated;
-  const newlyAdded = categorizedProjects.newlyAdded;
-  const mostFunded = categorizedProjects.mostFunded;
-  const regionalContent = categorizedProjects.regional;
-  const musicProjects = categorizedProjects.music;
-  const webSeries = categorizedProjects.webseries;
-  const featuredProjects = categorizedProjects.featured;
+  const trendingProjects = categorizedProjects.trending.length > 0 ? categorizedProjects.trending : projects.slice(0, 12);
+  const bollywoodFilms = categorizedProjects.bollywood.length > 0 ? categorizedProjects.bollywood : projects.filter(p => p.category === "Bollywood").slice(0, 15);
+  const hollywoodProjects = categorizedProjects.hollywood.length > 0 ? categorizedProjects.hollywood : projects.filter(p => p.category === "Hollywood").slice(0, 15);
+  const actionThrillers = categorizedProjects.actionThrillers.length > 0 ? categorizedProjects.actionThrillers : projects.filter(p => p.genre?.toLowerCase().includes("action")).slice(0, 12);
+  const dramaRomance = categorizedProjects.dramaRomance.length > 0 ? categorizedProjects.dramaRomance : projects.filter(p => p.genre?.toLowerCase().includes("drama")).slice(0, 12);
+  const comedyEntertainment = categorizedProjects.comedyEntertainment.length > 0 ? categorizedProjects.comedyEntertainment : projects.filter(p => p.genre?.toLowerCase().includes("comedy")).slice(0, 12);
+  const sciFiFantasy = categorizedProjects.sciFiFantasy.length > 0 ? categorizedProjects.sciFiFantasy : projects.filter(p => p.genre?.toLowerCase().includes("sci-fi")).slice(0, 12);
+  const highRatedProjects = categorizedProjects.highRated.length > 0 ? categorizedProjects.highRated : projects.filter(p => p.rating >= 7.0).slice(0, 12);
+  const newlyAdded = categorizedProjects.newlyAdded.length > 0 ? categorizedProjects.newlyAdded : projects.slice(0, 12);
+  const mostFunded = categorizedProjects.mostFunded.length > 0 ? categorizedProjects.mostFunded : projects.filter(p => p.fundedPercentage >= 20).slice(0, 12);
+  const regionalContent = categorizedProjects.regional.length > 0 ? categorizedProjects.regional : projects.filter(p => p.category === "Regional").slice(0, 10);
+  const musicProjects = categorizedProjects.music.length > 0 ? categorizedProjects.music : projects.filter(p => p.type === "music").slice(0, 10);
+  const webSeries = categorizedProjects.webseries.length > 0 ? categorizedProjects.webseries : projects.filter(p => p.type === "webseries").slice(0, 10);
+
+  // Simple swipe detection for carousel
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+    
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+
+    setTouchStartX(0);
+    setTouchEndX(0);
+  };
+
+  // Handle visibility change (tab minimize/restore)
+  React.useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setIsPaused(true);
+      } else {
+        setIsPaused(false);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  // Auto-slide functionality
+  React.useEffect(() => {
+    // Clear any existing interval
+    if (autoSlideRef.current) {
+      clearInterval(autoSlideRef.current);
+      autoSlideRef.current = null;
+    }
+
+    // Only start auto-slide if we have multiple projects and auto-play is enabled
+    if (isAutoPlaying && !isPaused && ultimateFallback.length > 1) {
+      autoSlideRef.current = setInterval(() => {
+        setCurrentSlide((prev) => {
+          const nextSlide = (prev + 1) % ultimateFallback.length;
+          return nextSlide;
+        });
+      }, 5000);
+    }
+
+    return () => {
+      if (autoSlideRef.current) {
+        clearInterval(autoSlideRef.current);
+        autoSlideRef.current = null;
+      }
+    };
+  }, [isAutoPlaying, isPaused, ultimateFallback.length]);
 
   const [imageLoaded, setImageLoaded] = useState(false);
 
   // Defensive: ensure we never access out-of-bounds index
-  const safeCurrentSlide = Math.min(currentSlide, featuredProjects.length - 1);
+  const safeCurrentSlide = Math.min(currentSlide, Math.max(0, ultimateFallback.length - 1));
+  console.log('Slide debug:', { currentSlide, safeCurrentSlide, totalLength: ultimateFallback.length, project: ultimateFallback[safeCurrentSlide]?.title });
+  
+  // Reset image loaded state when slide changes
+  React.useEffect(() => {
+    setImageLoaded(false);
+  }, [currentSlide]);
+  
+  // Reset current slide if it's out of bounds
+  React.useEffect(() => {
+    if (ultimateFallback.length > 0 && currentSlide >= ultimateFallback.length) {
+      setCurrentSlide(0);
+    }
+  }, [ultimateFallback.length, currentSlide]);
 
   return (
     <div className="min-h-screen bg-black pb-[100px]">
       {/* Mobile Hero Carousel */}
       {!searchTerm && !showAllProjects && (
-        featuredProjects.length > 0 ? (
+        ultimateFallback.length > 0 && ultimateFallback[safeCurrentSlide] ? (
           <div
             className="md:hidden relative h-72 overflow-hidden"
             onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
@@ -370,15 +488,15 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                 }
               }
             }}
-            onClick={() => handleProjectClick(featuredProjects[safeCurrentSlide])}
+            onClick={() => handleProjectClick(ultimateFallback[safeCurrentSlide])}
           >
             <AnimatePresence mode="wait">
               <motion.img
                 key={`m-${currentSlide}`}
-                src={featuredProjects[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080')}
-                srcSet={featuredProjects[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + featuredProjects[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + featuredProjects[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
+                src={ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080')}
+                srcSet={ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
                 sizes="(min-width: 1024px) 900px, 100vw"
-                alt={featuredProjects[safeCurrentSlide]?.title}
+                alt={ultimateFallback[safeCurrentSlide]?.title}
                 initial={{ x: 150, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -150, opacity: 0 }}
@@ -395,14 +513,14 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
             )}
             <div className="absolute bottom-12 left-0 w-full p-3 text-center flex flex-col items-center bg-gradient-to-t from-black/70 via-black/40 to-transparent">
               <h3 className="text-white text-base font-semibold">
-                {featuredProjects[safeCurrentSlide]?.title}
+                {ultimateFallback[safeCurrentSlide]?.title}
               </h3>
               <span className="text-xs text-gray-300">
-                {featuredProjects[safeCurrentSlide]?.genre}
+                {ultimateFallback[safeCurrentSlide]?.genre}
               </span>
             </div>
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-              {featuredProjects.map((_, index) => (
+              {ultimateFallback.map((_, index) => (
                 <button
                   key={`md-${index}`}
                   onClick={(e) => {
@@ -420,8 +538,13 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
       )}
       {/* Full-Screen Auto-Sliding Hero Carousel */}
       {!searchTerm && !showAllProjects && (
-        featuredProjects.length > 0 ? (
-          <div className="hidden md:block relative h-screen overflow-hidden">
+        ultimateFallback.length > 0 && ultimateFallback[safeCurrentSlide] ? (
+          <div 
+            className="hidden md:block relative h-screen overflow-hidden"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -434,10 +557,10 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                 onMouseLeave={() => setIsPaused(false)}
               >
                 <img 
-                  src={featuredProjects[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080')}
-                  srcSet={featuredProjects[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + featuredProjects[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + featuredProjects[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
+                  src={ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080')}
+                  srcSet={ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
                   sizes="(min-width: 1024px) 900px, 100vw"
-                  alt={featuredProjects[safeCurrentSlide]?.title}
+                  alt={ultimateFallback[safeCurrentSlide]?.title}
                   className={`w-full h-full object-cover transition-opacity duration-700 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                   style={{ objectPosition: 'center' }}
                   loading="lazy"
@@ -479,14 +602,14 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                   >
                     <div className="flex items-center gap-3 mb-4">
                       <div className={`flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-md ${
-                        featuredProjects[safeCurrentSlide]?.type === 'film' ? 'bg-purple-500/20 border border-purple-500/30 text-purple-300' :
-                        featuredProjects[safeCurrentSlide]?.type === 'music' ? 'bg-blue-500/20 border border-blue-500/30 text-blue-300' :
+                        ultimateFallback[safeCurrentSlide]?.type === 'film' ? 'bg-purple-500/20 border border-purple-500/30 text-purple-300' :
+                        ultimateFallback[safeCurrentSlide]?.type === 'music' ? 'bg-blue-500/20 border border-blue-500/30 text-blue-300' :
                         'bg-green-500/20 border border-green-500/30 text-green-300'
                       }`}>
-                        {featuredProjects[safeCurrentSlide]?.type === 'film' ? <Film className="w-4 h-4" /> :
-                         featuredProjects[safeCurrentSlide]?.type === 'music' ? <Music className="w-4 h-4" /> :
+                        {ultimateFallback[safeCurrentSlide]?.type === 'film' ? <Film className="w-4 h-4" /> :
+                         ultimateFallback[safeCurrentSlide]?.type === 'music' ? <Music className="w-4 h-4" /> :
                          <Tv className="w-4 h-4" />}
-                        <span className="text-sm font-medium uppercase">{featuredProjects[safeCurrentSlide]?.type}</span>
+                        <span className="text-sm font-medium uppercase">{ultimateFallback[safeCurrentSlide]?.type}</span>
                       </div>
                       <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/20 border border-red-500/30">
                         <Fire className="w-4 h-4 text-red-400" />
@@ -495,29 +618,33 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                     </div>
 
                     <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white mb-4">
-                      {featuredProjects[safeCurrentSlide]?.title}
+                      {ultimateFallback[safeCurrentSlide]?.title}
                     </h1>
                     
                     <p className="text-base sm:text-xl text-gray-300 mb-6 leading-relaxed">
-                      {featuredProjects[safeCurrentSlide]?.description}
+                      {ultimateFallback[safeCurrentSlide]?.description}
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
                       <div className="flex items-center gap-2">
                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                        <span className="text-white font-semibold">{featuredProjects[safeCurrentSlide]?.rating || '4.8'}</span>
+                        <span className="text-white font-semibold">
+                          {ultimateFallback[safeCurrentSlide]?.rating && !isNaN(ultimateFallback[safeCurrentSlide]?.rating) 
+                            ? ultimateFallback[safeCurrentSlide]?.rating 
+                            : '4.8'}
+                        </span>
                       </div>
                       <span className="text-gray-400">•</span>
-                      <span className="text-gray-300">{featuredProjects[safeCurrentSlide]?.language}</span>
+                      <span className="text-gray-300">{ultimateFallback[safeCurrentSlide]?.language}</span>
                       <span className="text-gray-400">•</span>
-                      <span className="text-gray-300">{featuredProjects[safeCurrentSlide]?.genre}</span>
+                      <span className="text-gray-300">{ultimateFallback[safeCurrentSlide]?.genre}</span>
                       <span className="text-gray-400">•</span>
-                      <span className="text-green-400 font-semibold">{featuredProjects[safeCurrentSlide]?.fundedPercentage}% Funded</span>
+                      <span className="text-green-400 font-semibold">{ultimateFallback[safeCurrentSlide]?.fundedPercentage}% Funded</span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                       <button
-                        onClick={() => handleInvestClick(featuredProjects[safeCurrentSlide])}
+                        onClick={() => handleInvestClick(ultimateFallback[safeCurrentSlide])}
                         className="flex items-center gap-3 px-8 py-4 bg-white text-black rounded-lg font-semibold text-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105"
                       >
                         <Play className="w-6 h-6 fill-current" />
@@ -525,7 +652,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                       </button>
                       
                       <button 
-                        onClick={() => handleProjectClick(featuredProjects[safeCurrentSlide])}
+                        onClick={() => handleProjectClick(ultimateFallback[safeCurrentSlide])}
                         className="flex items-center gap-3 px-8 py-4 bg-gray-600/80 text-white rounded-lg font-semibold text-lg hover:bg-gray-600 transition-all duration-300"
                       >
                         <Info className="w-6 h-6" />
@@ -547,6 +674,8 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
 
             {/* Slide Indicators */}
             <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+              <div className="flex flex-col items-center gap-3">
+                {/* Top Row - Play/Pause, Dots, Counter */}
               <div className="flex items-center gap-3">
                 {/* Play/Pause Button */}
                 <button
@@ -563,27 +692,72 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                   )}
                 </button>
 
-                {/* Dots */}
-                <div className="flex gap-2">
-                  {featuredProjects.map((_, index) => (
+                  {/* Dots - Centered */}
+                  <div className="flex justify-center">
+                                      <div className="flex gap-1.5">
+                    {(() => {
+                      const totalProjects = ultimateFallback.length;
+                      const dotsPerBatch = 6;
+                      const currentBatch = Math.floor(currentSlide / dotsPerBatch);
+                      const startIndex = currentBatch * dotsPerBatch;
+                      const endIndex = Math.min(startIndex + dotsPerBatch, totalProjects);
+                      
+                      return Array.from({ length: Math.min(dotsPerBatch, totalProjects) }, (_, i) => {
+                        const projectIndex = startIndex + i;
+                        const isActive = projectIndex === currentSlide;
+                        
+                        return (
                     <button
-                      key={index}
-                      onClick={() => handleSlideChange(index)}
-                      className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
-                        index === currentSlide ? 'bg-white' : 'bg-white/40 hover:bg-white/60'
+                            key={projectIndex}
+                            onClick={() => handleSlideChange(projectIndex)}
+                            className={`relative w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                              isActive ? 'bg-white scale-110' : 'bg-white/30 hover:bg-white/50'
                       }`}
                     >
-                      {index === currentSlide && isAutoPlaying && !isPaused && (
-                        <div className="absolute inset-0 rounded-full border-2 border-white animate-ping"></div>
+                            {isActive && isAutoPlaying && !isPaused && (
+                              <div className="absolute inset-0 rounded-full border border-white/60 animate-pulse"></div>
                       )}
                     </button>
-                  ))}
+                        );
+                      });
+                    })()}
+                  </div>
                 </div>
 
                 {/* Counter */}
                 <span className="text-white text-sm font-medium bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm">
-                  {safeCurrentSlide + 1}/{featuredProjects.length}
+                  {safeCurrentSlide + 1}/{ultimateFallback.length}
                 </span>
+                </div>
+
+                {/* Bottom Row - ABCD Slider */}
+                {ultimateFallback.length > 6 && (
+                  <div className="flex justify-center items-center gap-2">
+                    <span className="text-white/60 text-xs">
+                      {String.fromCharCode(65 + Math.floor(currentSlide / 6))}
+                    </span>
+                    <div 
+                      className="w-16 h-1 bg-white/20 rounded-full cursor-pointer relative"
+                      onClick={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const clickX = e.clientX - rect.left;
+                        const percentage = clickX / rect.width;
+                        const totalBatches = Math.ceil(ultimateFallback.length / 6);
+                        const targetBatch = Math.floor(percentage * totalBatches);
+                        const newSlide = Math.min(targetBatch * 6, ultimateFallback.length - 1);
+                        setCurrentSlide(newSlide);
+                      }}
+                    >
+                      <div 
+                        className="h-full bg-white/60 rounded-full transition-all duration-300 relative"
+                        style={{ 
+                          width: `${(Math.floor(currentSlide / 6) / Math.ceil(ultimateFallback.length / 6 - 1)) * 100}%`,
+                          maxWidth: '100%'
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -829,13 +1003,13 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
 ) : (
           <div className="space-y-12">
             {trendingProjects.length > 0 && (
-              <ProjectRow
-                title="🔥 Trending Now"
-                projects={trendingProjects}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
-                onHeaderClick={() => handleSectionClick('trending')}
-              />
+            <ProjectRow
+              title="🔥 Trending Now"
+              projects={trendingProjects}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
+              onHeaderClick={() => handleSectionClick('trending')}
+            />
             )}
             {bollywoodFilms.length > 0 && (
               <ProjectRow
@@ -847,38 +1021,38 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
               />
             )}
             {hollywoodProjects.length > 0 && (
-              <ProjectRow
+            <ProjectRow
                 title="🌟 Hollywood International"
                 projects={hollywoodProjects}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
                 onHeaderClick={() => handleSectionClick('hollywood')}
-              />
+            />
             )}
             {actionThrillers.length > 0 && (
-              <ProjectRow
+            <ProjectRow
                 title="💥 Action & Thrillers"
                 projects={actionThrillers}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
                 onHeaderClick={() => handleSectionClick('action-thrillers')}
-              />
+            />
             )}
             {dramaRomance.length > 0 && (
-              <ProjectRow
+            <ProjectRow
                 title="💕 Drama & Romance"
                 projects={dramaRomance}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
                 onHeaderClick={() => handleSectionClick('drama-romance')}
-              />
+            />
             )}
             {comedyEntertainment.length > 0 && (
-              <ProjectRow
+            <ProjectRow
                 title="😂 Comedy & Entertainment"
                 projects={comedyEntertainment}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
                 onHeaderClick={() => handleSectionClick('comedy-entertainment')}
               />
             )}
@@ -889,25 +1063,25 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                 onProjectClick={handleProjectClick}
                 onInvestClick={handleInvestClick}
                 onHeaderClick={() => handleSectionClick('sci-fi-fantasy')}
-              />
+            />
             )}
             {highRatedProjects.length > 0 && (
-              <ProjectRow
-                title="🏆 Highly Rated Projects"
-                projects={highRatedProjects}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
-                onHeaderClick={() => handleSectionClick('high-rated')}
-              />
+            <ProjectRow
+              title="🏆 Highly Rated Projects"
+              projects={highRatedProjects}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
+              onHeaderClick={() => handleSectionClick('high-rated')}
+            />
             )}
             {newlyAdded.length > 0 && (
-              <ProjectRow
+            <ProjectRow
                 title="🆕 Newly Added"
                 projects={newlyAdded}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
+              onProjectClick={handleProjectClick}
+              onInvestClick={handleInvestClick}
                 onHeaderClick={() => handleSectionClick('newly-added')}
-              />
+            />
             )}
             {mostFunded.length > 0 && (
               <ProjectRow
