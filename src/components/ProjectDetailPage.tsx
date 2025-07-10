@@ -81,7 +81,7 @@ interface ProjectDetailPageProps {
   project: Project;
   onClose: () => void;
   onInvest?: (project: Project) => void;
-  initialTab?: 'overview' | 'invest' | 'funding' | 'perks' | 'milestones' | 'team' | 'story' | 'gallery' | 'updates' | 'community' | 'reviews' | 'faqs' | 'legal';
+  initialTab?: 'overview' | 'invest' | 'perks' | 'milestones' | 'team' | 'story' | 'gallery' | 'updates' | 'community' | 'reviews' | 'faqs' | 'legal';
 }
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose, onInvest, initialTab = 'overview' }) => {
@@ -94,7 +94,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   const [isProcessing, setIsProcessing] = useState(false);
   const [showFullScript, setShowFullScript] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState({
     days: 45,
@@ -151,8 +151,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   const navigationTabs = [
     { id: 'overview', label: 'Overview', icon: Eye, color: 'from-blue-500 to-cyan-500' },
     { id: 'invest', label: 'Invest', icon: DollarSign, color: 'from-green-500 to-emerald-500' },
-    { id: 'funding', label: 'Funding', icon: TrendingUp, color: 'from-purple-500 to-pink-500' },
-    { id: 'perks', label: 'Perks & Rewards', icon: Medal, color: 'from-yellow-500 to-orange-500' },
+    { id: 'perks', label: 'Perks & Experience', icon: Medal, color: 'from-yellow-500 to-orange-500' },
     { id: 'milestones', label: 'Milestones', icon: Target, color: 'from-indigo-500 to-blue-500' },
     { id: 'team', label: 'Team & Cast', icon: Users, color: 'from-red-500 to-pink-500' },
     { id: 'story', label: 'Story & Plot', icon: BookOpen, color: 'from-teal-500 to-cyan-500' },
@@ -242,6 +241,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
       }).catch(() => {
         setIsMuted(false);
       });
+    }
+    
+    // For YouTube videos, ensure they start unmuted
+    if (embedUrl && iframeRef.current) {
+      setIsMuted(false);
     }
     
     // Add a 2 second delay before showing the video (hiding poster)
@@ -366,7 +370,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
 
   const videoId = getYouTubeVideoId(project.trailer);
   const finalVideoId = searchVideoId || videoId;
-  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=1&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1` : null;
+  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=0&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1` : null;
   
   // Check if it's a search query URL
   const isSearchQuery = project.trailer?.includes('youtube.com/results?search_query=');
@@ -376,6 +380,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
     if (embedUrl) {
       setIsVideoPlaying(true);
       setIsVideoLoaded(true);
+      setIsMuted(false); // Ensure YouTube videos start unmuted
     } else if (videoRef.current) {
       const playVideo = async () => {
         try {
@@ -446,13 +451,32 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
       if (videoRef.current) {
         videoRef.current.muted = !prev;
       }
-      // For YouTube videos, we need to reload the iframe to change mute state
+      // For YouTube videos, use the YouTube Player API if available
       if (embedUrl && iframeRef.current) {
-        const currentSrc = iframeRef.current.src;
-        const newMuteParam = prev ? '&mute=0' : '&mute=1';
-        // Remove existing mute parameter and add new one
-        const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
-        iframeRef.current.src = newSrc;
+        try {
+          // Try to use YouTube Player API for better control
+          const iframe = iframeRef.current;
+          if (iframe.contentWindow && (iframe.contentWindow as any).postMessage) {
+            const command = prev ? 'unMute' : 'mute';
+            iframe.contentWindow.postMessage(
+              JSON.stringify({ event: 'command', func: command, args: [] }),
+              '*'
+            );
+          } else {
+            // Fallback: reload iframe with new mute parameter
+            const currentSrc = iframe.src;
+            const newMuteParam = prev ? '&mute=0' : '&mute=1';
+            const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
+            iframe.src = newSrc;
+          }
+        } catch (error) {
+          console.log('YouTube Player API not available, using fallback');
+          // Fallback: reload iframe with new mute parameter
+          const currentSrc = iframeRef.current.src;
+          const newMuteParam = prev ? '&mute=0' : '&mute=1';
+          const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
+          iframeRef.current.src = newSrc;
+        }
       }
       return !prev;
     });
@@ -467,12 +491,32 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
           videoRef.current.play();
         }
       }
-      // For YouTube videos, we need to reload the iframe to change play/pause state
+      // For YouTube videos, use the YouTube Player API if available
       if (embedUrl && iframeRef.current) {
-        const currentSrc = iframeRef.current.src;
-        const newAutoplayParam = prev ? '&autoplay=0' : '&autoplay=1';
-        const newSrc = currentSrc.replace(/&autoplay=[01]/, '') + newAutoplayParam;
-        iframeRef.current.src = newSrc;
+        try {
+          // Try to use YouTube Player API for better control
+          const iframe = iframeRef.current;
+          if (iframe.contentWindow && (iframe.contentWindow as any).postMessage) {
+            const command = prev ? 'pauseVideo' : 'playVideo';
+            iframe.contentWindow.postMessage(
+              JSON.stringify({ event: 'command', func: command, args: [] }),
+              '*'
+            );
+          } else {
+            // Fallback: reload iframe with new autoplay parameter
+            const currentSrc = iframe.src;
+            const newAutoplayParam = prev ? '&autoplay=0' : '&autoplay=1';
+            const newSrc = currentSrc.replace(/&autoplay=[01]/, '') + newAutoplayParam;
+            iframe.src = newSrc;
+          }
+        } catch (error) {
+          console.log('YouTube Player API not available, using fallback');
+          // Fallback: reload iframe with new autoplay parameter
+          const currentSrc = iframeRef.current.src;
+          const newAutoplayParam = prev ? '&autoplay=0' : '&autoplay=1';
+          const newSrc = currentSrc.replace(/&autoplay=[01]/, '') + newAutoplayParam;
+          iframeRef.current.src = newSrc;
+        }
       }
       return !prev;
     });
@@ -720,28 +764,20 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
           <div className="absolute bottom-0 right-1/4 w-1/3 h-24 bg-gradient-to-t from-cyan-500/5 via-blue-500/3 to-transparent transform skew-x-12" />
         </div>
 
-        {/* Mute Control - Bottom Right */}
-        <div className="absolute bottom-6 right-4 z-30">
-          <button
-            className="text-white/80 hover:text-white transition-colors duration-200"
-            title={embedUrl ? (isMuted ? 'Unmute (will restart video)' : 'Mute (will restart video)') : (isMuted ? 'Unmute' : 'Mute')}
-            onClick={toggleMute}
-            type="button"
-          >
-            {/* Simple silver thin line mute/unmute icon */}
-            {isMuted ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M1 1l22 22M9 9v6h4l5 5V4l-5 5H9z"/>
-              </svg>
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M9 9v6h4l5 5V4l-5 5H9z"/>
-                <path d="M17 9c0 2.5-1.5 4.5-4 5.5"/>
-                <path d="M17 9c0-2.5-1.5-4.5-4-5.5"/>
-              </svg>
-            )}
-          </button>
-        </div>
+        {/* Mute Control */}
+        <motion.button
+          onClick={toggleMute}
+          className="absolute bottom-6 right-4 z-30 p-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm border border-white/20 transition-all duration-200 group"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          title={isMuted ? 'Unmute' : 'Mute'}
+        >
+          {isMuted ? (
+            <VolumeX className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
+          ) : (
+            <Volume2 className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
+          )}
+        </motion.button>
 
         {/* Top Bar with Back, Like, and Share */}
         <div className="absolute top-0 left-0 right-0 z-30 flex justify-between items-center p-6">
@@ -1018,261 +1054,159 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           </div>
                         </motion.div>
 
-                        {/* Advanced Trailer Section */}
+                        {/* Funding Progress */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.1 }}
                           className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
                         >
-                          <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                              <VideoIcon className="w-6 h-6 text-red-400" />
-                              Official Trailer
-                            </h3>
-                            {(embedUrl || isSearchQuery) && (
-                              <div className="flex items-center gap-2">
-                                <button
-                                  onClick={handleTrailerPlay}
-                                  disabled={isTrailerLoading || isTrailerPlaying}
-                                  className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                                >
-                                  {isTrailerLoading ? (
-                                    <>
-                                      <Loader2 className="w-4 h-4 animate-spin" />
-                                      Loading...
-                                    </>
-                                  ) : isTrailerPlaying ? (
-                                    <>
-                                      <CheckCircle className="w-4 h-4" />
-                                      Playing
-                                    </>
-                                  ) : isSearchQuery ? (
-                                    <>
-                                      <ExternalLink className="w-4 h-4" />
-                                      Search Trailer
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Play className="w-4 h-4" />
-                                      Watch Trailer
-                                    </>
-                                  )}
-                                </button>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Trailer Player Container */}
-                          <div 
-                            ref={trailerContainerRef}
-                            className="relative aspect-video rounded-2xl overflow-hidden bg-gray-800 border border-gray-700/50"
-                          >
-                            {/* Poster Image (shown when not playing) */}
-                            {!isTrailerPlaying && !isTrailerLoading && (
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="absolute inset-0"
-                              >
-                                <img
-                                  src={project.poster.replace('SX300', 'SX1080')}
-                                  alt={`${project.title} Poster`}
-                                  className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                                
-                                {/* Play Button Overlay */}
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <motion.button
-                                    onClick={handleTrailerPlay}
-                                    disabled={!embedUrl && !isSearchQuery}
-                                    className="group relative p-8 rounded-full bg-red-600/90 hover:bg-red-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.95 }}
-                                  >
-                                    {isSearchQuery ? (
-                                      <ExternalLink className="w-16 h-16 text-white" />
-                                    ) : (
-                                      <Play className="w-16 h-16 text-white ml-1" />
-                                    )}
-                                    <div className="absolute inset-0 rounded-full bg-red-400/30 animate-ping" />
-                                  </motion.button>
-                                </div>
-
-                                {/* Trailer Info Overlay */}
-                                <div className="absolute bottom-0 left-0 right-0 p-6">
-                                  <div className="flex items-center justify-between">
-                                    <div>
-                                      <h4 className="text-white font-bold text-lg mb-1">{project.title}</h4>
-                                      <p className="text-gray-300 text-sm">
-                                        {isSearchQuery ? 'Search for Trailer' : 'Official Trailer'}
-                                      </p>
-                                    </div>
-                                    {!embedUrl && !isSearchQuery && (
-                                      <div className="flex items-center gap-2 text-yellow-400">
-                                        <AlertCircle className="w-4 h-4" />
-                                        <span className="text-sm">Trailer not available</span>
-                                      </div>
-                                    )}
-                                    {isSearchQuery && (
-                                      <div className="flex items-center gap-2 text-blue-400">
-                                        <ExternalLink className="w-4 h-4" />
-                                        <span className="text-sm">Opens in new tab</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </motion.div>
-                            )}
-
-                            {/* Loading State */}
-                            {isTrailerLoading && (
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="absolute inset-0 flex items-center justify-center bg-gray-900"
-                              >
-                                <div className="text-center">
-                                  <div className="relative mb-4">
-                                    <Loader2 className="w-16 h-16 text-red-500 animate-spin mx-auto" />
-                                    <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
-                                  </div>
-                                  <p className="text-white font-semibold">Loading Trailer...</p>
-                                  <p className="text-gray-400 text-sm mt-2">Please wait while we prepare your viewing experience</p>
-                                </div>
-                              </motion.div>
-                            )}
-
-                            {/* Error State */}
-                            {trailerError && (
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="absolute inset-0 flex items-center justify-center bg-gray-900"
-                              >
-                                <div className="text-center p-6">
-                                  <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-                                  <h4 className="text-white font-bold text-lg mb-2">Trailer Unavailable</h4>
-                                  <p className="text-gray-400 mb-4">{trailerError}</p>
-                                  <div className="flex gap-3 justify-center">
-                                    <button
-                                      onClick={() => {
-                                        setTrailerError(null);
-                                        handleTrailerPlay();
-                                      }}
-                                      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-300 flex items-center gap-2"
-                                    >
-                                      <RotateCcw className="w-4 h-4" />
-                                      Retry
-                                    </button>
-                                    <button
-                                      onClick={handleTrailerClose}
-                                      className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-300"
-                                    >
-                                      Close
-                                    </button>
-                                  </div>
-                                </div>
-                              </motion.div>
-                            )}
-
-                            {/* YouTube Player */}
-                            {isTrailerPlaying && embedUrl && (
-                              <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.3 }}
-                                className="absolute inset-0"
-                              >
-                                <iframe
-                                  ref={trailerRef}
-                                  src={embedUrl}
-                                  title={`${project.title} Trailer`}
-                                  className="w-full h-full"
-                                  frameBorder="0"
-                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-                                  allowFullScreen
-                                  onLoad={handleTrailerLoad}
-                                  onError={handleTrailerError}
-                                />
-                                
-                                {/* Close Button */}
-                                <button
-                                  onClick={handleTrailerClose}
-                                  className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all duration-300 z-10"
-                                >
-                                  <X className="w-5 h-5" />
-                                </button>
-
-                                {/* Fullscreen Button */}
-                                <button
-                                  onClick={handleTrailerFullscreen}
-                                  className="absolute bottom-4 right-4 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all duration-300 z-10"
-                                >
-                                  <Maximize className="w-5 h-5" />
-                                </button>
-                              </motion.div>
-                            )}
-
-                            {/* Fallback for no trailer */}
-                            {!embedUrl && !isSearchQuery && !isTrailerPlaying && !isTrailerLoading && !trailerError && (
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="text-center p-6">
-                                  <VideoIcon className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                                  <h4 className="text-white font-bold text-lg mb-2">Trailer Coming Soon</h4>
-                                  <p className="text-gray-400">The official trailer will be available soon</p>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Trailer Stats */}
-                          {(embedUrl || isSearchQuery) && (
-                            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                              <div className="text-center p-4 bg-gray-800/50 rounded-xl">
-                                <div className="text-2xl font-bold text-red-400">2.5M</div>
-                                <div className="text-gray-400 text-sm">Views</div>
-                              </div>
-                              <div className="text-center p-4 bg-gray-800/50 rounded-xl">
-                                <div className="text-2xl font-bold text-green-400">98%</div>
-                                <div className="text-gray-400 text-sm">Like Rate</div>
-                              </div>
-                              <div className="text-center p-4 bg-gray-800/50 rounded-xl">
-                                <div className="text-2xl font-bold text-blue-400">2:45</div>
-                                <div className="text-gray-400 text-sm">Duration</div>
-                              </div>
-                              <div className="text-center p-4 bg-gray-800/50 rounded-xl">
-                                <div className="text-2xl font-bold text-purple-400">4K</div>
-                                <div className="text-gray-400 text-sm">Quality</div>
-                              </div>
+                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                            <TrendingUp className="w-6 h-6 text-purple-400" />
+                            Funding Progress
+                          </h3>
+                          
+                          {/* Progress Bar */}
+                          <div className="mb-8">
+                            <div className="flex justify-between items-center mb-4">
+                              <span className="text-gray-300">Progress</span>
+                              <span className="text-white font-bold text-xl">{project.fundedPercentage}%</span>
                             </div>
-                          )}
+                            <div className="relative h-6 bg-gray-700 rounded-full overflow-hidden">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${project.fundedPercentage}%` }}
+                                transition={{ duration: 2, ease: "easeOut" }}
+                                className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full relative"
+                              >
+                                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/50 to-pink-400/50 animate-pulse" />
+                              </motion.div>
+                            </div>
+                            <div className="flex justify-between mt-2 text-sm text-gray-400">
+                              <span>Raised: {formatCurrency(project.raisedAmount)}</span>
+                              <span>Goal: {formatCurrency(project.targetAmount)}</span>
+                            </div>
+                          </div>
+
+                          {/* Funding Stats Grid */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className="flex items-center gap-3 mb-3">
+                                <Users className="w-6 h-6 text-blue-400" />
+                                <span className="text-gray-400 text-sm">Total Investors</span>
+                              </div>
+                              <p className="text-3xl font-bold text-white">{fundingStats.totalInvestors}</p>
+                              <p className="text-green-400 text-sm">+12 this week</p>
+                            </div>
+                            
+                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className="flex items-center gap-3 mb-3">
+                                <DollarSign className="w-6 h-6 text-green-400" />
+                                <span className="text-gray-400 text-sm">Avg. Investment</span>
+                              </div>
+                              <p className="text-3xl font-bold text-white">{formatCurrency(fundingStats.averageInvestment)}</p>
+                              <p className="text-green-400 text-sm">+8% from last month</p>
+                            </div>
+                            
+                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className="flex items-center gap-3 mb-3">
+                                <Clock className="w-6 h-6 text-yellow-400" />
+                                <span className="text-gray-400 text-sm">Days Active</span>
+                              </div>
+                              <p className="text-3xl font-bold text-white">{fundingStats.daysSinceCreated}</p>
+                              <p className="text-blue-400 text-sm">45 days remaining</p>
+                            </div>
+                            
+                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className="flex items-center gap-3 mb-3">
+                                <Zap className="w-6 h-6 text-orange-400" />
+                                <span className="text-gray-400 text-sm">Daily Velocity</span>
+                              </div>
+                              <p className="text-3xl font-bold text-white">{formatCurrency(fundingStats.fundingVelocity)}</p>
+                              <p className="text-green-400 text-sm">+15% this week</p>
+                            </div>
+                            
+                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className="flex items-center gap-3 mb-3">
+                                <TrendingUp className="w-6 h-6 text-purple-400" />
+                                <span className="text-gray-400 text-sm">Trending Score</span>
+                              </div>
+                              <p className="text-3xl font-bold text-white">8.9</p>
+                              <p className="text-green-400 text-sm">Top 5% of projects</p>
+                            </div>
+                            
+                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className="flex items-center gap-3 mb-3">
+                                <MapPin className="w-6 h-6 text-red-400" />
+                                <span className="text-gray-400 text-sm">Top City</span>
+                              </div>
+                              <p className="text-3xl font-bold text-white">Mumbai</p>
+                              <p className="text-blue-400 text-sm">42% of investments</p>
+                            </div>
+                          </div>
                         </motion.div>
 
-                        {/* Script Preview */}
+                        {/* Funding Milestones */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.2 }}
                           className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
                         >
-                          <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                              <FileTextIcon className="w-6 h-6 text-yellow-400" />
-                              Script Preview
-                            </h3>
-                            <button
-                              onClick={() => setShowFullScript(!showFullScript)}
-                              className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:from-yellow-600 hover:to-orange-600 transition-all duration-300"
-                            >
-                              {showFullScript ? 'Show Less' : 'Read Full Script'}
-                            </button>
+                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                            <Target className="w-6 h-6 text-indigo-400" />
+                            Funding Milestones
+                          </h3>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {fundingMilestones.map((milestone, index) => (
+                              <motion.div
+                                key={milestone.percentage}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className={`relative p-6 rounded-2xl border-2 transition-all duration-300 ${
+                                  milestone.achieved
+                                    ? 'bg-gradient-to-br from-green-500/20 to-emerald-500/20 border-green-500/50'
+                                    : 'bg-gray-900/50 border-gray-700/50'
+                                }`}
+                              >
+                                {milestone.achieved && (
+                                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <span className="text-white text-sm">✓</span>
+                                  </div>
+                                )}
+                                <div className="text-4xl mb-3">{milestone.icon}</div>
+                                <h4 className="text-lg font-bold text-white mb-2">{milestone.label}</h4>
+                                <p className={`text-sm ${milestone.achieved ? 'text-green-400' : 'text-gray-400'}`}>
+                                  {milestone.achieved ? 'Achieved!' : `${milestone.percentage}% funding`}
+                                </p>
+                              </motion.div>
+                            ))}
                           </div>
-                          <div className={`bg-gray-900/50 rounded-2xl p-6 font-mono text-sm leading-relaxed transition-all duration-500 ${
-                            showFullScript ? 'max-h-96 overflow-y-auto' : 'max-h-48 overflow-hidden'
-                          }`}>
-                            <pre className="text-gray-300 whitespace-pre-wrap">{scriptExcerpt}</pre>
+                        </motion.div>
+
+                        {/* Countdown Timer */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 }}
+                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                        >
+                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                            <Clock className="w-6 h-6 text-red-400" />
+                            Time Remaining
+                          </h3>
+                          
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                            {Object.entries(timeRemaining).map(([unit, value]) => (
+                              <div key={unit} className="text-center">
+                                <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                                  <p className="text-4xl font-bold text-white mb-2">{value.toString().padStart(2, '0')}</p>
+                                  <p className="text-gray-400 text-sm capitalize">{unit}</p>
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </motion.div>
                       </div>
@@ -1403,100 +1337,46 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                       </div>
                     )}
                     
-                    {activeTab === 'funding' && (
+                    {activeTab === 'perks' && (
                       <div className="space-y-8">
-                        {/* Funding Progress */}
+                        {/* Experience Tiers Overview */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
                         >
                           <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                            <TrendingUp className="w-6 h-6 text-purple-400" />
-                            Funding Progress
+                            <Crown className="w-6 h-6 text-yellow-400" />
+                            Experience Tiers
                           </h3>
                           
-                          {/* Progress Bar */}
-                          <div className="mb-8">
-                            <div className="flex justify-between items-center mb-4">
-                              <span className="text-gray-300">Progress</span>
-                              <span className="text-white font-bold text-xl">{project.fundedPercentage}%</span>
-                            </div>
-                            <div className="relative h-6 bg-gray-700 rounded-full overflow-hidden">
+                          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            {[
+                              { tier: 'supporter', name: 'Supporter', minAmount: 10000, color: 'from-blue-500 to-cyan-500', icon: '👥' },
+                              { tier: 'backer', name: 'Backer', minAmount: 25000, color: 'from-purple-500 to-pink-500', icon: '⭐' },
+                              { tier: 'producer', name: 'Producer', minAmount: 75000, color: 'from-yellow-500 to-orange-500', icon: '🎬' },
+                              { tier: 'executive', name: 'Executive Producer', minAmount: 200000, color: 'from-red-500 to-rose-500', icon: '👑' }
+                            ].map((tierInfo, index) => (
                               <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${project.fundedPercentage}%` }}
-                                transition={{ duration: 2, ease: "easeOut" }}
-                                className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full relative"
+                                key={tierInfo.tier}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-yellow-500/50 transition-all duration-300 hover:scale-105"
                               >
-                                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/50 to-pink-400/50 animate-pulse" />
+                                <div className="text-center">
+                                  <div className="text-4xl mb-3">{tierInfo.icon}</div>
+                                  <h4 className="text-lg font-bold text-white mb-2">{tierInfo.name}</h4>
+                                  <p className="text-gray-400 text-sm mb-4">Min. Investment</p>
+                                  <p className="text-2xl font-bold text-yellow-400">{formatCurrency(tierInfo.minAmount)}</p>
+                                  <div className={`w-full h-1 bg-gradient-to-r ${tierInfo.color} rounded-full mt-3`} />
+                                </div>
                               </motion.div>
-                            </div>
-                            <div className="flex justify-between mt-2 text-sm text-gray-400">
-                              <span>Raised: {formatCurrency(project.raisedAmount)}</span>
-                              <span>Goal: {formatCurrency(project.targetAmount)}</span>
-                            </div>
-                          </div>
-
-                          {/* Funding Stats Grid */}
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                              <div className="flex items-center gap-3 mb-3">
-                                <Users className="w-6 h-6 text-blue-400" />
-                                <span className="text-gray-400 text-sm">Total Investors</span>
-                              </div>
-                              <p className="text-3xl font-bold text-white">{fundingStats.totalInvestors}</p>
-                              <p className="text-green-400 text-sm">+12 this week</p>
-                            </div>
-                            
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                              <div className="flex items-center gap-3 mb-3">
-                                <DollarSign className="w-6 h-6 text-green-400" />
-                                <span className="text-gray-400 text-sm">Avg. Investment</span>
-                              </div>
-                              <p className="text-3xl font-bold text-white">{formatCurrency(fundingStats.averageInvestment)}</p>
-                              <p className="text-green-400 text-sm">+8% from last month</p>
-                            </div>
-                            
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                              <div className="flex items-center gap-3 mb-3">
-                                <Clock className="w-6 h-6 text-yellow-400" />
-                                <span className="text-gray-400 text-sm">Days Active</span>
-                              </div>
-                              <p className="text-3xl font-bold text-white">{fundingStats.daysSinceCreated}</p>
-                              <p className="text-blue-400 text-sm">45 days remaining</p>
-                            </div>
-                            
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                              <div className="flex items-center gap-3 mb-3">
-                                <Zap className="w-6 h-6 text-orange-400" />
-                                <span className="text-gray-400 text-sm">Daily Velocity</span>
-                              </div>
-                              <p className="text-3xl font-bold text-white">{formatCurrency(fundingStats.fundingVelocity)}</p>
-                              <p className="text-green-400 text-sm">+15% this week</p>
-                            </div>
-                            
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                              <div className="flex items-center gap-3 mb-3">
-                                <TrendingUp className="w-6 h-6 text-purple-400" />
-                                <span className="text-gray-400 text-sm">Trending Score</span>
-                              </div>
-                              <p className="text-3xl font-bold text-white">8.9</p>
-                              <p className="text-green-400 text-sm">Top 5% of projects</p>
-                            </div>
-                            
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                              <div className="flex items-center gap-3 mb-3">
-                                <MapPin className="w-6 h-6 text-red-400" />
-                                <span className="text-gray-400 text-sm">Top City</span>
-                              </div>
-                              <p className="text-3xl font-bold text-white">Mumbai</p>
-                              <p className="text-blue-400 text-sm">42% of investments</p>
-                            </div>
+                            ))}
                           </div>
                         </motion.div>
 
-                        {/* Funding Milestones */}
+                        {/* Enhanced Perks & Experiences */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -1504,79 +1384,91 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
                         >
                           <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                            <Target className="w-6 h-6 text-indigo-400" />
-                            Funding Milestones
-                          </h3>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {fundingMilestones.map((milestone, index) => (
-                              <motion.div
-                                key={milestone.percentage}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className={`relative p-6 rounded-2xl border-2 transition-all duration-300 ${
-                                  milestone.achieved
-                                    ? 'bg-gradient-to-br from-green-500/20 to-emerald-500/20 border-green-500/50'
-                                    : 'bg-gray-900/50 border-gray-700/50'
-                                }`}
-                              >
-                                {milestone.achieved && (
-                                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                                    <span className="text-white text-sm">✓</span>
-                                  </div>
-                                )}
-                                <div className="text-4xl mb-3">{milestone.icon}</div>
-                                <h4 className="text-lg font-bold text-white mb-2">{milestone.label}</h4>
-                                <p className={`text-sm ${milestone.achieved ? 'text-green-400' : 'text-gray-400'}`}>
-                                  {milestone.achieved ? 'Achieved!' : `${milestone.percentage}% funding`}
-                                </p>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </motion.div>
-
-                        {/* Countdown Timer */}
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.2 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
-                        >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                            <Clock className="w-6 h-6 text-red-400" />
-                            Time Remaining
-                          </h3>
-                          
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            {Object.entries(timeRemaining).map(([unit, value]) => (
-                              <div key={unit} className="text-center">
-                                <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                  <p className="text-4xl font-bold text-white mb-2">{value.toString().padStart(2, '0')}</p>
-                                  <p className="text-gray-400 text-sm capitalize">{unit}</p>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      </div>
-                    )}
-                    
-                    {activeTab === 'perks' && (
-                      <div className="space-y-8">
-                        {/* Perks & Rewards */}
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
-                        >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                             <Medal className="w-6 h-6 text-yellow-400" />
-                            Perks & Rewards
+                            Perks & Experiences
                           </h3>
                           
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {staticPerks.map((perk, index) => {
+                            {[
+                              {
+                                id: '1',
+                                title: 'Digital Certificate of Investment',
+                                description: 'Official digital certificate recognizing your investment with blockchain verification',
+                                tier: 'supporter' as const,
+                                minAmount: 10000,
+                                estimatedValue: 2500,
+                                status: 'active' as const,
+                                maxParticipants: null,
+                                currentParticipants: 0,
+                                features: ['Blockchain Verified', 'Shareable on Social Media', 'Lifetime Access'],
+                                icon: '📜'
+                              },
+                              {
+                                id: '2',
+                                title: 'Community Casting Vote',
+                                description: 'Vote on cast members for upcoming projects and influence creative decisions',
+                                tier: 'backer' as const,
+                                minAmount: 25000,
+                                estimatedValue: 5000,
+                                status: 'upcoming' as const,
+                                maxParticipants: 100,
+                                currentParticipants: 45,
+                                features: ['Exclusive Voting Rights', 'Behind-the-scenes Access', 'Director Q&A'],
+                                icon: '🗳️'
+                              },
+                              {
+                                id: '3',
+                                title: 'VIP Set Visit Experience',
+                                description: 'Exclusive set visit with crew interaction and behind-the-scenes access',
+                                tier: 'producer' as const,
+                                minAmount: 75000,
+                                estimatedValue: 15000,
+                                status: 'upcoming' as const,
+                                maxParticipants: 20,
+                                currentParticipants: 8,
+                                features: ['Full Day Set Visit', 'Meet Cast & Crew', 'Lunch with Director'],
+                                icon: '🎬'
+                              },
+                              {
+                                id: '4',
+                                title: 'Executive Producer Credit',
+                                description: 'Get your name in the credits as Executive Producer and attend premiere',
+                                tier: 'executive' as const,
+                                minAmount: 200000,
+                                estimatedValue: 50000,
+                                status: 'active' as const,
+                                maxParticipants: 5,
+                                currentParticipants: 2,
+                                features: ['Screen Credit', 'Premiere Invitation', 'Red Carpet Access'],
+                                icon: '👑'
+                              },
+                              {
+                                id: '5',
+                                title: 'Exclusive Merchandise Collection',
+                                description: 'Limited edition merchandise including signed posters and collectibles',
+                                tier: 'backer' as const,
+                                minAmount: 25000,
+                                estimatedValue: 8000,
+                                status: 'active' as const,
+                                maxParticipants: 50,
+                                currentParticipants: 23,
+                                features: ['Signed Posters', 'Limited Edition Items', 'Early Access'],
+                                icon: '🎁'
+                              },
+                              {
+                                id: '6',
+                                title: 'Private Screening Experience',
+                                description: 'Private screening with the cast and crew before public release',
+                                tier: 'producer' as const,
+                                minAmount: 75000,
+                                estimatedValue: 25000,
+                                status: 'upcoming' as const,
+                                maxParticipants: 15,
+                                currentParticipants: 5,
+                                features: ['Private Screening', 'Q&A Session', 'Exclusive Content'],
+                                icon: '🎭'
+                              }
+                            ].map((perk, index) => {
                               const tierInfo = getTierInfo(perk.tier);
                               return (
                                 <motion.div
@@ -1586,6 +1478,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                   transition={{ delay: index * 0.1 }}
                                   className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 hover:scale-105"
                                 >
+                                  {/* Perk Icon */}
+                                  <div className="text-4xl mb-4 text-center">{perk.icon}</div>
+                                  
                                   {/* Tier Badge */}
                                   <div className="flex items-center justify-between mb-4">
                                     <div className={`px-3 py-1 rounded-full text-xs font-bold ${tierInfo.color} text-white`}>
@@ -1605,6 +1500,19 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                   <p className="text-gray-400 text-sm mb-4 leading-relaxed">
                                     {perk.description}
                                   </p>
+                                  
+                                  {/* Features List */}
+                                  <div className="mb-4">
+                                    <p className="text-gray-500 text-xs mb-2 font-semibold">INCLUDES:</p>
+                                    <ul className="space-y-1">
+                                      {perk.features.map((feature, idx) => (
+                                        <li key={idx} className="text-gray-300 text-xs flex items-center gap-2">
+                                          <span className="text-green-400">✓</span>
+                                          {feature}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
                                   
                                   {/* Perk Details */}
                                   <div className="space-y-2 mb-4">
@@ -1626,9 +1534,31 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                     )}
                                   </div>
                                   
+                                  {/* Progress Bar for Limited Perks */}
+                                  {perk.maxParticipants && (
+                                    <div className="mb-4">
+                                      <div className="flex justify-between text-xs text-gray-400 mb-1">
+                                        <span>Filled</span>
+                                        <span>{perk.currentParticipants}/{perk.maxParticipants}</span>
+                                      </div>
+                                      <div className="w-full bg-gray-700 rounded-full h-2">
+                                        <div 
+                                          className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
+                                          style={{ width: `${(perk.currentParticipants / perk.maxParticipants) * 100}%` }}
+                                        />
+                                      </div>
+                                    </div>
+                                  )}
+                                  
                                   {/* Action Button */}
-                                  <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0">
-                                    Get This Perk
+                                  <button 
+                                    onClick={() => {
+                                      setActiveTab('invest');
+                                      setInvestmentAmount(perk.minAmount);
+                                    }}
+                                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                                  >
+                                    Get This Experience
                                   </button>
                                   
                                   {/* Hover Glow Effect */}
@@ -1636,6 +1566,56 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                 </motion.div>
                               );
                             })}
+                          </div>
+                        </motion.div>
+
+                        {/* Experience Timeline */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 }}
+                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                        >
+                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                            <Calendar className="w-6 h-6 text-indigo-400" />
+                            Experience Timeline
+                          </h3>
+                          
+                          <div className="relative">
+                            {/* Timeline Line */}
+                            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 to-pink-500" />
+                            
+                            <div className="space-y-8">
+                              {[
+                                { month: 'Jan 2024', title: 'Investment Opens', description: 'Start your journey with exclusive early-bird perks', icon: '🚀' },
+                                { month: 'Mar 2024', title: 'Community Voting', description: 'Participate in casting and creative decisions', icon: '🗳️' },
+                                { month: 'Jun 2024', title: 'Set Visits Begin', description: 'VIP experiences and behind-the-scenes access', icon: '🎬' },
+                                { month: 'Sep 2024', title: 'Private Screenings', description: 'Exclusive previews with cast and crew', icon: '🎭' },
+                                { month: 'Dec 2024', title: 'Premiere & Credits', description: 'Red carpet premiere and official credits', icon: '👑' }
+                              ].map((event, index) => (
+                                <motion.div
+                                  key={event.month}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: index * 0.1 }}
+                                  className="relative flex items-center gap-6"
+                                >
+                                  {/* Timeline Dot */}
+                                  <div className="relative z-10 w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-2xl">
+                                    {event.icon}
+                                  </div>
+                                  
+                                  {/* Content */}
+                                  <div className="flex-1 bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <h4 className="text-lg font-bold text-white">{event.title}</h4>
+                                      <span className="text-purple-400 font-semibold text-sm">{event.month}</span>
+                                    </div>
+                                    <p className="text-gray-400 text-sm">{event.description}</p>
+                                  </div>
+                                </motion.div>
+                              ))}
+                            </div>
                           </div>
                         </motion.div>
                       </div>

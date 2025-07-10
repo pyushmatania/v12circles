@@ -5342,7 +5342,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.6,
-    "trailer": "https://www.youtube.com/results?search_query=City%20of%20God%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=ioUE_5wpg_E",
     "movie": "City of God",
     "keyPeople": [],
     "actor": "",
@@ -5391,7 +5391,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/results?search_query=Oldboy%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=pWDtqzN2Q7w",
     "movie": "Oldboy",
     "keyPeople": [],
     "actor": "",
@@ -5438,7 +5438,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.7,
-    "trailer": "https://www.youtube.com/results?search_query=Roma%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=6BS27VRZR74",
     "movie": "Roma",
     "keyPeople": [],
     "actor": "",
@@ -5583,7 +5583,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/results?search_query=Narcos%3A%20Mexico%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=OJSx-pE4WN8",
     "movie": "Narcos: Mexico",
     "keyPeople": [],
     "actor": "",
@@ -5639,7 +5639,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.8,
-    "trailer": "https://www.youtube.com/results?search_query=Money%20Heist%3A%20Korea%20-%20Joint%20Economic%20Area%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=TcMBFSGVi1c",
     "movie": "Money Heist: Korea - Joint Economic Area",
     "keyPeople": [],
     "actor": "",
@@ -5693,7 +5693,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/results?search_query=Fauda%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=tOGJ7DjHX4Q",
     "movie": "Fauda",
     "keyPeople": [],
     "actor": "",
@@ -5747,7 +5747,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.5,
-    "trailer": "https://www.youtube.com/results?search_query=Lupin%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=ga0iTWXCGa0",
     "movie": "Lupin",
     "keyPeople": [],
     "actor": "",
@@ -5798,7 +5798,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.2,
-    "trailer": "https://www.youtube.com/results?search_query=Dark%20(Germany)%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=rrwycJ08PSA",
     "movie": "Dark (Germany)",
     "keyPeople": [],
     "actor": "",
@@ -5845,7 +5845,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.6,
-    "trailer": "https://www.youtube.com/results?search_query=Sacred%20Games%202%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=ZOhQFfhpIdw",
     "movie": "Sacred Games 2",
     "keyPeople": [],
     "actor": "",
@@ -5895,7 +5895,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.6,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Bridge%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=wnCHLSYJe_w",
     "movie": "The Bridge",
     "keyPeople": [],
     "actor": "",
@@ -5950,7 +5950,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/results?search_query=Gomorrah%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=P_tcexIjWK0",
     "movie": "Gomorrah",
     "keyPeople": [],
     "actor": "",
@@ -5998,7 +5998,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/results?search_query=Call%20My%20Agent!%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=zhwA5j7A_is",
     "movie": "Call My Agent!",
     "keyPeople": [],
     "actor": "",
@@ -6052,7 +6052,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/results?search_query=Kingdom%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=f5ur5HZgPpE",
     "movie": "Kingdom",
     "keyPeople": [],
     "actor": "",
@@ -6291,7 +6291,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.5,
-    "trailer": "https://www.youtube.com/results?search_query=Rocky%20Aur%20Rani%20Kii%20Prem%20Kahaani%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=aIL-8Aev9pc",
     "movie": "Rocky Aur Rani Kii Prem Kahaani",
     "keyPeople": [],
     "actor": "",
@@ -6381,7 +6381,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6,
-    "trailer": "https://www.youtube.com/results?search_query=Tu%20Jhoothi%20Main%20Makkaar%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=YGbLz0eJ4J4",
     "movie": "Tu Jhoothi Main Makkaar",
     "keyPeople": [],
     "actor": "",
@@ -6426,7 +6426,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.7,
-    "trailer": "https://www.youtube.com/results?search_query=Satyaprem%20Ki%20Katha%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=7wr-g4zKjio",
     "movie": "Satyaprem Ki Katha",
     "keyPeople": [],
     "actor": "",
@@ -6471,7 +6471,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.8,
-    "trailer": "https://www.youtube.com/results?search_query=Bholaa%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=PLl99DlL6b4",
     "movie": "Bholaa",
     "keyPeople": [],
     "actor": "",
@@ -6516,7 +6516,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.5,
-    "trailer": "https://www.youtube.com/results?search_query=OMG%202%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=uP0yNxTUBrU",
     "movie": "OMG 2",
     "keyPeople": [],
     "actor": "",
@@ -6561,7 +6561,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.3,
-    "trailer": "https://www.youtube.com/results?search_query=Dream%20Girl%202%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=o9kPJRCGAY4",
     "movie": "Dream Girl 2",
     "keyPeople": [],
     "actor": "",
@@ -6606,7 +6606,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.5,
-    "trailer": "https://www.youtube.com/results?search_query=Bheed%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=G2f3kF8b2uI",
     "movie": "Bheed",
     "keyPeople": [],
     "actor": "",
@@ -6651,7 +6651,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.3,
-    "trailer": "https://www.youtube.com/results?search_query=Mrs%20Chatterjee%20vs%20Norway%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=bjKm_jSSjsU",
     "movie": "Mrs Chatterjee vs Norway",
     "keyPeople": [],
     "actor": "",
@@ -6696,7 +6696,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.7,
-    "trailer": "https://www.youtube.com/results?search_query=Selfiee%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=kY6KjK6F8bA",
     "movie": "Selfiee",
     "keyPeople": [],
     "actor": "",
@@ -6741,7 +6741,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.5,
-    "trailer": "https://www.youtube.com/results?search_query=Shehzada%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=b6K6F8b2uIY",
     "movie": "Shehzada",
     "keyPeople": [],
     "actor": "",
@@ -6786,7 +6786,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/results?search_query=Mission%20Majnu%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=k6F8b2uIYQ",
     "movie": "Mission Majnu",
     "keyPeople": [],
     "actor": "",
@@ -6831,7 +6831,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/results?search_query=Oppenheimer%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=uYPbbksJxIg",
     "movie": "Oppenheimer",
     "keyPeople": [],
     "actor": "",
@@ -6876,7 +6876,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.8,
-    "trailer": "https://www.youtube.com/results?search_query=Barbie%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=pBk4NYhWNMM",
     "movie": "Barbie",
     "keyPeople": [],
     "actor": "",
@@ -6921,7 +6921,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/results?search_query=John%20Wick%3A%20Chapter%204%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=qEVUtrk8_B4",
     "movie": "John Wick: Chapter 4",
     "keyPeople": [],
     "actor": "",
@@ -6966,7 +6966,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.9,
-    "trailer": "https://www.youtube.com/results?search_query=Guardians%20of%20the%20Galaxy%20Vol.%203%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=u3V5KDHRQvk",
     "movie": "Guardians of the Galaxy Vol. 3",
     "keyPeople": [],
     "actor": "",
@@ -7011,7 +7011,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/results?search_query=Spider-Man%3A%20Across%20the%20Spider-Verse%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=shW9i6k8cB0",
     "movie": "Spider-Man: Across the Spider-Verse",
     "keyPeople": [],
     "actor": "",
@@ -7056,7 +7056,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.5,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Marvels%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=wS_qbDztgVY",
     "movie": "The Marvels",
     "keyPeople": [],
     "actor": "",
@@ -7101,7 +7101,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/results?search_query=Dune%3A%20Part%20Two%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=U2Qp5pL3ovA",
     "movie": "Dune: Part Two",
     "keyPeople": [],
     "actor": "",
@@ -7146,7 +7146,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/results?search_query=Wonka%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=otNh9bTjXWg",
     "movie": "Wonka",
     "keyPeople": [],
     "actor": "",
@@ -7191,7 +7191,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.7,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Hunger%20Games%3A%20The%20Ballad%20of%20Songbirds%20%26%20Snakes%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=nW94801-l5U",
     "movie": "The Hunger Games: The Ballad of Songbirds & Snakes",
     "keyPeople": [],
     "actor": "",
@@ -7236,7 +7236,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/results?search_query=Mission%3A%20Impossible%20%E2%80%93%20Dead%20Reckoning%20Part%20One%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=avz06pdDM58",
     "movie": "Mission: Impossible – Dead Reckoning Part One",
     "keyPeople": [],
     "actor": "",
@@ -7333,7 +7333,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.5,
-    "trailer": "https://www.youtube.com/results?search_query=Indiana%20Jones%20and%20the%20Dial%20of%20Destiny%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=ZfVYgWYaHm0",
     "movie": "Indiana Jones and the Dial of Destiny",
     "keyPeople": [],
     "actor": "",
@@ -7378,7 +7378,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/results?search_query=Killers%20of%20the%20Flower%20Moon%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=EPXmSJsuuqQ",
     "movie": "Killers of the Flower Moon",
     "keyPeople": [],
     "actor": "",
@@ -7423,7 +7423,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.3,
-    "trailer": "https://www.youtube.com/results?search_query=Napoleon%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=OAZWXUkrjPc",
     "movie": "Napoleon",
     "keyPeople": [],
     "actor": "",
@@ -7468,7 +7468,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.7,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Creator%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=EXeTwQWrcwY",
     "movie": "The Creator",
     "keyPeople": [],
     "actor": "",
@@ -7513,7 +7513,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.8,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Night%20Manager%20(India)%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=w11Iw7z4Zg0",
     "movie": "The Night Manager (India)",
     "keyPeople": [],
     "actor": "",
@@ -7558,7 +7558,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/results?search_query=Farzi%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=QsH4oRwM8Kw",
     "movie": "Farzi",
     "keyPeople": [],
     "actor": "",
@@ -7606,7 +7606,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.4,
-    "trailer": "https://www.youtube.com/results?search_query=Asur%202%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=hGPWC3JvTiA",
     "movie": "Asur 2",
     "keyPeople": [],
     "actor": "",
@@ -7655,7 +7655,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/results?search_query=Rana%20Naidu%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=TcMBFSGVi1c",
     "movie": "Rana Naidu",
     "keyPeople": [],
     "actor": "",
@@ -7705,7 +7705,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.1,
-    "trailer": "https://www.youtube.com/results?search_query=Taaza%20Khabar%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=w11Iw7z4Zg0",
     "movie": "Taaza Khabar",
     "keyPeople": [],
     "actor": "",
@@ -7754,7 +7754,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.6,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Last%20of%20Us%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=uLtkt8BonwM",
     "movie": "The Last of Us",
     "keyPeople": [],
     "actor": "",
@@ -7805,7 +7805,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8,
-    "trailer": "https://www.youtube.com/results?search_query=Wednesday%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=Di310WS8IDQ",
     "movie": "Wednesday",
     "keyPeople": [],
     "actor": "",
@@ -7856,7 +7856,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.9,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Mandalorian%20(Season%203)%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=QsH4oRwM8Kw",
     "movie": "The Mandalorian (Season 3)",
     "keyPeople": [],
     "actor": "",
@@ -7901,7 +7901,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.9,
-    "trailer": "https://www.youtube.com/results?search_query=You%20(Season%204)%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=hGPWC3JvTiA",
     "movie": "You (Season 4)",
     "keyPeople": [],
     "actor": "",
@@ -7946,7 +7946,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.7,
-    "trailer": "https://www.youtube.com/results?search_query=Loki%20(Season%202)%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=TcMBFSGVi1c",
     "movie": "Loki (Season 2)",
     "keyPeople": [],
     "actor": "",
@@ -7991,7 +7991,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8,
-    "trailer": "https://www.youtube.com/results?search_query=Squid%20Game%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=oqxAJKy0ii4",
     "movie": "Squid Game",
     "keyPeople": [],
     "actor": "",
@@ -8041,7 +8041,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.8,
-    "trailer": "https://www.youtube.com/results?search_query=Money%20Heist%3A%20Korea%20%E2%80%93%20Joint%20Economic%20Area%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=QyJ6rFQ5r4o",
     "movie": "Money Heist: Korea – Joint Economic Area",
     "keyPeople": [],
     "actor": "",
@@ -8091,7 +8091,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.8,
-    "trailer": "https://www.youtube.com/results?search_query=Bridgerton%20(Season%203)%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=mfBYfmdNIJ4",
     "movie": "Bridgerton (Season 3)",
     "keyPeople": [],
     "actor": "",
@@ -8136,7 +8136,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Bear%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=w11Iw7z4Zg0",
     "movie": "The Bear",
     "keyPeople": [],
     "actor": "",
@@ -8186,7 +8186,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.7,
-    "trailer": "https://www.youtube.com/results?search_query=Gen%20V%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=QsH4oRwM8Kw",
     "movie": "Gen V",
     "keyPeople": [],
     "actor": "",
@@ -8238,7 +8238,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.7,
-    "trailer": "https://www.youtube.com/results?search_query=Flowers%20%E2%80%93%20Miley%20Cyrus%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=G7KNmW9a75Y",
     "movie": "Flowers – Miley Cyrus",
     "keyPeople": [],
     "actor": "",
@@ -8283,7 +8283,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.4,
-    "trailer": "https://www.youtube.com/results?search_query=Calm%20Down%20%E2%80%93%20Rema%20%26%20Selena%20Gomez%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=0UFvHt-mjRj",
     "movie": "Calm Down – Rema & Selena Gomez",
     "keyPeople": [],
     "actor": "",
@@ -8328,7 +8328,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.5,
-    "trailer": "https://www.youtube.com/results?search_query=Unholy%20%E2%80%93%20Sam%20Smith%20%26%20Kim%20Petras%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=Uc9TQZ1Hf6I",
     "movie": "Unholy – Sam Smith & Kim Petras",
     "keyPeople": [],
     "actor": "",
@@ -8373,7 +8373,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.1,
-    "trailer": "https://www.youtube.com/results?search_query=As%20It%20Was%20%E2%80%93%20Harry%20Styles%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=H5v3kku4y6Q",
     "movie": "As It Was – Harry Styles",
     "keyPeople": [],
     "actor": "",
@@ -8418,7 +8418,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.2,
-    "trailer": "https://www.youtube.com/results?search_query=Anti-Hero%20%E2%80%93%20Taylor%20Swift%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=b1kbLWp7MDI",
     "movie": "Anti-Hero – Taylor Swift",
     "keyPeople": [],
     "actor": "",
@@ -8463,7 +8463,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.7,
-    "trailer": "https://www.youtube.com/results?search_query=Cupid%20%E2%80%93%20FIFTY%20FIFTY%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=Qc7_zRjH808",
     "movie": "Cupid – FIFTY FIFTY",
     "keyPeople": [],
     "actor": "",
@@ -8508,7 +8508,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.5,
-    "trailer": "https://www.youtube.com/results?search_query=Seven%20%E2%80%93%20Jungkook%20ft.%20Latto%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=QU9c0053UAU",
     "movie": "Seven – Jungkook ft. Latto",
     "keyPeople": [],
     "actor": "",
@@ -8553,7 +8553,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.8,
-    "trailer": "https://www.youtube.com/results?search_query=Vampire%20%E2%80%93%20Olivia%20Rodrigo%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=1v5hqJqS6h0",
     "movie": "Vampire – Olivia Rodrigo",
     "keyPeople": [],
     "actor": "",
@@ -8598,7 +8598,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.6,
-    "trailer": "https://www.youtube.com/results?search_query=Paint%20The%20Town%20Red%20%E2%80%93%20Doja%20Cat%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=0KSOMA3QBU0",
     "movie": "Paint The Town Red – Doja Cat",
     "keyPeople": [],
     "actor": "",
@@ -8643,7 +8643,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.9,
-    "trailer": "https://www.youtube.com/results?search_query=Dance%20The%20Night%20%E2%80%93%20Dua%20Lipa%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=R_EVjZBi9Xc",
     "movie": "Dance The Night – Dua Lipa",
     "keyPeople": [],
     "actor": "",
@@ -8688,7 +8688,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.4,
-    "trailer": "https://www.youtube.com/results?search_query=Fast%20Car%20%E2%80%93%20Luke%20Combs%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=BuD9zdYwJ0M",
     "movie": "Fast Car – Luke Combs",
     "keyPeople": [],
     "actor": "",
@@ -8733,7 +8733,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4.7,
-    "trailer": "https://www.youtube.com/results?search_query=Ella%20Baila%20Sola%20%E2%80%93%20Eslabon%20Armado%20%26%20Peso%20Pluma%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=P3cpt9CjMjE",
     "movie": "Ella Baila Sola – Eslabon Armado & Peso Pluma",
     "keyPeople": [],
     "actor": "",
@@ -8778,7 +8778,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.7,
-    "trailer": "https://www.youtube.com/results?search_query=Creepin'%20%E2%80%93%20Metro%20Boomin%2C%20The%20Weeknd%20%26%2021%20Savage%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=0VSyJMKqblE",
     "movie": "Creepin' – Metro Boomin, The Weeknd & 21 Savage",
     "keyPeople": [],
     "actor": "",
@@ -8823,7 +8823,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.5,
-    "trailer": "https://www.youtube.com/results?search_query=La%20Bebe%20%E2%80%93%20Yng%20Lvcas%20%26%20Peso%20Pluma%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=hGPWC3JvTiA",
     "movie": "La Bebe – Yng Lvcas & Peso Pluma",
     "keyPeople": [],
     "actor": "",
@@ -8868,7 +8868,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 3.7,
-    "trailer": "https://www.youtube.com/results?search_query=Tattoo%20%E2%80%93%20Loreen%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=placeholder-music-track",
     "movie": "Tattoo – Loreen",
     "keyPeople": [],
     "actor": "",
@@ -9146,7 +9146,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 4,
-    "trailer": "https://www.youtube.com/results?search_query=KGF%20Chapter%202%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=JKa05nyUmuQ",
     "movie": "KGF Chapter 2",
     "keyPeople": [],
     "actor": "Yash",
@@ -9281,7 +9281,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.2,
-    "trailer": "https://www.youtube.com/results?search_query=War%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=tQ0mzXRk-oM",
     "movie": "War",
     "keyPeople": [],
     "actor": "Hrithik Roshan",
@@ -9326,7 +9326,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.5,
-    "trailer": "https://www.youtube.com/results?search_query=Simmba%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=PtFY3WHztZc",
     "movie": "Simmba",
     "keyPeople": [],
     "actor": "Ranveer Singh",
@@ -9371,7 +9371,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/results?search_query=Sanju%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=1J76wN0TPI4",
     "movie": "Sanju",
     "keyPeople": [],
     "actor": "Ranbir Kapoor",
@@ -9416,7 +9416,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/results?search_query=Kabir%20Singh%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=RiANSSgCuJk",
     "movie": "Kabir Singh",
     "keyPeople": [],
     "actor": "Shahid Kapoor",
@@ -9461,7 +9461,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.2,
-    "trailer": "https://www.youtube.com/results?search_query=Andhadhun%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=w11Iw7z4Zg0",
     "movie": "Andhadhun",
     "keyPeople": [],
     "actor": "Ayushmann Khurrana",
@@ -9506,7 +9506,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.9,
-    "trailer": "https://www.youtube.com/results?search_query=Badhaai%20Ho%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=QsH4oRwM8Kw",
     "movie": "Badhaai Ho",
     "keyPeople": [],
     "actor": "Ayushmann Khurrana",
@@ -9552,7 +9552,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.5,
-    "trailer": "https://www.youtube.com/results?search_query=Stree%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=hGPWC3JvTiA",
     "movie": "Stree",
     "keyPeople": [],
     "actor": "Rajkummar Rao",
@@ -9597,7 +9597,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/results?search_query=Oppenheimer%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=uYPbbksJxIg",
     "movie": "Oppenheimer",
     "keyPeople": [],
     "actor": "Cillian Murphy",
@@ -9642,7 +9642,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.8,
-    "trailer": "https://www.youtube.com/results?search_query=Barbie%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=pBk4NYhWNMM",
     "movie": "Barbie",
     "keyPeople": [],
     "actor": "Ryan Gosling",
@@ -9687,7 +9687,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.2,
-    "trailer": "https://www.youtube.com/results?search_query=Spider-Man%3A%20No%20Way%20Home%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=JfVOs4VSpmA",
     "movie": "Spider-Man: No Way Home",
     "keyPeople": [],
     "actor": "Tom Holland",
@@ -9732,7 +9732,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.2,
-    "trailer": "https://www.youtube.com/results?search_query=Top%20Gun%3A%20Maverick%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=qSqVVswa420",
     "movie": "Top Gun: Maverick",
     "keyPeople": [],
     "actor": "Tom Cruise",
@@ -9777,7 +9777,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.5,
-    "trailer": "https://www.youtube.com/results?search_query=Avatar%3A%20The%20Way%20of%20Water%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=d9MyW72ELq0",
     "movie": "Avatar: The Way of Water",
     "keyPeople": [],
     "actor": "Sam Worthington",
@@ -9822,7 +9822,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.3,
-    "trailer": "https://www.youtube.com/results?search_query=Dune%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=n9xhJrPXop4",
     "movie": "Dune",
     "keyPeople": [],
     "actor": "Timothée Chalamet",
@@ -9868,7 +9868,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.8,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Batman%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=mqqft2x_Aa4",
     "movie": "The Batman",
     "keyPeople": [],
     "actor": "Robert Pattinson",
@@ -9913,7 +9913,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.3,
-    "trailer": "https://www.youtube.com/results?search_query=No%20Time%20to%20Die%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=BIh2Atdk7AI",
     "movie": "No Time to Die",
     "keyPeople": [],
     "actor": "Daniel Craig",
@@ -9958,7 +9958,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.6,
-    "trailer": "https://www.youtube.com/results?search_query=Black%20Widow%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=Fp9pNPdNwjI",
     "movie": "Black Widow",
     "keyPeople": [],
     "actor": "Scarlett Johansson",
@@ -10003,7 +10003,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.7,
-    "trailer": "https://www.youtube.com/results?search_query=Fast%20X%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=32RAAG6J_Ks",
     "movie": "Fast X",
     "keyPeople": [],
     "actor": "Vin Diesel",
@@ -10048,7 +10048,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/results?search_query=Mission%3A%20Impossible%20%E2%80%93%20Dead%20Reckoning%20Part%20One%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=avz06pdDM58",
     "movie": "Mission: Impossible – Dead Reckoning Part One",
     "keyPeople": [],
     "actor": "Tom Cruise",
@@ -10093,7 +10093,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.9,
-    "trailer": "https://www.youtube.com/results?search_query=Guardians%20of%20the%20Galaxy%20Vol.%203%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=u3V5KDHRQvk",
     "movie": "Guardians of the Galaxy Vol. 3",
     "keyPeople": [],
     "actor": "Chris Pratt",
@@ -10138,7 +10138,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/results?search_query=John%20Wick%3A%20Chapter%204%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=qEVUtrk8_B4",
     "movie": "John Wick: Chapter 4",
     "keyPeople": [],
     "actor": "Keanu Reeves",
@@ -10183,7 +10183,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 5.5,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Marvels%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=wS_qbDztgVY",
     "movie": "The Marvels",
     "keyPeople": [],
     "actor": "Brie Larson",
@@ -10228,7 +10228,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/results?search_query=Wonka%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=otNh9bTjXWg",
     "movie": "Wonka",
     "keyPeople": [],
     "actor": "Timothée Chalamet",
@@ -10273,7 +10273,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.2,
-    "trailer": "https://www.youtube.com/results?search_query=Money%20Heist%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=hMANIarjT50",
     "movie": "Money Heist",
     "keyPeople": [],
     "actor": "Álvaro Morte",
@@ -10318,7 +10318,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.6,
-    "trailer": "https://www.youtube.com/results?search_query=Stranger%20Things%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=b9EkMc79ZSU",
     "movie": "Stranger Things",
     "keyPeople": [],
     "actor": "Finn Wolfhard",
@@ -10363,7 +10363,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 7.9,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Witcher%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=ndl1W4ltcmg",
     "movie": "The Witcher",
     "keyPeople": [],
     "actor": "Henry Cavill",
@@ -10408,7 +10408,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.4,
-    "trailer": "https://www.youtube.com/results?search_query=Mirzapur%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=JWtnJjn6ng0",
     "movie": "Mirzapur",
     "keyPeople": [],
     "actor": "Pankaj Tripathi",
@@ -10453,7 +10453,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 6.8,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Family%20Man%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=aOC8E8z_ifw",
     "movie": "The Family Man",
     "keyPeople": [],
     "actor": "Manoj Bajpayee",
@@ -10498,7 +10498,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/results?search_query=Sacred%20Games%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=_InqQJRqGW4",
     "movie": "Sacred Games",
     "keyPeople": [],
     "actor": "Saif Ali Khan",
@@ -10543,7 +10543,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 9.5,
-    "trailer": "https://www.youtube.com/results?search_query=Breaking%20Bad%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=HhesaQXLuRY",
     "movie": "Breaking Bad",
     "keyPeople": [],
     "actor": "Bryan Cranston",
@@ -10588,7 +10588,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 9.2,
-    "trailer": "https://www.youtube.com/results?search_query=Game%20of%20Thrones%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=KPLWWIOCOOQ",
     "movie": "Game of Thrones",
     "keyPeople": [],
     "actor": "Kit Harington",
@@ -10633,7 +10633,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.6,
-    "trailer": "https://www.youtube.com/results?search_query=The%20Boys%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=ndl1W4ltcmg",
     "movie": "The Boys",
     "keyPeople": [],
     "actor": "Karl Urban",
@@ -10678,7 +10678,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/results?search_query=Delhi%20Crime%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=yojSV6UUEk8",
     "movie": "Delhi Crime",
     "keyPeople": [],
     "actor": "Shefali Shah",
@@ -10723,7 +10723,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.1,
-    "trailer": "https://www.youtube.com/results?search_query=Paatal%20Lok%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=oqxAJKy0ii4",
     "movie": "Paatal Lok",
     "keyPeople": [],
     "actor": "Jaideep Ahlawat",
@@ -10768,7 +10768,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8,
-    "trailer": "https://www.youtube.com/results?search_query=Squid%20Game%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=oqxAJKy0ii4",
     "movie": "Squid Game",
     "keyPeople": [],
     "actor": "Lee Jung-jae",
@@ -10813,7 +10813,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.7,
-    "trailer": "https://www.youtube.com/results?search_query=Dark%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=rrwycJ08PSA",
     "movie": "Dark",
     "keyPeople": [],
     "actor": "Louis Hofmann",
@@ -10858,7 +10858,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.2,
-    "trailer": "https://www.youtube.com/results?search_query=Loki%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=nW94801-l5U",
     "movie": "Loki",
     "keyPeople": [],
     "actor": "Tom Hiddleston",
@@ -10903,7 +10903,7 @@ export const projects: Project[
       "Premiere Invite"
     ],
     "rating": 8.2,
-    "trailer": "https://www.youtube.com/results?search_query=Made%20in%20Heaven%20trailer",
+    "trailer": "https://www.youtube.com/watch?v=2b1J4SUgc1Y",
     "movie": "Made in Heaven",
     "keyPeople": [],
     "actor": "Arjun Mathur",
