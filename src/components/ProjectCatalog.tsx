@@ -161,77 +161,76 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   }, [searchTerm, selectedCategory, selectedType, selectedLanguage, selectedGenre, fundingRange, sortBy]);
 
   // Memoized categorized projects for Netflix-style layout using diverse arrays
-  const categorizedProjects = useMemo(() => {
-    const trendingProjects = trendingNow;
-    const bollywoodFilms = bollywoodSection;
-    const hollywoodProjects = hollywoodSection;
-    const actionThrillerContent = actionThrillers;
-    const dramaRomanceContent = dramaRomance;
-    const comedyEntertainmentContent = comedyEntertainment;
-    const sciFiFantasyContent = sciFiFantasy;
-    const highRatedContent = highRatedProjects;
-    const newlyAddedContent = newlyAddedProjects;
-    const mostFundedContent = mostFundedProjects;
+  const categorizedProjects = useMemo((): {
+    trending: Project[];
+    bollywood: Project[];
+    hollywood: Project[];
+    actionThrillers: Project[];
+    dramaRomance: Project[];
+    comedyEntertainment: Project[];
+    sciFiFantasy: Project[];
+    highRated: Project[];
+    newlyAdded: Project[];
+    mostFunded: Project[];
+    regional: Project[];
+    music: Project[];
+    webseries: Project[];
+    featured: Project[];
+  } => {
+    try {
+      const regionalContent = projects
+        .filter(p => p.category === 'Regional')
+        .slice(0, 10);
 
-    const regionalContent = projects
-      .filter(p => p.category === 'Regional')
-      .slice(0, 10);
+      const musicProjects = projects
+        .filter(p => p.type === 'music')
+        .slice(0, 10);
 
-    const musicProjects = projects
-      .filter(p => p.type === 'music')
-      .slice(0, 10);
+      const webSeries = projects
+        .filter(p => p.type === 'webseries')
+        .slice(0, 10);
 
-    const webSeries = projects
-      .filter(p => p.type === 'webseries')
-      .slice(0, 10);
+      const featuredProjects = projects
+        .filter(p => p.featured)
+        .sort((a, b) => b.fundedPercentage - a.fundedPercentage)
+        .slice(0, 10);
 
-    let featuredProjects = projects
-      .filter(p => p.featured)
-      .sort((a, b) => b.fundedPercentage - a.fundedPercentage);
-
-    // Add placeholders if less than 11
-    const placeholderProject = {
-      id: '',
-      title: 'Coming Soon',
-      type: 'film' as const,
-      category: '',
-      language: '',
-      poster: '/placeholder.jpg', // Make sure this image exists in your public folder
-      fundedPercentage: 0,
-      targetAmount: 0,
-      raisedAmount: 0,
-      tags: [],
-      description: '',
-      genre: '',
-      perks: [],
-      featured: false,
-    };
-    if (featuredProjects.length < 11) {
-      featuredProjects = [
-        ...featuredProjects,
-        ...Array.from({ length: 11 - featuredProjects.length }, (_, i) => ({
-          ...placeholderProject,
-          id: `placeholder-${i + 1}`
-        }))
-      ];
+      return {
+        trending: trendingNow || [],
+        bollywood: bollywoodSection || [],
+        hollywood: hollywoodSection || [],
+        actionThrillers: actionThrillers || [],
+        dramaRomance: dramaRomance || [],
+        comedyEntertainment: comedyEntertainment || [],
+        sciFiFantasy: sciFiFantasy || [],
+        highRated: highRatedProjects || [],
+        newlyAdded: newlyAddedProjects || [],
+        mostFunded: mostFundedProjects || [],
+        regional: regionalContent,
+        music: musicProjects,
+        webseries: webSeries,
+        featured: featuredProjects
+      };
+    } catch (error) {
+      console.error('Error in categorizedProjects:', error);
+      // Return empty arrays as fallback
+      return {
+        trending: [],
+        bollywood: [],
+        hollywood: [],
+        actionThrillers: [],
+        dramaRomance: [],
+        comedyEntertainment: [],
+        sciFiFantasy: [],
+        highRated: [],
+        newlyAdded: [],
+        mostFunded: [],
+        regional: [],
+        music: [],
+        webseries: [],
+        featured: []
+      };
     }
-
-    return {
-      trending: trendingProjects,
-      bollywood: bollywoodFilms,
-      hollywood: hollywoodProjects,
-      actionThrillers: actionThrillerContent,
-      dramaRomance: dramaRomanceContent,
-      comedyEntertainment: comedyEntertainmentContent,
-      sciFiFantasy: sciFiFantasyContent,
-      highRated: highRatedContent,
-      newlyAdded: newlyAddedContent,
-      mostFunded: mostFundedContent,
-      regional: regionalContent,
-      music: musicProjects,
-      webseries: webSeries,
-      featured: featuredProjects
-    };
   }, []);
 
   // Memoized callback functions for carousel controls
@@ -240,12 +239,12 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   }, []);
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % categorizedProjects.featuredProjects.length);
-  }, [categorizedProjects.featuredProjects.length]);
+    setCurrentSlide((prev) => (prev + 1) % categorizedProjects.featured.length);
+  }, [categorizedProjects.featured.length]);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide(prev => prev === 0 ? categorizedProjects.featuredProjects.length - 1 : prev - 1);
-  }, [categorizedProjects.featuredProjects.length]);
+    setCurrentSlide(prev => prev === 0 ? categorizedProjects.featured.length - 1 : prev - 1);
+  }, [categorizedProjects.featured.length]);
 
   const clearFilters = useCallback(() => {
     setSelectedCategory('all');
@@ -314,7 +313,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   React.useEffect(() => {
     if (isAutoPlaying && !isPaused) {
       autoSlideRef.current = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % categorizedProjects.featuredProjects.length);
+        setCurrentSlide((prev) => (prev + 1) % categorizedProjects.featured.length);
       }, 2500);
     }
 
@@ -323,7 +322,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
         clearInterval(autoSlideRef.current);
       }
     };
-  }, [isAutoPlaying, isPaused, categorizedProjects.featuredProjects.length]);
+  }, [isAutoPlaying, isPaused, categorizedProjects.featured.length]);
 
   // Filter options
   const categories = FILTER_OPTIONS.categories;
@@ -829,20 +828,24 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   </div>
 ) : (
           <div className="space-y-12">
-            <ProjectRow
-              title="🔥 Trending Now"
-              projects={trendingProjects}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('trending')}
-            />
-            <ProjectRow
-              title="🎬 Bollywood Blockbusters"
-              projects={bollywoodFilms}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('bollywood')}
-            />
+            {trendingProjects.length > 0 && (
+              <ProjectRow
+                title="🔥 Trending Now"
+                projects={trendingProjects}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('trending')}
+              />
+            )}
+            {bollywoodFilms.length > 0 && (
+              <ProjectRow
+                title="🎬 Bollywood Blockbusters"
+                projects={bollywoodFilms}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('bollywood')}
+              />
+            )}
             {hollywoodProjects.length > 0 && (
               <ProjectRow
                 title="🌟 Hollywood International"
@@ -852,84 +855,106 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                 onHeaderClick={() => handleSectionClick('hollywood')}
               />
             )}
-            <ProjectRow
-              title="💥 Action & Thrillers"
-              projects={actionThrillers}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('action-thrillers')}
-            />
-            <ProjectRow
-              title="💕 Drama & Romance"
-              projects={dramaRomance}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('drama-romance')}
-            />
-            <ProjectRow
-              title="😂 Comedy & Entertainment"
-              projects={comedyEntertainment}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('comedy-entertainment')}
-            />
-            <ProjectRow
-              title="🚀 Sci-Fi & Fantasy"
-              projects={sciFiFantasy}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('sci-fi-fantasy')}
-            />
-            <ProjectRow
-              title="🏆 Highly Rated Projects"
-              projects={highRatedProjects}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('high-rated')}
-            />
-            <ProjectRow
-              title="🆕 Newly Added"
-              projects={newlyAdded}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('newly-added')}
-            />
-            <ProjectRow
-              title="💰 Most Funded"
-              projects={mostFunded}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('most-funded')}
-            />
-            <ProjectRow
-              title="🎵 Music & Albums"
-              projects={musicProjects}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('music')}
-            />
-            <ProjectRow
-              title="📺 Binge-Worthy Web Series"
-              projects={webSeries}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('webseries')}
-            />
-            <ProjectRow
-              title="🌍 Regional Cinema Gems"
-              projects={regionalContent}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => handleSectionClick('regional')}
-            />
+            {actionThrillers.length > 0 && (
+              <ProjectRow
+                title="💥 Action & Thrillers"
+                projects={actionThrillers}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('action-thrillers')}
+              />
+            )}
+            {dramaRomance.length > 0 && (
+              <ProjectRow
+                title="💕 Drama & Romance"
+                projects={dramaRomance}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('drama-romance')}
+              />
+            )}
+            {comedyEntertainment.length > 0 && (
+              <ProjectRow
+                title="😂 Comedy & Entertainment"
+                projects={comedyEntertainment}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('comedy-entertainment')}
+              />
+            )}
+            {sciFiFantasy.length > 0 && (
+              <ProjectRow
+                title="🚀 Sci-Fi & Fantasy"
+                projects={sciFiFantasy}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('sci-fi-fantasy')}
+              />
+            )}
+            {highRatedProjects.length > 0 && (
+              <ProjectRow
+                title="🏆 Highly Rated Projects"
+                projects={highRatedProjects}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('high-rated')}
+              />
+            )}
+            {newlyAdded.length > 0 && (
+              <ProjectRow
+                title="🆕 Newly Added"
+                projects={newlyAdded}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('newly-added')}
+              />
+            )}
+            {mostFunded.length > 0 && (
+              <ProjectRow
+                title="💰 Most Funded"
+                projects={mostFunded}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('most-funded')}
+              />
+            )}
+            {musicProjects.length > 0 && (
+              <ProjectRow
+                title="🎵 Music & Albums"
+                projects={musicProjects}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('music')}
+              />
+            )}
+            {webSeries.length > 0 && (
+              <ProjectRow
+                title="📺 Binge-Worthy Web Series"
+                projects={webSeries}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('webseries')}
+              />
+            )}
+            {regionalContent.length > 0 && (
+              <ProjectRow
+                title="🌍 Regional Cinema Gems"
+                projects={regionalContent}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('regional')}
+              />
+            )}
             {/* All Projects Section */}
-            <ProjectRow
-              title="🎬 All Projects"
-              projects={allProjects}
-              onProjectClick={handleProjectClick}
-              onInvestClick={handleInvestClick}
-              onHeaderClick={() => setShowAllProjects('all')}
-            />
+            {allProjects.length > 0 && (
+              <ProjectRow
+                title="🎬 All Projects"
+                projects={allProjects}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => setShowAllProjects('all')}
+              />
+            )}
           </div>
         )}
       </div>
@@ -1007,9 +1032,8 @@ const ProjectRow = React.memo<ProjectRowProps>(({ title, projects, onProjectClic
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {projects.map((project) => (
-          <div className="inline-block w-72 snap-center">
+          <div key={project.id} className="inline-block w-72 snap-center">
             <ProjectCard
-              key={project.id} 
               project={project} 
               onClick={() => onProjectClick(project)}
               onInvestClick={onInvestClick}
