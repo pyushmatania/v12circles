@@ -17,6 +17,10 @@ import { useAuth } from './components/auth/useAuth';
 import { useToast } from './hooks/useToast';
 import DebugPanel from './components/DebugPanel';
 import ErrorBoundary from './components/ErrorBoundary';
+import CinematicEffects from './components/CinematicEffects';
+import useAdvancedOptimization from './hooks/useAdvancedOptimization';
+import useSmoothAnimations from './hooks/useSmoothAnimations';
+import useMemoryOptimization from './hooks/useMemoryOptimization';
 import { Project } from './types';
 
 // Lazy load heavy components for better performance
@@ -50,6 +54,29 @@ function AppContent() {
   const { toasts, toast, removeToast } = useToast();
   const [catalogScroll, setCatalogScroll] = useState(0);
 
+  // Advanced optimizations
+  const { 
+    useResourcePreloader, 
+    useTaskScheduler, 
+    useGPUAcceleration 
+  } = useAdvancedOptimization();
+  
+  const { 
+    springConfigs, 
+    useSmoothScroll, 
+    useAnimationPerformance 
+  } = useSmoothAnimations();
+  
+  const { 
+    useSmartCache, 
+    useMemoryAwarePreloader, 
+    getMemoryUsage 
+  } = useMemoryOptimization();
+
+  const { preloadResource } = useResourcePreloader();
+  const { scheduleTask } = useTaskScheduler();
+  const performanceMetrics = useAnimationPerformance();
+
   // Handle logout redirect
   useEffect(() => {
     const logoutTimestamp = localStorage.getItem('logout_timestamp');
@@ -68,6 +95,53 @@ function AppContent() {
       setCurrentView('home');
     }
   }, [isAuthenticated, currentView]);
+
+  // Advanced preloading and performance optimizations
+  useEffect(() => {
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('🚀 SW registered:', registration);
+          
+          // Send performance metrics to service worker
+          registration.active?.postMessage({
+            type: 'GET_METRICS'
+          });
+        })
+        .catch(error => console.log('SW registration failed:', error));
+    }
+
+    // Preload critical resources based on current view
+    const preloadMap = {
+      home: ['/projects', '/dashboard'],
+      projects: ['/api/projects', '/images/project-posters'],
+      dashboard: ['/api/user/portfolio', '/api/analytics']
+    };
+
+    const resourcesToPreload = preloadMap[currentView as keyof typeof preloadMap];
+    if (resourcesToPreload) {
+      scheduleTask(() => {
+        resourcesToPreload.forEach(resource => {
+          const resourceType = resource.includes('/images/') ? 'image' : 
+                              resource.includes('/api/') ? 'script' : 'script';
+          preloadResource(resource, resourceType);
+        });
+      }, 'low');
+    }
+
+    // Monitor memory usage
+    const memoryUsage = getMemoryUsage();
+    if (memoryUsage && memoryUsage.percentage > 80) {
+      console.warn('🚨 High memory usage detected:', memoryUsage);
+      scheduleTask(() => {
+        // Trigger garbage collection if available
+        if ('gc' in window) {
+          (window as any).gc();
+        }
+      }, 'high');
+    }
+  }, [currentView, preloadResource, scheduleTask, getMemoryUsage]);
 
   const handleAuthRequired = useCallback((mode: 'login' | 'register' = 'login') => {
     if (!isAuthenticated) {
@@ -219,7 +293,14 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen transition-colors duration-300 overflow-x-hidden">
+    <CinematicEffects
+      enableParallax={true}
+      enableDepthOfField={true}
+      enableFilmGrain={true}
+      enableVignette={true}
+      intensity={0.6}
+      className="min-h-screen transition-colors duration-300 overflow-x-hidden"
+    >
       <Navigation
         currentView={currentView}
         setCurrentView={handleViewChange}
@@ -241,7 +322,7 @@ function AppContent() {
         toasts={toasts}
         onClose={removeToast}
       />
-    </div>
+    </CinematicEffects>
   );
 }
 

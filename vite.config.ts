@@ -116,6 +116,9 @@ export default defineConfig({
     }
   },
 
+  // Copy service worker to build output
+  publicDir: 'public',
+
   // CSS optimizations
   css: {
     // Enable CSS modules for better scoping
