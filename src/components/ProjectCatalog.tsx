@@ -5,12 +5,7 @@ import { Film, Music, Tv, Search, Star, Clock, ChevronLeft, ChevronRight, Play, 
 import confetti from 'canvas-confetti';
 import { 
   projects, 
-  trendingNow, 
-  bollywoodSection, 
-  hollywoodSection, 
-  allProjects, 
-  newlyAddedProjects, 
-  mostFundedProjects 
+  allProjects
 } from '../data/projects';
 
 import { Project } from '../types';

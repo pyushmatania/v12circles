@@ -842,7 +842,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
               ease: [0.4, 0, 0.2, 1]
             }}
           >
-            <img src="/circles-logo.png" alt="Circles Logo" className="h-20 w-20 object-contain drop-shadow-lg blur-[0.3px]" />
+            <img src="/circles-logo-main.png" alt="Circles Logo" className="h-20 w-20 object-contain drop-shadow-lg blur-[0.3px]" />
           </motion.div>
           <span className="text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent drop-shadow-lg tracking-wide blur-[0.2px] -ml-3">Circles</span>
         </div>

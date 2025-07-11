@@ -94,7 +94,7 @@ const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onH
       }}
     >
       <div
-        className="relative w-full h-[550px] sm:h-[520px] md:h-[500px] rounded-2xl overflow-hidden cursor-pointer"
+        className="relative w-full h-[650px] sm:h-[620px] md:h-[600px] rounded-2xl overflow-hidden cursor-pointer"
         style={{
           perspective: '1500px',
           transformStyle: 'preserve-3d',
@@ -227,7 +227,7 @@ const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onH
               {/* Gold Inscription */}
               <div className="mt-auto w-full flex justify-end items-center gap-3">
                 <div className="relative w-20 h-20 flex items-center justify-center">
-                  <img src="/circles-logo.png" alt="Circle Logo" className="w-full h-full object-contain object-center" style={{filter: 'brightness(1.5) drop-shadow(0 0 12px #ffe066) drop-shadow(0 0 6px #ffd700) drop-shadow(0 0 20px rgba(255,215,0,0.6))'}} />
+                  <img src="/circles-logo-main.png" alt="Circle Logo" className="w-full h-full object-contain object-center" style={{filter: 'brightness(1.5) drop-shadow(0 0 12px #ffe066) drop-shadow(0 0 6px #ffd700) drop-shadow(0 0 20px rgba(255,215,0,0.6))'}} />
                   {/* Animated sparkles */}
                   <span className="absolute w-3 h-3 rounded-full bg-yellow-200 opacity-90 animate-ping" style={{top: '15%', left: '75%'}} />
                   <span className="absolute w-2 h-2 rounded-full bg-white opacity-80 animate-pulse" style={{top: '55%', left: '30%'}} />

@@ -177,7 +177,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                     }}
                   >
                     <img 
-                      src="/circles-logo.png" 
+                      src="/circles-logo-main.png" 
                       alt="Circles Logo" 
                       className="w-20 h-20 object-contain drop-shadow-lg"
                       onError={(e) => {
@@ -412,7 +412,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                       }}
                     >
                       <img 
-                        src="/circles-logo.png" 
+                        src="/circles-logo-main.png" 
                         alt="Circles Logo" 
                         className="w-12 h-12 object-contain drop-shadow-lg"
                         onError={(e) => {
