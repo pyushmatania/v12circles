@@ -724,36 +724,38 @@ const Community: React.FC = () => {
     <div
       className={`relative min-h-screen pt-16 pb-[100px] ${
         theme === 'light'
-          ? 'bg-gradient-to-br from-slate-50 via-white to-indigo-50'
-          : 'bg-gradient-to-br from-slate-900 via-gray-900 to-indigo-950'
+          ? 'bg-gradient-to-br from-red-50 via-rose-50 to-pink-50'
+          : 'bg-gradient-to-br from-red-950 via-rose-950 to-pink-950'
       }`}
       style={{
         backgroundImage: theme === 'light' 
-          ? 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)'
-          : 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)'
+          ? 'radial-gradient(circle at 20% 80%, rgba(239, 68, 68, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.12) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.08) 0%, transparent 70%)'
+          : 'radial-gradient(circle at 20% 80%, rgba(239, 68, 68, 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.25) 0%, transparent 70%)'
       }}
     >
       {/* Enhanced Background Effects - Consistent with Browse/Details */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-        {/* Floating Orbs */}
+        {/* Dynamic Red Floating Orbs */}
         <motion.div
           animate={{ 
             y: [0, -30, 0],
             x: [0, 20, 0],
-            scale: [1, 1.1, 1]
+            scale: [1, 1.1, 1],
+            rotate: [0, 180, 360]
           }}
           transition={{ 
             duration: 8, 
             repeat: Infinity, 
             ease: "easeInOut" 
           }}
-          className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-full blur-2xl"
+          className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-red-500/30 to-rose-500/25 rounded-full blur-2xl"
         />
         <motion.div
           animate={{ 
             y: [0, 25, 0],
             x: [0, -15, 0],
-            scale: [1, 0.9, 1]
+            scale: [1, 0.9, 1],
+            rotate: [0, -180, -360]
           }}
           transition={{ 
             duration: 10, 
@@ -761,13 +763,14 @@ const Community: React.FC = () => {
             ease: "easeInOut",
             delay: 3
           }}
-          className="absolute top-1/3 right-20 w-40 h-40 bg-gradient-to-br from-blue-500/15 to-cyan-500/15 rounded-full blur-3xl"
+          className="absolute top-1/3 right-20 w-40 h-40 bg-gradient-to-br from-pink-500/20 to-red-500/25 rounded-full blur-3xl"
         />
         <motion.div
           animate={{ 
             y: [0, -20, 0],
             x: [0, 25, 0],
-            scale: [1, 1.2, 1]
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 180]
           }}
           transition={{ 
             duration: 12, 
@@ -775,66 +778,307 @@ const Community: React.FC = () => {
             ease: "easeInOut",
             delay: 6
           }}
-          className="absolute bottom-1/3 left-1/4 w-28 h-28 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-full blur-2xl"
+          className="absolute bottom-1/3 left-1/4 w-28 h-28 bg-gradient-to-br from-rose-500/25 to-pink-500/20 rounded-full blur-2xl"
+        />
+        <motion.div
+          animate={{ 
+            y: [0, 35, 0],
+            x: [0, -30, 0],
+            scale: [1, 1.3, 1],
+            rotate: [0, 270, 360]
+          }}
+          transition={{ 
+            duration: 14, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 2
+          }}
+          className="absolute top-1/2 right-1/3 w-24 h-24 bg-gradient-to-br from-red-400/20 to-pink-400/15 rounded-full blur-xl"
+        />
+        <motion.div
+          animate={{ 
+            y: [0, -40, 0],
+            x: [0, 15, 0],
+            scale: [1, 0.8, 1],
+            rotate: [0, -90, -180]
+          }}
+          transition={{ 
+            duration: 16, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 8
+          }}
+          className="absolute bottom-1/4 right-10 w-36 h-36 bg-gradient-to-br from-rose-400/15 to-red-400/20 rounded-full blur-2xl"
         />
         
-        {/* Subtle Grid Pattern */}
-        <div className="absolute inset-0 opacity-[0.02]">
+        {/* Dynamic Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.03]">
           <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, ${theme === 'light' ? '#1e293b' : '#e2e8f0'} 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle at 2px 2px, ${theme === 'light' ? '#dc2626' : '#fca5a5'} 1px, transparent 0)`,
             backgroundSize: '60px 60px'
           }} />
         </div>
         
-        {/* Gradient Overlays */}
+        {/* Enhanced Gradient Overlays */}
         <div className={`absolute inset-0 ${
           theme === 'light' 
-            ? 'bg-gradient-to-br from-white/5 via-transparent to-indigo-50/30' 
-            : 'bg-gradient-to-br from-slate-900/20 via-transparent to-indigo-950/40'
+            ? 'bg-gradient-to-br from-red-50/10 via-transparent to-pink-50/40' 
+            : 'bg-gradient-to-br from-red-950/30 via-transparent to-pink-950/50'
+        }`} />
+        
+        {/* Additional Cinematic Effects */}
+        <div className={`absolute inset-0 ${
+          theme === 'light'
+            ? 'bg-gradient-to-t from-red-100/20 via-transparent to-transparent'
+            : 'bg-gradient-to-t from-red-900/30 via-transparent to-transparent'
+        }`} />
+        <div className={`absolute inset-0 ${
+          theme === 'light'
+            ? 'bg-gradient-to-r from-transparent via-rose-50/10 to-transparent'
+            : 'bg-gradient-to-r from-transparent via-rose-900/20 to-transparent'
         }`} />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
         
-        {/* Enhanced Header with Social Focus */}
+        {/* 3-Step Interactive Guide */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-12 text-center"
+          className="mb-16"
         >
+          <div className="text-center mb-12">
+            <h1 className={`text-4xl md:text-5xl font-black mb-4 ${
+              theme === 'light' 
+                ? 'bg-gradient-to-r from-red-800 via-rose-700 to-pink-800 bg-clip-text text-transparent' 
+                : 'bg-gradient-to-r from-red-100 via-rose-200 to-pink-100 bg-clip-text text-transparent'
+            }`}>
+              Join Exclusive Circles
+            </h1>
+            <p className={`text-lg ${
+              theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+            }`}>
+              Connect with your favorite stars and creators in 3 simple steps
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Step 1: Select Category */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className={`relative p-8 rounded-3xl ${
+                theme === 'light'
+                  ? 'bg-white/80 backdrop-blur-sm border border-red-200 shadow-xl'
+                  : 'bg-slate-800/80 backdrop-blur-sm border border-red-700 shadow-xl'
+              }`}
+            >
+              {/* Step Number */}
+              <div className="absolute -top-4 left-8">
+                <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-rose-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  1
+                </div>
+              </div>
+
+              {/* Interactive Icon */}
+              <div className="flex justify-center mb-6">
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative"
+                >
+                  <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Film className="w-10 h-10 text-white" />
+                  </div>
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center"
+                  >
+                    <Star className="w-3 h-3 text-white" />
+                  </motion.div>
+                </motion.div>
+              </div>
+
+              <h3 className={`text-xl font-bold mb-3 text-center ${
+                theme === 'light' ? 'text-gray-800' : 'text-white'
+              }`}>
+                Choose Your Interest
+              </h3>
+              <p className={`text-center mb-4 ${
+                theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+              }`}>
+                Select from Movies, Actors, Directors, or Studios
+              </p>
+
+              {/* Mini Category Preview */}
+              <div className="flex justify-center gap-2">
+                {['🎬', '👨‍🎭', '🎥', '🏢'].map((icon, idx) => (
+                  <motion.div
+                    key={idx}
+                    animate={{ y: [0, -5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: idx * 0.2 }}
+                    className="w-8 h-8 bg-gradient-to-br from-red-100 to-rose-100 rounded-lg flex items-center justify-center text-sm"
+                  >
+                    {icon}
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Step 2: Select Item */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className={`relative p-8 rounded-3xl ${
+                theme === 'light'
+                  ? 'bg-white/80 backdrop-blur-sm border border-rose-200 shadow-xl'
+                  : 'bg-slate-800/80 backdrop-blur-sm border border-rose-700 shadow-xl'
+              }`}
+            >
+              {/* Step Number */}
+              <div className="absolute -top-4 left-8">
+                <div className="w-8 h-8 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  2
+                </div>
+              </div>
+
+              {/* Interactive Icon */}
+              <div className="flex justify-center mb-6">
+                <motion.div
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative"
+                >
+                  <div className="w-20 h-20 bg-gradient-to-br from-rose-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+                    <Users className="w-10 h-10 text-white" />
+                  </div>
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-red-500 to-rose-500 rounded-full"
+                  />
+                </motion.div>
+              </div>
+
+              <h3 className={`text-xl font-bold mb-3 text-center ${
+                theme === 'light' ? 'text-gray-800' : 'text-white'
+              }`}>
+                Pick Your Favorite
+              </h3>
+              <p className={`text-center mb-4 ${
+                theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+              }`}>
+                Browse and select any movie, actor, or creator
+              </p>
+
+              {/* Mini Profile Preview */}
+              <div className="flex justify-center">
+                <motion.div
+                  animate={{ rotate: [0, 5, -5, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative"
+                >
+                  <div className="w-12 h-12 bg-gradient-to-br from-rose-100 to-pink-100 rounded-full flex items-center justify-center">
+                    <span className="text-lg">⭐</span>
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Step 3: Connect */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className={`relative p-8 rounded-3xl ${
+                theme === 'light'
+                  ? 'bg-white/80 backdrop-blur-sm border border-pink-200 shadow-xl'
+                  : 'bg-slate-800/80 backdrop-blur-sm border border-pink-700 shadow-xl'
+              }`}
+            >
+              {/* Step Number */}
+              <div className="absolute -top-4 left-8">
+                <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  3
+                </div>
+              </div>
+
+              {/* Interactive Icon */}
+              <div className="flex justify-center mb-6">
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="relative"
+                >
+                  <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Sparkles className="w-10 h-10 text-white" />
+                  </div>
+                  <motion.div
+                    animate={{ scale: [0, 1, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                    className="absolute top-0 right-0 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center"
+                  >
+                    <TrendingUp className="w-3 h-3 text-white" />
+                  </motion.div>
+                </motion.div>
+              </div>
+
+              <h3 className={`text-xl font-bold mb-3 text-center ${
+                theme === 'light' ? 'text-gray-800' : 'text-white'
+              }`}>
+                Join & Connect
+              </h3>
+              <p className={`text-center mb-4 ${
+                theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+              }`}>
+                Access exclusive content, chat, and network
+              </p>
+
+              {/* Feature Icons */}
+              <div className="flex justify-center gap-3">
+                {[
+                  { icon: MessageCircle, color: 'from-blue-400 to-blue-500' },
+                  { icon: Heart, color: 'from-red-400 to-red-500' },
+                  { icon: Share2, color: 'from-green-400 to-green-500' }
+                ].map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 3, repeat: Infinity, delay: idx * 0.5 }}
+                    className={`w-8 h-8 bg-gradient-to-br ${item.color} rounded-full flex items-center justify-center shadow-sm`}
+                  >
+                    <item.icon className="w-4 h-4 text-white" />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Call to Action */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center gap-3 mb-6 p-3 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            className="text-center mt-12"
           >
-            <Users className="w-8 h-8 text-purple-400" />
-            <span className="text-purple-400 font-semibold">15,420+ Active Members</span>
-          </motion.div>
-          
-          <h1 className={`text-5xl md:text-7xl font-black mb-4 ${
-            theme === 'light' 
-              ? 'bg-gradient-to-r from-slate-800 via-indigo-700 to-slate-900 bg-clip-text text-transparent' 
-              : 'bg-gradient-to-r from-white via-indigo-200 to-slate-100 bg-clip-text text-transparent'
-          }`}>
-            Community Hub
-          </h1>
-          <p className={`text-xl max-w-3xl mx-auto ${
-            theme === 'light' ? 'text-gray-600' : 'text-gray-300'
-          }`}>
-            Where fans, investors, and creators connect. Share moments, discuss projects, and build lasting relationships in the entertainment universe.
-          </p>
-          
-          {/* Live Activity Indicator */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30"
-          >
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            <span className="text-green-400 font-medium">Live Community Activity</span>
+            <motion.div
+              animate={{ scale: [1, 1.02, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-rose-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <span>Get Started Below</span>
+              <motion.div
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                ⬇️
+              </motion.div>
+            </motion.div>
           </motion.div>
         </motion.div>
 
@@ -860,11 +1104,11 @@ const Community: React.FC = () => {
           
           <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory justify-center">
             {[
-              { id: 'movie', label: 'Movies', icon: '🎬', color: 'from-indigo-500 to-purple-500', shape: 'square' },
-              { id: 'productionHouse', label: 'Studios', icon: '🏢', color: 'from-blue-500 to-cyan-500', shape: 'square' },
-              { id: 'director', label: 'Directors', icon: '🎥', color: 'from-emerald-500 to-teal-500', shape: 'round' },
-              { id: 'actor', label: 'Actors', icon: '👨‍🎭', color: 'from-amber-500 to-orange-500', shape: 'round' },
-              { id: 'actress', label: 'Actresses', icon: '👩‍🎭', color: 'from-rose-500 to-pink-500', shape: 'round' }
+              { id: 'movie', label: 'Movies', icon: '🎬', color: 'from-red-500 to-rose-500', shape: 'square' },
+              { id: 'productionHouse', label: 'Studios', icon: '🏢', color: 'from-rose-500 to-pink-500', shape: 'square' },
+              { id: 'director', label: 'Directors', icon: '🎥', color: 'from-red-600 to-rose-600', shape: 'round' },
+              { id: 'actor', label: 'Actors', icon: '👨‍🎭', color: 'from-pink-500 to-rose-500', shape: 'round' },
+              { id: 'actress', label: 'Actresses', icon: '👩‍🎭', color: 'from-rose-600 to-red-600', shape: 'round' }
             ].map((category, index) => {
               const isSelected = selectedCategory === category.id;
               const isPerson = category.shape === 'round';
@@ -893,10 +1137,10 @@ const Community: React.FC = () => {
                       isPerson ? 'rounded-full' : 'rounded-2xl'
                     } ${
                       isSelected
-                        ? `bg-gradient-to-r ${category.color} shadow-2xl shadow-indigo-500/40`
+                        ? `bg-gradient-to-r ${category.color} shadow-2xl shadow-red-500/40`
                         : `${theme === 'light' 
-                            ? 'bg-white/80 border-2 border-slate-200 hover:border-indigo-300 shadow-lg hover:shadow-xl' 
-                            : 'bg-slate-800/80 border-2 border-slate-700 hover:border-indigo-500 shadow-lg hover:shadow-xl'
+                            ? 'bg-white/80 border-2 border-red-200 hover:border-rose-400 shadow-lg hover:shadow-xl' 
+                            : 'bg-slate-800/80 border-2 border-red-700 hover:border-rose-500 shadow-lg hover:shadow-xl'
                           }`
                     }`}
                   >
@@ -1024,8 +1268,8 @@ const Community: React.FC = () => {
                           : 'rounded-2xl'
                       } ${
                         theme === 'light'
-                          ? 'bg-white shadow-lg hover:shadow-xl border border-slate-200 hover:border-indigo-300'
-                          : 'bg-slate-800 shadow-lg hover:shadow-xl border border-slate-700 hover:border-indigo-500'
+                          ? 'bg-white shadow-lg hover:shadow-xl border border-red-200 hover:border-rose-400'
+                          : 'bg-slate-800 shadow-lg hover:shadow-xl border border-red-700 hover:border-rose-500'
                       }`}
                     >
                       {/* Instagram-style gradient border for active users */}
@@ -1058,7 +1302,7 @@ const Community: React.FC = () => {
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg z-40"
+                          className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-red-500 to-rose-500 rounded-full flex items-center justify-center shadow-lg z-40"
                         >
                           <CheckCircle className="w-4 h-4 text-white" />
                         </motion.div>
@@ -1092,11 +1336,11 @@ const Community: React.FC = () => {
                         }`}>
                           {item.name}
                         </h4>
-                        {item.verified && !isPerson && (
-                          <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                            <CheckCircle className="w-3 h-3 text-white" />
-                          </div>
-                        )}
+                                                 {item.verified && !isPerson && (
+                           <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                             <CheckCircle className="w-3 h-3 text-white" />
+                           </div>
+                         )}
                       </div>
                       <p className={`text-xs ${
                         theme === 'light' ? 'text-slate-500' : 'text-slate-400'
