@@ -6,17 +6,9 @@ import Typewriter from './Typewriter';
 import ProfileCard from './Components/ProfileCard/ProfileCard';
 import GlassCard from './GlassCard';
 
-// Import images directly (alternative method)
-import perk1 from '/circles-perks/1.png';
-import perk2 from '/circles-perks/2.png';
-import perk3 from '/circles-perks/3.png';
-import perk4 from '/circles-perks/4.png';
-import perk5 from '/circles-perks/5.png';
-import perk6 from '/circles-perks/6.png';
-
 const circlesIllustrations = [
   {
-    image: perk1,
+    image: "/circles-perks/1.png",
     title: "Creative Collaboration",
     description: "Connect with creators and shape the future of entertainment",
     backTitle: "Name Credit",
@@ -24,7 +16,7 @@ const circlesIllustrations = [
     backDescription: "Get officially credited in the movie your support gets permanent recognition alongside the creators."
   },
   {
-    image: perk2,
+    image: "/circles-perks/2.png",
     title: "Investment Growth",
     description: "Watch your investments grow alongside creative success",
     backTitle: "Community Casting",
@@ -32,7 +24,7 @@ const circlesIllustrations = [
     backDescription: "Vote on cast members, suggest talent, and influence who lands key roles in select indie or experimental projects."
   },
   {
-    image: perk3,
+    image: "/circles-perks/3.png",
     title: "Community Building",
     description: "Join exclusive circles of passionate investors and creators",
     backTitle: "Movie Item",
@@ -40,7 +32,7 @@ const circlesIllustrations = [
     backDescription: "Receive exclusive props, costumes, or memorabilia used on set — something no fan can buy off a shelf."
   },
   {
-    image: perk4,
+    image: "/circles-perks/4.png",
     title: "Exclusive Access",
     description: "Get behind-the-scenes access to your favorite projects",
     backTitle: "Premiere Access",
@@ -48,7 +40,7 @@ const circlesIllustrations = [
     backDescription: "Get early invites to virtual or real-world premieres and private screenings before the world sees it."
   },
   {
-    image: perk5,
+    image: "/circles-perks/5.png",
     title: "Revenue Sharing",
     description: "Earn returns while supporting the arts you love",
     backTitle: "Trip with Movie Stars",
@@ -56,7 +48,7 @@ const circlesIllustrations = [
     backDescription: "Win or unlock experiences to travel with the crew or spend a day on set with the stars."
   },
   {
-    image: perk6,
+    image: "/circles-perks/6.png",
     title: "Global Network",
     description: "Connect with entertainment enthusiasts worldwide",
     backTitle: "Exclusive Merch",
