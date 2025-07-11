@@ -74,7 +74,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
           project.description.toLowerCase().includes(term.toLowerCase()) ||
           project.tags.some((tag: string) => tag.toLowerCase().includes(term.toLowerCase())) ||
           (project.director && project.director.toLowerCase().includes(term.toLowerCase())) ||
-          (project.artist && project.artist.toLowerCase().includes(term.toLowerCase()));
+          (project.artist && project.artist.toLowerCase().includes(term.toLowerCase())) ||
+          (project.productionHouse && project.productionHouse.toLowerCase().includes(term.toLowerCase())) ||
+          (project.keyPeople && project.keyPeople.some(person => person.name.toLowerCase().includes(term.toLowerCase())));
       });
 
       // Sort by relevance (title match first)
@@ -280,7 +282,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
                   value={searchTerm}
                   onChange={handleSearchChange}
                   onKeyDown={handleKeyDown}
-                  placeholder="Search projects..."
+                  placeholder="Search projects, directors, actors, production houses..."
                   className={`w-full py-2 focus:outline-none ${
                     theme === 'light'
                       ? 'bg-transparent text-gray-900 placeholder-gray-500'
@@ -416,11 +418,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
                                 </span>
                               </div>
                             )}
-                            {result.timeLeft && (
+                            {result.status === 'active' && (
                               <div className="flex items-center gap-1 text-xs">
                                 <Clock className="w-3 h-3 text-orange-400" />
                                 <span className={theme === 'light' ? 'text-gray-700' : 'text-gray-300'}>
-                                  {result.timeLeft}
+                                  Active
                                 </span>
                               </div>
                             )}

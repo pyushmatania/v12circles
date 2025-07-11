@@ -1,0 +1,58 @@
+{
+  "timestamp": "2025-07-11T06:42:44.302Z",
+  "missionStatus": "COMPLETED",
+  "summary": {
+    "totalChecked": 175,
+    "workingCount": 172,
+    "brokenCount": 3,
+    "workingPercentage": 98.3,
+    "brokenPercentage": 1.7
+  },
+  "recentFixes": [
+    {
+      "title": "Farzi",
+      "id": "153",
+      "videoTitle": "FARZI - Official Trailer | Raj & DK | Shahid, Sethupathi, Kay Kay, Raashii | Prime Video India"
+    },
+    {
+      "title": "Rana Naidu",
+      "id": "155",
+      "videoTitle": "Rana Naidu | Uncensored Trailer | Rana Daggubati, Venkatesh Daggubati | Netflix India"
+    },
+    {
+      "title": "Taaza Khabar",
+      "id": "156",
+      "videoTitle": "BB Ki Vines Productions- Taaza Khabar | Hotstar Specials | Official Trailer"
+    },
+    {
+      "title": "Sooryavanshi",
+      "id": "189",
+      "videoTitle": "Sooryavanshi | Official Trailer | 5th Nov | Akshay, Ajay, Ranveer, Katrina | Rohit Shetty"
+    },
+    {
+      "title": "Asur",
+      "id": "70",
+      "videoTitle": "Asur Season 1 - Official Trailer | Jio Cinema | Arshad Warsi | Barun Sobti | Theatrical Trailer"
+    }
+  ],
+  "remainingIssues": [
+    {
+      "title": "The Bear",
+      "id": "165",
+      "category": "Hollywood",
+      "error": "HTTP 403"
+    },
+    {
+      "title": "Narcos: Mexico",
+      "id": "111",
+      "category": "Bollywood",
+      "error": "HTTP 403"
+    },
+    {
+      "title": "The Bridge",
+      "id": "117",
+      "category": "Bollywood",
+      "error": "HTTP 403"
+    }
+  ]
+}

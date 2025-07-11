@@ -1024,33 +1024,125 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                         >
                           <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                             <BookOpen className="w-6 h-6 text-purple-400" />
-                            Project Summary
+                            Project Overview
                           </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          
+                          {/* Main Info Grid */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Director</p>
                               <p className="text-white font-semibold">{project.director || 'TBA'}</p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Language</p>
-                              <p className="text-white font-semibold">{project.language || 'Hindi'}</p>
+                              <p className="text-gray-400 text-sm">Lead Actor</p>
+                              <p className="text-white font-semibold">{(project as any).actor || 'TBA'}</p>
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-gray-400 text-sm">Lead Actress</p>
+                              <p className="text-white font-semibold">{(project as any).actress || 'TBA'}</p>
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-gray-400 text-sm">Production House</p>
+                              <p className="text-white font-semibold">{project.productionHouse || 'TBA'}</p>
                             </div>
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Runtime</p>
-                              <p className="text-white font-semibold">150 min</p>
+                              <p className="text-white font-semibold">
+                                {(project as any).runtime ? `${(project as any).runtime} min` : '150 min'}
+                              </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Budget</p>
-                              <p className="text-white font-semibold">{formatCurrency(project.targetAmount)}</p>
+                              <p className="text-gray-400 text-sm">TMDB Rating</p>
+                              <p className="text-white font-semibold flex items-center gap-1">
+                                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                                {(project as any).tmdbRating || project.rating || 'N/A'}
+                              </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Genre</p>
-                              <p className="text-white font-semibold">Drama, Action</p>
+                              <p className="text-gray-400 text-sm">Country</p>
+                              <p className="text-white font-semibold">{(project as any).country || 'India'}</p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Release Date</p>
-                              <p className="text-white font-semibold">Q4 2024</p>
+                              <p className="text-gray-400 text-sm">Release Year</p>
+                              <p className="text-white font-semibold">{(project as any).releaseYear || 'TBA'}</p>
                             </div>
+                            <div className="space-y-2">
+                              <p className="text-gray-400 text-sm">Language</p>
+                              <p className="text-white font-semibold">{project.language || 'Hindi'}</p>
+                            </div>
+                          </div>
+
+                          {/* Genres */}
+                          {(project as any).tmdbGenres && (project as any).tmdbGenres.length > 0 && (
+                            <div className="mb-6">
+                              <p className="text-gray-400 text-sm mb-3">Genres</p>
+                              <div className="flex flex-wrap gap-2">
+                                {(project as any).tmdbGenres.map((genre: string, index: number) => (
+                                  <span 
+                                    key={index}
+                                    className="px-3 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full border border-purple-500/30"
+                                  >
+                                    {genre}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Spoken Languages */}
+                          {(project as any).spokenLanguages && (project as any).spokenLanguages.length > 0 && (
+                            <div className="mb-6">
+                              <p className="text-gray-400 text-sm mb-3">Spoken Languages</p>
+                              <div className="flex flex-wrap gap-2">
+                                {(project as any).spokenLanguages.map((language: string, index: number) => (
+                                  <span 
+                                    key={index}
+                                    className="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm rounded-full border border-blue-500/30"
+                                  >
+                                    {language}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* TMDB Overview */}
+                          {(project as any).tmdbOverview && (
+                            <div className="mb-6">
+                              <p className="text-gray-400 text-sm mb-3">Plot Summary</p>
+                              <p className="text-gray-300 leading-relaxed">
+                                {(project as any).tmdbOverview}
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Tagline */}
+                          {(project as any).tagline && (
+                            <div className="mb-6">
+                              <p className="text-gray-400 text-sm mb-3">Tagline</p>
+                              <p className="text-white font-semibold italic">
+                                "{(project as any).tagline}"
+                              </p>
+                            </div>
+                          )}
+
+                          {/* External Links */}
+                          <div className="flex gap-4">
+                            {(project as any).imdbId && (
+                              <a
+                                href={`https://www.imdb.com/title/${(project as any).imdbId}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-4 py-2 bg-yellow-500/20 text-yellow-300 rounded-lg hover:bg-yellow-500/30 transition-colors duration-300"
+                              >
+                                <ExternalLink className="w-4 h-4" />
+                                View on IMDb
+                              </a>
+                            )}
+                            <button className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 transition-colors duration-300">
+                              <Share2 className="w-4 h-4" />
+                              Share Project
+                            </button>
                           </div>
                         </motion.div>
 
@@ -1186,11 +1278,74 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           </div>
                         </motion.div>
 
-                        {/* Countdown Timer */}
+                        {/* Movie Details & Ratings */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.3 }}
+                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                        >
+                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                            <Star className="w-6 h-6 text-yellow-400" />
+                            Movie Details & Ratings
+                          </h3>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {/* TMDB Rating */}
+                            {(project as any).tmdbRating && (
+                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <Star className="w-6 h-6 text-yellow-400 fill-current" />
+                                  <span className="text-gray-400 text-sm">TMDB Rating</span>
+                                </div>
+                                <p className="text-3xl font-bold text-white">{(project as any).tmdbRating}</p>
+                                <p className="text-yellow-400 text-sm">Out of 10</p>
+                              </div>
+                            )}
+                            
+                            {/* Runtime */}
+                            {(project as any).runtime && (
+                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <Clock className="w-6 h-6 text-blue-400" />
+                                  <span className="text-gray-400 text-sm">Runtime</span>
+                                </div>
+                                <p className="text-3xl font-bold text-white">{(project as any).runtime}</p>
+                                <p className="text-blue-400 text-sm">Minutes</p>
+                              </div>
+                            )}
+                            
+                            {/* Release Year */}
+                            {(project as any).releaseYear && (
+                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <Calendar className="w-6 h-6 text-green-400" />
+                                  <span className="text-gray-400 text-sm">Release Year</span>
+                                </div>
+                                <p className="text-3xl font-bold text-white">{(project as any).releaseYear}</p>
+                                <p className="text-green-400 text-sm">Year</p>
+                              </div>
+                            )}
+                            
+                            {/* Country */}
+                            {(project as any).country && (
+                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                                <div className="flex items-center gap-3 mb-3">
+                                  <Globe className="w-6 h-6 text-purple-400" />
+                                  <span className="text-gray-400 text-sm">Origin Country</span>
+                                </div>
+                                <p className="text-xl font-bold text-white">{(project as any).country}</p>
+                                <p className="text-purple-400 text-sm">Production</p>
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+
+                        {/* Countdown Timer */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.4 }}
                           className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
                         >
                           <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
@@ -1634,8 +1789,162 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                             Team & Cast
                           </h3>
                           
+                          {/* Key Cast Section */}
+                          <div className="mb-8">
+                            <h4 className="text-xl font-bold text-white mb-6">Main Cast</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                              {/* Director */}
+                              {project.director && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
+                                >
+                                  <div className="relative mb-4">
+                                    <img
+                                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+                                      alt={project.director}
+                                      className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-gray-600 group-hover:border-blue-500 transition-colors duration-300"
+                                    />
+                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                                      <span className="text-white text-xs font-bold">★</span>
+                                    </div>
+                                  </div>
+                                  <div className="text-center mb-4">
+                                    <h5 className="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors duration-300">
+                                      {project.director}
+                                    </h5>
+                                    <p className="text-blue-400 font-semibold text-sm">Director</p>
+                                  </div>
+                                  <div className="mb-4">
+                                    <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">
+                                      Director
+                                    </span>
+                                  </div>
+                                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                </motion.div>
+                              )}
+                              
+                              {/* Lead Actor */}
+                              {(project as any).actor && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.1 }}
+                                  className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-green-500/50 transition-all duration-300 hover:scale-105"
+                                >
+                                  <div className="relative mb-4">
+                                    <img
+                                      src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
+                                      alt={(project as any).actor}
+                                      className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-gray-600 group-hover:border-green-500 transition-colors duration-300"
+                                    />
+                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                      <span className="text-white text-xs font-bold">⭐</span>
+                                    </div>
+                                  </div>
+                                  <div className="text-center mb-4">
+                                    <h5 className="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors duration-300">
+                                      {(project as any).actor}
+                                    </h5>
+                                    <p className="text-green-400 font-semibold text-sm">Lead Actor</p>
+                                  </div>
+                                  <div className="mb-4">
+                                    <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">
+                                      Lead Role
+                                    </span>
+                                  </div>
+                                  <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                </motion.div>
+                              )}
+                              
+                              {/* Lead Actress */}
+                              {(project as any).actress && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.2 }}
+                                  className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-pink-500/50 transition-all duration-300 hover:scale-105"
+                                >
+                                  <div className="relative mb-4">
+                                    <img
+                                      src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+                                      alt={(project as any).actress}
+                                      className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-gray-600 group-hover:border-pink-500 transition-colors duration-300"
+                                    />
+                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center">
+                                      <span className="text-white text-xs font-bold">⭐</span>
+                                    </div>
+                                  </div>
+                                  <div className="text-center mb-4">
+                                    <h5 className="text-lg font-bold text-white mb-1 group-hover:text-pink-400 transition-colors duration-300">
+                                      {(project as any).actress}
+                                    </h5>
+                                    <p className="text-pink-400 font-semibold text-sm">Lead Actress</p>
+                                  </div>
+                                  <div className="mb-4">
+                                    <span className="px-2 py-1 bg-pink-500/20 text-pink-300 text-xs rounded-full">
+                                      Lead Role
+                                    </span>
+                                  </div>
+                                  <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-rose-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                </motion.div>
+                              )}
+                              
+                              {/* Production House */}
+                              {project.productionHouse && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.3 }}
+                                  className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 hover:scale-105"
+                                >
+                                  <div className="relative mb-4">
+                                    <div className="w-20 h-20 rounded-full bg-purple-500/20 border-2 border-gray-600 group-hover:border-purple-500 transition-colors duration-300 mx-auto flex items-center justify-center">
+                                      <Film className="w-8 h-8 text-purple-400" />
+                                    </div>
+                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                                      <span className="text-white text-xs font-bold">🎬</span>
+                                    </div>
+                                  </div>
+                                  <div className="text-center mb-4">
+                                    <h5 className="text-lg font-bold text-white mb-1 group-hover:text-purple-400 transition-colors duration-300">
+                                      {project.productionHouse}
+                                    </h5>
+                                    <p className="text-purple-400 font-semibold text-sm">Production House</p>
+                                  </div>
+                                  <div className="mb-4">
+                                    <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full">
+                                      Producer
+                                    </span>
+                                  </div>
+                                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Key People Section */}
+                          {(project as any).keyPeople && (project as any).keyPeople.length > 0 && (
+                            <div className="mb-8">
+                              <h4 className="text-xl font-bold text-white mb-6">Additional Crew</h4>
+                              <div className="flex flex-wrap gap-3">
+                                {(project as any).keyPeople.map((person: string, index: number) => (
+                                  <span 
+                                    key={index}
+                                    className="px-4 py-2 bg-gray-700/50 text-gray-300 rounded-full border border-gray-600/50 hover:bg-gray-600/50 hover:text-white transition-all duration-300"
+                                  >
+                                    {person}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          
                           {/* Role Filters */}
-                          <div className="flex flex-wrap gap-3 mb-8">
+                          <div className="mb-8">
+                            <h4 className="text-xl font-bold text-white mb-6">Browse by Role</h4>
+                            <div className="flex flex-wrap gap-3">
                             {['All', 'Director', 'Actor', 'Producer', 'Composer', 'Cinematographer'].map((role) => (
                               <button
                                 key={role}
@@ -1644,62 +1953,27 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                 {role}
                               </button>
                             ))}
+                            </div>
                           </div>
                           
-                          {/* Cast Grid */}
+                          {/* Additional Cast Grid - keeping some sample data for now */}
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {[
                               {
-                                name: 'Rajkumar Hirani',
-                                role: 'Director',
-                                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-                                bio: 'Acclaimed director known for Munna Bhai MBBS, 3 Idiots, and PK',
-                                films: ['Munna Bhai MBBS', '3 Idiots', 'PK', 'Sanju'],
-                                awards: 15,
-                                rating: 4.8
-                              },
-                              {
-                                name: 'Aamir Khan',
-                                role: 'Lead Actor',
-                                avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
-                                bio: 'Perfectionist actor and producer with numerous blockbusters',
-                                films: ['3 Idiots', 'Dangal', 'PK', 'Lagaan'],
-                                awards: 25,
-                                rating: 4.9
-                              },
-                              {
-                                name: 'Pritam',
-                                role: 'Music Director',
+                                name: 'Music Director',
+                                role: 'Composer',
                                 avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
                                 bio: 'Versatile music composer with chart-topping hits',
-                                films: ['Yeh Jawaani Hai Deewani', 'Barfi!', 'Dangal'],
+                                films: ['Various soundtracks'],
                                 awards: 8,
                                 rating: 4.6
                               },
                               {
-                                name: 'R. Madhavan',
-                                role: 'Supporting Actor',
-                                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
-                                bio: 'Versatile actor known for both commercial and art house films',
-                                films: ['3 Idiots', 'Rang De Basanti', 'Tanu Weds Manu'],
-                                awards: 12,
-                                rating: 4.7
-                              },
-                              {
-                                name: 'Vidhu Vinod Chopra',
-                                role: 'Producer',
-                                avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-                                bio: 'Legendary producer and director with decades of experience',
-                                films: ['Munna Bhai MBBS', '3 Idiots', 'PK', 'Sanju'],
-                                awards: 20,
-                                rating: 4.8
-                              },
-                              {
-                                name: 'Ravi K. Chandran',
-                                role: 'Cinematographer',
+                                name: 'Cinematographer',
+                                role: 'Director of Photography',
                                 avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
                                 bio: 'Award-winning cinematographer with stunning visual storytelling',
-                                films: ['Dil Chahta Hai', 'Black', 'My Name Is Khan'],
+                                films: ['Visual masterpieces'],
                                 awards: 10,
                                 rating: 4.5
                               }

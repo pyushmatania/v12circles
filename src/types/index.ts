@@ -1,3 +1,14 @@
+export interface KeyPerson {
+  id: string;
+  name: string;
+  role: 'actor' | 'actress' | 'director' | 'producer' | 'writer' | 'music_director' | 'cinematographer' | 'editor' | 'other';
+  profileImage?: string;
+  tmdbId?: string;
+  imdbId?: string;
+  isMainCast?: boolean;
+  orderIndex?: number;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -19,7 +30,7 @@ export interface Project {
   rating: number;
   trailer: string;
   movie?: string;
-  keyPeople: any[];
+  keyPeople: KeyPerson[];
   actor?: string;
   actress?: string;
   productionHouse?: string;
@@ -40,6 +51,18 @@ export interface Project {
   budget?: number;
   cast?: string;
   artist?: string;
+  
+  // New TMDB enriched fields
+  tmdbRating?: number;
+  runtime?: number;
+  releaseYear?: number;
+  country?: string;
+  revenue?: number;
+  tmdbGenres?: string[];
+  spokenLanguages?: string[];
+  tmdbOverview?: string;
+  tagline?: string;
+  imdbId?: string;
 }
 
 export interface Testimonial {

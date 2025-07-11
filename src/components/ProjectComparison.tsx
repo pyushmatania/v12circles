@@ -255,7 +255,7 @@ const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, 
                 type="text"
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Search for projects to compare..."
+                                  placeholder="Search for projects to compare by title, directors, actors, production houses..."
                 className={`w-full py-3 pl-12 pr-4 rounded-lg border ${
                   theme === 'light'
                     ? 'border-gray-300 focus:border-purple-500 bg-white/50 text-gray-900 placeholder-gray-500'

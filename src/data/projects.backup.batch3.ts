@@ -31,43 +31,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=zzTUvWfvlBg",
     "movie": "Sholay",
-    "keyPeople": [
-      {
-        "id": "ramesh_sippy_director",
-        "name": "Ramesh Sippy",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "dharmendra_actor",
-        "name": "Dharmendra",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "hema_malini_actress",
-        "name": "Hema Malini",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "g_producer",
-        "name": "G",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "gp_sippy_other",
-        "name": "G.P. Sippy",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Dharmendra",
     "actress": "Hema Malini",
     "productionHouse": "his father G",
@@ -136,36 +100,7 @@ export const projects: Project[] = [
     "rating": 8,
     "trailer": "https://www.youtube.com/watch?v=oIZ4U21DRlM",
     "movie": "Dilwale Dulhania Le Jayenge",
-    "keyPeople": [
-      {
-        "id": "aditya_chopra_director",
-        "name": "Aditya Chopra",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shah_rukh_khan_actor",
-        "name": "Shah Rukh Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "kajol_actress",
-        "name": "Kajol",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "yash_chopra_producer",
-        "name": "Yash Chopra",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Shah Rukh Khan",
     "actress": "Kajol",
     "productionHouse": "his father Yash Chopra",
@@ -232,36 +167,7 @@ export const projects: Project[] = [
     "rating": 8.4,
     "trailer": "https://www.youtube.com/watch?v=K0eDlFX9GMc",
     "movie": "3 Idiots",
-    "keyPeople": [
-      {
-        "id": "rajkumar_hirani_director",
-        "name": "Rajkumar Hirani",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "aamir_khan_actor",
-        "name": "Aamir Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "kareena_kapoor_khan_actress",
-        "name": "Kareena Kapoor Khan",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "vidhu_vinod_chopra_producer",
-        "name": "Vidhu Vinod Chopra",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Aamir Khan",
     "actress": "Kareena Kapoor Khan",
     "productionHouse": "Vidhu Vinod Chopra",
@@ -329,36 +235,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=rZPbpymefuE",
     "movie": "Lagaan: Once Upon a Time in India",
-    "keyPeople": [
-      {
-        "id": "ashutosh_gowariker_director",
-        "name": "Ashutosh Gowariker",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "gracy_singh_actor",
-        "name": "Gracy Singh",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "gracy_singh_actress",
-        "name": "Gracy Singh",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "aamir_khan_producer",
-        "name": "Aamir Khan",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "alongside debutant Gracy Singh",
     "actress": "Gracy Singh",
     "productionHouse": "Aamir Khan",
@@ -426,36 +303,7 @@ export const projects: Project[] = [
     "rating": 8.3,
     "trailer": "https://www.youtube.com/watch?v=x_7YlGv9u1g",
     "movie": "Dangal",
-    "keyPeople": [
-      {
-        "id": "nitesh_tiwari_director",
-        "name": "Nitesh Tiwari",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "mahavir_singh_phogat_actor",
-        "name": "Mahavir Singh Phogat",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "fatima_sana_shaikh_actress",
-        "name": "Fatima Sana Shaikh",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "aamir_khan_producer",
-        "name": "Aamir Khan",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Khan as Mahavir Singh Phogat",
     "actress": "Fatima Sana Shaikh",
     "productionHouse": "Aamir Khan",
@@ -523,36 +371,7 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=FJrpcDgC3zU",
     "movie": "Zindagi Na Milegi Dobara",
-    "keyPeople": [
-      {
-        "id": "zoya_akhtar_director",
-        "name": "Zoya Akhtar",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "hrithik_roshan_actor",
-        "name": "Hrithik Roshan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "katrina_kaif_actress",
-        "name": "Katrina Kaif",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "farhan_akhtar_producer",
-        "name": "Farhan Akhtar",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "an ensemble cast of Hrithik Roshan",
     "actress": "Katrina Kaif",
     "productionHouse": "Farhan Akhtar",
@@ -620,43 +439,7 @@ export const projects: Project[] = [
     "rating": 7.9,
     "trailer": "https://www.youtube.com/watch?v=JfbxcD6biOk",
     "movie": "Gully Boy",
-    "keyPeople": [
-      {
-        "id": "zoya_akhtar_director",
-        "name": "Zoya Akhtar",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ranveer_singh_actor",
-        "name": "Ranveer Singh",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "alia_bhatt_actress",
-        "name": "Alia Bhatt",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "excel_entertainment_producer",
-        "name": "Excel Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "farhan_akhtar_other",
-        "name": "Farhan Akhtar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ranveer Singh",
     "actress": "Alia Bhatt",
     "productionHouse": "Excel Entertainment",
@@ -727,43 +510,7 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=LU077_euDLA",
     "movie": "Andhadhun",
-    "keyPeople": [
-      {
-        "id": "sriram_raghavan_director",
-        "name": "Sriram Raghavan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ayushmann_khurrana_actor",
-        "name": "Ayushmann Khurrana",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "tabu_actress",
-        "name": "Tabu",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "viacom18_studios_producer",
-        "name": "Viacom18 Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "ashok_vashodia_other",
-        "name": "Ashok Vashodia",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ayushmann Khurrana",
     "actress": "Tabu",
     "productionHouse": "Viacom18 Studios",
@@ -836,36 +583,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=M_HP8xgXhBU",
     "movie": "Queen",
-    "keyPeople": [
-      {
-        "id": "vikas_bahl_director",
-        "name": "Vikas Bahl",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "kangana_ranaut_actor",
-        "name": "Kangana Ranaut",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "angela_bullock_actress",
-        "name": "Angela Bullock",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "anurag_kashyap_producer",
-        "name": "Anurag Kashyap",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Kangana Ranaut",
     "actress": "Angela Bullock",
     "productionHouse": "Anurag Kashyap",
@@ -927,43 +645,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=nQ3FYUgSjC8",
     "movie": "Barfi!",
-    "keyPeople": [
-      {
-        "id": "anurag_basu_director",
-        "name": "Anurag Basu",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ranbir_kapoor_actor",
-        "name": "Ranbir Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "priyanka_chopra_jonas_actress",
-        "name": "Priyanka Chopra Jonas",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "ishana_movies_producer",
-        "name": "Ishana Movies",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "siddharth_roy_kapur_other",
-        "name": "Siddharth Roy Kapur",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ranbir Kapoor",
     "actress": "Priyanka Chopra Jonas",
     "productionHouse": "Ishana Movies",
@@ -1034,36 +716,7 @@ export const projects: Project[] = [
     "rating": 7.8,
     "trailer": "https://www.youtube.com/watch?v=bD5FShPZdpw",
     "movie": "Rockstar",
-    "keyPeople": [
-      {
-        "id": "imtiaz_ali_director",
-        "name": "Imtiaz Ali",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ranbir_kapoor_actor",
-        "name": "Ranbir Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "nargis_fakhri_actress",
-        "name": "Nargis Fakhri",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "eros_international_producer",
-        "name": "Eros International",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ranbir Kapoor",
     "actress": "Nargis Fakhri",
     "productionHouse": "Eros International",
@@ -1131,36 +784,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=HKOJY0cU63E",
     "movie": "Article 15",
-    "keyPeople": [
-      {
-        "id": "anubhav_sinha_director",
-        "name": "Anubhav Sinha",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ayushmann_khurrana_actor",
-        "name": "Ayushmann Khurrana",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "isha_talwar_actress",
-        "name": "Isha Talwar",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "anubhav_sinha_producer",
-        "name": "Anubhav Sinha",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ayushmann Khurrana as a police detective who investigates the disappearance of three girls from a small village",
     "actress": "Isha Talwar",
     "productionHouse": "Anubhav Sinha",
@@ -1226,50 +850,7 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=YGIcZrUBY0k",
     "movie": "Tumbbad",
-    "keyPeople": [
-      {
-        "id": "rahi_anil_barve_anand_gandhi_adesh_prasad_director",
-        "name": "Rahi Anil Barve, Anand Gandhi, Adesh Prasad",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sohum_shah_actor",
-        "name": "Sohum Shah",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "anita_datekelkar_actress",
-        "name": "Anita Date-Kelkar",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "filmgate_films_producer",
-        "name": "Filmgate Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "rahi_anil_barve_other",
-        "name": "Rahi Anil Barve",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "amita_shah_other",
-        "name": "Amita Shah",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "Sohum Shah",
     "actress": "Anita Date-Kelkar",
     "productionHouse": "Filmgate Films",
@@ -1337,43 +918,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=SKJfBo3xMW0",
     "movie": "Masaan",
-    "keyPeople": [
-      {
-        "id": "neeraj_ghaywan_director",
-        "name": "Neeraj Ghaywan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sanjay_mishra_actor",
-        "name": "Sanjay Mishra",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "richa_chadha_actress",
-        "name": "Richa Chadha",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "sikhya_entertainment_producer",
-        "name": "Sikhya Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "vikramaditya_motwane_other",
-        "name": "Vikramaditya Motwane",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Sanjay Mishra",
     "actress": "Richa Chadha",
     "productionHouse": "Sikhya Entertainment",
@@ -1440,29 +985,7 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=64xJLmcA2K8",
     "movie": "Drishyam",
-    "keyPeople": [
-      {
-        "id": "nishikant_kamat_director",
-        "name": "Nishikant Kamat",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "panorama_studios_producer",
-        "name": "Panorama Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "kim_jeewoon_other",
-        "name": "Kim Jee-woon",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "Panorama Studios",
@@ -1520,36 +1043,7 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=vc7AZNWvs0M",
     "movie": "Swades",
-    "keyPeople": [
-      {
-        "id": "ashutosh_gowariker_director",
-        "name": "Ashutosh Gowariker",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shah_rukh_khan_actor",
-        "name": "Shah Rukh Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "gayatri_joshi_actress",
-        "name": "Gayatri Joshi",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "ashutosh_gowariker_productions_producer",
-        "name": "Ashutosh Gowariker Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Shah Rukh Khan",
     "actress": "Gayatri Joshi",
     "productionHouse": "Ashutosh Gowariker Productions",
@@ -1618,36 +1112,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=6a0-dSMWm5g",
     "movie": "Chak De! India",
-    "keyPeople": [
-      {
-        "id": "shimit_amin_director",
-        "name": "Shimit Amin",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shah_rukh_khan_actor",
-        "name": "Shah Rukh Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "vidya_malvade_actress",
-        "name": "Vidya Malvade",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "aditya_chopra_under_the_yash_raj_films_banner_producer",
-        "name": "Aditya Chopra under the Yash Raj Films banner",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Shah Rukh Khan as Kabir Khan",
     "actress": "Vidya Malvade",
     "productionHouse": "Aditya Chopra under the Yash Raj Films banner",
@@ -1713,29 +1178,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=SOXWc32k4zA",
     "movie": "PK",
-    "keyPeople": [
-      {
-        "id": "rajkumar_hirani_director",
-        "name": "Rajkumar Hirani",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "dsir_mia_actor",
-        "name": "Désiré Mia",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "nick_dionisio_other",
-        "name": "Nick Dionisio",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      }
-    ],
+    "keyPeople": [],
     "actor": "Désiré Mia",
     "actress": "",
     "productionHouse": "",
@@ -1802,36 +1245,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=rsjamVgPoI8",
     "movie": "Kahaani",
-    "keyPeople": [
-      {
-        "id": "sujoy_ghosh_director",
-        "name": "Sujoy Ghosh",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "parambrata_chatterjee_actor",
-        "name": "Parambrata Chatterjee",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "vidya_balan_actress",
-        "name": "Vidya Balan",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "viacom18_studios_producer",
-        "name": "Viacom18 Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Parambrata Chatterjee",
     "actress": "Vidya Balan",
     "productionHouse": "Viacom18 Studios",
@@ -1901,50 +1315,7 @@ export const projects: Project[] = [
     "rating": 7,
     "trailer": "https://www.youtube.com/watch?v=YH6k5weqwy8",
     "movie": "Taare Zameen Par",
-    "keyPeople": [
-      {
-        "id": "darsheel_safary_actor",
-        "name": "Darsheel Safary",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "tisca_chopra_actress",
-        "name": "Tisca Chopra",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "aamir_khan_productions_producer",
-        "name": "Aamir Khan Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "sugandha_mishra_other",
-        "name": "Sugandha Mishra",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "shankar_mahadevan_other",
-        "name": "Shankar Mahadevan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "aakriti_sharma_other",
-        "name": "Aakriti Sharma",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "Darsheel Safary",
     "actress": "Tisca Chopra",
     "productionHouse": "Aamir Khan Productions",
@@ -2012,36 +1383,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=6PjoLgcrmcQ",
     "movie": "Mughal-E-Azam",
-    "keyPeople": [
-      {
-        "id": "k_asif_director",
-        "name": "K. Asif",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "prithviraj_kapoor_actor",
-        "name": "Prithviraj Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "madhubala_actress",
-        "name": "Madhubala",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "sterling_investment_corp_producer",
-        "name": "Sterling Investment Corp.",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Prithviraj Kapoor",
     "actress": "Madhubala",
     "productionHouse": "Sterling Investment Corp.",
@@ -2108,36 +1450,7 @@ export const projects: Project[] = [
     "rating": 7.8,
     "trailer": "https://www.youtube.com/watch?v=oa2GPfhd5wg",
     "movie": "Mother India",
-    "keyPeople": [
-      {
-        "id": "mehboob_khan_director",
-        "name": "Mehboob Khan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "nargis_actor",
-        "name": "Nargis",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "nargis_actress",
-        "name": "Nargis",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "mehboob_productions_producer",
-        "name": "Mehboob Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Nargis",
     "actress": "Nargis",
     "productionHouse": "Mehboob Productions",
@@ -2198,24 +1511,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.3,
-    "trailer": "https://www.youtube.com/watch?v=Sd68k9wgQnI",
+    "trailer": "https://www.youtube.com/watch?v=IjlQJjmTIcM",
     "movie": "Pyaasa",
-    "keyPeople": [
-      {
-        "id": "anil_mattoo_a_muthu_director",
-        "name": "Anil Mattoo, A. Muthu",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "anil_mattoo_other",
-        "name": "Anil Mattoo",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -2279,43 +1577,7 @@ export const projects: Project[] = [
     "rating": 8,
     "trailer": "https://www.youtube.com/watch?v=99bTaX7AMsQ",
     "movie": "Deewaar",
-    "keyPeople": [
-      {
-        "id": "yash_chopra_director",
-        "name": "Yash Chopra",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shashi_kapoor_actor",
-        "name": "Shashi Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "nirupa_roy_actress",
-        "name": "Nirupa Roy",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "trimurti_films_pvt_ltd_producer",
-        "name": "Trimurti Films Pvt. Ltd.",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "gulshan_rai_other",
-        "name": "Gulshan Rai",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Shashi Kapoor",
     "actress": "Nirupa Roy",
     "productionHouse": "Trimurti Films Pvt. Ltd.",
@@ -2383,36 +1645,7 @@ export const projects: Project[] = [
     "rating": 7.4,
     "trailer": "https://www.youtube.com/watch?v=7uY1JbWZKPA",
     "movie": "Kabhi Khushi Kabhie Gham...",
-    "keyPeople": [
-      {
-        "id": "karan_johar_director",
-        "name": "Karan Johar",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "amitabh_bachchan_actor",
-        "name": "Amitabh Bachchan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "kajol_actress",
-        "name": "Kajol",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "yash_johar_producer",
-        "name": "Yash Johar",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Amitabh Bachchan",
     "actress": "Kajol",
     "productionHouse": "his father Yash Johar",
@@ -2478,43 +1711,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=OBAcYSSUf6o",
     "movie": "Dil Chahta Hai",
-    "keyPeople": [
-      {
-        "id": "farhan_akhtar_director",
-        "name": "Farhan Akhtar",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "aamir_khan_actor",
-        "name": "Aamir Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "preity_zinta_actress",
-        "name": "Preity Zinta",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "excel_entertainment_producer",
-        "name": "Excel Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "ritesh_sidhwani_other",
-        "name": "Ritesh Sidhwani",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Aamir Khan",
     "actress": "Preity Zinta",
     "productionHouse": "Excel Entertainment",
@@ -2582,36 +1779,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=PvdE5XMLTgs",
     "movie": "Black",
-    "keyPeople": [
-      {
-        "id": "sanjay_leela_bhansali_director",
-        "name": "Sanjay Leela Bhansali",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "vin_diesel_actor",
-        "name": "Vin Diesel",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "martha_canga_antonio_actress",
-        "name": "Martha Canga Antonio",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "a_team_productions_producer",
-        "name": "A Team Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Vin Diesel",
     "actress": "Martha Canga Antonio",
     "productionHouse": "A Team Productions",
@@ -2676,45 +1844,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.1,
-    "trailer": "https://www.youtube.com/watch?v=DrPEnrhbX4Y",
+    "trailer": "https://www.youtube.com/watch?v=6f-EaUWCua0",
     "movie": "Munna Bhai M.B.B.S.",
-    "keyPeople": [
-      {
-        "id": "rajkumar_hirani_director",
-        "name": "Rajkumar Hirani",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sanjay_dutt_actor",
-        "name": "Sanjay Dutt",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "gracy_singh_actress",
-        "name": "Gracy Singh",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "vidhu_vinod_chopra_productions_producer",
-        "name": "Vidhu Vinod Chopra Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "vidhu_vinod_chopra_other",
-        "name": "Vidhu Vinod Chopra",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Sanjay Dutt",
     "actress": "Gracy Singh",
     "productionHouse": "Vidhu Vinod Chopra Productions",
@@ -2782,36 +1914,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=QHhnhqxB4E8",
     "movie": "Rang De Basanti",
-    "keyPeople": [
-      {
-        "id": "rakeysh_omprakash_mehra_director",
-        "name": "Rakeysh Omprakash Mehra",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "an_ensemble_cast_including_aamir_khan_actor",
-        "name": "an ensemble cast including Aamir Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "alice_patten_actress",
-        "name": "Alice Patten",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "utv_motion_pictures_producer",
-        "name": "UTV Motion Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "an ensemble cast including Aamir Khan",
     "actress": "Alice Patten",
     "productionHouse": "UTV Motion Pictures",
@@ -2881,36 +1984,7 @@ export const projects: Project[] = [
     "rating": 7.6,
     "trailer": "https://www.youtube.com/watch?v=oeiKUlUUNQ8",
     "movie": "Piku",
-    "keyPeople": [
-      {
-        "id": "shoojit_sircar_director",
-        "name": "Shoojit Sircar",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "amitabh_bachchan_actor",
-        "name": "Amitabh Bachchan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "deepika_padukone_actress",
-        "name": "Deepika Padukone",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "n_producer",
-        "name": "N",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Amitabh Bachchan",
     "actress": "Deepika Padukone",
     "productionHouse": "N",
@@ -2976,43 +2050,7 @@ export const projects: Project[] = [
     "rating": 7.9,
     "trailer": "https://www.youtube.com/watch?v=unAljCZMQYw",
     "movie": "Badhaai Ho",
-    "keyPeople": [
-      {
-        "id": "amit_ravindernath_sharma_director",
-        "name": "Amit Ravindernath Sharma",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ayushmann_khurrana_actor",
-        "name": "Ayushmann Khurrana",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "neena_gupta_actress",
-        "name": "Neena Gupta",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "junglee_pictures_producer",
-        "name": "Junglee Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "amit_sharma_other",
-        "name": "Amit Sharma",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ayushmann Khurrana",
     "actress": "Neena Gupta",
     "productionHouse": "Junglee Pictures",
@@ -3080,22 +2118,7 @@ export const projects: Project[] = [
     "rating": 7.5,
     "trailer": "https://www.youtube.com/watch?v=gzeaGcLLl_A",
     "movie": "Stree",
-    "keyPeople": [
-      {
-        "id": "amar_kaushik_director",
-        "name": "Amar Kaushik",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "rajshree_actress",
-        "name": "Rajshree",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "Rajshree",
     "productionHouse": "",
@@ -3152,22 +2175,7 @@ export const projects: Project[] = [
     "rating": 8,
     "trailer": "https://www.youtube.com/watch?v=ZmN_VSo8DOo",
     "movie": "Haider",
-    "keyPeople": [
-      {
-        "id": "vishal_bhardwaj_director",
-        "name": "Vishal Bhardwaj",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "nathalie_borgers_other",
-        "name": "Nathalie Borgers",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -3230,36 +2238,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=oII-vaL3mZg",
     "movie": "A Wednesday",
-    "keyPeople": [
-      {
-        "id": "neeraj_pandey_ritesh_kumar_director",
-        "name": "Neeraj Pandey, Ritesh Kumar",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "naseeruddin_shah_actor",
-        "name": "Naseeruddin Shah",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "deepal_shaw_actress",
-        "name": "Deepal Shaw",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "ronnie_screwvala_producer",
-        "name": "Ronnie Screwvala",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Naseeruddin Shah",
     "actress": "Deepal Shaw",
     "productionHouse": "Ronnie Screwvala",
@@ -3325,50 +2304,7 @@ export const projects: Project[] = [
     "rating": 7.5,
     "trailer": "https://www.youtube.com/watch?v=ss-7iGf1xE8",
     "movie": "Bhool Bhulaiyaa",
-    "keyPeople": [
-      {
-        "id": "priyadarshan_director",
-        "name": "Priyadarshan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "kartik_aaryan_actor",
-        "name": "Kartik Aaryan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "vidya_balan_actress",
-        "name": "Vidya Balan",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "tseries_producer",
-        "name": "T-Series",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "anees_bazmee_other",
-        "name": "Anees Bazmee",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "bhushan_kumar_other",
-        "name": "Bhushan Kumar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "Kartik Aaryan",
     "actress": "Vidya Balan",
     "productionHouse": "T-Series",
@@ -3437,36 +2373,7 @@ export const projects: Project[] = [
     "rating": 7.2,
     "trailer": "https://www.youtube.com/watch?v=_cJRiAfr2PE",
     "movie": "Don",
-    "keyPeople": [
-      {
-        "id": "farhan_akhtar_director",
-        "name": "Farhan Akhtar",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "amitabh_bachchan_actor",
-        "name": "Amitabh Bachchan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "caroline_de_bruijn_actress",
-        "name": "Caroline de Bruijn",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "nariman_irani_producer",
-        "name": "Nariman Irani",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Amitabh Bachchan",
     "actress": "Caroline de Bruijn",
     "productionHouse": "Nariman Irani",
@@ -3529,64 +2436,7 @@ export const projects: Project[] = [
     "rating": 6.9,
     "trailer": "https://www.youtube.com/watch?v=KJtYvw5DakQ",
     "movie": "Satyam, Shivam, Sundaram",
-    "keyPeople": [
-      {
-        "id": "raj_kapoor_director",
-        "name": "Raj Kapoor",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "kunchacko_boban_actor",
-        "name": "Kunchacko Boban",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "aswathi_menon_actress",
-        "name": "Aswathi Menon",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "anupama_release_producer",
-        "name": "Anupama Release",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "shashi_kapoor_other",
-        "name": "Shashi Kapoor",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "zeenat_aman_other",
-        "name": "Zeenat Aman",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "kanhaiyalal_chaturvedi_other",
-        "name": "Kanhaiyalal Chaturvedi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "jainendra_jain_other",
-        "name": "Jainendra Jain",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
+    "keyPeople": [],
     "actor": "Kunchacko Boban",
     "actress": "Aswathi Menon",
     "productionHouse": "Anupama Release",
@@ -3652,36 +2502,7 @@ export const projects: Project[] = [
     "rating": 8.5,
     "trailer": "https://www.youtube.com/watch?v=3fO1f9TndAM",
     "movie": "Gol Maal",
-    "keyPeople": [
-      {
-        "id": "hrishikesh_mukherjee_director",
-        "name": "Hrishikesh Mukherjee",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "amol_palekar_actor",
-        "name": "Amol Palekar",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "bindiya_goswami_actress",
-        "name": "Bindiya Goswami",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "n_producer",
-        "name": "N",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Amol Palekar",
     "actress": "Bindiya Goswami",
     "productionHouse": "N",
@@ -3746,43 +2567,7 @@ export const projects: Project[] = [
     "rating": 8.3,
     "trailer": "https://www.youtube.com/watch?v=tsxemFX0a7k",
     "movie": "Chhichhore",
-    "keyPeople": [
-      {
-        "id": "nitesh_tiwari_director",
-        "name": "Nitesh Tiwari",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sushant_singh_rajput_actor",
-        "name": "Sushant Singh Rajput",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "shraddha_kapoor_actress",
-        "name": "Shraddha Kapoor",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "fox_star_studios_producer",
-        "name": "Fox Star Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "sajid_nadiadwala_other",
-        "name": "Sajid Nadiadwala",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Sushant Singh Rajput",
     "actress": "Shraddha Kapoor",
     "productionHouse": "Fox Star Studios",
@@ -3854,36 +2639,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=4nwAra0mz_Q",
     "movie": "Bajrangi Bhaijaan",
-    "keyPeople": [
-      {
-        "id": "kabir_khan_director",
-        "name": "Kabir Khan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "salman_khan_actor",
-        "name": "Salman Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "harshaali_malthotra_actress",
-        "name": "Harshaali Malthotra",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "rockline_entertainments_producer",
-        "name": "Rockline Entertainments",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Salman Khan",
     "actress": "Harshaali Malthotra",
     "productionHouse": "Rockline Entertainments",
@@ -3951,43 +2707,7 @@ export const projects: Project[] = [
     "rating": 9.3,
     "trailer": "https://www.youtube.com/watch?v=6hB3S9bIaco",
     "movie": "The Shawshank Redemption",
-    "keyPeople": [
-      {
-        "id": "frank_darabont_director",
-        "name": "Frank Darabont",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "tim_robbins_actor",
-        "name": "Tim Robbins",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "renee_blaine_actress",
-        "name": "Renee Blaine",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "castle_rock_entertainment_producer",
-        "name": "Castle Rock Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "niki_marvin_other",
-        "name": "Niki Marvin",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Tim Robbins",
     "actress": "Renee Blaine",
     "productionHouse": "Castle Rock Entertainment",
@@ -4056,36 +2776,7 @@ export const projects: Project[] = [
     "rating": 9.2,
     "trailer": "https://www.youtube.com/watch?v=sY1S34973zA",
     "movie": "The Godfather",
-    "keyPeople": [
-      {
-        "id": "francis_ford_coppola_director",
-        "name": "Francis Ford Coppola",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "an_ensemble_cast_that_includes_marlon_brando_actor",
-        "name": "an ensemble cast that includes Marlon Brando",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "diane_keaton_actress",
-        "name": "Diane Keaton",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "paramount_pictures_producer",
-        "name": "Paramount Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "an ensemble cast that includes Marlon Brando",
     "actress": "Diane Keaton",
     "productionHouse": "Paramount Pictures",
@@ -4154,43 +2845,7 @@ export const projects: Project[] = [
     "rating": 9,
     "trailer": "https://www.youtube.com/watch?v=EXeTwQWrcwY",
     "movie": "The Dark Knight",
-    "keyPeople": [
-      {
-        "id": "christopher_nolan_director",
-        "name": "Christopher Nolan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "christian_bale_actor",
-        "name": "Christian Bale",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "maggie_gyllenhaal_actress",
-        "name": "Maggie Gyllenhaal",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "warner_bros_pictures_producer",
-        "name": "Warner Bros. Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "emma_thomas_other",
-        "name": "Emma Thomas",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Christian Bale",
     "actress": "Maggie Gyllenhaal",
     "productionHouse": "Warner Bros. Pictures",
@@ -4262,36 +2917,7 @@ export const projects: Project[] = [
     "rating": 8.8,
     "trailer": "https://www.youtube.com/watch?v=s7EdQ4FqbhY",
     "movie": "Pulp Fiction",
-    "keyPeople": [
-      {
-        "id": "quentin_tarantino_director",
-        "name": "Quentin Tarantino",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "john_travolta_actor",
-        "name": "John Travolta",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "uma_thurman_actress",
-        "name": "Uma Thurman",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "miramax_producer",
-        "name": "Miramax",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "John Travolta",
     "actress": "Uma Thurman",
     "productionHouse": "Miramax",
@@ -4361,43 +2987,7 @@ export const projects: Project[] = [
     "rating": 8.8,
     "trailer": "https://www.youtube.com/watch?v=bLvqoHBptjg",
     "movie": "Forrest Gump",
-    "keyPeople": [
-      {
-        "id": "robert_zemeckis_director",
-        "name": "Robert Zemeckis",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "tom_hanks_actor",
-        "name": "Tom Hanks",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "robin_wright_actress",
-        "name": "Robin Wright",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "paramount_pictures_producer",
-        "name": "Paramount Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "wendy_finerman_other",
-        "name": "Wendy Finerman",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Tom Hanks",
     "actress": "Robin Wright",
     "productionHouse": "Paramount Pictures",
@@ -4469,36 +3059,7 @@ export const projects: Project[] = [
     "rating": 8.8,
     "trailer": "https://www.youtube.com/watch?v=YoHD9XEInc0",
     "movie": "Inception",
-    "keyPeople": [
-      {
-        "id": "christopher_nolan_director",
-        "name": "Christopher Nolan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "leonardo_dicaprio_actor",
-        "name": "Leonardo DiCaprio",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "marion_cotillard_actress",
-        "name": "Marion Cotillard",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "legendary_pictures_producer",
-        "name": "Legendary Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Leonardo DiCaprio as a professional thief who steals information by infiltrating the subconscious of his targets",
     "actress": "Marion Cotillard",
     "productionHouse": "Legendary Pictures",
@@ -4570,36 +3131,7 @@ export const projects: Project[] = [
     "rating": 8.8,
     "trailer": "https://www.youtube.com/watch?v=SUXWAEX2jlg",
     "movie": "Fight Club",
-    "keyPeople": [
-      {
-        "id": "david_fincher_director",
-        "name": "David Fincher",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "brad_pitt_actor",
-        "name": "Brad Pitt",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "helena_bonham_carter_actress",
-        "name": "Helena Bonham Carter",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "fox_2000_pictures_producer",
-        "name": "Fox 2000 Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Brad Pitt",
     "actress": "Helena Bonham Carter",
     "productionHouse": "Fox 2000 Pictures",
@@ -4665,36 +3197,7 @@ export const projects: Project[] = [
     "rating": 8.7,
     "trailer": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
     "movie": "The Matrix",
-    "keyPeople": [
-      {
-        "id": "lana_wachowski_lilly_wachowski_director",
-        "name": "Lana Wachowski, Lilly Wachowski",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "keanu_reeves_actor",
-        "name": "Keanu Reeves",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "carrieanne_moss_actress",
-        "name": "Carrie-Anne Moss",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "village_roadshow_pictures_producer",
-        "name": "Village Roadshow Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Keanu Reeves",
     "actress": "Carrie-Anne Moss",
     "productionHouse": "Village Roadshow Pictures",
@@ -4761,36 +3264,7 @@ export const projects: Project[] = [
     "rating": 7.8,
     "trailer": "https://www.youtube.com/watch?v=lB95KLmpLR4",
     "movie": "The Social Network",
-    "keyPeople": [
-      {
-        "id": "david_fincher_director",
-        "name": "David Fincher",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "jesse_eisenberg_actor",
-        "name": "Jesse Eisenberg",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "brenda_song_actress",
-        "name": "Brenda Song",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "columbia_pictures_producer",
-        "name": "Columbia Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Jesse Eisenberg as Facebook founder Mark Zuckerberg",
     "actress": "Brenda Song",
     "productionHouse": "Columbia Pictures",
@@ -4856,36 +3330,7 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=iszwuX1AK6A",
     "movie": "The Wolf of Wall Street",
-    "keyPeople": [
-      {
-        "id": "martin_scorsese_director",
-        "name": "Martin Scorsese",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "leonardo_dicaprio_actor",
-        "name": "Leonardo DiCaprio",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "margot_robbie_actress",
-        "name": "Margot Robbie",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "the_independent_red_granite_pictures_producer",
-        "name": "the independent Red Granite Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Leonardo DiCaprio as Belfort; Jonah Hill as his business partner",
     "actress": "Margot Robbie",
     "productionHouse": "the independent Red Granite Pictures",
@@ -4954,43 +3399,7 @@ export const projects: Project[] = [
     "rating": 7.9,
     "trailer": "https://www.youtube.com/watch?v=2e-eXJ6HgkQ",
     "movie": "Titanic",
-    "keyPeople": [
-      {
-        "id": "james_cameron_director",
-        "name": "James Cameron",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "leonardo_dicaprio_actor",
-        "name": "Leonardo DiCaprio",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "kate_winslet_actress",
-        "name": "Kate Winslet",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "paramount_pictures_producer",
-        "name": "Paramount Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "jon_landau_other",
-        "name": "Jon Landau",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Leonardo DiCaprio",
     "actress": "Kate Winslet",
     "productionHouse": "Paramount Pictures",
@@ -5066,36 +3475,7 @@ export const projects: Project[] = [
     "rating": 8.5,
     "trailer": "https://www.youtube.com/watch?v=owK1qxDselE",
     "movie": "Gladiator",
-    "keyPeople": [
-      {
-        "id": "ridley_scott_director",
-        "name": "Ridley Scott",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "russell_crowe_actor",
-        "name": "Russell Crowe",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "connie_nielsen_actress",
-        "name": "Connie Nielsen",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "universal_pictures_producer",
-        "name": "Universal Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Russell Crowe",
     "actress": "Connie Nielsen",
     "productionHouse": "Universal Pictures",
@@ -5164,43 +3544,7 @@ export const projects: Project[] = [
     "rating": 8.7,
     "trailer": "https://www.youtube.com/watch?v=zSWdZVtXT7E",
     "movie": "Interstellar",
-    "keyPeople": [
-      {
-        "id": "christopher_nolan_director",
-        "name": "Christopher Nolan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "matthew_mcconaughey_actor",
-        "name": "Matthew McConaughey",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "anne_hathaway_actress",
-        "name": "Anne Hathaway",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "legendary_pictures_producer",
-        "name": "Legendary Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "lynda_obst_other",
-        "name": "Lynda Obst",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Matthew McConaughey",
     "actress": "Anne Hathaway",
     "productionHouse": "Legendary Pictures",
@@ -5271,36 +3615,7 @@ export const projects: Project[] = [
     "rating": 8.3,
     "trailer": "https://www.youtube.com/watch?v=zAGVQLHvwOY",
     "movie": "Joker",
-    "keyPeople": [
-      {
-        "id": "todd_phillips_director",
-        "name": "Todd Phillips",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "joaquin_phoenix_actor",
-        "name": "Joaquin Phoenix",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "zazie_beetz_actress",
-        "name": "Zazie Beetz",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "warner_bros_pictures_producer",
-        "name": "Warner Bros. Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Joaquin Phoenix",
     "actress": "Zazie Beetz",
     "productionHouse": "Warner Bros. Pictures",
@@ -5370,36 +3685,7 @@ export const projects: Project[] = [
     "rating": 7.3,
     "trailer": "https://www.youtube.com/watch?v=xjDjIWPwcPU",
     "movie": "Black Panther",
-    "keyPeople": [
-      {
-        "id": "ryan_coogler_director",
-        "name": "Ryan Coogler",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "chadwick_boseman_actor",
-        "name": "Chadwick Boseman",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "lupita_nyongo_actress",
-        "name": "Lupita Nyong'o",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Chadwick Boseman as T'Challa / Black Panther alongside Michael B",
     "actress": "Lupita Nyong'o",
     "productionHouse": "Marvel Studios",
@@ -5472,43 +3758,7 @@ export const projects: Project[] = [
     "rating": 7.5,
     "trailer": "https://www.youtube.com/watch?v=h7gvFravm4A",
     "movie": "Doctor Strange",
-    "keyPeople": [
-      {
-        "id": "scott_derrickson_director",
-        "name": "Scott Derrickson",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "benedict_cumberbatch_actor",
-        "name": "Benedict Cumberbatch",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "rachel_mcadams_actress",
-        "name": "Rachel McAdams",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "kevin_feige_other",
-        "name": "Kevin Feige",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Benedict Cumberbatch",
     "actress": "Rachel McAdams",
     "productionHouse": "Marvel Studios",
@@ -5579,36 +3829,7 @@ export const projects: Project[] = [
     "rating": 7.9,
     "trailer": "https://www.youtube.com/watch?v=8ugaeA-nMTc",
     "movie": "Iron Man",
-    "keyPeople": [
-      {
-        "id": "jon_favreau_director",
-        "name": "Jon Favreau",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "robert_downey_jr_actor",
-        "name": "Robert Downey Jr",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "gwyneth_paltrow_actress",
-        "name": "Gwyneth Paltrow",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Robert Downey Jr",
     "actress": "Gwyneth Paltrow",
     "productionHouse": "Marvel Studios",
@@ -5679,43 +3900,7 @@ export const projects: Project[] = [
     "rating": 8,
     "trailer": "https://www.youtube.com/watch?v=eOrNdBpGMv8",
     "movie": "The Avengers",
-    "keyPeople": [
-      {
-        "id": "joss_whedon_director",
-        "name": "Joss Whedon",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "robert_downey_jr_actor",
-        "name": "Robert Downey Jr.",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "scarlett_johansson_actress",
-        "name": "Scarlett Johansson",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "kevin_feige_other",
-        "name": "Kevin Feige",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Robert Downey Jr.",
     "actress": "Scarlett Johansson",
     "productionHouse": "Marvel Studios",
@@ -5789,36 +3974,7 @@ export const projects: Project[] = [
     "rating": 8.4,
     "trailer": "https://www.youtube.com/watch?v=TcMBFSGVi1c",
     "movie": "Avengers: Endgame",
-    "keyPeople": [
-      {
-        "id": "anthony_russo_joe_russo_director",
-        "name": "Anthony Russo, Joe Russo",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "an_ensemble_cast_which_includes_robert_downey_jr_actor",
-        "name": "an ensemble cast which includes Robert Downey Jr",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "scarlett_johansson_actress",
-        "name": "Scarlett Johansson",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "an ensemble cast which includes Robert Downey Jr",
     "actress": "Scarlett Johansson",
     "productionHouse": "Marvel Studios",
@@ -5889,36 +4045,7 @@ export const projects: Project[] = [
     "rating": 7.9,
     "trailer": "https://www.youtube.com/watch?v=5PSNL1qE6VY",
     "movie": "Avatar",
-    "keyPeople": [
-      {
-        "id": "james_cameron_director",
-        "name": "James Cameron",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sam_worthington_actor",
-        "name": "Sam Worthington",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "zoe_saldaa_actress",
-        "name": "Zoe Saldaña",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "dune_entertainment_producer",
-        "name": "Dune Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Sam Worthington",
     "actress": "Zoe Saldaña",
     "productionHouse": "Dune Entertainment",
@@ -5988,38 +4115,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/watch?v=5xH0HfJHsaY",
+    "trailer": "https://www.youtube.com/watch?v=dKX6JwWQN5I",
     "movie": "Parasite",
-    "keyPeople": [
-      {
-        "id": "bong_joon_ho_director",
-        "name": "Bong Joon Ho",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "robert_glaudini_actor",
-        "name": "Robert Glaudini",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "demi_moore_actress",
-        "name": "Demi Moore",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "charles_band_other",
-        "name": "Charles Band",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Robert Glaudini",
     "actress": "Demi Moore",
     "productionHouse": "",
@@ -6088,43 +4186,7 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=ByXuk9QqQkk",
     "movie": "Spirited Away",
-    "keyPeople": [
-      {
-        "id": "hayao_miyazaki_director",
-        "name": "Hayao Miyazaki",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "miyu_irino_actor",
-        "name": "Miyu Irino",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "rumi_hiiragi_actress",
-        "name": "Rumi Hiiragi",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "studio_ghibli_producer",
-        "name": "Studio Ghibli",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "toshio_suzuki_other",
-        "name": "Toshio Suzuki",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Miyu Irino",
     "actress": "Rumi Hiiragi",
     "productionHouse": "Studio Ghibli",
@@ -6193,38 +4255,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.9,
-    "trailer": "https://www.youtube.com/watch?v=YhCHw0Ovqf4",
+    "trailer": "https://www.youtube.com/watch?v=iV-kbJbFjJk",
     "movie": "Crouching Tiger, Hidden Dragon",
-    "keyPeople": [
-      {
-        "id": "ang_lee_director",
-        "name": "Ang Lee",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "chow_yunfat_actor",
-        "name": "Chow Yun-fat",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "michelle_yeoh_actress",
-        "name": "Michelle Yeoh",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "edko_films_producer",
-        "name": "Edko Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Chow Yun-fat",
     "actress": "Michelle Yeoh",
     "productionHouse": "Edko Films",
@@ -6290,45 +4323,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=oLtnNw0KT78",
+    "trailer": "https://www.youtube.com/watch?v=HEFrLnS5sQY",
     "movie": "Amélie",
-    "keyPeople": [
-      {
-        "id": "jeanpierre_jeunet_director",
-        "name": "Jean-Pierre Jeunet",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "mathieu_kassovitz_actor",
-        "name": "Mathieu Kassovitz",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "audrey_tautou_actress",
-        "name": "Audrey Tautou",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "victoires_productions_producer",
-        "name": "Victoires Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "claudie_ossard_other",
-        "name": "Claudie Ossard",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Mathieu Kassovitz",
     "actress": "Audrey Tautou",
     "productionHouse": "Victoires Productions",
@@ -6399,36 +4396,7 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=EqYiSlkvRuw",
     "movie": "Pan's Labyrinth",
-    "keyPeople": [
-      {
-        "id": "guillermo_del_toro_director",
-        "name": "Guillermo del Toro",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sergi_lpez_actor",
-        "name": "Sergi López",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "ivana_baquero_actress",
-        "name": "Ivana Baquero",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "estudios_picasso_producer",
-        "name": "Estudios Picasso",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Sergi López",
     "actress": "Ivana Baquero",
     "productionHouse": "Estudios Picasso",
@@ -6497,36 +4465,7 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=ioUE_5wpg_E",
     "movie": "City of God",
-    "keyPeople": [
-      {
-        "id": "fernando_meirelles_ktia_lund_director",
-        "name": "Fernando Meirelles, Kátia Lund",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "a_cast_including_alexandre_rodrigues_actor",
-        "name": "a cast including Alexandre Rodrigues",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "alice_braga_actress",
-        "name": "Alice Braga",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "o2_filmes_producer",
-        "name": "O2 Filmes",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "a cast including Alexandre Rodrigues",
     "actress": "Alice Braga",
     "productionHouse": "O2 Filmes",
@@ -6591,52 +4530,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=2HkjrJ6IK5E",
+    "trailer": "https://www.youtube.com/watch?v=pWDtqzN2Q7w",
     "movie": "Oldboy",
-    "keyPeople": [
-      {
-        "id": "park_chanwook_director",
-        "name": "Park Chan-wook",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "josh_brolin_actor",
-        "name": "Josh Brolin",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "elizabeth_olsen_actress",
-        "name": "Elizabeth Olsen",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "40_acres_and_a_mule_filmworks_producer",
-        "name": "40 Acres and a Mule Filmworks",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "spike_lee_other",
-        "name": "Spike Lee",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "doug_davison_other",
-        "name": "Doug Davison",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "Josh Brolin",
     "actress": "Elizabeth Olsen",
     "productionHouse": "40 Acres and a Mule Filmworks",
@@ -6704,38 +4600,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.7,
-    "trailer": "https://www.youtube.com/watch?v=gBwRga4b1Os",
+    "trailer": "https://www.youtube.com/watch?v=6BS27VRZR74",
     "movie": "Roma",
-    "keyPeople": [
-      {
-        "id": "alfonso_cuarn_director",
-        "name": "Alfonso Cuarón",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "jorge_antonio_guerrero_actor",
-        "name": "Jorge Antonio Guerrero",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "yalitza_aparicio_actress",
-        "name": "Yalitza Aparicio",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "participant_producer",
-        "name": "Participant",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Jorge Antonio Guerrero",
     "actress": "Yalitza Aparicio",
     "productionHouse": "Participant",
@@ -6804,36 +4671,7 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=8CTjcVr9Iao",
     "movie": "Life Is Beautiful",
-    "keyPeople": [
-      {
-        "id": "roberto_benigni_director",
-        "name": "Roberto Benigni",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "roberto_benigni_actor",
-        "name": "Roberto Benigni",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "nicoletta_braschi_actress",
-        "name": "Nicoletta Braschi",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "mario_e_vittorio_cecchi_gori__ceiad_producer",
-        "name": "Mario e Vittorio Cecchi Gori - C.E.I.A.D.",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Roberto Benigni",
     "actress": "Nicoletta Braschi",
     "productionHouse": "Mario e Vittorio Cecchi Gori - C.E.I.A.D.",
@@ -6902,43 +4740,7 @@ export const projects: Project[] = [
     "rating": 8.5,
     "trailer": "https://www.youtube.com/watch?v=JMyVSD6OvO8",
     "movie": "Cinema Paradiso",
-    "keyPeople": [
-      {
-        "id": "giuseppe_tornatore_director",
-        "name": "Giuseppe Tornatore",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "philippe_noiret_actor",
-        "name": "Philippe Noiret",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "agnese_nano_actress",
-        "name": "Agnese Nano",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "rai_producer",
-        "name": "RAI",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "giovanna_romagnoli_other",
-        "name": "Giovanna Romagnoli",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Philippe Noiret",
     "actress": "Agnese Nano",
     "productionHouse": "RAI",
@@ -7007,36 +4809,7 @@ export const projects: Project[] = [
     "rating": 5.1,
     "trailer": "https://www.youtube.com/watch?v=mljj92tRwlk",
     "movie": "Gadar 2",
-    "keyPeople": [
-      {
-        "id": "anil_sharma_director",
-        "name": "Anil Sharma",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sunny_deol_actor",
-        "name": "Sunny Deol",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "ameesha_patel_actress",
-        "name": "Ameesha Patel",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "zee_studios_producer",
-        "name": "Zee Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Sunny Deol",
     "actress": "Ameesha Patel",
     "productionHouse": "Zee Studios",
@@ -7103,43 +4876,7 @@ export const projects: Project[] = [
     "rating": 5.8,
     "trailer": "https://www.youtube.com/watch?v=vqu4z34wENw",
     "movie": "Pathaan",
-    "keyPeople": [
-      {
-        "id": "siddharth_anand_director",
-        "name": "Siddharth Anand",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shah_rukh_khan_actor",
-        "name": "Shah Rukh Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "deepika_padukone_actress",
-        "name": "Deepika Padukone",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "yash_raj_films_producer",
-        "name": "Yash Raj Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "aditya_chopra_other",
-        "name": "Aditya Chopra",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Shah Rukh Khan",
     "actress": "Deepika Padukone",
     "productionHouse": "Yash Raj Films",
@@ -7207,66 +4944,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.8,
-    "trailer": "https://www.youtube.com/watch?v=f_vbAtFSEc0",
+    "trailer": "https://www.youtube.com/watch?v=f_vbAtFSEcA",
     "movie": "RRR",
-    "keyPeople": [
-      {
-        "id": "ss_rajamouli_director",
-        "name": "S.S. Rajamouli",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "n_t_rama_rao_jr_actor",
-        "name": "N. T. Rama Rao Jr.",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "alia_bhatt_actress",
-        "name": "Alia Bhatt",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "dvv_entertainment_producer",
-        "name": "DVV Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "nt_rama_rao_jr_other",
-        "name": "N.T. Rama Rao Jr.",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "olivia_morris_other",
-        "name": "Olivia Morris",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "s_s_rajamouli_other",
-        "name": "S. S. Rajamouli",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "dvv_danayya_other",
-        "name": "DVV Danayya",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
+    "keyPeople": [],
     "actor": "N. T. Rama Rao Jr.",
     "actress": "Alia Bhatt",
     "productionHouse": "DVV Entertainment",
@@ -7332,45 +5012,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.9,
-    "trailer": "https://www.youtube.com/watch?v=BAk5ZCoTWY8",
+    "trailer": "https://www.youtube.com/watch?v=s0VcJgRx2uQ",
     "movie": "Jawan",
-    "keyPeople": [
-      {
-        "id": "atlee_director",
-        "name": "Atlee",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shah_rukh_khan_actor",
-        "name": "Shah Rukh Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "nayanthara_actress",
-        "name": "Nayanthara",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "red_chillies_entertainment_producer",
-        "name": "Red Chillies Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "gauri_khan_other",
-        "name": "Gauri Khan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Shah Rukh Khan",
     "actress": "Nayanthara",
     "productionHouse": "Red Chillies Entertainment",
@@ -7435,38 +5079,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.5,
-    "trailer": "https://www.youtube.com/watch?v=nf39Jpi3ZQ4",
+    "trailer": "https://www.youtube.com/watch?v=aIL-8Aev9pc",
     "movie": "Rocky Aur Rani Kii Prem Kahaani",
-    "keyPeople": [
-      {
-        "id": "karan_johar_director",
-        "name": "Karan Johar",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ranveer_singh_actor",
-        "name": "Ranveer Singh",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "alia_bhatt_actress",
-        "name": "Alia Bhatt",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "dharma_productions_producer",
-        "name": "Dharma Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ranveer Singh",
     "actress": "Alia Bhatt",
     "productionHouse": "Dharma Productions",
@@ -7529,45 +5144,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.1,
-    "trailer": "https://www.youtube.com/watch?v=lIZ8Gsk8TVw",
+    "trailer": "https://www.youtube.com/watch?v=Dydmpfo6DAE",
     "movie": "Animal",
-    "keyPeople": [
-      {
-        "id": "sandeep_reddy_vanga_director",
-        "name": "Sandeep Reddy Vanga",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ranbir_kapoor_actor",
-        "name": "Ranbir Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "rashmika_mandanna_actress",
-        "name": "Rashmika Mandanna",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "tseries_producer",
-        "name": "T-Series",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "bhushan_kumar_other",
-        "name": "Bhushan Kumar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ranbir Kapoor",
     "actress": "Rashmika Mandanna",
     "productionHouse": "T-Series",
@@ -7632,38 +5211,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6,
-    "trailer": "https://www.youtube.com/watch?v=TrVaKSCUttU",
+    "trailer": "https://www.youtube.com/watch?v=YGbLz0eJ4J4",
     "movie": "Tu Jhoothi Main Makkaar",
-    "keyPeople": [
-      {
-        "id": "luv_ranjan_director",
-        "name": "Luv Ranjan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ranbir_kapoor_actor",
-        "name": "Ranbir Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "shraddha_kapoor_actress",
-        "name": "Shraddha Kapoor",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "luv_films_producer",
-        "name": "Luv Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ranbir Kapoor",
     "actress": "Shraddha Kapoor",
     "productionHouse": "Luv Films",
@@ -7722,45 +5272,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.7,
-    "trailer": "https://www.youtube.com/watch?v=7kcjLAqdTy4",
+    "trailer": "https://www.youtube.com/watch?v=7wr-g4zKjio",
     "movie": "Satyaprem Ki Katha",
-    "keyPeople": [
-      {
-        "id": "sameer_vidwans_director",
-        "name": "Sameer Vidwans",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "kartik_aaryan_actor",
-        "name": "Kartik Aaryan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "kiara_advani_actress",
-        "name": "Kiara Advani",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "nadiadwala_grandson_entertainment_producer",
-        "name": "Nadiadwala Grandson Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "sajid_nadiadwala_other",
-        "name": "Sajid Nadiadwala",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Kartik Aaryan",
     "actress": "Kiara Advani",
     "productionHouse": "Nadiadwala Grandson Entertainment",
@@ -7823,36 +5337,7 @@ export const projects: Project[] = [
     "rating": 5.8,
     "trailer": "https://www.youtube.com/watch?v=PLl99DlL6b4",
     "movie": "Bholaa",
-    "keyPeople": [
-      {
-        "id": "ajay_devgn_director",
-        "name": "Ajay Devgn",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ajay_devgn_actor",
-        "name": "Ajay Devgn",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "tabu_actress",
-        "name": "Tabu",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "dream_warrior_pictures_producer",
-        "name": "Dream Warrior Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ajay Devgn",
     "actress": "Tabu",
     "productionHouse": "Dream Warrior Pictures",
@@ -7914,45 +5399,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.5,
-    "trailer": "https://www.youtube.com/watch?v=x-KtclLsK7Q",
+    "trailer": "https://www.youtube.com/watch?v=uP0yNxTUBrU",
     "movie": "OMG 2",
-    "keyPeople": [
-      {
-        "id": "amit_rai_director",
-        "name": "Amit Rai",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "pankaj_tripathi_actor",
-        "name": "Pankaj Tripathi",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "yami_gautam_actress",
-        "name": "Yami Gautam",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "viacom18_studios_producer",
-        "name": "Viacom18 Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "rajesh_bahl_other",
-        "name": "Rajesh Bahl",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Pankaj Tripathi",
     "actress": "Yami Gautam",
     "productionHouse": "Viacom18 Studios",
@@ -8015,31 +5464,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.3,
-    "trailer": "https://www.youtube.com/watch?v=51LA7xzLgdE",
+    "trailer": "https://www.youtube.com/watch?v=o9kPJRCGAY4",
     "movie": "Dream Girl 2",
-    "keyPeople": [
-      {
-        "id": "gauri_joshi_raaj_shaandilyaa_director",
-        "name": "Gauri Joshi, Raaj Shaandilyaa",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ayushmann_khurrana_actor",
-        "name": "Ayushmann Khurrana",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "ekta_kapoor_producer",
-        "name": "Ekta Kapoor",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ayushmann Khurrana",
     "actress": "",
     "productionHouse": "Ekta Kapoor",
@@ -8084,40 +5511,11 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.5,
-    "trailer": "https://www.youtube.com/watch?v=lGAKZ6L9IVo",
+    "trailer": "https://www.youtube.com/watch?v=G2f3kF8b2uI",
     "movie": "Bheed",
-    "keyPeople": [
-      {
-        "id": "anubhav_sinha_director",
-        "name": "Anubhav Sinha",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "rajkummar_rao_actor",
-        "name": "Rajkummar Rao",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "bhumi_pednekar_actress",
-        "name": "Bhumi Pednekar",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "anubhav_sinha_producer",
-        "name": "Anubhav Sinha",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Rajkummar Rao",
-    "actress": "Bhumi Pednekar",
+    "actress": "",
     "productionHouse": "Anubhav Sinha as a fictional story set in the 2020 COVID-19 lockdown in India",
     "targetAmountHuman": "5 crore 42 lakh",
     "raisedAmountHuman": "3 crore 9 lakh",
@@ -8131,24 +5529,11 @@ export const projects: Project[] = [
           "Rajkummar Rao"
         ],
         "actor": "Rajkummar Rao",
-        "actress": "Bhumi Pednekar",
+        "actress": "",
         "director": "Anubhav Sinha"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.036,
-    "runtime": 112,
-    "releaseYear": 2023,
-    "country": "India",
-    "tmdbGenres": [
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "Hindi"
-    ],
-    "tmdbOverview": "8 hours, complete lockdown in the whole of India, movement shut and state borders sealed. Thousands of migrants without food, water and mode of transport were forced to return to their homes. A crisis that shook the whole nation, a time when borders of disparity divided the people and one man stood for humanity.",
-    "tagline": "In the darkest of times, one man stood for humanity",
-    "imdbId": "tt15680228"
+    "disabled": false
   },
   {
     "id": "133",
@@ -8173,41 +5558,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.3,
-    "trailer": "https://www.youtube.com/watch?v=lVvMbXiJjko",
+    "trailer": "https://www.youtube.com/watch?v=bjKm_jSSjsU",
     "movie": "Mrs Chatterjee vs Norway",
-    "keyPeople": [
-      {
-        "id": "ashima_chibber_director",
-        "name": "Ashima Chibber",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "rani_mukerji_actor",
-        "name": "Rani Mukerji",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "rani_mukerji_actress",
-        "name": "Rani Mukerji",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "zee_studios_producer",
-        "name": "Zee Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Rani Mukerji",
-    "actress": "Rani Mukerji",
-    "productionHouse": "Zee Studios",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "5 crore 49 lakh",
     "raisedAmountHuman": "3 crore 13 lakh",
     "keyCommunityData": [
@@ -8215,32 +5571,16 @@ export const projects: Project[] = [
         "id": "kc_133",
         "movieId": "133",
         "movieName": "Mrs Chatterjee vs Norway",
-        "productionHouse": "Zee Studios",
+        "productionHouse": "",
         "keyPeople": [
           "Rani Mukerji"
         ],
         "actor": "Rani Mukerji",
-        "actress": "Rani Mukerji",
+        "actress": "",
         "director": "Ashima Chibber"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 5.466,
-    "runtime": 135,
-    "releaseYear": 2023,
-    "country": "Estonia",
-    "tmdbGenres": [
-      "Drama",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Hindi",
-      "Norwegian"
-    ],
-    "tmdbOverview": "An immigrant Indian mother fights the Norwegian foster care system and legal machinery to win back custody of her children.",
-    "tagline": "A mother's fight against a nation.",
-    "imdbId": "tt14295590"
+    "disabled": false
   },
   {
     "id": "134",
@@ -8265,48 +5605,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.7,
-    "trailer": "https://www.youtube.com/watch?v=hAYeoRFy024",
+    "trailer": "https://www.youtube.com/watch?v=kY6KjK6F8bA",
     "movie": "Selfiee",
-    "keyPeople": [
-      {
-        "id": "raj_mehta_director",
-        "name": "Raj Mehta",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "akshay_kumar_actor",
-        "name": "Akshay Kumar",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "nushrratt_bharuccha_actress",
-        "name": "Nushrratt Bharuccha",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "dharma_productions_producer",
-        "name": "Dharma Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "supriya_menon_other",
-        "name": "Supriya Menon",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "Akshay Kumar",
-    "actress": "Nushrratt Bharuccha",
-    "productionHouse": "Dharma Productions",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "7 crore 32 lakh",
     "raisedAmountHuman": "4 crore 98 lakh",
     "keyCommunityData": [
@@ -8314,33 +5618,14 @@ export const projects: Project[] = [
         "id": "kc_134",
         "movieId": "134",
         "movieName": "Selfiee",
-        "productionHouse": "Dharma Productions",
-        "keyPeople": [
-          "Akshay Kumar",
-          "Nushrratt Bharuccha",
-          "Raj Mehta",
-          "Supriya Menon"
-        ],
-        "actor": "Akshay Kumar",
-        "actress": "Nushrratt Bharuccha",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "Raj Mehta"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 5.975,
-    "runtime": 143,
-    "releaseYear": 2023,
-    "country": "India",
-    "budget": 10000000,
-    "tmdbGenres": [
-      "Comedy",
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "Hindi"
-    ],
-    "tmdbOverview": "RTO officer Om Prakash strikes a golden opportunity to meet his icon, Vijay Kumar. Bhut when his love gets spurned by the superstar, a clash of egos ensues.",
-    "imdbId": "tt15516726"
+    "disabled": false
   },
   {
     "id": "135",
@@ -8365,47 +5650,11 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.5,
-    "trailer": "https://www.youtube.com/watch?v=CRazFLVBhw4",
+    "trailer": "https://www.youtube.com/watch?v=b6K6F8b2uIY",
     "movie": "Shehzada",
-    "keyPeople": [
-      {
-        "id": "rohit_dhawan_director",
-        "name": "Rohit Dhawan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "rajesh_khanna_actor",
-        "name": "Rajesh Khanna",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "rakhee_gulzar_actress",
-        "name": "Rakhee Gulzar",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "k_shankar_other",
-        "name": "K. Shankar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "surinder_kapoor_other",
-        "name": "Surinder Kapoor",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "Rajesh Khanna",
-    "actress": "Rakhee Gulzar",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "9 crore 36 lakh",
     "raisedAmountHuman": "5 crore 71 lakh",
@@ -8415,25 +5664,13 @@ export const projects: Project[] = [
         "movieId": "135",
         "movieName": "Shehzada",
         "productionHouse": "",
-        "keyPeople": [
-          "Rajesh Khanna",
-          "Rakhee Gulzar",
-          "K. Shankar",
-          "Surinder Kapoor"
-        ],
-        "actor": "Rajesh Khanna",
-        "actress": "Rakhee Gulzar",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "Rohit Dhawan"
       }
     ],
-    "disabled": false,
-    "releaseYear": 1972,
-    "country": "India",
-    "spokenLanguages": [
-      "Hindi"
-    ],
-    "tmdbOverview": "In this musical melodrama from 1972, optimistic and determined truck driver Shehzada (Rajesh Khanna) sets out to prove that his mother deserves to be accepted back into the wealthy family that drove her away decades ago. With help from his soon-to-be wife, Chanda (Rakhee Gulzar), Shehzada embarks on a mission to reverse his maternal grandmother's cruel decision to disown her own daughter. Karan Dewan, Madan Puri and Pandharibai co-star.",
-    "imdbId": "tt0284481"
+    "disabled": false
   },
   {
     "id": "136",
@@ -8458,40 +5695,11 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/watch?v=jeiJxgOebuc",
+    "trailer": "https://www.youtube.com/watch?v=k6F8b2uIYQI",
     "movie": "Mission Majnu",
-    "keyPeople": [
-      {
-        "id": "shantanu_bagchi_director",
-        "name": "Shantanu Bagchi",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sidharth_malhotra_actor",
-        "name": "Sidharth Malhotra",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "rashmika_mandanna_actress",
-        "name": "Rashmika Mandanna",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "ronnie_screwvala_producer",
-        "name": "Ronnie Screwvala",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Sidharth Malhotra",
-    "actress": "Rashmika Mandanna",
+    "actress": "",
     "productionHouse": "Ronnie Screwvala",
     "targetAmountHuman": "2 crore 50 lakh",
     "raisedAmountHuman": "1 crore 83 lakh",
@@ -8505,27 +5713,11 @@ export const projects: Project[] = [
           "Sidharth Malhotra"
         ],
         "actor": "Sidharth Malhotra",
-        "actress": "Rashmika Mandanna",
+        "actress": "",
         "director": "Shantanu Bagchi"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.628,
-    "runtime": 129,
-    "releaseYear": 2023,
-    "country": "India",
-    "tmdbGenres": [
-      "Thriller",
-      "Action",
-      "Drama",
-      "History"
-    ],
-    "spokenLanguages": [
-      "Hindi",
-      "Urdu"
-    ],
-    "tmdbOverview": "Set in the 1970s, an undercover Indian spy takes on a deadly mission to expose a covert nuclear weapons program in the heart of Pakistan.",
-    "imdbId": "tt13131232"
+    "disabled": false
   },
   {
     "id": "137",
@@ -8552,39 +5744,10 @@ export const projects: Project[] = [
     "rating": 8.3,
     "trailer": "https://www.youtube.com/watch?v=uYPbbksJxIg",
     "movie": "Oppenheimer",
-    "keyPeople": [
-      {
-        "id": "christopher_nolan_director",
-        "name": "Christopher Nolan",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "cillian_murphy_actor",
-        "name": "Cillian Murphy",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "emily_blunt_actress",
-        "name": "Emily Blunt",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "syncopy_producer",
-        "name": "Syncopy",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
-    "actor": "Cillian Murphy",
-    "actress": "Emily Blunt",
-    "productionHouse": "Syncopy",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "3 crore 63 lakh",
     "raisedAmountHuman": "36 lakh",
     "keyCommunityData": [
@@ -8592,35 +5755,14 @@ export const projects: Project[] = [
         "id": "kc_137",
         "movieId": "137",
         "movieName": "Oppenheimer",
-        "productionHouse": "Syncopy",
-        "keyPeople": [
-          "Cillian Murphy",
-          "Emily Blunt",
-          "Christopher Nolan"
-        ],
-        "actor": "Cillian Murphy",
-        "actress": "Emily Blunt",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "Christopher Nolan"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 8.1,
-    "runtime": 181,
-    "releaseYear": 2023,
-    "country": "United Kingdom",
-    "budget": 100000000,
-    "revenue": 952000000,
-    "tmdbGenres": [
-      "Drama",
-      "History"
-    ],
-    "spokenLanguages": [
-      "Dutch",
-      "English"
-    ],
-    "tmdbOverview": "The story of J. Robert Oppenheimer's role in the development of the atomic bomb during World War II.",
-    "tagline": "The world forever changes.",
-    "imdbId": "tt15398776"
+    "disabled": false
   },
   {
     "id": "138",
@@ -8647,39 +5789,10 @@ export const projects: Project[] = [
     "rating": 6.8,
     "trailer": "https://www.youtube.com/watch?v=pBk4NYhWNMM",
     "movie": "Barbie",
-    "keyPeople": [
-      {
-        "id": "greta_gerwig_director",
-        "name": "Greta Gerwig",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "margot_robbie_actor",
-        "name": "Margot Robbie",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "margot_robbie_actress",
-        "name": "Margot Robbie",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "luckychap_entertainment_producer",
-        "name": "LuckyChap Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Margot Robbie as the title character",
-    "actress": "Margot Robbie",
-    "productionHouse": "LuckyChap Entertainment",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "8 crore 37 lakh",
     "raisedAmountHuman": "7 crore 28 lakh",
     "keyCommunityData": [
@@ -8687,32 +5800,16 @@ export const projects: Project[] = [
         "id": "kc_138",
         "movieId": "138",
         "movieName": "Barbie",
-        "productionHouse": "LuckyChap Entertainment",
+        "productionHouse": "",
         "keyPeople": [
           "Margot Robbie as the title character"
         ],
         "actor": "Margot Robbie as the title character",
-        "actress": "Margot Robbie",
+        "actress": "",
         "director": "Greta Gerwig"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.972,
-    "runtime": 114,
-    "releaseYear": 2023,
-    "country": "United Kingdom",
-    "budget": 145000000,
-    "revenue": 1445638421,
-    "tmdbGenres": [
-      "Comedy",
-      "Adventure"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land. However, when they get a chance to go to the real world, they soon discover the joys and perils of living among humans.",
-    "tagline": "She's everything. He's just Ken.",
-    "imdbId": "tt1517268"
+    "disabled": false
   },
   {
     "id": "139",
@@ -8739,38 +5836,9 @@ export const projects: Project[] = [
     "rating": 7.6,
     "trailer": "https://www.youtube.com/watch?v=qEVUtrk8_B4",
     "movie": "John Wick: Chapter 4",
-    "keyPeople": [
-      {
-        "id": "chad_stahelski_director",
-        "name": "Chad Stahelski",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "donnie_yen_actor",
-        "name": "Donnie Yen",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "rina_sawayama_actress",
-        "name": "Rina Sawayama",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "chad_stahelski_producer",
-        "name": "Chad Stahelski",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Donnie Yen",
-    "actress": "Rina Sawayama",
+    "actress": "",
     "productionHouse": "Chad Stahelski",
     "targetAmountHuman": "6 crore 43 lakh",
     "raisedAmountHuman": "2 crore 44 lakh",
@@ -8784,36 +5852,11 @@ export const projects: Project[] = [
           "Donnie Yen"
         ],
         "actor": "Donnie Yen",
-        "actress": "Rina Sawayama",
+        "actress": "",
         "director": "Chad Stahelski"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.724,
-    "runtime": 170,
-    "releaseYear": 2023,
-    "country": "Germany",
-    "budget": 100000000,
-    "revenue": 440157245,
-    "tmdbGenres": [
-      "Action",
-      "Thriller",
-      "Crime"
-    ],
-    "spokenLanguages": [
-      "Arabic",
-      "Cantonese",
-      "English",
-      "French",
-      "German",
-      "Japanese",
-      "Latin",
-      "Russian",
-      "Spanish"
-    ],
-    "tmdbOverview": "With the price on his head ever increasing, John Wick uncovers a path to defeating The High Table. But before he can earn his freedom, Wick must face off against a new enemy with powerful alliances across the globe and forces that turn old friends into foes.",
-    "tagline": "No way back, one way out.",
-    "imdbId": "tt10366206"
+    "disabled": false
   },
   {
     "id": "140",
@@ -8840,38 +5883,9 @@ export const projects: Project[] = [
     "rating": 7.9,
     "trailer": "https://www.youtube.com/watch?v=u3V5KDHRQvk",
     "movie": "Guardians of the Galaxy Vol. 3",
-    "keyPeople": [
-      {
-        "id": "james_gunn_director",
-        "name": "James Gunn",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "an_ensemble_cast_including_chris_pratt_actor",
-        "name": "an ensemble cast including Chris Pratt",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "zoe_saldaa_actress",
-        "name": "Zoe Saldaña",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "an ensemble cast including Chris Pratt",
-    "actress": "Zoe Saldaña",
+    "actress": "",
     "productionHouse": "Marvel Studios",
     "targetAmountHuman": "3 crore 31 lakh",
     "raisedAmountHuman": "2 crore 12 lakh",
@@ -8885,29 +5899,11 @@ export const projects: Project[] = [
           "an ensemble cast including Chris Pratt"
         ],
         "actor": "an ensemble cast including Chris Pratt",
-        "actress": "Zoe Saldaña",
+        "actress": "",
         "director": "James Gunn"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.9,
-    "runtime": 150,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "budget": 250000000,
-    "revenue": 845600000,
-    "tmdbGenres": [
-      "Science Fiction",
-      "Adventure",
-      "Action",
-      "Comedy"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Peter Quill, still reeling from the loss of Gamora, must rally his team around him to defend the universe along with protecting one of their own. A mission that, if not completed successfully, could quite possibly lead to the end of the Guardians as we know them.",
-    "tagline": "Once more with feeling.",
-    "imdbId": "tt6791350"
+    "disabled": false
   },
   {
     "id": "141",
@@ -8934,38 +5930,9 @@ export const projects: Project[] = [
     "rating": 8.5,
     "trailer": "https://www.youtube.com/watch?v=shW9i6k8cB0",
     "movie": "Spider-Man: Across the Spider-Verse",
-    "keyPeople": [
-      {
-        "id": "joaquim_dos_santos_kemp_powers_justin_k_thompson_director",
-        "name": "Joaquim Dos Santos, Kemp Powers, Justin K. Thompson",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shameik_moore_actor",
-        "name": "Shameik Moore",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "hailee_steinfeld_actress",
-        "name": "Hailee Steinfeld",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "sony_pictures_animation_producer",
-        "name": "Sony Pictures Animation",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Shameik Moore as the voice of Miles",
-    "actress": "Hailee Steinfeld",
+    "actress": "",
     "productionHouse": "Sony Pictures Animation",
     "targetAmountHuman": "7 crore 88 lakh",
     "raisedAmountHuman": "1 crore 50 lakh",
@@ -8979,32 +5946,11 @@ export const projects: Project[] = [
           "Shameik Moore as the voice of Miles"
         ],
         "actor": "Shameik Moore as the voice of Miles",
-        "actress": "Hailee Steinfeld",
+        "actress": "",
         "director": "Joaquim Dos Santos, Kemp Powers, Justin K. Thompson"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 8.347,
-    "runtime": 140,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "budget": 100000000,
-    "revenue": 690897910,
-    "tmdbGenres": [
-      "Animation",
-      "Action",
-      "Adventure",
-      "Science Fiction"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Hindi",
-      "Italian",
-      "Spanish"
-    ],
-    "tmdbOverview": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse’s very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
-    "tagline": "It's how you wear the mask that matters.",
-    "imdbId": "tt9362722"
+    "disabled": false
   },
   {
     "id": "142",
@@ -9031,38 +5977,9 @@ export const projects: Project[] = [
     "rating": 5.5,
     "trailer": "https://www.youtube.com/watch?v=wS_qbDztgVY",
     "movie": "The Marvels",
-    "keyPeople": [
-      {
-        "id": "nia_dacosta_director",
-        "name": "Nia DaCosta",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "brie_larson_actor",
-        "name": "Brie Larson",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "brie_larson_actress",
-        "name": "Brie Larson",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Brie Larson as Carol Danvers / Captain Marvel",
-    "actress": "Brie Larson",
+    "actress": "",
     "productionHouse": "Marvel Studios",
     "targetAmountHuman": "38 lakh",
     "raisedAmountHuman": "4 lakh",
@@ -9076,29 +5993,11 @@ export const projects: Project[] = [
           "Brie Larson as Carol Danvers / Captain Marvel"
         ],
         "actor": "Brie Larson as Carol Danvers / Captain Marvel",
-        "actress": "Brie Larson",
+        "actress": "",
         "director": "Nia DaCosta"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 5.99,
-    "runtime": 105,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "budget": 274800000,
-    "revenue": 206136825,
-    "tmdbGenres": [
-      "Science Fiction",
-      "Adventure",
-      "Action"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Urdu"
-    ],
-    "tmdbOverview": "When her duties send her to an anomalous wormhole linked to a Kree revolutionary, Carol's powers become entangled with that of Jersey City super-fan Kamala Khan, aka Ms. Marvel, and Carol's estranged niece, now S.A.B.E.R. astronaut Captain Monica Rambeau. Together, this unlikely trio must team up and learn to work in concert to save the universe.",
-    "tagline": "Higher. Further. Faster. Together.",
-    "imdbId": "tt10676048"
+    "disabled": false
   },
   {
     "id": "143",
@@ -9125,46 +6024,10 @@ export const projects: Project[] = [
     "rating": 8.5,
     "trailer": "https://www.youtube.com/watch?v=U2Qp5pL3ovA",
     "movie": "Dune: Part Two",
-    "keyPeople": [
-      {
-        "id": "denis_villeneuve_director",
-        "name": "Denis Villeneuve",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "timothe_chalamet_actor",
-        "name": "Timothée Chalamet",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "zendaya_actress",
-        "name": "Zendaya",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "legendary_pictures_producer",
-        "name": "Legendary Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "cale_boyter_other",
-        "name": "Cale Boyter",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "Timothée Chalamet",
-    "actress": "Zendaya",
-    "productionHouse": "Legendary Pictures",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "7 crore 21 lakh",
     "raisedAmountHuman": "79 lakh",
     "keyCommunityData": [
@@ -9172,35 +6035,14 @@ export const projects: Project[] = [
         "id": "kc_143",
         "movieId": "143",
         "movieName": "Dune: Part Two",
-        "productionHouse": "Legendary Pictures",
-        "keyPeople": [
-          "Timothée Chalamet",
-          "Zendaya",
-          "Denis Villeneuve",
-          "Cale Boyter"
-        ],
-        "actor": "Timothée Chalamet",
-        "actress": "Zendaya",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "Denis Villeneuve"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 8.1,
-    "runtime": 167,
-    "releaseYear": 2024,
-    "country": "United States of America",
-    "budget": 190000000,
-    "revenue": 714444358,
-    "tmdbGenres": [
-      "Science Fiction",
-      "Adventure"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
-    "tagline": "Long live the fighters.",
-    "imdbId": "tt15239678"
+    "disabled": false
   },
   {
     "id": "144",
@@ -9227,46 +6069,10 @@ export const projects: Project[] = [
     "rating": 7,
     "trailer": "https://www.youtube.com/watch?v=otNh9bTjXWg",
     "movie": "Wonka",
-    "keyPeople": [
-      {
-        "id": "paul_king_director",
-        "name": "Paul King",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "timothe_chalamet_actor",
-        "name": "Timothée Chalamet",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "calah_lane_actress",
-        "name": "Calah Lane",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "warner_bros_pictures_producer",
-        "name": "Warner Bros. Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "luke_kelly_other",
-        "name": "Luke Kelly",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "Timothée Chalamet",
-    "actress": "Calah Lane",
-    "productionHouse": "Warner Bros. Pictures",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "7 crore 85 lakh",
     "raisedAmountHuman": "1 crore 96 lakh",
     "keyCommunityData": [
@@ -9274,36 +6080,14 @@ export const projects: Project[] = [
         "id": "kc_144",
         "movieId": "144",
         "movieName": "Wonka",
-        "productionHouse": "Warner Bros. Pictures",
-        "keyPeople": [
-          "Timothée Chalamet",
-          "Calah Lane",
-          "Paul King",
-          "Luke Kelly"
-        ],
-        "actor": "Timothée Chalamet",
-        "actress": "Calah Lane",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "Paul King"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.075,
-    "runtime": 117,
-    "releaseYear": 2023,
-    "country": "United Kingdom",
-    "budget": 125000000,
-    "revenue": 634502312,
-    "tmdbGenres": [
-      "Comedy",
-      "Family",
-      "Fantasy"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Willy Wonka – chock-full of ideas and determined to change the world one delectable bite at a time – is proof that the best things in life begin with a dream, and if you’re lucky enough to meet Willy Wonka, anything is possible.",
-    "tagline": "Every good thing in this world started with a dream.",
-    "imdbId": "tt6166392"
+    "disabled": false
   },
   {
     "id": "145",
@@ -9328,41 +6112,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.7,
-    "trailer": "https://www.youtube.com/watch?v=uqjmUK4RroM",
+    "trailer": "https://www.youtube.com/watch?v=nW94801-l5U",
     "movie": "The Hunger Games: The Ballad of Songbirds & Snakes",
-    "keyPeople": [
-      {
-        "id": "francis_lawrence_director",
-        "name": "Francis Lawrence",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "tom_blyth_actor",
-        "name": "Tom Blyth",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "rachel_zegler_actress",
-        "name": "Rachel Zegler",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "lionsgate_producer",
-        "name": "Lionsgate",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Tom Blyth",
-    "actress": "Rachel Zegler",
-    "productionHouse": "Lionsgate",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "2 crore 57 lakh",
     "raisedAmountHuman": "54 lakh",
     "keyCommunityData": [
@@ -9370,34 +6125,16 @@ export const projects: Project[] = [
         "id": "kc_145",
         "movieId": "145",
         "movieName": "The Hunger Games: The Ballad of Songbirds & Snakes",
-        "productionHouse": "Lionsgate",
+        "productionHouse": "",
         "keyPeople": [
           "Tom Blyth"
         ],
         "actor": "Tom Blyth",
-        "actress": "Rachel Zegler",
+        "actress": "",
         "director": "Francis Lawrence"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.011,
-    "runtime": 157,
-    "releaseYear": 2023,
-    "country": "Germany",
-    "budget": 100000000,
-    "revenue": 337371917,
-    "tmdbGenres": [
-      "Drama",
-      "Science Fiction",
-      "Adventure",
-      "Action"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "64 years before he becomes the tyrannical president of Panem, Coriolanus Snow sees a chance for a change in fortunes when he mentors Lucy Gray Baird, the female tribute from District 12.",
-    "tagline": "Everyone hungers for something.",
-    "imdbId": "tt10545296"
+    "disabled": false
   },
   {
     "id": "146",
@@ -9422,41 +6159,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/watch?v=0phrAZx1GLQ",
+    "trailer": "https://www.youtube.com/watch?v=avz06pdDM58",
     "movie": "Mission: Impossible – Dead Reckoning Part One",
-    "keyPeople": [
-      {
-        "id": "christopher_mcquarrie_director",
-        "name": "Christopher McQuarrie",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "tom_cruise_actor",
-        "name": "Tom Cruise",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "hayley_atwell_actress",
-        "name": "Hayley Atwell",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "paramount_pictures_producer",
-        "name": "Paramount Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
-    "actor": "Tom Cruise",
-    "actress": "Hayley Atwell",
-    "productionHouse": "Paramount Pictures",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "3 crore 7 lakh",
     "raisedAmountHuman": "86 lakh",
     "keyCommunityData": [
@@ -9464,38 +6172,14 @@ export const projects: Project[] = [
         "id": "kc_146",
         "movieId": "146",
         "movieName": "Mission: Impossible – Dead Reckoning Part One",
-        "productionHouse": "Paramount Pictures",
-        "keyPeople": [
-          "Tom Cruise",
-          "Hayley Atwell",
-          "Christopher McQuarrie"
-        ],
-        "actor": "Tom Cruise",
-        "actress": "Hayley Atwell",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "Christopher McQuarrie"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.5,
-    "runtime": 164,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "budget": 291000000,
-    "revenue": 571125435,
-    "tmdbGenres": [
-      "Action",
-      "Adventure",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "French",
-      "English",
-      "Italian",
-      "Russian"
-    ],
-    "tmdbOverview": "Ethan Hunt and his IMF team embark on their most dangerous mission yet: To track down a terrifying new weapon that threatens all of humanity before it falls into the wrong hands. With control of the future and the world's fate at stake and dark forces from Ethan's past closing in, a deadly race around the globe begins. Confronted by a mysterious, all-powerful enemy, Ethan must consider that nothing can matter more than his mission—not even the lives of those he cares about most.",
-    "tagline": "We all share the same fate.",
-    "imdbId": "tt9603212"
+    "disabled": false
   },
   {
     "id": "147",
@@ -9522,73 +6206,9 @@ export const projects: Project[] = [
     "rating": 7.5,
     "trailer": "https://www.youtube.com/watch?v=hebWYacbdvc",
     "movie": "The Flash",
-    "keyPeople": [
-      {
-        "id": "barry_allen_actor",
-        "name": "Barry Allen",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sasha_calle_actress",
-        "name": "Sasha Calle",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "dc_films_producer",
-        "name": "DC Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "grant_gustin_other",
-        "name": "Grant Gustin",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "candice_patton_other",
-        "name": "Candice Patton",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "danielle_panabaker_other",
-        "name": "Danielle Panabaker",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "greg_berlanti_other",
-        "name": "Greg Berlanti",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "geoff_johns_other",
-        "name": "Geoff Johns",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      },
-      {
-        "id": "andrew_kreisberg_other",
-        "name": "Andrew Kreisberg",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 8
-      }
-    ],
+    "keyPeople": [],
     "actor": "as Barry Allen",
-    "actress": "Sasha Calle",
+    "actress": "",
     "productionHouse": "DC Films",
     "targetAmountHuman": "2 crore 56 lakh",
     "raisedAmountHuman": "64 lakh",
@@ -9611,26 +6231,7 @@ export const projects: Project[] = [
         "director": ""
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.647,
-    "runtime": 144,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "budget": 220000000,
-    "revenue": 271333313,
-    "tmdbGenres": [
-      "Adventure",
-      "Action",
-      "Science Fiction"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Spanish",
-      "Russian"
-    ],
-    "tmdbOverview": "When his attempt to save his family inadvertently alters the future, Barry Allen becomes trapped in a reality in which General Zod has returned and there are no Super Heroes to turn to. In order to save the world that he is in and return to the future that he knows, Barry's only hope is to race for his life. But will making the ultimate sacrifice be enough to reset the universe?",
-    "tagline": "Worlds collide.",
-    "imdbId": "tt0439572"
+    "disabled": false
   },
   {
     "id": "148",
@@ -9655,48 +6256,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.5,
-    "trailer": "https://www.youtube.com/watch?v=eQfMbSe7F2g",
+    "trailer": "https://www.youtube.com/watch?v=ZfVYgWYaHm0",
     "movie": "Indiana Jones and the Dial of Destiny",
-    "keyPeople": [
-      {
-        "id": "james_mangold_director",
-        "name": "James Mangold",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "harrison_ford_actor",
-        "name": "Harrison Ford",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "phoebe_wallerbridge_actress",
-        "name": "Phoebe Waller-Bridge",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "lucasfilm_ltd_producer",
-        "name": "Lucasfilm Ltd.",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "simon_emanuel_other",
-        "name": "Simon Emanuel",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "Harrison Ford",
-    "actress": "Phoebe Waller-Bridge",
-    "productionHouse": "Lucasfilm Ltd.",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "2 crore 69 lakh",
     "raisedAmountHuman": "30 lakh",
     "keyCommunityData": [
@@ -9704,39 +6269,14 @@ export const projects: Project[] = [
         "id": "kc_148",
         "movieId": "148",
         "movieName": "Indiana Jones and the Dial of Destiny",
-        "productionHouse": "Lucasfilm Ltd.",
-        "keyPeople": [
-          "Harrison Ford",
-          "Phoebe Waller-Bridge",
-          "James Mangold",
-          "Simon Emanuel"
-        ],
-        "actor": "Harrison Ford",
-        "actress": "Phoebe Waller-Bridge",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "James Mangold"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.546,
-    "runtime": 155,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "budget": 294700000,
-    "revenue": 383963057,
-    "tmdbGenres": [
-      "Adventure",
-      "Action"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Arabic",
-      "French",
-      "German",
-      "Spanish"
-    ],
-    "tmdbOverview": "Finding himself in a new era, and approaching retirement, Indy wrestles with fitting into a world that seems to have outgrown him. But as the tentacles of an all-too-familiar evil return in the form of an old rival, Indy must don his hat and pick up his whip once more to make sure an ancient and powerful artifact doesn't fall into the wrong hands.",
-    "tagline": "His final adventure will be his greatest.",
-    "imdbId": "tt1462764"
+    "disabled": false
   },
   {
     "id": "149",
@@ -9761,40 +6301,11 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/watch?v=6IVnBjqFhKY",
+    "trailer": "https://www.youtube.com/watch?v=EPXmSJsuuqQ",
     "movie": "Killers of the Flower Moon",
-    "keyPeople": [
-      {
-        "id": "martin_scorsese_director",
-        "name": "Martin Scorsese",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "film_collaboration_between_scorsese_actor",
-        "name": "film collaboration between Scorsese",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "lily_gladstone_actress",
-        "name": "Lily Gladstone",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "scorseses_sikelia_productions_producer",
-        "name": "Scorsese's Sikelia Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "film collaboration between Scorsese",
-    "actress": "Lily Gladstone",
+    "actress": "",
     "productionHouse": "Scorsese's Sikelia Productions",
     "targetAmountHuman": "3 crore 11 lakh",
     "raisedAmountHuman": "62 lakh",
@@ -9808,30 +6319,11 @@ export const projects: Project[] = [
           "film collaboration between Scorsese"
         ],
         "actor": "film collaboration between Scorsese",
-        "actress": "Lily Gladstone",
+        "actress": "",
         "director": "Martin Scorsese"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.425,
-    "runtime": 206,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "budget": 200000000,
-    "revenue": 158722599,
-    "tmdbGenres": [
-      "Crime",
-      "History",
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "English",
-      "French",
-      "Latin"
-    ],
-    "tmdbOverview": "When oil is discovered in 1920s Oklahoma under Osage Nation land, the Osage people are murdered one by one—until the FBI steps in to unravel the mystery.",
-    "tagline": "Greed is an animal that hungers for blood.",
-    "imdbId": "tt5537002"
+    "disabled": false
   },
   {
     "id": "150",
@@ -9858,39 +6350,10 @@ export const projects: Project[] = [
     "rating": 6.3,
     "trailer": "https://www.youtube.com/watch?v=OAZWXUkrjPc",
     "movie": "Napoleon",
-    "keyPeople": [
-      {
-        "id": "ridley_scott_director",
-        "name": "Ridley Scott",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "joaquin_phoenix_actor",
-        "name": "Joaquin Phoenix",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "vanessa_kirby_actress",
-        "name": "Vanessa Kirby",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "apple_studios_producer",
-        "name": "Apple Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Joaquin Phoenix as Napoleon",
-    "actress": "Vanessa Kirby",
-    "productionHouse": "Apple Studios",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "2 crore 98 lakh",
     "raisedAmountHuman": "45 lakh",
     "keyCommunityData": [
@@ -9898,36 +6361,16 @@ export const projects: Project[] = [
         "id": "kc_150",
         "movieId": "150",
         "movieName": "Napoleon",
-        "productionHouse": "Apple Studios",
+        "productionHouse": "",
         "keyPeople": [
           "Joaquin Phoenix as Napoleon"
         ],
         "actor": "Joaquin Phoenix as Napoleon",
-        "actress": "Vanessa Kirby",
+        "actress": "",
         "director": "Ridley Scott"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.347,
-    "runtime": 158,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "budget": 165000000,
-    "revenue": 220597098,
-    "tmdbGenres": [
-      "History",
-      "War",
-      "Romance"
-    ],
-    "spokenLanguages": [
-      "German",
-      "English",
-      "French",
-      "Russian"
-    ],
-    "tmdbOverview": "An epic that details the checkered rise and fall of French Emperor Napoleon Bonaparte and his relentless journey to power through the prism of his addictive, volatile relationship with his wife, Josephine.",
-    "tagline": "He came from nothing. He conquered everything.",
-    "imdbId": "tt13287846"
+    "disabled": false
   },
   {
     "id": "151",
@@ -9952,40 +6395,11 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.7,
-    "trailer": "https://www.youtube.com/watch?v=ex3C1-5Dhb8",
+    "trailer": "https://www.youtube.com/watch?v=bcdefghijkl",
     "movie": "The Creator",
-    "keyPeople": [
-      {
-        "id": "gareth_edwards_director",
-        "name": "Gareth Edwards",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "john_david_washington_actor",
-        "name": "John David Washington",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "madeleine_yuna_voyles_actress",
-        "name": "Madeleine Yuna Voyles",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "gareth_edwards_producer",
-        "name": "Gareth Edwards",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "John David Washington",
-    "actress": "Madeleine Yuna Voyles",
+    "actress": "",
     "productionHouse": "Gareth Edwards",
     "targetAmountHuman": "7 crore 66 lakh",
     "raisedAmountHuman": "4 crore 98 lakh",
@@ -9999,31 +6413,11 @@ export const projects: Project[] = [
           "John David Washington"
         ],
         "actor": "John David Washington",
-        "actress": "Madeleine Yuna Voyles",
+        "actress": "",
         "director": "Gareth Edwards"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.049,
-    "runtime": 134,
-    "releaseYear": 2023,
-    "country": "Canada",
-    "budget": 80000000,
-    "revenue": 104272136,
-    "tmdbGenres": [
-      "Science Fiction",
-      "Action",
-      "Adventure"
-    ],
-    "spokenLanguages": [
-      "Japanese",
-      "English",
-      "Thai",
-      "Vietnamese"
-    ],
-    "tmdbOverview": "Amid a future war between the human race and the forces of artificial intelligence, a hardened ex-special forces agent grieving the disappearance of his wife, is recruited to hunt down and kill the Creator, the elusive architect of advanced AI who has developed a mysterious weapon with the power to end the war—and mankind itself.",
-    "tagline": "This is a fight for our very existence.",
-    "imdbId": "tt11858890"
+    "disabled": false
   },
   {
     "id": "152",
@@ -10048,17 +6442,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.8,
-    "trailer": "https://www.youtube.com/watch?v=6QJQysiUxKc",
+    "trailer": "https://www.youtube.com/watch?v=w11Iw7z4Zg0",
     "movie": "The Night Manager (India)",
-    "keyPeople": [
-      {
-        "id": "anil_kapoor_actor",
-        "name": "Anil Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      }
-    ],
+    "keyPeople": [],
     "actor": "Anil Kapoor",
     "actress": "",
     "productionHouse": "",
@@ -10103,34 +6489,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=rcQ_xZdzPBc",
+    "trailer": "https://www.youtube.com/watch?v=QsH4oRwM8Kw",
     "movie": "Farzi",
-    "keyPeople": [
-      {
-        "id": "shahid_kapoor_actor",
-        "name": "Shahid Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "d2r_films_producer",
-        "name": "D2R Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "vijay_sethupathi_other",
-        "name": "Vijay Sethupathi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      }
-    ],
+    "keyPeople": [],
     "actor": "Shahid Kapoor",
     "actress": "",
-    "productionHouse": "D2R Films",
+    "productionHouse": "",
     "targetAmountHuman": "2 crore 19 lakh",
     "raisedAmountHuman": "1 crore 53 lakh",
     "keyCommunityData": [
@@ -10138,7 +6502,7 @@ export const projects: Project[] = [
         "id": "kc_153",
         "movieId": "153",
         "movieName": "Farzi",
-        "productionHouse": "D2R Films",
+        "productionHouse": "",
         "keyPeople": [
           "Shahid Kapoor",
           "Vijay Sethupathi"
@@ -10148,17 +6512,7 @@ export const projects: Project[] = [
         "director": ""
       }
     ],
-    "disabled": false,
-    "tmdbRating": 8.333,
-    "releaseYear": 2023,
-    "country": "India",
-    "tmdbGenres": [
-      "Thriller",
-      "Drama"
-    ],
-    "tmdbOverview": "An artist who gets pulled into the murky high stakes of a con job and a fiery task force officer on the mission to rid the country of his menaces in a fast-paced, edgy one-of-a-kind thriller.",
-    "tagline": "Farzi",
-    "imdbId": "tt15477488"
+    "disabled": false
   },
   {
     "id": "154",
@@ -10173,7 +6527,6 @@ export const projects: Project[] = [
     "createdAt": "2025-07-07T10:40:39.925Z",
     "updatedAt": "2025-07-07T10:40:39.925Z",
     "poster": "https://m.media-amazon.com/images/M/MV5BMjI4NzM4MzA3Ml5BMl5BanBnXkFtZTgwNzg4MjMzMzE@._V1_SX300.jpg",
-    "disabled": true,
     "description": "A compelling film that explores themes of love, life, and human connection.",
     "director": "",
     "genre": "Drama, Action",
@@ -10184,45 +6537,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.4,
-    "trailer": "https://www.youtube.com/watch?v=1oCIyDZ76IY",
+    "trailer": "https://www.youtube.com/watch?v=hGPWC3JvTiA",
     "movie": "Asur 2",
-    "keyPeople": [
-      {
-        "id": "jeet_actor",
-        "name": "Jeet",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "jeet_producer",
-        "name": "Jeet",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "arshad_warsi_other",
-        "name": "Arshad Warsi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "barun_sobti_other",
-        "name": "Barun Sobti",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "riddhi_dogra_other",
-        "name": "Riddhi Dogra",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Jeet",
     "actress": "",
     "productionHouse": "Jeet",
@@ -10269,38 +6586,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/watch?v=FN9aqMPiyLQ",
+    "trailer": "https://www.youtube.com/watch?v=76543210zyx",
     "movie": "Rana Naidu",
-    "keyPeople": [
-      {
-        "id": "venkatesh_daggubati_other",
-        "name": "Venkatesh Daggubati",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 0
-      },
-      {
-        "id": "rana_daggubati_other",
-        "name": "Rana Daggubati",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "surveen_chawla_other",
-        "name": "Surveen Chawla",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "karan_anshuman_other",
-        "name": "Karan Anshuman",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -10348,55 +6636,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.1,
-    "trailer": "https://www.youtube.com/watch?v=zm6xa3ggt5A",
+    "trailer": "https://www.youtube.com/watch?v=qrstuvwxyz0",
     "movie": "Taaza Khabar",
-    "keyPeople": [
-      {
-        "id": "kiran_kumar_actor",
-        "name": "Kiran Kumar",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "radha_saluja_actress",
-        "name": "Radha Saluja",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "kiron_productions_producer",
-        "name": "Kiron Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "bhuvan_bam_other",
-        "name": "Bhuvan Bam",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "shriya_pilgaonkar_other",
-        "name": "Shriya Pilgaonkar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "deven_bhojani_other",
-        "name": "Deven Bhojani",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
-    "actor": "Kiran Kumar",
-    "actress": "Radha Saluja",
-    "productionHouse": "Kiron Productions",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "9 crore 45 lakh",
     "raisedAmountHuman": "3 crore 78 lakh",
     "keyCommunityData": [
@@ -10404,7 +6649,7 @@ export const projects: Project[] = [
         "id": "kc_156",
         "movieId": "156",
         "movieName": "Taaza Khabar",
-        "productionHouse": "Kiron Productions",
+        "productionHouse": "",
         "keyPeople": [
           "Bhuvan Bam",
           "Shriya Pilgaonkar",
@@ -10415,20 +6660,7 @@ export const projects: Project[] = [
         "director": ""
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.3,
-    "releaseYear": 1973,
-    "country": "India",
-    "tmdbGenres": [
-      "Drama",
-      "Comedy"
-    ],
-    "spokenLanguages": [
-      "Hindi"
-    ],
-    "tmdbOverview": "Sunil Mehta is a businessman married to a pretty and loving wife, Geeta.  Sunil's only problem is she is easily led to suspicion.  One day while returning from office, Sunil is attracted by the sight of a wayside carnival and decides to try the Giant Wheel drive reminiscing his childhood days.  Unfortunately, Sunil gets stuck in mid-air due to a mechanical problem in the Giant Wheel and is unable to return home till the next morning.  Geeta suspects Sunil is seeing someone else and even though Sunil says the truth to Geeta, she doesn't believe it and so starts a hilarious and twisted tale that engulfs three happily married couples.",
-    "tagline": "Based on Gujarati play Chakdol",
-    "imdbId": "tt0177502"
+    "disabled": false
   },
   {
     "id": "157",
@@ -10455,60 +6687,10 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=uLtkt8BonwM",
     "movie": "The Last of Us",
-    "keyPeople": [
-      {
-        "id": "neil_druckmann_actor",
-        "name": "Neil Druckmann",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ashley_johnson_actress",
-        "name": "Ashley Johnson",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "area_5_producer",
-        "name": "AREA 5",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "bella_ramsey_other",
-        "name": "Bella Ramsey",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "pedro_pascal_other",
-        "name": "Pedro Pascal",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "gabriel_luna_other",
-        "name": "Gabriel Luna",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "craig_mazin_other",
-        "name": "Craig Mazin",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
-    "actor": "Neil Druckmann",
-    "actress": "Ashley Johnson",
-    "productionHouse": "AREA 5",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "1 crore 80 lakh",
     "raisedAmountHuman": "14 lakh",
     "keyCommunityData": [
@@ -10516,7 +6698,7 @@ export const projects: Project[] = [
         "id": "kc_157",
         "movieId": "157",
         "movieName": "The Last of Us",
-        "productionHouse": "AREA 5",
+        "productionHouse": "",
         "keyPeople": [
           "Bella Ramsey",
           "Pedro Pascal",
@@ -10529,19 +6711,7 @@ export const projects: Project[] = [
         "director": ""
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.9,
-    "runtime": 121,
-    "releaseYear": 2024,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Learn directly from the team at Naughty Dog about what it took to bring the acclaimed sequel The Last of Us Part II to life, with a new behind-the-scenes look at development.",
-    "imdbId": "tt30852316"
+    "disabled": false
   },
   {
     "id": "158",
@@ -10566,53 +6736,10 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8,
-    "trailer": "https://www.youtube.com/watch?v=uQx8jKiIDTI",
+    "trailer": "https://www.youtube.com/watch?v=Di310WS8IDQ",
     "movie": "Wednesday",
-    "keyPeople": [
-      {
-        "id": "jack_lemmon_actor",
-        "name": "Jack Lemmon",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "jenna_ortega_other",
-        "name": "Jenna Ortega",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "hunter_doohan_other",
-        "name": "Hunter Doohan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "emma_myers_other",
-        "name": "Emma Myers",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "alfred_gough_other",
-        "name": "Alfred Gough",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "miles_millar_other",
-        "name": "Miles Millar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
-    "actor": "Jack Lemmon",
+    "keyPeople": [],
+    "actor": "",
     "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "6 crore 22 lakh",
@@ -10635,18 +6762,7 @@ export const projects: Project[] = [
         "director": ""
       }
     ],
-    "disabled": false,
-    "tmdbRating": 5.5,
-    "runtime": 17,
-    "releaseYear": 1974,
-    "tmdbGenres": [
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Jack Lemmon stars as a talk radio DJ who runs into some serious trouble live on the air.",
-    "imdbId": "tt0168251"
+    "disabled": false
   },
   {
     "id": "159",
@@ -10671,24 +6787,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.9,
-    "trailer": "https://www.youtube.com/watch?v=odnRRZKhNPk",
+    "trailer": "https://www.youtube.com/watch?v=dcbaZYXWVUT",
     "movie": "The Mandalorian (Season 3)",
-    "keyPeople": [
-      {
-        "id": "warsi_franchise_actor",
-        "name": "Wars</i> franchise",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "lucasfilm_producer",
-        "name": "Lucasfilm",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 1
-      }
-    ],
+    "keyPeople": [],
     "actor": "Wars</i> franchise",
     "actress": "",
     "productionHouse": "Lucasfilm",
@@ -10733,7 +6834,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.9,
-    "trailer": "https://www.youtube.com/watch?v=sSvpZGwaTZw",
+    "trailer": "https://www.youtube.com/watch?v=ONMLKJIHGFE",
     "movie": "You (Season 4)",
     "keyPeople": [],
     "actor": "",
@@ -10778,33 +6879,11 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.7,
-    "trailer": "https://www.youtube.com/watch?v=nW948Va-l10",
+    "trailer": "https://www.youtube.com/watch?v=SRQPONMLKJI",
     "movie": "Loki (Season 2)",
-    "keyPeople": [
-      {
-        "id": "alongside_sophia_di_martino_actor",
-        "name": "alongside Sophia Di Martino",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sophia_di_martino_actress",
-        "name": "Sophia Di Martino",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      }
-    ],
+    "keyPeople": [],
     "actor": "alongside Sophia Di Martino",
-    "actress": "Sophia Di Martino",
+    "actress": "",
     "productionHouse": "Marvel Studios",
     "targetAmountHuman": "9 crore 74 lakh",
     "raisedAmountHuman": "8 crore 86 lakh",
@@ -10818,23 +6897,11 @@ export const projects: Project[] = [
           "alongside Sophia Di Martino"
         ],
         "actor": "alongside Sophia Di Martino",
-        "actress": "Sophia Di Martino",
+        "actress": "",
         "director": ""
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.5,
-    "runtime": 58,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Through candid interviews with the creative minds behind the show, and exclusive on-set footage, discover how the talented team that powered \"Loki: Season 2\" raised the stakes for this latest MCU adventure. Witness imaginative costumes, elaborate environments, and far-out variants come to life, meet new allies and foes, and time-slip across the Multiverse.",
-    "imdbId": "tt28889780"
+    "disabled": false
   },
   {
     "id": "162",
@@ -10861,45 +6928,9 @@ export const projects: Project[] = [
     "rating": 8,
     "trailer": "https://www.youtube.com/watch?v=oqxAJKy0ii4",
     "movie": "Squid Game",
-    "keyPeople": [
-      {
-        "id": "hwang_donghyuk_actor",
-        "name": "Hwang Dong-hyuk",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "chae_kyoungsun_actress",
-        "name": "Chae Kyoung-sun",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "lee_jungjae_other",
-        "name": "Lee Jung-jae",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "greg_chun_other",
-        "name": "Greg Chun",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "tom_choi_other",
-        "name": "Tom Choi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "Hwang Dong-hyuk",
-    "actress": "Chae Kyoung-sun",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "59 lakh",
     "raisedAmountHuman": "32 lakh",
@@ -10920,18 +6951,7 @@ export const projects: Project[] = [
         "director": ""
       }
     ],
-    "disabled": false,
-    "tmdbRating": 8.498,
-    "runtime": 28,
-    "releaseYear": 2025,
-    "country": "South Korea",
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "Korean"
-    ],
-    "tmdbOverview": "From set designs to character arcs, get exclusive cast and director interviews on how Season 2 of the globally most-watched series was brought to life."
+    "disabled": false
   },
   {
     "id": "163",
@@ -10956,38 +6976,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.8,
-    "trailer": "https://www.youtube.com/watch?v=JkoA9sJbuNU",
+    "trailer": "https://www.youtube.com/watch?v=QyJ6rFQ5r4o",
     "movie": "Money Heist: Korea – Joint Economic Area",
-    "keyPeople": [
-      {
-        "id": "yoo_jitae_actor",
-        "name": "Yoo Ji-tae",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "lee_joobin_other",
-        "name": "Lee Joo-bin",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "yunjin_kim_other",
-        "name": "Yunjin Kim",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "lex_pina_other",
-        "name": "Álex Pina",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Yoo Ji-tae",
     "actress": "",
     "productionHouse": "",
@@ -11035,7 +7026,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.8,
-    "trailer": "https://www.youtube.com/watch?v=U4JYAx5rNRA",
+    "trailer": "https://www.youtube.com/watch?v=mfBYfmdNIJ4",
     "movie": "Bridgerton (Season 3)",
     "keyPeople": [],
     "actor": "",
@@ -11080,62 +7071,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/watch?v=UHiwdDFPsZY",
+    "trailer": "https://www.youtube.com/watch?v=baZYXWVUTSR",
     "movie": "The Bear",
-    "keyPeople": [
-      {
-        "id": "pictures_actor",
-        "name": "Pictures",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ingrid_bols_berdal_actress",
-        "name": "Ingrid Bolsø Berdal",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "kostrfilm_producer",
-        "name": "Kostr-Film",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "jeremy_allen_white_other",
-        "name": "Jeremy Allen White",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "ebon_mossbachrach_other",
-        "name": "Ebon Moss-Bachrach",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "ayo_edebiri_other",
-        "name": "Ayo Edebiri",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "christopher_storer_other",
-        "name": "Christopher Storer",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
+    "keyPeople": [],
     "actor": "Pictures",
-    "actress": "Ingrid Bolsø Berdal",
-    "productionHouse": "Kostr-Film",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "10 crore 52 lakh",
     "raisedAmountHuman": "9 crore 60 lakh",
     "keyCommunityData": [
@@ -11143,7 +7084,7 @@ export const projects: Project[] = [
         "id": "kc_165",
         "movieId": "165",
         "movieName": "The Bear",
-        "productionHouse": "Kostr-Film",
+        "productionHouse": "",
         "keyPeople": [
           "Jeremy Allen White",
           "Ebon Moss-Bachrach",
@@ -11155,16 +7096,7 @@ export const projects: Project[] = [
         "director": ""
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6,
-    "runtime": 20,
-    "releaseYear": 2018,
-    "country": "Sweden",
-    "tmdbGenres": [
-      "Drama"
-    ],
-    "tmdbOverview": "A succesful woman at the top of her career is fed up with being a human being, buys herself a bear suit and emigrates to the wilderness.",
-    "imdbId": "tt8637042"
+    "disabled": false
   },
   {
     "id": "166",
@@ -11189,69 +7121,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.7,
-    "trailer": "https://www.youtube.com/watch?v=mmkLMXN_lpI",
+    "trailer": "https://www.youtube.com/watch?v=mnopqrstuvw",
     "movie": "Gen V",
-    "keyPeople": [
-      {
-        "id": "gen_hoshino_actor",
-        "name": "Gen Hoshino",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "victor_entertainment_producer",
-        "name": "Victor Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "jaz_sinclair_other",
-        "name": "Jaz Sinclair",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "lizze_broadway_other",
-        "name": "Lizze Broadway",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "maddie_phillips_other",
-        "name": "Maddie Phillips",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "seth_rogen_other",
-        "name": "Seth Rogen",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "evan_goldberg_other",
-        "name": "Evan Goldberg",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "eric_kripke_other",
-        "name": "Eric Kripke",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
-    "actor": "Gen Hoshino",
+    "keyPeople": [],
+    "actor": "",
     "actress": "",
-    "productionHouse": "Victor Entertainment",
+    "productionHouse": "",
     "targetAmountHuman": "9 crore 57 lakh",
     "raisedAmountHuman": "8 crore 100 lakh",
     "keyCommunityData": [
@@ -11259,7 +7134,7 @@ export const projects: Project[] = [
         "id": "kc_166",
         "movieId": "166",
         "movieName": "Gen V",
-        "productionHouse": "Victor Entertainment",
+        "productionHouse": "",
         "keyPeople": [
           "Jaz Sinclair",
           "Lizze Broadway",
@@ -11273,19 +7148,7 @@ export const projects: Project[] = [
         "director": ""
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7,
-    "runtime": 153,
-    "releaseYear": 2019,
-    "country": "Japan",
-    "tmdbGenres": [
-      "Music",
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "Japanese"
-    ],
-    "tmdbOverview": "Singer-songwriter Gen Hoshino takes the stage at the sold out Tokyo Dome in his highly anticipated 2019 Pop Virus dome tour."
+    "disabled": false
   },
   {
     "id": "186",
@@ -11310,73 +7173,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.2,
-    "trailer": "https://www.youtube.com/watch?v=BKZNvBfHcJQ",
+    "trailer": "https://www.youtube.com/watch?v=75cE9tqTtZ4",
     "movie": "Brahmastra",
-    "keyPeople": [
-      {
-        "id": "perala_director",
-        "name": "Perala",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ranbir_kapoor_actor",
-        "name": "Ranbir Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "alia_bhatt_actress",
-        "name": "Alia Bhatt",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "dharma_productions_producer",
-        "name": "Dharma Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "ambarish_other",
-        "name": "Ambarish",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "tn_balakrishna_other",
-        "name": "T.N. Balakrishna",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "mukhyamantri_chandru_other",
-        "name": "Mukhyamantri Chandru",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "kv_raju_other",
-        "name": "K.V. Raju",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      },
-      {
-        "id": "ms_anantha_rao_other",
-        "name": "M.S. Anantha Rao",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 8
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ranbir Kapoor",
     "actress": "Alia Bhatt",
     "productionHouse": "Dharma Productions",
@@ -11401,19 +7200,7 @@ export const projects: Project[] = [
         "director": "Perala"
       }
     ],
-    "disabled": true,
-    "tmdbRating": 5.3,
-    "runtime": 141,
-    "releaseYear": 2019,
-    "country": "India",
-    "tmdbGenres": [
-      "Comedy"
-    ],
-    "spokenLanguages": [
-      "Kannada"
-    ],
-    "tmdbOverview": "Gubbi Mele Brhmastra is a 2019 Indian Kannada romantic comedy film written and directed by Sujay Shastry making his debut[1] . The film is produced by T.R.Chandrashekhar under his banner Crystal Park Cinemas. A fun journey of software engineer Gubbi and his friend to release his kidnapped girlfriend.",
-    "imdbId": "tt10300674"
+    "disabled": true
   },
   {
     "id": "187",
@@ -11440,50 +7227,7 @@ export const projects: Project[] = [
     "rating": 4,
     "trailer": "https://www.youtube.com/watch?v=JKa05nyUmuQ",
     "movie": "KGF Chapter 2",
-    "keyPeople": [
-      {
-        "id": "prashanth_neel_director",
-        "name": "Prashanth Neel",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "yash_actor",
-        "name": "Yash",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "srinidhi_shetty_actress",
-        "name": "Srinidhi Shetty",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "hombale_films_producer",
-        "name": "Hombale Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "raveena_tandon_other",
-        "name": "Raveena Tandon",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "vijay_kiragandur_other",
-        "name": "Vijay Kiragandur",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "Yash",
     "actress": "Srinidhi Shetty",
     "productionHouse": "Hombale Films",
@@ -11495,36 +7239,13 @@ export const projects: Project[] = [
         "movieId": "187",
         "movieName": "KGF Chapter 2",
         "productionHouse": "Hombale Films",
-        "keyPeople": [
-          "Yash",
-          "Raveena Tandon",
-          "Prashanth Neel",
-          "Vijay Kiragandur"
-        ],
+        "keyPeople": [],
         "actor": "Yash",
         "actress": "Srinidhi Shetty",
         "director": "Prashanth Neel"
       }
     ],
-    "disabled": true,
-    "tmdbRating": 7.471,
-    "runtime": 168,
-    "releaseYear": 2022,
-    "country": "India",
-    "budget": 13000000,
-    "revenue": 90410749,
-    "tmdbGenres": [
-      "Action",
-      "Thriller",
-      "Adventure",
-      "Crime"
-    ],
-    "spokenLanguages": [
-      "Kannada"
-    ],
-    "tmdbOverview": "The blood-soaked land of Kolar Gold Fields (KGF) has a new overlord now - Rocky, whose name strikes fear in the heart of his foes. His allies look up to Rocky as their Savior, the government sees him as a threat to law and order; enemies are clamoring for revenge and conspiring for his downfall. Bloodier battles and darker days await as Rocky continues on his quest for unchallenged supremacy.",
-    "tagline": "The World Is My Territory",
-    "imdbId": "tt10698680"
+    "disabled": true
   },
   {
     "id": "188",
@@ -11549,45 +7270,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/watch?v=Q1NKMPhP8PY",
+    "trailer": "https://www.youtube.com/watch?v=Q1NKMPhV8aI",
     "movie": "Pushpa: The Rise",
-    "keyPeople": [
-      {
-        "id": "sukumar_director",
-        "name": "Sukumar",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "allu_arjun_actor",
-        "name": "Allu Arjun",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "rashmika_mandanna_actress",
-        "name": "Rashmika Mandanna",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "mythri_movie_makers_producer",
-        "name": "Mythri Movie Makers",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "naveen_yerneni_other",
-        "name": "Naveen Yerneni",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Allu Arjun",
     "actress": "Rashmika Mandanna",
     "productionHouse": "Mythri Movie Makers",
@@ -11599,33 +7284,13 @@ export const projects: Project[] = [
         "movieId": "188",
         "movieName": "Pushpa: The Rise",
         "productionHouse": "Mythri Movie Makers",
-        "keyPeople": [
-          "Allu Arjun",
-          "Rashmika Mandanna",
-          "Sukumar",
-          "Naveen Yerneni"
-        ],
+        "keyPeople": [],
         "actor": "Allu Arjun",
         "actress": "Rashmika Mandanna",
         "director": "Sukumar"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7,
-    "runtime": 179,
-    "releaseYear": 2021,
-    "country": "India",
-    "revenue": 44880143,
-    "tmdbGenres": [
-      "Action",
-      "Drama",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "Telugu"
-    ],
-    "tmdbOverview": "Pushpa Raj is a coolie who rises in the world of red sandalwood smuggling. Along the way, he doesn’t shy from making an enemy or two.",
-    "imdbId": "tt9389998"
+    "disabled": false
   },
   {
     "id": "189",
@@ -11650,45 +7315,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.9,
-    "trailer": "https://www.youtube.com/watch?v=u5r77-OQwa8",
+    "trailer": "https://www.youtube.com/watch?v=WzB6JX_SamI",
     "movie": "Sooryavanshi",
-    "keyPeople": [
-      {
-        "id": "rohit_shetty_director",
-        "name": "Rohit Shetty",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "akshay_kumar_actor",
-        "name": "Akshay Kumar",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "katrina_kaif_actress",
-        "name": "Katrina Kaif",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "reliance_entertainment_producer",
-        "name": "Reliance Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "hiroo_johar_other",
-        "name": "Hiroo Johar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Akshay Kumar",
     "actress": "Katrina Kaif",
     "productionHouse": "Reliance Entertainment",
@@ -11700,35 +7329,13 @@ export const projects: Project[] = [
         "movieId": "189",
         "movieName": "Sooryavanshi",
         "productionHouse": "Reliance Entertainment",
-        "keyPeople": [
-          "Akshay Kumar",
-          "Katrina Kaif",
-          "Rohit Shetty",
-          "Hiroo Johar"
-        ],
+        "keyPeople": [],
         "actor": "Akshay Kumar",
         "actress": "Katrina Kaif",
         "director": "Rohit Shetty"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 5.771,
-    "runtime": 145,
-    "releaseYear": 2021,
-    "country": "India",
-    "budget": 13000000,
-    "revenue": 35000000,
-    "tmdbGenres": [
-      "Action",
-      "Crime",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "Hindi"
-    ],
-    "tmdbOverview": "A fearless, faithful albeit slightly forgetful Mumbai cop, Veer Sooryavanshi, the chief of the Anti-Terrorism Squad in India pulls out all the stops and stunts to thwart a major conspiracy to attack his city.",
-    "tagline": "Police is coming.",
-    "imdbId": "tt9531772"
+    "disabled": false
   },
   {
     "id": "190",
@@ -11755,36 +7362,7 @@ export const projects: Project[] = [
     "rating": 6.2,
     "trailer": "https://www.youtube.com/watch?v=tQ0mzXRk-oM",
     "movie": "War",
-    "keyPeople": [
-      {
-        "id": "philip_g_atwell_director",
-        "name": "Philip G. Atwell",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "hrithik_roshan_actor",
-        "name": "Hrithik Roshan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "vaani_kapoor_actress",
-        "name": "Vaani Kapoor",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "yash_raj_films_producer",
-        "name": "Yash Raj Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Hrithik Roshan",
     "actress": "Vaani Kapoor",
     "productionHouse": "Yash Raj Films",
@@ -11829,36 +7407,7 @@ export const projects: Project[] = [
     "rating": 5.5,
     "trailer": "https://www.youtube.com/watch?v=PtFY3WHztZc",
     "movie": "Simmba",
-    "keyPeople": [
-      {
-        "id": "rohit_shetty_director",
-        "name": "Rohit Shetty",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ranveer_singh_actor",
-        "name": "Ranveer Singh",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "sara_ali_khan_actress",
-        "name": "Sara Ali Khan",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "dharma_productions_producer",
-        "name": "Dharma Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ranveer Singh",
     "actress": "Sara Ali Khan",
     "productionHouse": "Dharma Productions",
@@ -11903,36 +7452,7 @@ export const projects: Project[] = [
     "rating": 7.6,
     "trailer": "https://www.youtube.com/watch?v=1J76wN0TPI4",
     "movie": "Sanju",
-    "keyPeople": [
-      {
-        "id": "rajkumar_hirani_director",
-        "name": "Rajkumar Hirani",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ranbir_kapoor_actor",
-        "name": "Ranbir Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "sonam_kapoor_actress",
-        "name": "Sonam Kapoor",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "vinod_chopra_films_producer",
-        "name": "Vinod Chopra Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ranbir Kapoor",
     "actress": "Sonam Kapoor",
     "productionHouse": "Vinod Chopra Films",
@@ -11977,43 +7497,7 @@ export const projects: Project[] = [
     "rating": 7,
     "trailer": "https://www.youtube.com/watch?v=RiANSSgCuJk",
     "movie": "Kabir Singh",
-    "keyPeople": [
-      {
-        "id": "sandeep_reddy_vanga_director",
-        "name": "Sandeep Reddy Vanga",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shahid_kapoor_actor",
-        "name": "Shahid Kapoor",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "kiara_advani_actress",
-        "name": "Kiara Advani",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "tseries_producer",
-        "name": "T-Series",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "murad_khetani_other",
-        "name": "Murad Khetani",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Shahid Kapoor",
     "actress": "Kiara Advani",
     "productionHouse": "T-Series",
@@ -12025,33 +7509,13 @@ export const projects: Project[] = [
         "movieId": "193",
         "movieName": "Kabir Singh",
         "productionHouse": "T-Series",
-        "keyPeople": [
-          "Shahid Kapoor",
-          "Kiara Advani",
-          "Sandeep Reddy Vanga",
-          "Murad Khetani"
-        ],
+        "keyPeople": [],
         "actor": "Shahid Kapoor",
         "actress": "Kiara Advani",
         "director": "Sandeep Reddy Vanga"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.471,
-    "runtime": 172,
-    "releaseYear": 2019,
-    "country": "India",
-    "budget": 8751000,
-    "revenue": 55478164,
-    "tmdbGenres": [
-      "Drama",
-      "Romance"
-    ],
-    "spokenLanguages": [
-      "Hindi"
-    ],
-    "tmdbOverview": "Kabir, a genius yet hostile medical student, falls in love with Preeti from his college. When Preeti's father spots the couple kissing, he opposes their relationship and decides to marry her off.",
-    "imdbId": "tt8983202"
+    "disabled": false
   },
   {
     "id": "199",
@@ -12078,43 +7542,7 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=JfVOs4VSpmA",
     "movie": "Spider-Man: No Way Home",
-    "keyPeople": [
-      {
-        "id": "jon_watts_director",
-        "name": "Jon Watts",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "tom_holland_actor",
-        "name": "Tom Holland",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "zendaya_actress",
-        "name": "Zendaya",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "kevin_feige_other",
-        "name": "Kevin Feige",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Tom Holland",
     "actress": "Zendaya",
     "productionHouse": "Marvel Studios",
@@ -12127,36 +7555,13 @@ export const projects: Project[] = [
         "movieId": "199",
         "movieName": "Spider-Man: No Way Home",
         "productionHouse": "Marvel Studios",
-        "keyPeople": [
-          "Tom Holland",
-          "Zendaya",
-          "Jon Watts",
-          "Kevin Feige"
-        ],
+        "keyPeople": [],
         "actor": "Tom Holland",
         "actress": "Zendaya",
         "director": "Jon Watts"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.943,
-    "runtime": 148,
-    "releaseYear": 2021,
-    "country": "United States of America",
-    "budget": 200000000,
-    "revenue": 1921847111,
-    "tmdbGenres": [
-      "Action",
-      "Adventure",
-      "Science Fiction"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Tagalog"
-    ],
-    "tmdbOverview": "Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
-    "tagline": "Enter the Multiverse.",
-    "imdbId": "tt10872600"
+    "disabled": false
   },
   {
     "id": "200",
@@ -12183,43 +7588,7 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=qSqVVswa420",
     "movie": "Top Gun: Maverick",
-    "keyPeople": [
-      {
-        "id": "joseph_kosinski_director",
-        "name": "Joseph Kosinski",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "tom_cruise_actor",
-        "name": "Tom Cruise",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "jennifer_connelly_actress",
-        "name": "Jennifer Connelly",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "paramount_pictures_producer",
-        "name": "Paramount Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "christopher_mcquarrie_other",
-        "name": "Christopher McQuarrie",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Tom Cruise",
     "actress": "Jennifer Connelly",
     "productionHouse": "Paramount Pictures",
@@ -12232,34 +7601,13 @@ export const projects: Project[] = [
         "movieId": "200",
         "movieName": "Top Gun: Maverick",
         "productionHouse": "Paramount Pictures",
-        "keyPeople": [
-          "Tom Cruise",
-          "Jennifer Connelly",
-          "Joseph Kosinski",
-          "Christopher McQuarrie"
-        ],
+        "keyPeople": [],
         "actor": "Tom Cruise",
         "actress": "Jennifer Connelly",
         "director": "Joseph Kosinski"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 8.174,
-    "runtime": 131,
-    "releaseYear": 2022,
-    "country": "United States of America",
-    "budget": 170000000,
-    "revenue": 1488732821,
-    "tmdbGenres": [
-      "Action",
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "After more than thirty years of service as one of the Navy’s top aviators, and dodging the advancement in rank that would ground him, Pete “Maverick” Mitchell finds himself training a detachment of TOP GUN graduates for a specialized mission the likes of which no living pilot has ever seen.",
-    "tagline": "Feel the need... The need for speed.",
-    "imdbId": "tt1745960"
+    "disabled": false
   },
   {
     "id": "201",
@@ -12286,43 +7634,7 @@ export const projects: Project[] = [
     "rating": 7.5,
     "trailer": "https://www.youtube.com/watch?v=d9MyW72ELq0",
     "movie": "Avatar: The Way of Water",
-    "keyPeople": [
-      {
-        "id": "james_cameron_director",
-        "name": "James Cameron",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sam_worthington_actor",
-        "name": "Sam Worthington",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "zoe_saldana_actress",
-        "name": "Zoe Saldana",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "20th_century_studios_producer",
-        "name": "20th Century Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "zoe_saldaa_other",
-        "name": "Zoe Saldaña",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Sam Worthington",
     "actress": "Zoe Saldana",
     "productionHouse": "20th Century Studios",
@@ -12334,34 +7646,13 @@ export const projects: Project[] = [
         "movieId": "201",
         "movieName": "Avatar: The Way of Water",
         "productionHouse": "20th Century Studios",
-        "keyPeople": [
-          "Sam Worthington",
-          "Zoe Saldaña",
-          "James Cameron"
-        ],
+        "keyPeople": [],
         "actor": "Sam Worthington",
         "actress": "Zoe Saldana",
         "director": "James Cameron"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.611,
-    "runtime": 192,
-    "releaseYear": 2022,
-    "country": "United States of America",
-    "budget": 460000000,
-    "revenue": 2320250281,
-    "tmdbGenres": [
-      "Science Fiction",
-      "Adventure",
-      "Action"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Set more than a decade after the events of the first film, learn the story of the Sully family (Jake, Neytiri, and their kids), the trouble that follows them, the lengths they go to keep each other safe, the battles they fight to stay alive, and the tragedies they endure.",
-    "tagline": "Return to Pandora.",
-    "imdbId": "tt1630029"
+    "disabled": false
   },
   {
     "id": "202",
@@ -12386,59 +7677,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.3,
-    "trailer": "https://www.youtube.com/watch?v=8g18jFHCLXk",
+    "trailer": "https://www.youtube.com/watch?v=n9xhJrPXop4",
     "movie": "Dune",
-    "keyPeople": [
-      {
-        "id": "david_lynch_director",
-        "name": "David Lynch",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "timothe_chalamet_actor",
-        "name": "Timothée Chalamet",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "zendaya_actress",
-        "name": "Zendaya",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "legendary_pictures_producer",
-        "name": "Legendary Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "rebecca_ferguson_other",
-        "name": "Rebecca Ferguson",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "denis_villeneuve_other",
-        "name": "Denis Villeneuve",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "mary_parent_other",
-        "name": "Mary Parent",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
+    "keyPeople": [],
     "actor": "Timothée Chalamet",
     "actress": "Zendaya",
     "productionHouse": "Legendary Pictures",
@@ -12450,35 +7691,13 @@ export const projects: Project[] = [
         "movieId": "202",
         "movieName": "Dune",
         "productionHouse": "Legendary Pictures",
-        "keyPeople": [
-          "Timothée Chalamet",
-          "Rebecca Ferguson",
-          "Denis Villeneuve",
-          "Mary Parent"
-        ],
+        "keyPeople": [],
         "actor": "Timothée Chalamet",
         "actress": "Zendaya",
         "director": "David Lynch"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.783,
-    "runtime": 155,
-    "releaseYear": 2021,
-    "country": "United States of America",
-    "budget": 165000000,
-    "revenue": 407573628,
-    "tmdbGenres": [
-      "Science Fiction",
-      "Adventure"
-    ],
-    "spokenLanguages": [
-      "Mandarin",
-      "English"
-    ],
-    "tmdbOverview": "Paul Atreides, a brilliant and gifted young man born into a great destiny beyond his understanding, must travel to the most dangerous planet in the universe to ensure the future of his family and his people. As malevolent forces explode into conflict over the planet's exclusive supply of the most precious resource in existence-a commodity capable of unlocking humanity's greatest potential-only those who can conquer their fear will survive.",
-    "tagline": "It begins.",
-    "imdbId": "tt1160419"
+    "disabled": false
   },
   {
     "id": "203",
@@ -12506,36 +7725,7 @@ export const projects: Project[] = [
     "rating": 7.8,
     "trailer": "https://www.youtube.com/watch?v=mqqft2x_Aa4",
     "movie": "The Batman",
-    "keyPeople": [
-      {
-        "id": "matt_reeves_director",
-        "name": "Matt Reeves",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "robert_pattinson_actor",
-        "name": "Robert Pattinson",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "zo_kravitz_actress",
-        "name": "Zoë Kravitz",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "warner_bros_producer",
-        "name": "Warner Bros.",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Robert Pattinson",
     "actress": "Zoë Kravitz",
     "productionHouse": "Warner Bros.",
@@ -12547,34 +7737,13 @@ export const projects: Project[] = [
         "movieId": "203",
         "movieName": "The Batman",
         "productionHouse": "Warner Bros.",
-        "keyPeople": [
-          "Robert Pattinson",
-          "Zoë Kravitz",
-          "Matt Reeves"
-        ],
+        "keyPeople": [],
         "actor": "Robert Pattinson",
         "actress": "Zoë Kravitz",
         "director": "Matt Reeves"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.657,
-    "runtime": 177,
-    "releaseYear": 2022,
-    "country": "United States of America",
-    "budget": 185000000,
-    "revenue": 772319315,
-    "tmdbGenres": [
-      "Crime",
-      "Mystery",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "In his second year of fighting crime, Batman uncovers corruption in Gotham City that connects to his own family while facing a serial killer known as the Riddler.",
-    "tagline": "Unmask the truth.",
-    "imdbId": "tt1877830"
+    "disabled": false
   },
   {
     "id": "204",
@@ -12599,45 +7768,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.3,
-    "trailer": "https://www.youtube.com/watch?v=BIhNsAtPbPI",
+    "trailer": "https://www.youtube.com/watch?v=BIh2Atdk7AI",
     "movie": "No Time to Die",
-    "keyPeople": [
-      {
-        "id": "cary_joji_fukunaga_director",
-        "name": "Cary Joji Fukunaga",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "daniel_craig_actor",
-        "name": "Daniel Craig",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "la_seydoux_actress",
-        "name": "Léa Seydoux",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "eon_productions_producer",
-        "name": "Eon Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "barbara_broccoli_other",
-        "name": "Barbara Broccoli",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Daniel Craig",
     "actress": "Léa Seydoux",
     "productionHouse": "Eon Productions",
@@ -12649,39 +7782,13 @@ export const projects: Project[] = [
         "movieId": "204",
         "movieName": "No Time to Die",
         "productionHouse": "Eon Productions",
-        "keyPeople": [
-          "Daniel Craig",
-          "Léa Seydoux",
-          "Cary Joji Fukunaga",
-          "Barbara Broccoli"
-        ],
+        "keyPeople": [],
         "actor": "Daniel Craig",
         "actress": "Léa Seydoux",
         "director": "Cary Joji Fukunaga"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.364,
-    "runtime": 163,
-    "releaseYear": 2021,
-    "country": "United Kingdom",
-    "budget": 250000000,
-    "revenue": 774153024,
-    "tmdbGenres": [
-      "Action",
-      "Thriller",
-      "Adventure"
-    ],
-    "spokenLanguages": [
-      "English",
-      "French",
-      "Italian",
-      "Russian",
-      "Spanish"
-    ],
-    "tmdbOverview": "Bond has left active service and is enjoying a tranquil life in Jamaica. His peace is short-lived when his old friend Felix Leiter from the CIA turns up asking for help. The mission to rescue a kidnapped scientist turns out to be far more treacherous than expected, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.",
-    "tagline": "The mission that changes everything begins…",
-    "imdbId": "tt2382320"
+    "disabled": false
   },
   {
     "id": "205",
@@ -12708,50 +7815,7 @@ export const projects: Project[] = [
     "rating": 6.6,
     "trailer": "https://www.youtube.com/watch?v=Fp9pNPdNwjI",
     "movie": "Black Widow",
-    "keyPeople": [
-      {
-        "id": "cate_shortland_director",
-        "name": "Cate Shortland",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "scarlett_johansson_actor",
-        "name": "Scarlett Johansson",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "florence_pugh_actress",
-        "name": "Florence Pugh",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "david_harbour_other",
-        "name": "David Harbour",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "kevin_feige_other",
-        "name": "Kevin Feige",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "Scarlett Johansson",
     "actress": "Florence Pugh",
     "productionHouse": "Marvel Studios",
@@ -12763,36 +7827,13 @@ export const projects: Project[] = [
         "movieId": "205",
         "movieName": "Black Widow",
         "productionHouse": "Marvel Studios",
-        "keyPeople": [
-          "David Harbour",
-          "Scarlett Johansson",
-          "Cate Shortland",
-          "Kevin Feige"
-        ],
+        "keyPeople": [],
         "actor": "Scarlett Johansson",
         "actress": "Florence Pugh",
         "director": "Cate Shortland"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.2,
-    "runtime": 134,
-    "releaseYear": 2021,
-    "country": "United States of America",
-    "budget": 200000000,
-    "revenue": 379751131,
-    "tmdbGenres": [
-      "Action",
-      "Adventure",
-      "Science Fiction"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Russian"
-    ],
-    "tmdbOverview": "Natasha Romanoff, also known as Black Widow, confronts the darker parts of her ledger when a dangerous conspiracy with ties to her past arises. Pursued by a force that will stop at nothing to bring her down, Natasha must deal with her history as a spy and the broken relationships left in her wake long before she became an Avenger.",
-    "tagline": "Her world. Her secrets. Her legacy.",
-    "imdbId": "tt3480822"
+    "disabled": false
   },
   {
     "id": "206",
@@ -12817,45 +7858,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.7,
-    "trailer": "https://www.youtube.com/watch?v=32RAq6JzY-w",
+    "trailer": "https://www.youtube.com/watch?v=32RAAG6J_Ks",
     "movie": "Fast X",
-    "keyPeople": [
-      {
-        "id": "louis_leterrier_director",
-        "name": "Louis Leterrier",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "vin_diesel_actor",
-        "name": "Vin Diesel",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "michelle_rodriguez_actress",
-        "name": "Michelle Rodriguez",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "universal_pictures_producer",
-        "name": "Universal Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "justin_lin_other",
-        "name": "Justin Lin",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Vin Diesel",
     "actress": "Michelle Rodriguez",
     "productionHouse": "Universal Pictures",
@@ -12867,38 +7872,13 @@ export const projects: Project[] = [
         "movieId": "206",
         "movieName": "Fast X",
         "productionHouse": "Universal Pictures",
-        "keyPeople": [
-          "Vin Diesel",
-          "Michelle Rodriguez",
-          "Louis Leterrier",
-          "Justin Lin"
-        ],
+        "keyPeople": [],
         "actor": "Vin Diesel",
         "actress": "Michelle Rodriguez",
         "director": "Louis Leterrier"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.038,
-    "runtime": 142,
-    "releaseYear": 2023,
-    "country": "United States of America",
-    "budget": 340000000,
-    "revenue": 704709660,
-    "tmdbGenres": [
-      "Action",
-      "Crime",
-      "Thriller",
-      "Adventure",
-      "Mystery"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Spanish"
-    ],
-    "tmdbOverview": "Over many missions and against impossible odds, Dom Toretto and his family have outsmarted, out-nerved and outdriven every foe in their path. Now, they confront the most lethal opponent they've ever faced: A terrifying threat emerging from the shadows of the past who's fueled by blood revenge, and who is determined to shatter this family and destroy everything—and everyone—that Dom loves, forever.",
-    "tagline": "The end of the road begins.",
-    "imdbId": "tt5433140"
+    "disabled": false
   },
   {
     "id": "61",
@@ -12929,53 +7909,10 @@ export const projects: Project[] = [
     "rating": 8.5,
     "trailer": "https://www.youtube.com/watch?v=AkUgf2jIPyI",
     "movie": "Sacred Games",
-    "keyPeople": [
-      {
-        "id": "members_include_radhika_apte_actor",
-        "name": "members include Radhika Apte",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "atalante_film_producer",
-        "name": "Atalante Film",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "saif_ali_khan_other",
-        "name": "Saif Ali Khan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "nawazuddin_siddiqui_other",
-        "name": "Nawazuddin Siddiqui",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "neeraj_kabi_other",
-        "name": "Neeraj Kabi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "varun_grover_other",
-        "name": "Varun Grover",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "members include Radhika Apte",
     "actress": "",
-    "productionHouse": "Atalante Film",
+    "productionHouse": "",
     "targetAmountHuman": "4 crore 92 lakh",
     "raisedAmountHuman": "44 lakh",
     "featured": true,
@@ -12984,7 +7921,7 @@ export const projects: Project[] = [
         "id": "kc_61",
         "movieId": "61",
         "movieName": "Sacred Games",
-        "productionHouse": "Atalante Film",
+        "productionHouse": "",
         "keyPeople": [
           "Saif Ali Khan",
           "Nawazuddin Siddiqui",
@@ -12996,19 +7933,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "runtime": 73,
-    "releaseYear": 2022,
-    "country": "Germany",
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "English",
-      "German"
-    ],
-    "tmdbOverview": "Johann Sebastian Bach is not only one of the greatest composers of all time, but perhaps also the most mysterious. Who was this inconspicuous man from Thuringia, whose music still deeply touches people from all over the world?",
-    "imdbId": "tt27815457"
+    "disabled": false
   },
   {
     "id": "62",
@@ -13039,74 +7964,10 @@ export const projects: Project[] = [
     "rating": 8.4,
     "trailer": "https://www.youtube.com/watch?v=xMKzdQrC5TI",
     "movie": "Mirzapur",
-    "keyPeople": [
-      {
-        "id": "pankaj_tripathi_actor",
-        "name": "Pankaj Tripathi",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shweta_tripathi_sharma_actress",
-        "name": "Shweta Tripathi Sharma",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "excel_entertainment_producer",
-        "name": "Excel Entertainment",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "ali_fazal_other",
-        "name": "Ali Fazal",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "rasika_dugal_other",
-        "name": "Rasika Dugal",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "shweta_tripathi_other",
-        "name": "Shweta Tripathi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "puneet_krishna_other",
-        "name": "Puneet Krishna",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "karan_anshuman_other",
-        "name": "Karan Anshuman",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      },
-      {
-        "id": "apurva_dhar_badgaiyan_other",
-        "name": "Apurva Dhar Badgaiyan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 8
-      }
-    ],
-    "actor": "Pankaj Tripathi",
-    "actress": "Shweta Tripathi Sharma",
-    "productionHouse": "Excel Entertainment",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "2 crore 27 lakh",
     "raisedAmountHuman": "1 crore 29 lakh",
     "featured": true,
@@ -13115,7 +7976,7 @@ export const projects: Project[] = [
         "id": "kc_62",
         "movieId": "62",
         "movieName": "Mirzapur",
-        "productionHouse": "Excel Entertainment",
+        "productionHouse": "",
         "keyPeople": [
           "Ali Fazal",
           "Rasika Dugal",
@@ -13129,17 +7990,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "releaseYear": 2026,
-    "country": "India",
-    "tmdbGenres": [
-      "Crime",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "Hindi"
-    ],
-    "imdbId": "tt34339725"
+    "disabled": false
   },
   {
     "id": "63",
@@ -13170,36 +8021,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=cNwWMW4mxO8",
     "movie": "Paatal Lok",
-    "keyPeople": [
-      {
-        "id": "jaideep_ahlawat_other",
-        "name": "Jaideep Ahlawat",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 0
-      },
-      {
-        "id": "ishwak_singh_other",
-        "name": "Ishwak Singh",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "neeraj_kabi_other",
-        "name": "Neeraj Kabi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "sudip_sharma_other",
-        "name": "Sudip Sharma",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -13253,39 +8075,10 @@ export const projects: Project[] = [
     "rating": 6.8,
     "trailer": "https://www.youtube.com/watch?v=XatRGut65VI",
     "movie": "The Family Man",
-    "keyPeople": [
-      {
-        "id": "brett_ratner_director",
-        "name": "Brett Ratner",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "nicolas_cage_actor",
-        "name": "Nicolas Cage",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "ta_leoni_actress",
-        "name": "Téa Leoni",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "beacon_pictures_producer",
-        "name": "Beacon Pictures",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Nicolas Cage",
-    "actress": "Téa Leoni",
-    "productionHouse": "Beacon Pictures",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "8 crore 25 lakh",
     "raisedAmountHuman": "25 lakh",
     "keyCommunityData": [
@@ -13293,34 +8086,16 @@ export const projects: Project[] = [
         "id": "kc_64",
         "movieId": "64",
         "movieName": "The Family Man",
-        "productionHouse": "Beacon Pictures",
+        "productionHouse": "",
         "keyPeople": [
           "Nicolas Cage"
         ],
         "actor": "Nicolas Cage",
-        "actress": "Téa Leoni",
+        "actress": "",
         "director": "Brett Ratner"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.801,
-    "runtime": 125,
-    "releaseYear": 2000,
-    "country": "United States of America",
-    "budget": 60000000,
-    "revenue": 124700000,
-    "tmdbGenres": [
-      "Comedy",
-      "Drama",
-      "Romance",
-      "Fantasy"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Jack's lavish, fast-paced lifestyle changes one Christmas night when he stumbles into a grocery store holdup and disarms the gunman. The next morning he wakes up in bed lying next to Kate, his college sweetheart he left in order to pursue his career, and to the horrifying discovery that his former life no longer exists. As he stumbles through this alternate suburban universe, Jack finds himself at a crossroad where he must choose between his high-power career and the woman he loves.",
-    "tagline": "What if you made different choices? What if you said yes, instead of no? What if you got a second chance?",
-    "imdbId": "tt0218967"
+    "disabled": false
   },
   {
     "id": "65",
@@ -13350,38 +8125,9 @@ export const projects: Project[] = [
     "rating": 8.5,
     "trailer": "https://www.youtube.com/watch?v=jNuKwlKJx2E",
     "movie": "Delhi Crime",
-    "keyPeople": [
-      {
-        "id": "shefali_shah_actress",
-        "name": "Shefali Shah",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "rajesh_tailang_other",
-        "name": "Rajesh Tailang",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "rasika_dugal_other",
-        "name": "Rasika Dugal",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "richie_mehta_other",
-        "name": "Richie Mehta",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
-    "actress": "Shefali Shah",
+    "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "1 crore 4 lakh",
     "raisedAmountHuman": "37 lakh",
@@ -13402,14 +8148,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "runtime": 11,
-    "releaseYear": 2022,
-    "spokenLanguages": [
-      "English",
-      "Hindi"
-    ],
-    "tmdbOverview": "A look behind the horrifying true story of Delhi Crime Season 2."
+    "disabled": false
   },
   {
     "id": "66",
@@ -13439,66 +8178,9 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=u0UkDQaR5KQ",
     "movie": "Made in Heaven",
-    "keyPeople": [
-      {
-        "id": "timothy_hutton_actor",
-        "name": "Timothy Hutton",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "helene_chadwick_actress",
-        "name": "Helene Chadwick",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "lorimar_productions_producer",
-        "name": "Lorimar Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "sobhita_dhulipala_other",
-        "name": "Sobhita Dhulipala",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "arjun_mathur_other",
-        "name": "Arjun Mathur",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "jim_sarbh_other",
-        "name": "Jim Sarbh",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "zoya_akhtar_other",
-        "name": "Zoya Akhtar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "reema_kagti_other",
-        "name": "Reema Kagti",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
+    "keyPeople": [],
     "actor": "Timothy Hutton",
-    "actress": "Helene Chadwick",
+    "actress": "",
     "productionHouse": "Lorimar Productions",
     "targetAmountHuman": "4 crore 46 lakh",
     "raisedAmountHuman": "2 crore 19 lakh",
@@ -13520,20 +8202,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "runtime": 50,
-    "releaseYear": 1921,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Comedy",
-      "Romance"
-    ],
-    "spokenLanguages": [
-      "No Language"
-    ],
-    "tmdbOverview": "William Lowry rescues Claudia Royce from a burning building, and upon hearing that her parents are trying to force her to accept millionaire Leland, whom she does not love, he proposes a marriage of convenience to himself. She accepts, and Bill arranges a fake ceremony; but when she falls in love with Davidge, Bill refuses her a \"divorce.\" Later, Bill gets rich in the manufacture of a patented fireman's pole, and when he buys a house for Claudia she realizes her love for him and they are legally married.",
-    "tagline": "Fireman William Lowry tries to help an heiress by agreeing to a marriage of convenience.",
-    "imdbId": "tt0012429"
+    "disabled": false
   },
   {
     "id": "67",
@@ -13562,55 +8231,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.1,
-    "trailer": "https://www.youtube.com/watch?v=OstwwYcz8nI",
+    "trailer": "https://www.youtube.com/watch?v=GfLhuXcj4b4",
     "movie": "Breathe",
-    "keyPeople": [
-      {
-        "id": "andy_serkis_director",
-        "name": "Andy Serkis",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "common_actor",
-        "name": "Common",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "jennifer_hudson_actress",
-        "name": "Jennifer Hudson",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "thunder_road_producer",
-        "name": "Thunder Road",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "stefon_bristol_other",
-        "name": "Stefon Bristol",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "basil_iwanyk_other",
-        "name": "Basil Iwanyk",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
-    "actor": "Common",
-    "actress": "Jennifer Hudson",
-    "productionHouse": "Thunder Road",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "6 crore 1 lakh",
     "raisedAmountHuman": "5 crore 53 lakh",
     "keyCommunityData": [
@@ -13618,35 +8244,14 @@ export const projects: Project[] = [
         "id": "kc_67",
         "movieId": "67",
         "movieName": "Breathe",
-        "productionHouse": "Thunder Road",
-        "keyPeople": [
-          "Common",
-          "Jennifer Hudson",
-          "Stefon Bristol",
-          "Basil Iwanyk"
-        ],
-        "actor": "Common",
-        "actress": "Jennifer Hudson",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "Andy Serkis"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 5.736,
-    "runtime": 93,
-    "releaseYear": 2024,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Action",
-      "Science Fiction",
-      "Mystery",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Air-supply is scarce in the near future, forcing a mother and daughter to fight for survival when two strangers arrive desperate for an oxygenated haven.",
-    "tagline": "Time is running out.",
-    "imdbId": "tt11540468"
+    "disabled": false
   },
   {
     "id": "68",
@@ -13676,50 +8281,7 @@ export const projects: Project[] = [
     "rating": 9,
     "trailer": "https://www.youtube.com/watch?v=pNZQ6msbOvM",
     "movie": "Kota Factory",
-    "keyPeople": [
-      {
-        "id": "mayur_more_other",
-        "name": "Mayur More",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 0
-      },
-      {
-        "id": "jitendra_kumar_other",
-        "name": "Jitendra Kumar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "ranjan_raj_other",
-        "name": "Ranjan Raj",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "saurabh_khanna_other",
-        "name": "Saurabh Khanna",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "arunabh_kumar_other",
-        "name": "Arunabh Kumar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "raghav_subbu_other",
-        "name": "Raghav Subbu",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -13775,59 +8337,9 @@ export const projects: Project[] = [
     "rating": 7.7,
     "trailer": "https://www.youtube.com/watch?v=ZYajW2ePmFQ",
     "movie": "Aarya",
-    "keyPeople": [
-      {
-        "id": "allu_arjun_actor",
-        "name": "Allu Arjun",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "kajal_agarwal_actress",
-        "name": "Kajal Agarwal",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "sushmita_sen_other",
-        "name": "Sushmita Sen",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "vikas_kumar_other",
-        "name": "Vikas Kumar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "virti_vaghani_other",
-        "name": "Virti Vaghani",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "ram_madhvani_other",
-        "name": "Ram Madhvani",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "sandeep_modi_other",
-        "name": "Sandeep Modi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
-    "actor": "Allu Arjun",
-    "actress": "Kajal Agarwal",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "4 crore 78 lakh",
     "raisedAmountHuman": "1 crore 72 lakh",
@@ -13849,22 +8361,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.9,
-    "runtime": 155,
-    "releaseYear": 2009,
-    "country": "India",
-    "tmdbGenres": [
-      "Action",
-      "Comedy",
-      "Romance"
-    ],
-    "spokenLanguages": [
-      "Telugu"
-    ],
-    "tmdbOverview": "Two young boys staying together at an orphanage become friends. One of them is adopted by a wealthy family and grows up to become the owner of a software company. He provides employment for his friend, but when they both fall in love with the same young woman, conflict emerges.",
-    "tagline": "Baby He Loves You",
-    "imdbId": "tt1526323"
+    "disabled": false
   },
   {
     "id": "70",
@@ -13893,38 +8390,9 @@ export const projects: Project[] = [
     "rating": 7,
     "trailer": "https://www.youtube.com/watch?v=oveko3h4pxk",
     "movie": "Asur",
-    "keyPeople": [
-      {
-        "id": "pavel_director",
-        "name": "Pavel",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sampath_raj_actor",
-        "name": "Sampath Raj",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "regina_cassandra_actress",
-        "name": "Regina Cassandra",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "nagu_other",
-        "name": "Nagu",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
-    "actor": "Sampath Raj",
-    "actress": "Regina Cassandra",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "2 crore 54 lakh",
     "raisedAmountHuman": "8 lakh",
@@ -13934,28 +8402,13 @@ export const projects: Project[] = [
         "movieId": "70",
         "movieName": "Asur",
         "productionHouse": "",
-        "keyPeople": [
-          "Sampath Raj",
-          "Regina Cassandra",
-          "Nagu"
-        ],
-        "actor": "Sampath Raj",
-        "actress": "Regina Cassandra",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "Pavel"
       }
     ],
-    "disabled": false,
-    "runtime": 135,
-    "releaseYear": 2006,
-    "country": "India",
-    "tmdbGenres": [
-      "Drama",
-      "Romance"
-    ],
-    "spokenLanguages": [
-      "Tamil"
-    ],
-    "tmdbOverview": "Guna unites his brother and his lover after overcoming a number of problems. But when he falls in love with a girl who does not reciprocate his feelings, his brother's wife comes to his aid."
+    "disabled": false
   },
   {
     "id": "71",
@@ -13986,36 +8439,7 @@ export const projects: Project[] = [
     "rating": 8.1,
     "trailer": "https://www.youtube.com/watch?v=98pKCUl4ljM",
     "movie": "Criminal Justice",
-    "keyPeople": [
-      {
-        "id": "forest_whitaker_actor",
-        "name": "Forest Whitaker",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "vikrant_massey_other",
-        "name": "Vikrant Massey",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "pankaj_tripathi_other",
-        "name": "Pankaj Tripathi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "rucha_inamdar_other",
-        "name": "Rucha Inamdar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Forest Whitaker",
     "actress": "",
     "productionHouse": "",
@@ -14037,18 +8461,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "runtime": 56,
-    "releaseYear": 1987,
-    "tmdbGenres": [
-      "Crime",
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "A behind the scenes look at the day to day operations of the criminal Justice System. This one hour documentary follows three cases through the courts; a rape, a robbery, and a homicide to their very different, and unexpected conclusions. Each case is set against a background of comments from attorneys and police officers, about major problems they encounter.",
-    "tagline": "Robbery. Rape. Murder."
+    "disabled": false
   },
   {
     "id": "72",
@@ -14079,66 +8492,9 @@ export const projects: Project[] = [
     "rating": 6.7,
     "trailer": "https://www.youtube.com/watch?v=pymRhLERVI4",
     "movie": "Hostages",
-    "keyPeople": [
-      {
-        "id": "colin_firth_actor",
-        "name": "Colin Firth",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "kathy_bates_actress",
-        "name": "Kathy Bates",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "toni_collette_other",
-        "name": "Toni Collette",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "tate_donovan_other",
-        "name": "Tate Donovan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "rhys_coiro_other",
-        "name": "Rhys Coiro",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "alon_aranya_other",
-        "name": "Alon Aranya",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "jeffrey_nachmanoff_other",
-        "name": "Jeffrey Nachmanoff",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "omri_givon_other",
-        "name": "Omri Givon",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
-    "actor": "Colin Firth",
-    "actress": "Kathy Bates",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "5 crore 2 lakh",
     "raisedAmountHuman": "2 crore 36 lakh",
@@ -14161,20 +8517,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 5.889,
-    "runtime": 96,
-    "releaseYear": 1992,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Drama",
-      "TV Movie"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "True account of the six men held hostage by religious extremists in Beirut during the Reagan-Bush era.",
-    "imdbId": "tt0107141"
+    "disabled": false
   },
   {
     "id": "73",
@@ -14204,60 +8547,10 @@ export const projects: Project[] = [
     "rating": 7.9,
     "trailer": "https://www.youtube.com/watch?v=T1y3aIfZXJ8",
     "movie": "Inside Edge",
-    "keyPeople": [
-      {
-        "id": "batrice_dalle_actor",
-        "name": "Béatrice Dalle",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "janet_haley_actress",
-        "name": "Janet Haley",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "atlantic_releasing_corporation_producer",
-        "name": "Atlantic Releasing Corporation",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "tanuj_virwani_other",
-        "name": "Tanuj Virwani",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "sayani_gupta_other",
-        "name": "Sayani Gupta",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "richa_chadha_other",
-        "name": "Richa Chadha",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "karan_anshuman_other",
-        "name": "Karan Anshuman",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
+    "keyPeople": [],
     "actor": "Béatrice Dalle",
-    "actress": "Janet Haley",
-    "productionHouse": "Atlantic Releasing Corporation",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "7 crore 43 lakh",
     "raisedAmountHuman": "1 crore 34 lakh",
     "keyCommunityData": [
@@ -14265,7 +8558,7 @@ export const projects: Project[] = [
         "id": "kc_73",
         "movieId": "73",
         "movieName": "Inside Edge",
-        "productionHouse": "Atlantic Releasing Corporation",
+        "productionHouse": "",
         "keyPeople": [
           "Tanuj Virwani",
           "Sayani Gupta",
@@ -14277,22 +8570,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 4.667,
-    "runtime": 82,
-    "releaseYear": 1993,
-    "country": "Mexico",
-    "tmdbGenres": [
-      "Crime",
-      "Action",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "For months, Richard Montana has been giving drug lord Mario Gio hell. But it's only when he meets Gio's leggy blonde girlfriend, nightclub singer Lisa, that things get personal. And after Montana and Lisa have been in bed, things get absolutely deadly. Especially because the headstrong beauty has her own plans. Because only she is the key to Gio's next big deal. And Lisa wants the drugs, the dollars and Montana all to herself. And because that's the case, all hell breaks loose and Gio's killers go on the hunt!",
-    "tagline": "Cold Cash. Hot War. A tough cop takes a gang for a rough ride...",
-    "imdbId": "tt0107219"
+    "disabled": false
   },
   {
     "id": "74",
@@ -14322,29 +8600,7 @@ export const projects: Project[] = [
     "rating": 9.1,
     "trailer": "https://www.youtube.com/watch?v=84Jk1OqDqOo",
     "movie": "TVF Pitchers",
-    "keyPeople": [
-      {
-        "id": "naveen_kasturia_other",
-        "name": "Naveen Kasturia",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 0
-      },
-      {
-        "id": "arunabh_kumar_other",
-        "name": "Arunabh Kumar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "abhay_mahajan_other",
-        "name": "Abhay Mahajan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -14394,45 +8650,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/watch?v=VwK1hmPH_e8",
+    "trailer": "https://www.youtube.com/watch?v=sjJmM97brLA",
     "movie": "TVF Tripling",
-    "keyPeople": [
-      {
-        "id": "sumeet_vyas_other",
-        "name": "Sumeet Vyas",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 0
-      },
-      {
-        "id": "maanvi_gagroo_other",
-        "name": "Maanvi Gagroo",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "amol_parashar_other",
-        "name": "Amol Parashar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "arunabh_kumar_other",
-        "name": "Arunabh Kumar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "sameer_saxena_other",
-        "name": "Sameer Saxena",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -14486,59 +8706,9 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=LhpA-_8cWv8",
     "movie": "Little Things",
-    "keyPeople": [
-      {
-        "id": "but_criticism_of_the_screenplay_actor",
-        "name": "but criticism of the screenplay",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "lori_heuring_actress",
-        "name": "Lori Heuring",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "john_lee_hancock_producer",
-        "name": "John Lee Hancock",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "dhruv_sehgal_other",
-        "name": "Dhruv Sehgal",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "mithila_palkar_other",
-        "name": "Mithila Palkar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "navni_parihar_other",
-        "name": "Navni Parihar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "abhinandan_sridhar_other",
-        "name": "Abhinandan Sridhar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
+    "keyPeople": [],
     "actor": "but criticism of the screenplay",
-    "actress": "Lori Heuring",
+    "actress": "",
     "productionHouse": "John Lee Hancock",
     "targetAmountHuman": "4 crore 17 lakh",
     "raisedAmountHuman": "2 crore",
@@ -14559,21 +8729,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": true,
-    "tmdbRating": 5.797,
-    "runtime": 94,
-    "releaseYear": 2006,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Fantasy",
-      "Horror"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Karen, Sarah, and Emma Tunney are all moving to a small town in Pennsylvania where, unknown to them, in 1913, a horrid mine accident trapped dozens of children alive, underground. But there's a problem. They're still alive.",
-    "tagline": "Prey for Them",
-    "imdbId": "tt0470000"
+    "disabled": true
   },
   {
     "id": "77",
@@ -14602,29 +8758,7 @@ export const projects: Project[] = [
     "rating": 7.3,
     "trailer": "https://www.youtube.com/watch?v=AS4Z-wXmuP0",
     "movie": "Jamtara: Sabka Number Ayega",
-    "keyPeople": [
-      {
-        "id": "amit_sial_other",
-        "name": "Amit Sial",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 0
-      },
-      {
-        "id": "sparsh_shrivastava_other",
-        "name": "Sparsh Shrivastava",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "monika_panwar_other",
-        "name": "Monika Panwar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -14661,7 +8795,6 @@ export const projects: Project[] = [
     "createdAt": "2025-07-07T08:57:01.748Z",
     "updatedAt": "2025-07-07T08:57:01.748Z",
     "poster": "https://m.media-amazon.com/images/M/MV5BMjI2NzM4MzA3Ml5BMl5BanBnXkFtZTgwNzg4MjMzMzE@._V1_SX300.jpg",
-    "disabled": true,
     "description": "Rangbaaz Phir Se is inspired from the life of Anandpal Singh who was a gangster active in the state of Rajasthan. The series chronicles his rise to becoming the most wanted criminal in the history of Rajasthan.",
     "director": "",
     "genre": "Action, Biography, Crime",
@@ -14678,53 +8811,10 @@ export const projects: Project[] = [
     "rating": 7.8,
     "trailer": "https://www.youtube.com/watch?v=Ghy63iXUg-U",
     "movie": "Rangbaaz",
-    "keyPeople": [
-      {
-        "id": "shakib_khan_actor",
-        "name": "Shakib Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shobnom_bubly_actress",
-        "name": "Shobnom Bubly",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "ruprong_films_limited_producer",
-        "name": "Ruprong Films Limited",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "jay_joshi_other",
-        "name": "Jay Joshi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "saqib_saleem_other",
-        "name": "Saqib Saleem",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "jimmy_shergill_other",
-        "name": "Jimmy Shergill",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
-    "actor": "Shakib Khan",
-    "actress": "Shobnom Bubly",
-    "productionHouse": "Ruprong Films Limited",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "8 crore 38 lakh",
     "raisedAmountHuman": "6 crore 79 lakh",
     "keyCommunityData": [
@@ -14732,7 +8822,7 @@ export const projects: Project[] = [
         "id": "kc_78",
         "movieId": "78",
         "movieName": "Rangbaaz",
-        "productionHouse": "Ruprong Films Limited",
+        "productionHouse": "",
         "keyPeople": [
           "Jay Joshi",
           "Saqib Saleem",
@@ -14743,19 +8833,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": true,
-    "releaseYear": 2017,
-    "country": "Bangladesh",
-    "tmdbGenres": [
-      "Comedy",
-      "Action"
-    ],
-    "spokenLanguages": [
-      "Bengali"
-    ],
-    "tmdbOverview": "A widow gang lady want her son to follow her husband path of becoming one of the most dangerous gang leader in the city, while trying to fulfilling his mother wise Sallu get involve in love and things get hilarious when he start failing on every mission.",
-    "tagline": "Shakib Khan's Rangbaz",
-    "imdbId": "tt6799506"
+    "disabled": true
   },
   {
     "id": "79",
@@ -14786,46 +8864,10 @@ export const projects: Project[] = [
     "rating": 7,
     "trailer": "https://www.youtube.com/watch?v=zg0N4L4mwFk",
     "movie": "Ghoul",
-    "keyPeople": [
-      {
-        "id": "patrick_graham_director",
-        "name": "Patrick Graham",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "nolan_gould_actor",
-        "name": "Nolan Gould",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "andrea_frankle_actress",
-        "name": "Andrea Frankle",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "chiller_films_producer",
-        "name": "Chiller Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "gregory_wilson_other",
-        "name": "Gregory Wilson",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "Nolan Gould",
-    "actress": "Andrea Frankle",
-    "productionHouse": "Chiller Films",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "3 crore 60 lakh",
     "raisedAmountHuman": "2 crore 2 lakh",
     "keyCommunityData": [
@@ -14833,33 +8875,14 @@ export const projects: Project[] = [
         "id": "kc_79",
         "movieId": "79",
         "movieName": "Ghoul",
-        "productionHouse": "Chiller Films",
-        "keyPeople": [
-          "Nolan Gould",
-          "Andrea Frankle",
-          "Gregory Wilson"
-        ],
-        "actor": "Nolan Gould",
-        "actress": "Andrea Frankle",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
         "director": "Patrick Graham"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 4.529,
-    "runtime": 80,
-    "releaseYear": 2012,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Horror",
-      "Thriller",
-      "TV Movie"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "In the tradition of Stephen King’s Stand by Me, Chiller’s original film Ghoul – based on the celebrated novel by author Brian Keene — tells the story of three damaged children who set out to find who, or what, is behind a rash of local disapperances. Staring Modern Family‘s Nolan Gould, the film explores the darkness that hides behind small town life. It is the summer of 1984 when a teenage couple goes missing among the gravestones of the local cemetery. Twelve-year-old Timmy and his best friends, Barry and Doug, have grown up hearing stories about a sinister Ghoul that haunts the cemetery. Eventually, they begin to wonder if the horrific legend might actually be real. Timmy and his friends are forced to put their friendship to the ultimate test when they dig up long-buried secrets, facing their personal demons and the one hiding underground.",
-    "tagline": "No Body Rest In Peace",
-    "imdbId": "tt1877647"
+    "disabled": false
   },
   {
     "id": "80",
@@ -14890,52 +8913,9 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=GF0H5DZAE2g",
     "movie": "Special OPS",
-    "keyPeople": [
-      {
-        "id": "steven_seagal_actor",
-        "name": "Steven Seagal",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "finola_hughes_actress",
-        "name": "Finola Hughes",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "kay_kay_menon_other",
-        "name": "Kay Kay Menon",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "karan_tacker_other",
-        "name": "Karan Tacker",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "gautami_kapoor_other",
-        "name": "Gautami Kapoor",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "neeraj_pandey_other",
-        "name": "Neeraj Pandey",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "Steven Seagal",
-    "actress": "Finola Hughes",
+    "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "5 crore 1 lakh",
     "raisedAmountHuman": "2 crore 35 lakh",
@@ -14956,20 +8936,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 3.214,
-    "runtime": 98,
-    "releaseYear": 2010,
-    "tmdbGenres": [
-      "Action",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "When an American soldier’s Black Ops Unit is ambushed during a raid to rescue a nano-nuclear device that has fallen into the wrong hands, he must run for his life to not only track down the missing device, but also clear his name when he is accused of aiding the terrorists.",
-    "tagline": "Hunted by terrorists and betrayed by the country he defends. A story about a true American patriot.",
-    "imdbId": "tt1237373"
+    "disabled": false
   },
   {
     "id": "81",
@@ -15001,66 +8968,9 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=b9EkMc79ZSU",
     "movie": "Stranger Things",
-    "keyPeople": [
-      {
-        "id": "adeel_akhtar_actor",
-        "name": "Adeel Akhtar",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "victoria_jeffrey_actress",
-        "name": "Victoria Jeffrey",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "the_shows_creators_producer",
-        "name": "the show's creators",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "millie_bobby_brown_other",
-        "name": "Millie Bobby Brown",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "finn_wolfhard_other",
-        "name": "Finn Wolfhard",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "winona_ryder_other",
-        "name": "Winona Ryder",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "matt_duffer_other",
-        "name": "Matt Duffer",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "ross_duffer_other",
-        "name": "Ross Duffer",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
-    "actor": "Adeel Akhtar",
-    "actress": "Victoria Jeffrey",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
     "productionHouse": "the show's creators",
     "targetAmountHuman": "4 crore 18 lakh",
     "raisedAmountHuman": "3 crore 18 lakh",
@@ -15082,19 +8992,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 8.6,
-    "runtime": 77,
-    "releaseYear": 2013,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Oona, a recent graduate in anthropology, has returned to her dead mother’s seaside cottage in southern England to prepare it for sale. Her arrival disturbs Mani, a wary vagrant who has been squatting on the property.",
-    "imdbId": "tt1468737"
+    "disabled": false
   },
   {
     "id": "82",
@@ -15125,53 +9023,10 @@ export const projects: Project[] = [
     "rating": 9.5,
     "trailer": "https://www.youtube.com/watch?v=HhesaQXLuRY",
     "movie": "Breaking Bad",
-    "keyPeople": [
-      {
-        "id": "aaron_paul_actor",
-        "name": "Aaron Paul",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "krysten_ritter_actress",
-        "name": "Krysten Ritter",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "sony_pictures_television_producer",
-        "name": "Sony Pictures Television",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "bryan_cranston_other",
-        "name": "Bryan Cranston",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "anna_gunn_other",
-        "name": "Anna Gunn",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "vince_gilligan_other",
-        "name": "Vince Gilligan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
-    "actor": "Aaron Paul",
-    "actress": "Krysten Ritter",
-    "productionHouse": "Sony Pictures Television",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "8 crore 68 lakh",
     "raisedAmountHuman": "2 crore 95 lakh",
     "keyCommunityData": [
@@ -15179,7 +9034,7 @@ export const projects: Project[] = [
         "id": "kc_82",
         "movieId": "82",
         "movieName": "Breaking Bad",
-        "productionHouse": "Sony Pictures Television",
+        "productionHouse": "",
         "keyPeople": [
           "Bryan Cranston",
           "Aaron Paul",
@@ -15191,21 +9046,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.964,
-    "runtime": 123,
-    "releaseYear": 2019,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Crime",
-      "Drama",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "In the wake of his dramatic escape from captivity, Jesse Pinkman must come to terms with his past in order to forge some kind of future.",
-    "imdbId": "tt9243946"
+    "disabled": false
   },
   {
     "id": "83",
@@ -15237,60 +9078,10 @@ export const projects: Project[] = [
     "rating": 9.2,
     "trailer": "https://www.youtube.com/watch?v=KPLWWIOCOOQ",
     "movie": "Game of Thrones",
-    "keyPeople": [
-      {
-        "id": "kit_harington_actor",
-        "name": "Kit Harington",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "lena_headey_actress",
-        "name": "Lena Headey",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "hbo_producer",
-        "name": "HBO",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "emilia_clarke_other",
-        "name": "Emilia Clarke",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "peter_dinklage_other",
-        "name": "Peter Dinklage",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "david_benioff_other",
-        "name": "David Benioff",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "db_weiss_other",
-        "name": "D.B. Weiss",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
-    "actor": "Kit Harington",
-    "actress": "Lena Headey",
-    "productionHouse": "HBO",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "9 crore 61 lakh",
     "raisedAmountHuman": "3 crore 36 lakh",
     "keyCommunityData": [
@@ -15298,7 +9089,7 @@ export const projects: Project[] = [
         "id": "kc_83",
         "movieId": "83",
         "movieName": "Game of Thrones",
-        "productionHouse": "HBO",
+        "productionHouse": "",
         "keyPeople": [
           "Emilia Clarke",
           "Peter Dinklage",
@@ -15311,20 +9102,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.074,
-    "runtime": 115,
-    "releaseYear": 2019,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "For a year, acclaimed British filmmaker Jeanie Finlay was embedded on the set of the hit HBO series “Game of Thrones,” chronicling the creation of the show’s most ambitious and complicated season.  Debuting one week after the series 8 finale, GAME OF THRONES: THE LAST WATCH delves deep into the mud and blood to reveal the tears and triumphs involved in the challenge of bringing the fantasy world of Westeros to life in the very real studios, fields and car-parks of Northern Ireland.  Made with unprecedented access, GAME OF THRONES: THE LAST WATCH is an up-close and personal portrait from the trenches of production, following the crew and the cast as they contend with extreme weather, punishing deadlines and an ever-excited fandom hungry for spoilers.  Much more than a “making of” documentary, this is a funny, heartbreaking story, told with wit and intimacy, about the bittersweet pleasures of what it means to create a world – and then have to say goodbye to it.",
-    "tagline": "A farewell to Westeros with the people who built the realm",
-    "imdbId": "tt10090796"
+    "disabled": false
   },
   {
     "id": "84",
@@ -15356,39 +9134,10 @@ export const projects: Project[] = [
     "rating": 7.9,
     "trailer": "https://www.youtube.com/watch?v=ndl1W4ltcmg",
     "movie": "The Witcher",
-    "keyPeople": [
-      {
-        "id": "tomek_baginski_director",
-        "name": "Tomek Baginski",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "henry_cavill_actor",
-        "name": "Henry Cavill",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "mary_mcdonnell_actress",
-        "name": "Mary McDonnell",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "studio_mir_producer",
-        "name": "Studio Mir",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Henry Cavill",
-    "actress": "Mary McDonnell",
-    "productionHouse": "Studio Mir",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "7 crore 24 lakh",
     "raisedAmountHuman": "3 crore 91 lakh",
     "keyCommunityData": [
@@ -15396,31 +9145,16 @@ export const projects: Project[] = [
         "id": "kc_84",
         "movieId": "84",
         "movieName": "The Witcher",
-        "productionHouse": "Studio Mir",
+        "productionHouse": "",
         "keyPeople": [
           "Henry Cavill"
         ],
         "actor": "Henry Cavill",
-        "actress": "Mary McDonnell",
+        "actress": "",
         "director": "Tomek Baginski"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.462,
-    "runtime": 83,
-    "releaseYear": 2021,
-    "country": "Poland",
-    "tmdbGenres": [
-      "Animation",
-      "Action",
-      "Fantasy"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Escaping from poverty to become a witcher, Vesemir slays monsters for coin and glory, but when a new menace rises, he must face the demons of his past.",
-    "tagline": "Face your demons.",
-    "imdbId": "tt11657662"
+    "disabled": false
   },
   {
     "id": "85",
@@ -15451,43 +9185,7 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=JWtnJjn6ng0",
     "movie": "The Crown",
-    "keyPeople": [
-      {
-        "id": "thomas_jane_actor",
-        "name": "Thomas Jane",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "claire_foy_other",
-        "name": "Claire Foy",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "olivia_colman_other",
-        "name": "Olivia Colman",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "imelda_staunton_other",
-        "name": "Imelda Staunton",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "peter_morgan_other",
-        "name": "Peter Morgan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "Thomas Jane",
     "actress": "",
     "productionHouse": "",
@@ -15510,17 +9208,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 8,
-    "runtime": 4,
-    "releaseYear": 2020,
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Thru hiker and veteran Will “Akuna” Robinson completes the Triple Crown of Hiking: the Appalachian Trail, the Pacific Crest Trail, and the Continental Divide Trail. This film shares Robinson’s thoughts on this incredible achievement that made him the first African American male on record to complete the Triple Crown of Hiking."
+    "disabled": false
   },
   {
     "id": "86",
@@ -15551,53 +9239,10 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=aOC8E8z_ifw",
     "movie": "The Mandalorian",
-    "keyPeople": [
-      {
-        "id": "pedro_pascal_actor",
-        "name": "Pedro Pascal",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sigourney_weaver_actress",
-        "name": "Sigourney Weaver",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "lucasfilm_ltd_producer",
-        "name": "Lucasfilm Ltd.",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "chris_bartlett_other",
-        "name": "Chris Bartlett",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "katee_sackhoff_other",
-        "name": "Katee Sackhoff",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "jon_favreau_other",
-        "name": "Jon Favreau",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
-    "actor": "Pedro Pascal",
-    "actress": "Sigourney Weaver",
-    "productionHouse": "Lucasfilm Ltd.",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "3 crore 43 lakh",
     "raisedAmountHuman": "2 crore 16 lakh",
     "keyCommunityData": [
@@ -15605,7 +9250,7 @@ export const projects: Project[] = [
         "id": "kc_86",
         "movieId": "86",
         "movieName": "The Mandalorian",
-        "productionHouse": "Lucasfilm Ltd.",
+        "productionHouse": "",
         "keyPeople": [
           "Pedro Pascal",
           "Chris Bartlett",
@@ -15617,18 +9262,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "releaseYear": 2026,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Adventure",
-      "Science Fiction"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "The Mandalorian, a lone bounty hunter, is tasked with capturing Grogu, a mysterious and adorable creature. Instead, he forms a strong bond with Grogu and strives to protect him from various threats, exploring his evolving purpose in a post-Empire galaxy.",
-    "imdbId": "tt30825738"
+    "disabled": false
   },
   {
     "id": "87",
@@ -15659,53 +9293,10 @@ export const projects: Project[] = [
     "rating": 8.2,
     "trailer": "https://www.youtube.com/watch?v=_InqQJRqGW4",
     "movie": "Money Heist",
-    "keyPeople": [
-      {
-        "id": "premiered_on_netflix_the_same_day_actor",
-        "name": "premiered on Netflix the same day",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "rsula_corber_actress",
-        "name": "Úrsula Corberó",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "vancouver_media_producer",
-        "name": "Vancouver Media",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "lvaro_morte_other",
-        "name": "Álvaro Morte",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "itziar_ituo_other",
-        "name": "Itziar Ituño",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "lex_pina_other",
-        "name": "Álex Pina",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "premiered on Netflix the same day",
-    "actress": "Úrsula Corberó",
-    "productionHouse": "Vancouver Media",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "4 crore 94 lakh",
     "raisedAmountHuman": "25 lakh",
     "keyCommunityData": [
@@ -15713,7 +9304,7 @@ export const projects: Project[] = [
         "id": "kc_87",
         "movieId": "87",
         "movieName": "Money Heist",
-        "productionHouse": "Vancouver Media",
+        "productionHouse": "",
         "keyPeople": [
           "Úrsula Corberó",
           "Álvaro Morte",
@@ -15725,19 +9316,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.4,
-    "runtime": 57,
-    "releaseYear": 2020,
-    "country": "Spain",
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "Spanish"
-    ],
-    "tmdbOverview": "A documentary on why 'Money Heist' sparked a wave of enthusiasm around the world for a lovable group of thieves and their professor.",
-    "imdbId": "tt12078990"
+    "disabled": false
   },
   {
     "id": "88",
@@ -15768,60 +9347,10 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=M1bhOaLV4FU",
     "movie": "The Boys",
-    "keyPeople": [
-      {
-        "id": "joel_edgerton_actor",
-        "name": "Joel Edgerton",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "carol_white_actress",
-        "name": "Carol White",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "galaworldfilm_productions_producer",
-        "name": "Galaworldfilm Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "karl_urban_other",
-        "name": "Karl Urban",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "jack_quaid_other",
-        "name": "Jack Quaid",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "antony_starr_other",
-        "name": "Antony Starr",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "eric_kripke_other",
-        "name": "Eric Kripke",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
+    "keyPeople": [],
     "actor": "Joel Edgerton as coach Al Ulbrickson Sr",
-    "actress": "Carol White",
-    "productionHouse": "Galaworldfilm Productions",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "1 crore 33 lakh",
     "raisedAmountHuman": "28 lakh",
     "keyCommunityData": [
@@ -15829,7 +9358,7 @@ export const projects: Project[] = [
         "id": "kc_88",
         "movieId": "88",
         "movieName": "The Boys",
-        "productionHouse": "Galaworldfilm Productions",
+        "productionHouse": "",
         "keyPeople": [
           "Karl Urban",
           "Jack Quaid",
@@ -15841,20 +9370,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.8,
-    "runtime": 123,
-    "releaseYear": 1962,
-    "country": "United Kingdom",
-    "tmdbGenres": [
-      "Crime",
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "A night watchman at a garage is found murdered, and four teddy boys are put on trial for the crime. Witnesses and suspects give differing accounts of the lead-up to the crime, and the truth emerges.",
-    "imdbId": "tt0054697"
+    "disabled": false
   },
   {
     "id": "89",
@@ -15883,45 +9399,9 @@ export const projects: Project[] = [
     "rating": 8.5,
     "trailer": "https://www.youtube.com/watch?v=oZn3qSgmLqI",
     "movie": "The Queen's Gambit",
-    "keyPeople": [
-      {
-        "id": "scott_frank_actor",
-        "name": "Scott Frank",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "anya_taylorjoy_actress",
-        "name": "Anya Taylor-Joy",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "chloe_pirrie_other",
-        "name": "Chloe Pirrie",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "bill_camp_other",
-        "name": "Bill Camp",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "allan_scott_other",
-        "name": "Allan Scott",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "Scott Frank",
-    "actress": "Anya Taylor-Joy",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "9 crore 91 lakh",
     "raisedAmountHuman": "8 crore 32 lakh",
@@ -15943,19 +9423,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.9,
-    "runtime": 14,
-    "releaseYear": 2021,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "A fascinating character. Exquisite sets. A wig for every era. The stars, creators and crew reveal how the hit series about a chess prodigy came to life.",
-    "imdbId": "tt13818410"
+    "disabled": false
   },
   {
     "id": "90",
@@ -15984,60 +9452,10 @@ export const projects: Project[] = [
     "rating": 8.6,
     "trailer": "https://www.youtube.com/watch?v=8QnMmpfKWvo",
     "movie": "House of Cards",
-    "keyPeople": [
-      {
-        "id": "kathleen_turner_actor",
-        "name": "Kathleen Turner",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "kathleen_turner_actress",
-        "name": "Kathleen Turner",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "am_films_producer",
-        "name": "A&M Films",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "kevin_spacey_other",
-        "name": "Kevin Spacey",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "michel_gill_other",
-        "name": "Michel Gill",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "robin_wright_other",
-        "name": "Robin Wright",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "beau_willimon_other",
-        "name": "Beau Willimon",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
+    "keyPeople": [],
     "actor": "Kathleen Turner",
-    "actress": "Kathleen Turner",
-    "productionHouse": "A&M Films",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "9 crore 97 lakh",
     "raisedAmountHuman": "8 crore 18 lakh",
     "keyCommunityData": [
@@ -16045,7 +9463,7 @@ export const projects: Project[] = [
         "id": "kc_90",
         "movieId": "90",
         "movieName": "House of Cards",
-        "productionHouse": "A&M Films",
+        "productionHouse": "",
         "keyPeople": [
           "Kevin Spacey",
           "Michel Gill",
@@ -16057,20 +9475,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.2,
-    "runtime": 109,
-    "releaseYear": 1993,
-    "country": "Italy",
-    "tmdbGenres": [
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "When Ruth Matthews's husband is killed in a fall at an archaeological dig, her daughter Sally handles her father's death in a very odd manner. As Sally's condition worsens, Ruth takes her to see Jake, an expert in childhood autism. Jake attempts to bring Sally out of her mental disarray through traditional therapy methods, but Ruth takes a different route. She risks her own sanity by attempting to enter her daughter's mind and make sense of the seemingly bizarre things that Sally does, including building a wondrous house of cards",
-    "tagline": "A Journey That Will Open Your Mind... And Touch Your Heart.",
-    "imdbId": "tt0107148"
+    "disabled": false
   },
   {
     "id": "91",
@@ -16101,67 +9506,10 @@ export const projects: Project[] = [
     "rating": 8.4,
     "trailer": "https://www.youtube.com/watch?v=kEkZdgWu7mM",
     "movie": "Westworld",
-    "keyPeople": [
-      {
-        "id": "yul_brynner_actor",
-        "name": "Yul Brynner",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "victoria_shaw_actress",
-        "name": "Victoria Shaw",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "metrogoldwynmayer_producer",
-        "name": "Metro-Goldwyn-Mayer",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "evan_rachel_wood_other",
-        "name": "Evan Rachel Wood",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "jeffrey_wright_other",
-        "name": "Jeffrey Wright",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "ed_harris_other",
-        "name": "Ed Harris",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "lisa_joy_other",
-        "name": "Lisa Joy",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "jonathan_nolan_other",
-        "name": "Jonathan Nolan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
-    "actor": "Yul Brynner",
-    "actress": "Victoria Shaw",
-    "productionHouse": "Metro-Goldwyn-Mayer",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "4 crore 23 lakh",
     "raisedAmountHuman": "38 lakh",
     "keyCommunityData": [
@@ -16169,7 +9517,7 @@ export const projects: Project[] = [
         "id": "kc_91",
         "movieId": "91",
         "movieName": "Westworld",
-        "productionHouse": "Metro-Goldwyn-Mayer",
+        "productionHouse": "",
         "keyPeople": [
           "Evan Rachel Wood",
           "Jeffrey Wright",
@@ -16182,24 +9530,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6.771,
-    "runtime": 89,
-    "releaseYear": 1973,
-    "country": "United States of America",
-    "budget": 1200000,
-    "revenue": 10000000,
-    "tmdbGenres": [
-      "Adventure",
-      "Science Fiction",
-      "Western"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Delos is a futuristic amusement park that features themed worlds—ancient Rome, Medieval times and the Old West—populated by human-like androids. After two patrons have a run-in with a menacing gunslinger in West World, the androids at Delos all begin to malfunction, causing havoc throughout the park.",
-    "tagline": "Boy, have we got a vacation for you...",
-    "imdbId": "tt0070909"
+    "disabled": false
   },
   {
     "id": "92",
@@ -16230,58 +9561,8 @@ export const projects: Project[] = [
     "rating": 8.7,
     "trailer": "https://www.youtube.com/watch?v=xl8zdCY-abw",
     "movie": "Narcos",
-    "keyPeople": [
-      {
-        "id": "aldo_sambrell_actor",
-        "name": "Aldo Sambrell",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "pedro_pascal_other",
-        "name": "Pedro Pascal",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "wagner_moura_other",
-        "name": "Wagner Moura",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "boyd_holbrook_other",
-        "name": "Boyd Holbrook",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "carlo_bernard_other",
-        "name": "Carlo Bernard",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "chris_brancato_other",
-        "name": "Chris Brancato",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "doug_miro_other",
-        "name": "Doug Miro",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
-    "actor": "Aldo Sambrell",
+    "keyPeople": [],
+    "actor": "",
     "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "5 crore 46 lakh",
@@ -16305,16 +9586,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.7,
-    "runtime": 105,
-    "releaseYear": 1992,
-    "country": "Italy",
-    "tmdbGenres": [
-      "Drama"
-    ],
-    "tmdbOverview": "Three drug traffickers become worried when the realize they may have outlived their usefulness to their boss.",
-    "imdbId": "tt0104971"
+    "disabled": false
   },
   {
     "id": "93",
@@ -16346,57 +9618,7 @@ export const projects: Project[] = [
     "rating": 8.7,
     "trailer": "https://www.youtube.com/watch?v=rrwycJ08PSA",
     "movie": "Dark",
-    "keyPeople": [
-      {
-        "id": "an_ensemble_cast_featuring_james_mcavoy_actor",
-        "name": "an ensemble cast featuring James McAvoy",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "bad_hat_harry_productions_producer",
-        "name": "Bad Hat Harry Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "louis_hofmann_other",
-        "name": "Louis Hofmann",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "karoline_eichhorn_other",
-        "name": "Karoline Eichhorn",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "lisa_vicari_other",
-        "name": "Lisa Vicari",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "baran_bo_odar_other",
-        "name": "Baran bo Odar",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "jantje_friese_other",
-        "name": "Jantje Friese",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
+    "keyPeople": [],
     "actor": "an ensemble cast featuring James McAvoy",
     "actress": "",
     "productionHouse": "Bad Hat Harry Productions",
@@ -16420,20 +9642,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 4.5,
-    "runtime": 9,
-    "releaseYear": 2023,
-    "country": "Singapore",
-    "tmdbGenres": [
-      "Horror",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "A woman wakes up in a pitch black room to find all, except one, of her limbs broken. Armed with only a torchlight, the clock is ticking as she attempts to escape, slowly unveiling a sinister truth.",
-    "tagline": "The truth is darker than you think."
+    "disabled": false
   },
   {
     "id": "94",
@@ -16464,67 +9673,10 @@ export const projects: Project[] = [
     "rating": 8.5,
     "trailer": "https://www.youtube.com/watch?v=5hAXVqrljbs",
     "movie": "Ozark",
-    "keyPeople": [
-      {
-        "id": "phil_morris_actor",
-        "name": "Phil Morris",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "tara_perry_actress",
-        "name": "Tara Perry",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "hct_media_producer",
-        "name": "HCT Media",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "jason_bateman_other",
-        "name": "Jason Bateman",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "laura_linney_other",
-        "name": "Laura Linney",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "sofia_hublitz_other",
-        "name": "Sofia Hublitz",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "bill_dubuque_other",
-        "name": "Bill Dubuque",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "mark_williams_other",
-        "name": "Mark Williams",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
-    "actor": "Phil Morris",
-    "actress": "Tara Perry",
-    "productionHouse": "HCT Media",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "29 lakh",
     "raisedAmountHuman": "27 lakh",
     "keyCommunityData": [
@@ -16532,7 +9684,7 @@ export const projects: Project[] = [
         "id": "kc_94",
         "movieId": "94",
         "movieName": "Ozark",
-        "productionHouse": "HCT Media",
+        "productionHouse": "",
         "keyPeople": [
           "Jason Bateman",
           "Laura Linney",
@@ -16545,22 +9697,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 5.2,
-    "runtime": 100,
-    "releaseYear": 2022,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Western",
-      "Horror",
-      "Mystery"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Spanish"
-    ],
-    "tmdbOverview": "In 1866, a young doctor is summoned by his uncle to a remote town in the Ozarks only to discover upon his arrival that the utopian paradise is not all that it seems to be.",
-    "imdbId": "tt11186952"
+    "disabled": false
   },
   {
     "id": "95",
@@ -16591,43 +9728,7 @@ export const projects: Project[] = [
     "rating": 7.8,
     "trailer": "https://www.youtube.com/watch?v=0DAmWHxeoKw",
     "movie": "The Umbrella Academy",
-    "keyPeople": [
-      {
-        "id": "elliot_page_other",
-        "name": "Elliot Page",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 0
-      },
-      {
-        "id": "tom_hopper_other",
-        "name": "Tom Hopper",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "david_castaeda_other",
-        "name": "David Castañeda",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "steve_blackman_other",
-        "name": "Steve Blackman",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "jeremy_slater_other",
-        "name": "Jeremy Slater",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -16681,53 +9782,10 @@ export const projects: Project[] = [
     "rating": 8.7,
     "trailer": "https://www.youtube.com/watch?v=oVzVdvGIC7U",
     "movie": "Peaky Blinders",
-    "keyPeople": [
-      {
-        "id": "roger_vernon_actor",
-        "name": "Roger Vernon",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "britain_on_film_producer",
-        "name": "Britain on Film",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "cillian_murphy_other",
-        "name": "Cillian Murphy",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "paul_anderson_other",
-        "name": "Paul Anderson",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "sophie_rundle_other",
-        "name": "Sophie Rundle",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "steven_knight_other",
-        "name": "Steven Knight",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
-    "actor": "Roger Vernon",
+    "keyPeople": [],
+    "actor": "",
     "actress": "",
-    "productionHouse": "Britain on Film",
+    "productionHouse": "",
     "targetAmountHuman": "7 crore 4 lakh",
     "raisedAmountHuman": "3 crore 38 lakh",
     "keyCommunityData": [
@@ -16735,7 +9793,7 @@ export const projects: Project[] = [
         "id": "kc_96",
         "movieId": "96",
         "movieName": "Peaky Blinders",
-        "productionHouse": "Britain on Film",
+        "productionHouse": "",
         "keyPeople": [
           "Cillian Murphy",
           "Paul Anderson",
@@ -16747,15 +9805,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 8.6,
-    "runtime": 50,
-    "releaseYear": 2016,
-    "country": "United Kingdom",
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "tmdbOverview": "The story of the real Peaky Blinders and how they became a TV sensation. Hear of the actual gangsters who became leading characters in the series and the real events behind many of the main story lines, learn the identity of the crime family that inspired the Shelbys, then take a tour of the film locations where the dark and violent world of the Peaky Blinders was recreated."
+    "disabled": false
   },
   {
     "id": "97",
@@ -16786,44 +9836,8 @@ export const projects: Project[] = [
     "rating": 8.7,
     "trailer": "https://www.youtube.com/watch?v=-qIlCo9yqpY",
     "movie": "Black Mirror",
-    "keyPeople": [
-      {
-        "id": "john_mccullough_actor",
-        "name": "John McCullough",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "anjana_vasan_other",
-        "name": "Anjana Vasan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "cristin_milioti_other",
-        "name": "Cristin Milioti",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "jimmi_simpson_other",
-        "name": "Jimmi Simpson",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "charlie_brooker_other",
-        "name": "Charlie Brooker",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "John McCullough",
+    "keyPeople": [],
+    "actor": "",
     "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "6 crore 83 lakh",
@@ -16845,19 +9859,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 10,
-    "runtime": 6,
-    "releaseYear": 2012,
-    "country": "Australia",
-    "tmdbGenres": [
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "It's been five years since James has seen his reflection. In order for James to face his past, he must let another young man into his life and let that young man's love heal his five year old wound.",
-    "imdbId": "tt2559324"
+    "disabled": false
   },
   {
     "id": "98",
@@ -16888,66 +9890,9 @@ export const projects: Project[] = [
     "rating": 8.3,
     "trailer": "https://www.youtube.com/watch?v=KTu8iDynwNc",
     "movie": "Lost",
-    "keyPeople": [
-      {
-        "id": "dean_cain_actor",
-        "name": "Dean Cain",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ashley_scott_actress",
-        "name": "Ashley Scott",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "jorge_garcia_other",
-        "name": "Jorge Garcia",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "josh_holloway_other",
-        "name": "Josh Holloway",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "yunjin_kim_other",
-        "name": "Yunjin Kim",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "jj_abrams_other",
-        "name": "J.J. Abrams",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "jeffrey_lieber_other",
-        "name": "Jeffrey Lieber",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "damon_lindelof_other",
-        "name": "Damon Lindelof",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
-    "actor": "Dean Cain",
-    "actress": "Ashley Scott",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
     "productionHouse": "",
     "targetAmountHuman": "1 crore 96 lakh",
     "raisedAmountHuman": "1 crore 63 lakh",
@@ -16970,22 +9915,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 5.4,
-    "runtime": 90,
-    "releaseYear": 2004,
-    "country": "United States of America",
-    "tmdbGenres": [
-      "Action",
-      "Thriller"
-    ],
-    "spokenLanguages": [
-      "English",
-      "German"
-    ],
-    "tmdbOverview": "Trapped in a maze of endless desert highways, bound by a vital deadline, and pursued by an unseen menace....Jeremy Stanton is about to take the longest ride of his life. He will learn that when you reach the crossroads of life...you must be careful which way you turn.",
-    "tagline": "Be careful which way you turn.",
-    "imdbId": "tt0406942"
+    "disabled": false
   },
   {
     "id": "99",
@@ -17016,66 +9946,9 @@ export const projects: Project[] = [
     "rating": 9.1,
     "trailer": "https://www.youtube.com/watch?v=IrBKwzL3K7s",
     "movie": "Sherlock",
-    "keyPeople": [
-      {
-        "id": "robert_downey_jr_actor",
-        "name": "Robert Downey Jr",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "marieluise_claudius_actress",
-        "name": "Marieluise Claudius",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "joel_silver_producer",
-        "name": "Joel Silver",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "benedict_cumberbatch_other",
-        "name": "Benedict Cumberbatch",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "martin_freeman_other",
-        "name": "Martin Freeman",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "una_stubbs_other",
-        "name": "Una Stubbs",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "mark_gatiss_other",
-        "name": "Mark Gatiss",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      },
-      {
-        "id": "steven_moffat_other",
-        "name": "Steven Moffat",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 7
-      }
-    ],
+    "keyPeople": [],
     "actor": "Robert Downey Jr",
-    "actress": "Marieluise Claudius",
+    "actress": "",
     "productionHouse": "Joel Silver",
     "targetAmountHuman": "2 crore 8 lakh",
     "raisedAmountHuman": "1 crore 27 lakh",
@@ -17097,20 +9970,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.2,
-    "runtime": 106,
-    "releaseYear": 1937,
-    "country": "Germany",
-    "tmdbGenres": [
-      "Comedy",
-      "Crime"
-    ],
-    "spokenLanguages": [
-      "German"
-    ],
-    "tmdbOverview": "Two dubious characters disguise themselves as Holmes and Watson to gain attention and end up chasing counterfeiters and stolen stamps.",
-    "imdbId": "tt0029210"
+    "disabled": false
   },
   {
     "id": "100",
@@ -17140,50 +10000,7 @@ export const projects: Project[] = [
     "rating": 9,
     "trailer": "https://www.youtube.com/watch?v=HN4oydykJFc",
     "movie": "Better Call Saul",
-    "keyPeople": [
-      {
-        "id": "on_amc_actor",
-        "name": "on AMC",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "bob_odenkirk_other",
-        "name": "Bob Odenkirk",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "rhea_seehorn_other",
-        "name": "Rhea Seehorn",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "jonathan_banks_other",
-        "name": "Jonathan Banks",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "vince_gilligan_other",
-        "name": "Vince Gilligan",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "peter_gould_other",
-        "name": "Peter Gould",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "on AMC",
     "actress": "",
     "productionHouse": "",
@@ -17208,16 +10025,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6,
-    "runtime": 4,
-    "releaseYear": 2017,
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "The Kettlemen family is reunited once again to show that family sticks together no matter what.",
-    "tagline": "short",
-    "imdbId": "tt9314092"
+    "disabled": false
   },
   {
     "id": "111",
@@ -17245,52 +10053,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=UHiwdDFPsZY",
+    "trailer": "https://www.youtube.com/watch?v=OJSx-pE4WN8",
     "movie": "Narcos: Mexico",
-    "keyPeople": [
-      {
-        "id": "scoot_mcnairy_other",
-        "name": "Scoot McNairy",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 0
-      },
-      {
-        "id": "jos_mara_yazpik_other",
-        "name": "José María Yazpik",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "alejandro_edda_other",
-        "name": "Alejandro Edda",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "carlo_bernard_other",
-        "name": "Carlo Bernard",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "chris_brancato_other",
-        "name": "Chris Brancato",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "doug_miro_other",
-        "name": "Doug Miro",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -17344,38 +10109,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.8,
-    "trailer": "https://www.youtube.com/watch?v=AZxfKCOzzKs",
+    "trailer": "https://www.youtube.com/watch?v=xwvutsrqpon",
     "movie": "Money Heist: Korea - Joint Economic Area",
-    "keyPeople": [
-      {
-        "id": "yoo_jitae_actor",
-        "name": "Yoo Ji-tae",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "lee_joobin_other",
-        "name": "Lee Joo-bin",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "yunjin_kim_other",
-        "name": "Yunjin Kim",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "lex_pina_other",
-        "name": "Álex Pina",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Yoo Ji-tae",
     "actress": "",
     "productionHouse": "",
@@ -17427,55 +10163,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=4l-yByZpaaM",
+    "trailer": "https://www.youtube.com/watch?v=tOGJ7DjHX4Q",
     "movie": "Fauda",
-    "keyPeople": [
-      {
-        "id": "lior_raz_actor",
-        "name": "Lior Raz",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "latitia_edo_actress",
-        "name": "Laëtitia Eïdo",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "bbc_arabic_producer",
-        "name": "BBC Arabic",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "itzik_cohen_other",
-        "name": "Itzik Cohen",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "garti_netta_other",
-        "name": "Garti Netta",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "avi_issacharoff_other",
-        "name": "Avi Issacharoff",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
-    "actor": "Lior Raz",
-    "actress": "Laëtitia Eïdo",
-    "productionHouse": "BBC Arabic",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "9 crore 6 lakh",
     "raisedAmountHuman": "4 crore 8 lakh",
     "keyCommunityData": [
@@ -17483,7 +10176,7 @@ export const projects: Project[] = [
         "id": "kc_113",
         "movieId": "113",
         "movieName": "Fauda",
-        "productionHouse": "BBC Arabic",
+        "productionHouse": "",
         "keyPeople": [
           "Lior Raz",
           "Itzik Cohen",
@@ -17495,20 +10188,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7.429,
-    "runtime": 47,
-    "releaseYear": 2018,
-    "country": "Israel",
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "Set in the cloak-and-dagger world of the IDF’s undercover special forces - the Mista'arvim - Fauda is an Israeli-produced TV drama which has garnered praise for its realistic depiction of military tactics alongside its empathetic portrayal of Palestinians, militant or otherwise. BBC Arabic joins the production of the hotly anticipated second season, and tries to understand how it might one day pave the way for a dialogue between the two sides built on mutual understanding and compassion.",
-    "tagline": "Can a TV drama bring life-long enemies together?",
-    "imdbId": "tt7831512"
+    "disabled": false
   },
   {
     "id": "114",
@@ -17539,36 +10219,7 @@ export const projects: Project[] = [
     "rating": 7.5,
     "trailer": "https://www.youtube.com/watch?v=ga0iTWXCGa0",
     "movie": "Lupin",
-    "keyPeople": [
-      {
-        "id": "omar_sy_other",
-        "name": "Omar Sy",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 0
-      },
-      {
-        "id": "ludivine_sagnier_other",
-        "name": "Ludivine Sagnier",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "soufiane_guerrab_other",
-        "name": "Soufiane Guerrab",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "george_kay_other",
-        "name": "George Kay",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -17591,13 +10242,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "runtime": 11,
-    "releaseYear": 2020,
-    "tmdbGenres": [
-      "Animation"
-    ],
-    "tmdbOverview": "A young wolf ventures out of his den for the first time а without his mother’s knowledge. Lost and frightened, he finds a shelter in a village garden. Jeanne, Gaston, and Louis, the hunters’ children, discover him and decide to take him home."
+    "disabled": false
   },
   {
     "id": "115",
@@ -17623,24 +10268,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.2,
-    "trailer": "https://www.youtube.com/watch?v=rrwycJ08PSA",
+    "trailer": "https://www.youtube.com/watch?v=9_-ABCDEFGH",
     "movie": "Dark (Germany)",
-    "keyPeople": [
-      {
-        "id": "unknown_director",
-        "name": "Unknown",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "christian_slater_actor",
-        "name": "Christian Slater",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      }
-    ],
+    "keyPeople": [],
     "actor": "Christian Slater",
     "actress": "",
     "productionHouse": "",
@@ -17661,9 +10291,7 @@ export const projects: Project[] = [
       }
     ],
     "poster": "https://m.media-amazon.com/images/M/MV5BMzY3MjEwNzAtM2QwOC00ZjJhLTk1NzItNzY3YjBkZGI0NzE5XkEyXkFqcGc@._V1_SX300.jpg",
-    "disabled": true,
-    "releaseYear": 1997,
-    "tmdbOverview": "Dreamlore Degenerate, Tongues, Punish My Heaven, Insanity's Crescendo, Hedon, Nightfall by the Shore of Time, Zodijackyl Light, Lethe, Constant, Edenspring, Scythe, Rage and Roses, Of Chaos and Eternal Night"
+    "disabled": true
   },
   {
     "id": "116",
@@ -17691,15 +10319,7 @@ export const projects: Project[] = [
     "rating": 3.6,
     "trailer": "https://www.youtube.com/watch?v=ZOhQFfhpIdw",
     "movie": "Sacred Games 2",
-    "keyPeople": [
-      {
-        "id": "unknown_director",
-        "name": "Unknown",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "",
@@ -17747,59 +10367,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.6,
-    "trailer": "https://www.youtube.com/watch?v=UHiwdDFPsZY",
+    "trailer": "https://www.youtube.com/watch?v=wnCHLSYJe_w",
     "movie": "The Bridge",
-    "keyPeople": [
-      {
-        "id": "josh_hutcherson_actor",
-        "name": "Josh Hutcherson",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "sofia_helin_other",
-        "name": "Sofia Helin",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "rafael_pettersson_other",
-        "name": "Rafael Pettersson",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "sarah_boberg_other",
-        "name": "Sarah Boberg",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "mns_mrlind_other",
-        "name": "Måns Mårlind",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "hans_rosenfeldt_other",
-        "name": "Hans Rosenfeldt",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      },
-      {
-        "id": "bjrn_stein_other",
-        "name": "Björn Stein",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 6
-      }
-    ],
+    "keyPeople": [],
     "actor": "Josh Hutcherson",
     "actress": "",
     "productionHouse": "",
@@ -17824,21 +10394,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 7,
-    "runtime": 115,
-    "releaseYear": 2017,
-    "country": "Nigeria",
-    "tmdbGenres": [
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "English",
-      "Igbo",
-      "Yoruba"
-    ],
-    "tmdbOverview": "A Yoruba prince and a young lady from a prominent Igbo family face tribal prejudice and parental pressure when they secretly wed.",
-    "imdbId": "tt8193396"
+    "disabled": false
   },
   {
     "id": "118",
@@ -17866,48 +10422,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/watch?v=4l-yByZpaaM",
+    "trailer": "https://www.youtube.com/watch?v=P_tcexIjWK0",
     "movie": "Gomorrah",
-    "keyPeople": [
-      {
-        "id": "matteo_garrone_director",
-        "name": "Matteo Garrone",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "conor_berry_actor",
-        "name": "Conor Berry",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "tenpenny_picture_house_producer",
-        "name": "Tenpenny Picture House",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "aaron_j_mcintyre_other",
-        "name": "Aaron J McIntyre",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "robyn_boyd_other",
-        "name": "Robyn Boyd",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
-    "actor": "Conor Berry",
+    "keyPeople": [],
+    "actor": "",
     "actress": "",
-    "productionHouse": "Tenpenny Picture House",
+    "productionHouse": "",
     "targetAmountHuman": "9 crore 92 lakh",
     "raisedAmountHuman": "2 crore 28 lakh",
     "keyCommunityData": [
@@ -17915,29 +10435,14 @@ export const projects: Project[] = [
         "id": "kc_118",
         "movieId": "118",
         "movieName": "Gomorrah",
-        "productionHouse": "Tenpenny Picture House",
-        "keyPeople": [
-          "Conor Berry",
-          "Aaron J McIntyre",
-          "Robyn Boyd"
-        ],
-        "actor": "Conor Berry",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
         "actress": "",
         "director": "Matteo Garrone"
       }
     ],
-    "disabled": false,
-    "runtime": 16,
-    "releaseYear": 2023,
-    "country": "United Kingdom",
-    "budget": 5000,
-    "tmdbGenres": [
-      "Drama"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "tmdbOverview": "A recovering addict relapses in the rough industrial estates of Glasgow."
+    "disabled": false
   },
   {
     "id": "119",
@@ -17965,45 +10470,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=HJGtb9QYVRU",
+    "trailer": "https://www.youtube.com/watch?v=zhwA5j7A_is",
     "movie": "Call My Agent!",
-    "keyPeople": [
-      {
-        "id": "by_ici_artv_actor",
-        "name": "by ICI ARTV",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "camille_cottin_other",
-        "name": "Camille Cottin",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "thibault_de_montalembert_other",
-        "name": "Thibault de Montalembert",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "grgory_montel_other",
-        "name": "Grégory Montel",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "fanny_herrero_other",
-        "name": "Fanny Herrero",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      }
-    ],
+    "keyPeople": [],
     "actor": "by ICI ARTV",
     "actress": "",
     "productionHouse": "",
@@ -18056,38 +10525,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=4l-yByZpaaM",
+    "trailer": "https://www.youtube.com/watch?v=f5ur5HZgPpE",
     "movie": "Kingdom",
-    "keyPeople": [
-      {
-        "id": "ben_mendelsohn_actor",
-        "name": "Ben Mendelsohn",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ju_jihoon_other",
-        "name": "Ju Ji-hoon",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 1
-      },
-      {
-        "id": "bae_doona_other",
-        "name": "Bae Doona",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "kim_sungkyu_other",
-        "name": "Kim Sungkyu",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Ben Mendelsohn",
     "actress": "",
     "productionHouse": "",
@@ -18110,19 +10550,7 @@ export const projects: Project[] = [
         "director": "N/A"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 6,
-    "runtime": 6,
-    "releaseYear": 2018,
-    "country": "Singapore",
-    "tmdbGenres": [
-      "Animation"
-    ],
-    "spokenLanguages": [
-      "No Language"
-    ],
-    "tmdbOverview": "A lost man falls apart in a forest.",
-    "imdbId": "tt9325464"
+    "disabled": false
   },
   {
     "id": "225",
@@ -18147,38 +10575,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.2,
-    "trailer": "https://www.youtube.com/watch?v=hMANIarjT50",
+    "trailer": "https://www.youtube.com/watch?v=hijklmnopqr",
     "movie": "Loki",
-    "keyPeople": [
-      {
-        "id": "michael_waldron_director",
-        "name": "Michael Waldron",
-        "role": "director",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "tom_hiddleston_actor",
-        "name": "Tom Hiddleston",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "sophia_di_martino_actress",
-        "name": "Sophia Di Martino",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 2
-      },
-      {
-        "id": "marvel_studios_producer",
-        "name": "Marvel Studios",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 3
-      }
-    ],
+    "keyPeople": [],
     "actor": "Tom Hiddleston",
     "actress": "Sophia Di Martino",
     "productionHouse": "Marvel Studios",
@@ -18196,10 +10595,7 @@ export const projects: Project[] = [
         "director": "Michael Waldron"
       }
     ],
-    "disabled": false,
-    "tmdbRating": 10,
-    "runtime": 127,
-    "tmdbOverview": "An autorickshaw driver is known to be a notorious womaniser. What happens when he meets Kavitha? Will she change his life forever?"
+    "disabled": false
   },
   {
     "id": "167",
@@ -18226,15 +10622,7 @@ export const projects: Project[] = [
     "rating": 4.7,
     "trailer": "https://www.youtube.com/watch?v=G7KNmW9a75Y",
     "movie": "Flowers – Miley Cyrus",
-    "keyPeople": [
-      {
-        "id": "cyrus_performing_dances_actor",
-        "name": "Cyrus performing dances",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      }
-    ],
+    "keyPeople": [],
     "actor": "Cyrus performing dances",
     "actress": "",
     "productionHouse": "",
@@ -18279,17 +10667,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.4,
-    "trailer": "https://www.youtube.com/watch?v=WcIcVapfqXw",
+    "trailer": "https://www.youtube.com/watch?v=0UFvHt-mjRj",
     "movie": "Calm Down – Rema & Selena Gomez",
-    "keyPeople": [
-      {
-        "id": "james_franco_actor",
-        "name": "James Franco",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      }
-    ],
+    "keyPeople": [],
     "actor": "James Franco",
     "actress": "",
     "productionHouse": "",
@@ -18336,22 +10716,7 @@ export const projects: Project[] = [
     "rating": 3.5,
     "trailer": "https://www.youtube.com/watch?v=Uc9TQZ1Hf6I",
     "movie": "Unholy – Sam Smith & Kim Petras",
-    "keyPeople": [
-      {
-        "id": "cameos_from_american_drag_queens_violet_chachki_actor",
-        "name": "cameos from American drag queens Violet Chachki",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ilya_producer",
-        "name": "Ilya",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 1
-      }
-    ],
+    "keyPeople": [],
     "actor": "cameos from American drag queens Violet Chachki",
     "actress": "",
     "productionHouse": "Ilya",
@@ -18441,34 +10806,12 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.2,
-    "trailer": "https://www.youtube.com/watch?v=b1kbLwvqugk",
+    "trailer": "https://www.youtube.com/watch?v=b1kbLWp7MDI",
     "movie": "Anti-Hero – Taylor Swift",
-    "keyPeople": [
-      {
-        "id": "mike_birbiglia_actor",
-        "name": "Mike Birbiglia",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "ashley_pearson_actress",
-        "name": "Ashley Pearson",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "entertain_me_productions_producer",
-        "name": "Entertain Me Productions",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      }
-    ],
+    "keyPeople": [],
     "actor": "Mike Birbiglia",
-    "actress": "Ashley Pearson",
-    "productionHouse": "Entertain Me Productions",
+    "actress": "",
+    "productionHouse": "",
     "targetAmountHuman": "2 crore 55 lakh",
     "raisedAmountHuman": "77 lakh",
     "keyCommunityData": [
@@ -18476,25 +10819,16 @@ export const projects: Project[] = [
         "id": "kc_171",
         "movieId": "171",
         "movieName": "Anti-Hero – Taylor Swift",
-        "productionHouse": "Entertain Me Productions",
+        "productionHouse": "",
         "keyPeople": [
           "Mike Birbiglia"
         ],
         "actor": "Mike Birbiglia",
-        "actress": "Ashley Pearson",
+        "actress": "",
         "director": ""
       }
     ],
-    "disabled": false,
-    "releaseYear": 2024,
-    "budget": 20000,
-    "tmdbGenres": [
-      "Documentary"
-    ],
-    "spokenLanguages": [
-      "English"
-    ],
-    "imdbId": "tt32481825"
+    "disabled": false
   },
   {
     "id": "172",
@@ -18609,7 +10943,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.8,
-    "trailer": "https://www.youtube.com/watch?v=3tmd-ClpJxA",
+    "trailer": "https://www.youtube.com/watch?v=1v5hqJqS6h0",
     "movie": "Vampire – Olivia Rodrigo",
     "keyPeople": [],
     "actor": "",
@@ -18654,7 +10988,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.6,
-    "trailer": "https://www.youtube.com/watch?v=RlPNh_PBZb4",
+    "trailer": "https://www.youtube.com/watch?v=0KSOMA3QBU0",
     "movie": "Paint The Town Red – Doja Cat",
     "keyPeople": [],
     "actor": "",
@@ -18791,15 +11125,7 @@ export const projects: Project[] = [
     "rating": 4.7,
     "trailer": "https://www.youtube.com/watch?v=P3cpt9CjMjE",
     "movie": "Ella Baila Sola – Eslabon Armado & Peso Pluma",
-    "keyPeople": [
-      {
-        "id": "pedro_tovar_producer",
-        "name": "Pedro Tovar",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 0
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "Pedro Tovar",
@@ -18887,17 +11213,9 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.5,
-    "trailer": "https://www.youtube.com/watch?v=saGYMhApaH8",
+    "trailer": "https://www.youtube.com/watch?v=43210zyxwvu",
     "movie": "La Bebe – Yng Lvcas & Peso Pluma",
-    "keyPeople": [
-      {
-        "id": "bounce_bosses_producer",
-        "name": "Bounce Bosses",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 0
-      }
-    ],
+    "keyPeople": [],
     "actor": "",
     "actress": "",
     "productionHouse": "Bounce Bosses",

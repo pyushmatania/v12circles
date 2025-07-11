@@ -135,7 +135,9 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (project.director && project.director.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (project.artist && project.artist.toLowerCase().includes(searchTerm.toLowerCase()));
+        (project.artist && project.artist.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (project.productionHouse && project.productionHouse.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (project.keyPeople && project.keyPeople.some(person => person.name.toLowerCase().includes(searchTerm.toLowerCase())));
 
       const matchesCategory = selectedCategory === 'all' || 
         project.category.toLowerCase().includes(selectedCategory);
@@ -775,7 +777,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
             <input
               ref={searchInputRef}
               type="text"
-              placeholder="Search for films, music, web series, directors, artists..."
+                                  placeholder="Search for films, music, web series, directors, artists, production houses, actors..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);

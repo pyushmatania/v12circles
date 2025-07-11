@@ -1,0 +1,1077 @@
+{
+  "timestamp": "2025-07-11T06:27:12.643Z",
+  "summary": {
+    "totalChecked": 175,
+    "workingCount": 162,
+    "brokenCount": 13,
+    "workingPercentage": "92.6",
+    "brokenPercentage": "7.4"
+  },
+  "brokenTrailers": [
+    {
+      "id": "133",
+      "title": "Mrs Chatterjee vs Norway",
+      "category": "Bollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=VLZIWJfcqxk"
+    },
+    {
+      "id": "165",
+      "title": "The Bear",
+      "category": "Hollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=n3fNIfbW5WY"
+    },
+    {
+      "id": "202",
+      "title": "Dune",
+      "category": "Hollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=bNYOgSrGHJU"
+    },
+    {
+      "id": "206",
+      "title": "Fast X",
+      "category": "Hollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=32RAAG6J_Ks"
+    },
+    {
+      "id": "67",
+      "title": "Breathe",
+      "category": "Bollywood",
+      "error": "Video private/restricted (401)",
+      "trailerUrl": "https://www.youtube.com/watch?v=GfLhuXcj4b4"
+    },
+    {
+      "id": "75",
+      "title": "TVF Tripling",
+      "category": "Bollywood",
+      "error": "Video private/restricted (401)",
+      "trailerUrl": "https://www.youtube.com/watch?v=sjJmM97brLA"
+    },
+    {
+      "id": "111",
+      "title": "Narcos: Mexico",
+      "category": "Bollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=OJSx-pE4WN8"
+    },
+    {
+      "id": "112",
+      "title": "Money Heist: Korea - Joint Economic Area",
+      "category": "Bollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=3NXR5gS5W6w"
+    },
+    {
+      "id": "113",
+      "title": "Fauda",
+      "category": "Bollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=tOGJ7DjHX4Q"
+    },
+    {
+      "id": "117",
+      "title": "The Bridge",
+      "category": "Bollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=wnCHLSYJe_w"
+    },
+    {
+      "id": "118",
+      "title": "Gomorrah",
+      "category": "Bollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=P_tcexIjWK0"
+    },
+    {
+      "id": "120",
+      "title": "Kingdom",
+      "category": "Bollywood",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=f5ur5HZgPpE"
+    },
+    {
+      "id": "171",
+      "title": "Anti-Hero – Taylor Swift",
+      "category": "Trending Music",
+      "error": "Video not found (404)",
+      "trailerUrl": "https://www.youtube.com/watch?v=b1kbLWp7MDI"
+    }
+  ],
+  "workingTrailers": [
+    {
+      "id": "1",
+      "title": "Sholay",
+      "category": "Bollywood",
+      "videoTitle": "Sholay Trailer (1975)"
+    },
+    {
+      "id": "2",
+      "title": "Dilwale Dulhania Le Jayenge",
+      "category": "Bollywood",
+      "videoTitle": "Dilwale Dulhania Le Jayenge | 25 Years Weeks Trailer | Shah Rukh Khan, Kajol | Aditya Chopra | DDLJ"
+    },
+    {
+      "id": "3",
+      "title": "3 Idiots",
+      "category": "Bollywood",
+      "videoTitle": "3 Idiots | OFFICIAL trailer #1 US/indian (2009)"
+    },
+    {
+      "id": "4",
+      "title": "Lagaan: Once Upon a Time in India",
+      "category": "Hollywood",
+      "videoTitle": "🎥 LAGAAN: ONCE UPON A TIME IN INDIA (2001) | Movie Trailer | Full HD | 1080p"
+    },
+    {
+      "id": "5",
+      "title": "Dangal",
+      "category": "Bollywood",
+      "videoTitle": "Dangal | Official Trailer | Aamir Khan | In Cinemas Dec 23, 2016"
+    },
+    {
+      "id": "6",
+      "title": "Zindagi Na Milegi Dobara",
+      "category": "Bollywood",
+      "videoTitle": "Zindagi Na Milegi Dobara | Official Trailer | Hrithik Roshan, Farhan Akhtar, Abhay Deol"
+    },
+    {
+      "id": "7",
+      "title": "Gully Boy",
+      "category": "Bollywood",
+      "videoTitle": "Gully Boy | Official Trailer | Ranveer Singh | Alia Bhatt | Zoya Akhtar |14th February"
+    },
+    {
+      "id": "8",
+      "title": "Andhadhun",
+      "category": "Bollywood",
+      "videoTitle": "ANDHADHUN HD Official Trailer"
+    },
+    {
+      "id": "9",
+      "title": "Queen",
+      "category": "Bollywood",
+      "videoTitle": "QUEEN - Official Trailer"
+    },
+    {
+      "id": "10",
+      "title": "Barfi!",
+      "category": "Bollywood",
+      "videoTitle": "Barfi Trailer"
+    },
+    {
+      "id": "11",
+      "title": "Rockstar",
+      "category": "Bollywood",
+      "videoTitle": "Rockstar - Official Trailer | Ranbir Kapoor, Nargis Fakhri | Imtiaz Ali | A.R.Rahman"
+    },
+    {
+      "id": "12",
+      "title": "Article 15",
+      "category": "Bollywood",
+      "videoTitle": "Article 15 - Trailer | Ayushmann Khurrana | Anubhav Sinha | Releasing on 28June2019"
+    },
+    {
+      "id": "13",
+      "title": "Tumbbad",
+      "category": "Bollywood",
+      "videoTitle": "Tumbbad Trailer #1 (2018) | Movieclips Indie"
+    },
+    {
+      "id": "14",
+      "title": "Masaan",
+      "category": "Bollywood",
+      "videoTitle": "MASAAN: Official Trailer | Releasing 24 July | Richa Chadha, Sanjay Mishra, Vicky Kaushal"
+    },
+    {
+      "id": "15",
+      "title": "Drishyam",
+      "category": "Bollywood",
+      "videoTitle": "Drishyam - Official Trailer | Starring Ajay Devgn, Tabu & Shriya Saran"
+    },
+    {
+      "id": "16",
+      "title": "Swades",
+      "category": "Bollywood",
+      "videoTitle": "Swades | Trailer | Now in HD | Shah Rukh Khan, Gayatri Joshi | A film by Ashutosh Gowarikar"
+    },
+    {
+      "id": "17",
+      "title": "Chak De! India",
+      "category": "Bollywood",
+      "videoTitle": "Chak De India | Official Trailer | Shah Rukh Khan | Shimit Amin | Sagarika, Vidya, Shilpa, Chitrashi"
+    },
+    {
+      "id": "18",
+      "title": "PK",
+      "category": "Bollywood",
+      "videoTitle": "PK Official Teaser Trailer 1 (2014) - Comedy Movie HD"
+    },
+    {
+      "id": "19",
+      "title": "Kahaani",
+      "category": "Bollywood",
+      "videoTitle": "Kahaani Theatrical Trailer | Vidya Balan"
+    },
+    {
+      "id": "20",
+      "title": "Taare Zameen Par",
+      "category": "Bollywood",
+      "videoTitle": "Sitaare Zameen Par | Official Trailer | Aamir Khan | Genelia Deshmukh | 20th June 2025"
+    },
+    {
+      "id": "21",
+      "title": "Mughal-E-Azam",
+      "category": "Bollywood",
+      "videoTitle": "Mughal-E-Azam - Dilip Kumar, Madhubala | Trailer | Full Movie Link in Description"
+    },
+    {
+      "id": "22",
+      "title": "Mother India",
+      "category": "Bollywood",
+      "videoTitle": "Mother India - Official Movie Trailer"
+    },
+    {
+      "id": "23",
+      "title": "Pyaasa",
+      "category": "Bollywood",
+      "videoTitle": "Herail Ba (Video) Bheed | Rajkummar Rao | Anubhav Sinha | Omprakash Yadav, Anurag Saikia, Dr Sagar"
+    },
+    {
+      "id": "24",
+      "title": "Deewaar",
+      "category": "Bollywood",
+      "videoTitle": "Deewaar   Trailer"
+    },
+    {
+      "id": "25",
+      "title": "Kabhi Khushi Kabhie Gham...",
+      "category": "Bollywood",
+      "videoTitle": "Kabhi Khushi Kabhie Gham - Official Trailer - Amitabh Bachchan, Shahrukh Khan, Hrithik Roshan, Kajol"
+    },
+    {
+      "id": "26",
+      "title": "Dil Chahta Hai",
+      "category": "Bollywood",
+      "videoTitle": "Dil Chahta Hai | Bollywood Nostalgia | Trailer | Netflix India"
+    },
+    {
+      "id": "27",
+      "title": "Black",
+      "category": "Bollywood",
+      "videoTitle": "BLACK (2024) Official Hindi Trailer | Jiiva, Priya Bhavani Shankar, Sam CS, KG Balasubramani | AKF"
+    },
+    {
+      "id": "28",
+      "title": "Munna Bhai M.B.B.S.",
+      "category": "Bollywood",
+      "videoTitle": "Operation Valentine | Official Hindi Trailer | Varun Tej, Manushi Chhillar| 1st March 2024"
+    },
+    {
+      "id": "29",
+      "title": "Rang De Basanti",
+      "category": "Bollywood",
+      "videoTitle": "Rang De Basanti - Official Trailer 2006 | Aamir Khan |"
+    },
+    {
+      "id": "30",
+      "title": "Piku",
+      "category": "Bollywood",
+      "videoTitle": "PIKU Motion Se Hi Emotion Official Trailer | Amitabh Bachchan, Deepika Padukone, Irrfan Khan"
+    },
+    {
+      "id": "31",
+      "title": "Badhaai Ho",
+      "category": "Bollywood",
+      "videoTitle": "‘Badhaai Ho’ Official Trailer | Ayushmann Khurrana, Sanya Malhotra | Director Amit Sharma"
+    },
+    {
+      "id": "32",
+      "title": "Stree",
+      "category": "Bollywood",
+      "videoTitle": "Stree Official Trailer | Rajkummar Rao, Shraddha Kapoor, Dinesh Vijan, Raj&DK, Amar Kaushik | Aug 31"
+    },
+    {
+      "id": "33",
+      "title": "Haider",
+      "category": "Bollywood",
+      "videoTitle": "Haider Official Trailer 1 (2014) - Drama Movie HD"
+    },
+    {
+      "id": "34",
+      "title": "A Wednesday",
+      "category": "Hollywood",
+      "videoTitle": "A Wednesday 2008 Trailer"
+    },
+    {
+      "id": "35",
+      "title": "Bhool Bhulaiyaa",
+      "category": "Bollywood",
+      "videoTitle": "Official Trailer : Bhool Bhulaiyaa | Akshay Kumar, Vidya Balan, Shiney Ahuja | Priyadarshan"
+    },
+    {
+      "id": "36",
+      "title": "Don",
+      "category": "Bollywood",
+      "videoTitle": "Don - Theatrical Trailer | Shah Rukh Khan,Priyanka Chopra,Kareena Kapoor,Arjun Rampal,Boman Irani"
+    },
+    {
+      "id": "38",
+      "title": "Gol Maal",
+      "category": "Bollywood",
+      "videoTitle": "Golmaal: Fun Unlimited Official Trailer 2 | Ajay D | Rimi S | Ashrad W | Sharman J | Tushar K"
+    },
+    {
+      "id": "39",
+      "title": "Chhichhore",
+      "category": "Bollywood",
+      "videoTitle": "Chhichhore | Official Trailer | Nitesh Tiwari | Sushant | Shraddha | Sajid Nadiadwala | 6th Sept"
+    },
+    {
+      "id": "40",
+      "title": "Bajrangi Bhaijaan",
+      "category": "Bollywood",
+      "videoTitle": "Bajrangi Bhaijaan | Official Trailer with English Subtitles| Salman Khan, Kareena Kapoor, Nawazuddin"
+    },
+    {
+      "id": "41",
+      "title": "The Shawshank Redemption",
+      "category": "Hollywood",
+      "videoTitle": "The Shawshank Redemption - Trailer - (1994) - HQ"
+    },
+    {
+      "id": "42",
+      "title": "The Godfather",
+      "category": "Hollywood",
+      "videoTitle": "The Godfather Trailer (HD)"
+    },
+    {
+      "id": "43",
+      "title": "The Dark Knight",
+      "category": "Hollywood",
+      "videoTitle": "The Dark Knight (2008) Official Trailer #1 - Christopher Nolan Movie HD"
+    },
+    {
+      "id": "44",
+      "title": "Pulp Fiction",
+      "category": "Hollywood",
+      "videoTitle": "Pulp Fiction Official Trailer #1 - (1994) HD"
+    },
+    {
+      "id": "45",
+      "title": "Forrest Gump",
+      "category": "Hollywood",
+      "videoTitle": "Forrest Gump - Trailer"
+    },
+    {
+      "id": "46",
+      "title": "Inception",
+      "category": "Hollywood",
+      "videoTitle": "Inception (2010) Official Trailer #1 - Christopher Nolan Movie HD"
+    },
+    {
+      "id": "47",
+      "title": "Fight Club",
+      "category": "Hollywood",
+      "videoTitle": "Fight Club Trailer - HD"
+    },
+    {
+      "id": "48",
+      "title": "The Matrix",
+      "category": "Hollywood",
+      "videoTitle": "The Matrix (1999) Official Trailer #1 - Sci-Fi Action Movie"
+    },
+    {
+      "id": "49",
+      "title": "The Social Network",
+      "category": "Hollywood",
+      "videoTitle": "THE SOCIAL NETWORK - Official Trailer [2010] (HD)"
+    },
+    {
+      "id": "50",
+      "title": "The Wolf of Wall Street",
+      "category": "Hollywood",
+      "videoTitle": "The Wolf of Wall Street Official Trailer"
+    },
+    {
+      "id": "51",
+      "title": "Titanic",
+      "category": "Hollywood",
+      "videoTitle": "Titanic - Official Trailer (HD)"
+    },
+    {
+      "id": "52",
+      "title": "Gladiator",
+      "category": "Hollywood",
+      "videoTitle": "Gladiator trailer"
+    },
+    {
+      "id": "53",
+      "title": "Interstellar",
+      "category": "Hollywood",
+      "videoTitle": "Interstellar - Trailer - Official Warner Bros. UK"
+    },
+    {
+      "id": "54",
+      "title": "Joker",
+      "category": "Hollywood",
+      "videoTitle": "JOKER - Final Trailer - Now Playing In Theaters"
+    },
+    {
+      "id": "55",
+      "title": "Black Panther",
+      "category": "Hollywood",
+      "videoTitle": "Marvel Studios' Black Panther - Official Trailer"
+    },
+    {
+      "id": "56",
+      "title": "Doctor Strange",
+      "category": "Hollywood",
+      "videoTitle": "Doctor Strange Official Trailer 1 (2016) - Benedict Cumberbatch Movie"
+    },
+    {
+      "id": "57",
+      "title": "Iron Man",
+      "category": "Hollywood",
+      "videoTitle": "Iron Man (2008) Trailer #1 | Movieclips Classic Trailers"
+    },
+    {
+      "id": "58",
+      "title": "The Avengers",
+      "category": "Hollywood",
+      "videoTitle": "Marvel's The Avengers- Trailer (OFFICIAL)"
+    },
+    {
+      "id": "59",
+      "title": "Avengers: Endgame",
+      "category": "Hollywood",
+      "videoTitle": "Marvel Studios' Avengers: Endgame - Official Trailer"
+    },
+    {
+      "id": "60",
+      "title": "Avatar",
+      "category": "Hollywood",
+      "videoTitle": "Avatar | Official Trailer (HD) | 20th Century FOX"
+    },
+    {
+      "id": "101",
+      "title": "Parasite",
+      "category": "Hollywood",
+      "videoTitle": "Parasite - Official Trailer (2019) Bong Joon Ho Film"
+    },
+    {
+      "id": "102",
+      "title": "Spirited Away",
+      "category": "Hollywood",
+      "videoTitle": "Spirited Away - Official Trailer"
+    },
+    {
+      "id": "103",
+      "title": "Crouching Tiger, Hidden Dragon",
+      "category": "Hollywood",
+      "videoTitle": "卧虎藏龙 Crouching Tiger Hidden Dragon [BEST Fight Scene]"
+    },
+    {
+      "id": "104",
+      "title": "Amélie",
+      "category": "Hollywood",
+      "videoTitle": "Queen Charlotte: A Bridgerton Story | Official Trailer | Netflix"
+    },
+    {
+      "id": "105",
+      "title": "Pan's Labyrinth",
+      "category": "Hollywood",
+      "videoTitle": "Pan's Labyrinth full length trailer"
+    },
+    {
+      "id": "106",
+      "title": "City of God",
+      "category": "Hollywood",
+      "videoTitle": "City of God trailer"
+    },
+    {
+      "id": "107",
+      "title": "Oldboy",
+      "category": "Hollywood",
+      "videoTitle": "Oldboy - Trailer [HD]"
+    },
+    {
+      "id": "108",
+      "title": "Roma",
+      "category": "Hollywood",
+      "videoTitle": "Bridgerton Season 3 | Part 2 Official Trailer | Netflix"
+    },
+    {
+      "id": "109",
+      "title": "Life Is Beautiful",
+      "category": "Hollywood",
+      "videoTitle": "Life Is Beautiful | Official Trailer (HD) - Roberto Benigni, Nicoletta Braschi | MIRAMAX"
+    },
+    {
+      "id": "110",
+      "title": "Cinema Paradiso",
+      "category": "Hollywood",
+      "videoTitle": "Cinema Paradiso Official Trailer"
+    },
+    {
+      "id": "121",
+      "title": "Gadar 2",
+      "category": "Bollywood",
+      "videoTitle": "#Gadar2 Official Trailer | 11th August | Sunny Deol | Ameesha Patel | Anil Sharma"
+    },
+    {
+      "id": "122",
+      "title": "Pathaan",
+      "category": "Bollywood",
+      "videoTitle": "Pathaan Trailer | Shah Rukh Khan | Deepika Padukone | John Abraham | Siddharth A | YRF Spy Universe"
+    },
+    {
+      "id": "123",
+      "title": "RRR",
+      "category": "Bollywood",
+      "videoTitle": "RRR Official Trailer (Hindi) India’s Biggest Action Drama | NTR,RamCharan,AjayD,AliaB | SS Rajamouli"
+    },
+    {
+      "id": "124",
+      "title": "Jawan",
+      "category": "Bollywood",
+      "videoTitle": "SIKANDAR Official Trailer - Salman Khan, Rashmika | Sajid Nadiadwala | A.R. Murugadoss | 30th March"
+    },
+    {
+      "id": "125",
+      "title": "Rocky Aur Rani Kii Prem Kahaani",
+      "category": "Bollywood",
+      "videoTitle": "Dream Girl: Official Trailer | Ayushmann Khurrana, Nushrat Bharucha | 13th Sep"
+    },
+    {
+      "id": "126",
+      "title": "Animal",
+      "category": "Bollywood",
+      "videoTitle": "Animal | Official Announcement | Ranbir Kapoor | Rashmika M, Anil K, Bobby D | Sandeep Reddy"
+    },
+    {
+      "id": "127",
+      "title": "Tu Jhoothi Main Makkaar",
+      "category": "Bollywood",
+      "videoTitle": "Har Har Mahadev - OMG 2 | Akshay Kumar, Pankaj | Vikram Montrose, Shekhar | Mahashivratri Special"
+    },
+    {
+      "id": "128",
+      "title": "Satyaprem Ki Katha",
+      "category": "Bollywood",
+      "videoTitle": "Gadar 2 Teaser | In Cinemas 11th August | Sunny Deol | Ameesha Patel | Anil Sharma"
+    },
+    {
+      "id": "129",
+      "title": "Bholaa",
+      "category": "Bollywood",
+      "videoTitle": "The Shawshank Redemption | Official Trailer | Warner Bros. Entertainment"
+    },
+    {
+      "id": "130",
+      "title": "OMG 2",
+      "category": "Bollywood",
+      "videoTitle": "OMG 2 - Official Trailer | Akshay Kumar, Pankaj Tripathi, Yami Gautam | Amit Rai | 11th Aug"
+    },
+    {
+      "id": "131",
+      "title": "Dream Girl 2",
+      "category": "Bollywood",
+      "videoTitle": "‘Dream Girl 2’ official trailer"
+    },
+    {
+      "id": "132",
+      "title": "Bheed",
+      "category": "Bollywood",
+      "videoTitle": "Bheed | Official Trailer | Rajkummar Rao, Bhumi Pednekar, Anubhav Sinha | 24 March 2023"
+    },
+    {
+      "id": "134",
+      "title": "Selfiee",
+      "category": "Bollywood",
+      "videoTitle": "Param Sundari - Announcement | Sidharth M | Janhvi K | Dinesh V | Tushar J | 25th July 2025"
+    },
+    {
+      "id": "135",
+      "title": "Shehzada",
+      "category": "Bollywood",
+      "videoTitle": "Operation Valentine | Official Hindi Teaser | Varun Tej, Manushi Chhillar| In Cinemas 1st March 2024"
+    },
+    {
+      "id": "136",
+      "title": "Mission Majnu",
+      "category": "Bollywood",
+      "videoTitle": "Yudhra | Trailer 2 | Siddhant Chaturvedi | Raghav Juyal | Malavika Mohanan"
+    },
+    {
+      "id": "137",
+      "title": "Oppenheimer",
+      "category": "Hollywood",
+      "videoTitle": "Oppenheimer | New Trailer"
+    },
+    {
+      "id": "138",
+      "title": "Barbie",
+      "category": "Hollywood",
+      "videoTitle": "Barbie | Main Trailer"
+    },
+    {
+      "id": "139",
+      "title": "John Wick: Chapter 4",
+      "category": "Hollywood",
+      "videoTitle": "John Wick: Chapter 4 (2023 Movie) Official Trailer – Keanu Reeves, Donnie Yen, Bill Skarsgård"
+    },
+    {
+      "id": "140",
+      "title": "Guardians of the Galaxy Vol. 3",
+      "category": "Hollywood",
+      "videoTitle": "Marvel Studios’ Guardians of the Galaxy Vol. 3 | Official Trailer"
+    },
+    {
+      "id": "141",
+      "title": "Spider-Man: Across the Spider-Verse",
+      "category": "Hollywood",
+      "videoTitle": "SPIDER-MAN: ACROSS THE SPIDER-VERSE - Official Trailer #2 (HD)"
+    },
+    {
+      "id": "142",
+      "title": "The Marvels",
+      "category": "Hollywood",
+      "videoTitle": "Marvel Studios' The Marvels | Official Trailer"
+    },
+    {
+      "id": "143",
+      "title": "Dune: Part Two",
+      "category": "Hollywood",
+      "videoTitle": "Dune: Part Two | Official Trailer 3"
+    },
+    {
+      "id": "144",
+      "title": "Wonka",
+      "category": "Hollywood",
+      "videoTitle": "WONKA | Official Trailer"
+    },
+    {
+      "id": "145",
+      "title": "The Hunger Games: The Ballad of Songbirds & Snakes",
+      "category": "Hollywood",
+      "videoTitle": "Bridgerton Season 3 | The Event of the Season: A Bridgerton Wedding Trailer | Netflix"
+    },
+    {
+      "id": "146",
+      "title": "Mission: Impossible – Dead Reckoning Part One",
+      "category": "Hollywood",
+      "videoTitle": "Trailer | Mission: Impossible – The Final Reckoning"
+    },
+    {
+      "id": "147",
+      "title": "The Flash",
+      "category": "Hollywood",
+      "videoTitle": "The Flash – Official Trailer"
+    },
+    {
+      "id": "148",
+      "title": "Indiana Jones and the Dial of Destiny",
+      "category": "Hollywood",
+      "videoTitle": "Indiana Jones and the Dial of Destiny | Official Trailer"
+    },
+    {
+      "id": "149",
+      "title": "Killers of the Flower Moon",
+      "category": "Hollywood",
+      "videoTitle": "Gen V (Amazon) Trailer HD - The Boys spinoff"
+    },
+    {
+      "id": "150",
+      "title": "Napoleon",
+      "category": "Hollywood",
+      "videoTitle": "NAPOLEON - Official Trailer (HD)"
+    },
+    {
+      "id": "151",
+      "title": "The Creator",
+      "category": "Hollywood",
+      "videoTitle": "The Creator | Official Trailer"
+    },
+    {
+      "id": "153",
+      "title": "Farzi",
+      "category": "Hollywood",
+      "videoTitle": "FARZI - Official Trailer | Raj & DK | Shahid, Sethupathi, Kay Kay, Raashii | Prime Video India"
+    },
+    {
+      "id": "155",
+      "title": "Rana Naidu",
+      "category": "Hollywood",
+      "videoTitle": "Rana Naidu | Uncensored Trailer | Rana Daggubati, Venkatesh Daggubati | Netflix India"
+    },
+    {
+      "id": "156",
+      "title": "Taaza Khabar",
+      "category": "Hollywood",
+      "videoTitle": "BB Ki Vines Productions- Taaza Khabar | Hotstar Specials | Official Trailer"
+    },
+    {
+      "id": "157",
+      "title": "The Last of Us",
+      "category": "Hollywood",
+      "videoTitle": "The Last of Us | Official Trailer | Max"
+    },
+    {
+      "id": "158",
+      "title": "Wednesday",
+      "category": "Hollywood",
+      "videoTitle": "Wednesday: Season 2 | Official Teaser Trailer | Netflix"
+    },
+    {
+      "id": "159",
+      "title": "The Mandalorian (Season 3)",
+      "category": "Hollywood",
+      "videoTitle": "The Mandalorian | Season 3 Teaser Trailer | Disney+"
+    },
+    {
+      "id": "161",
+      "title": "Loki (Season 2)",
+      "category": "Hollywood",
+      "videoTitle": "Marvel Studios' Loki | Official Trailer | Disney+"
+    },
+    {
+      "id": "162",
+      "title": "Squid Game",
+      "category": "Hollywood",
+      "videoTitle": "Squid Game | Official Trailer | Netflix"
+    },
+    {
+      "id": "163",
+      "title": "Money Heist: Korea – Joint Economic Area",
+      "category": "Bollywood",
+      "videoTitle": "Gen V - REDBAND Teaser Trailer | Prime Video"
+    },
+    {
+      "id": "164",
+      "title": "Bridgerton (Season 3)",
+      "category": "Hollywood",
+      "videoTitle": "Bridgerton Season 3 | Official Trailer | Netflix"
+    },
+    {
+      "id": "166",
+      "title": "Gen V",
+      "category": "Hollywood",
+      "videoTitle": "Gen V - Official Teaser Trailer | Prime Video"
+    },
+    {
+      "id": "188",
+      "title": "Pushpa: The Rise",
+      "category": "Bollywood",
+      "videoTitle": "Pushpa Official Trailer | Allu Arjun | Rashmika | Fahadh Faasil | Sukumar | DSP | 17th Dec"
+    },
+    {
+      "id": "189",
+      "title": "Sooryavanshi",
+      "category": "Bollywood",
+      "videoTitle": "Sooryavanshi | Official Trailer | 5th Nov | Akshay, Ajay, Ranveer, Katrina | Rohit Shetty"
+    },
+    {
+      "id": "190",
+      "title": "War",
+      "category": "Bollywood",
+      "videoTitle": "WAR | Trailer | Hrithik Roshan | Tiger Shroff | Vaani Kapoor | Siddharth Anand | YRF Spy Universe"
+    },
+    {
+      "id": "191",
+      "title": "Simmba",
+      "category": "Bollywood",
+      "videoTitle": "Simmba | Official Trailer | Ranveer Singh, Sara Ali Khan, Sonu Sood | Rohit Shetty | December 28"
+    },
+    {
+      "id": "192",
+      "title": "Sanju",
+      "category": "Bollywood",
+      "videoTitle": "Sanju | Official Trailer | Ranbir Kapoor | Rajkumar Hirani | Releasing on 29th June"
+    },
+    {
+      "id": "193",
+      "title": "Kabir Singh",
+      "category": "Bollywood",
+      "videoTitle": "Kabir Singh – Official Trailer | Shahid Kapoor, Kiara Advani | Sandeep Reddy Vanga | 21st June 2019"
+    },
+    {
+      "id": "199",
+      "title": "Spider-Man: No Way Home",
+      "category": "Hollywood",
+      "videoTitle": "SPIDER-MAN: NO WAY HOME - Official Trailer (HD)"
+    },
+    {
+      "id": "200",
+      "title": "Top Gun: Maverick",
+      "category": "Hollywood",
+      "videoTitle": "Top Gun: Maverick - Official Trailer (2022) - Paramount Pictures"
+    },
+    {
+      "id": "201",
+      "title": "Avatar: The Way of Water",
+      "category": "Hollywood",
+      "videoTitle": "Avatar: The Way of Water | Official Trailer"
+    },
+    {
+      "id": "203",
+      "title": "The Batman",
+      "category": "Hollywood",
+      "videoTitle": "THE BATMAN – Main Trailer"
+    },
+    {
+      "id": "204",
+      "title": "No Time to Die",
+      "category": "Hollywood",
+      "videoTitle": "NO TIME TO DIE Trailer – In Cinemas October 2021."
+    },
+    {
+      "id": "205",
+      "title": "Black Widow",
+      "category": "Hollywood",
+      "videoTitle": "Marvel Studios’ Black Widow | New Trailer"
+    },
+    {
+      "id": "61",
+      "title": "Sacred Games",
+      "category": "Bollywood",
+      "videoTitle": "Sacred Games | Teaser [HD] | Netflix"
+    },
+    {
+      "id": "62",
+      "title": "Mirzapur",
+      "category": "Bollywood",
+      "videoTitle": "MIRZAPUR S2 - Official Trailer | Pankaj Tripathi, Ali Fazal, Divyenndu | Amazon Original |Oct23"
+    },
+    {
+      "id": "63",
+      "title": "Paatal Lok",
+      "category": "Bollywood",
+      "videoTitle": "Paatal Lok पाताल लोक  - Official Trailer | Amazon Original | 15th May 2020"
+    },
+    {
+      "id": "64",
+      "title": "The Family Man",
+      "category": "Bollywood",
+      "videoTitle": "The Family Man – Official Trailer | Raj & DK | Manoj Bajpayee | Amazon Original | Watch Now"
+    },
+    {
+      "id": "65",
+      "title": "Delhi Crime",
+      "category": "Bollywood",
+      "videoTitle": "Delhi Crime | Official Trailer [HD] | Netflix"
+    },
+    {
+      "id": "66",
+      "title": "Made in Heaven",
+      "category": "Bollywood",
+      "videoTitle": "Made in Heaven – Official Trailer (18+) | Prime Original 2019 | 8th March 2019 | Amazon Prime Video"
+    },
+    {
+      "id": "68",
+      "title": "Kota Factory",
+      "category": "Bollywood",
+      "videoTitle": "TVF's Kota Factory | Season 1 Official Trailer"
+    },
+    {
+      "id": "69",
+      "title": "Aarya",
+      "category": "Bollywood",
+      "videoTitle": "Hotstar Specials Presents Aarya | Official Trailer | Ram Madhvani | Sushmita Sen"
+    },
+    {
+      "id": "70",
+      "title": "Asur",
+      "category": "Bollywood",
+      "videoTitle": "Asur Season 1 - Official Trailer | Jio Cinema | Arshad Warsi | Barun Sobti | Theatrical Trailer"
+    },
+    {
+      "id": "71",
+      "title": "Criminal Justice",
+      "category": "Bollywood",
+      "videoTitle": "Hotstar Specials Criminal Justice | A Family Matter | Official Trailer | May 29 | Pankaj Tripathi"
+    },
+    {
+      "id": "72",
+      "title": "Hostages",
+      "category": "Bollywood",
+      "videoTitle": "Hostages - Official Trailer | Hotstar Specials"
+    },
+    {
+      "id": "73",
+      "title": "Inside Edge",
+      "category": "Bollywood",
+      "videoTitle": "Inside Edge | (Explicit)  Official Trailer [HD] | All Episodes July 10 2017 | Amazon Prime Video"
+    },
+    {
+      "id": "74",
+      "title": "TVF Pitchers",
+      "category": "Bollywood",
+      "videoTitle": "TVF Pitchers - New Season | Official Trailer | Streaming now only on ZEE5"
+    },
+    {
+      "id": "77",
+      "title": "Jamtara: Sabka Number Ayega",
+      "category": "Bollywood",
+      "videoTitle": "Jamtara | Official Trailer #1 | Sabka Number Ayega | Netflix India"
+    },
+    {
+      "id": "79",
+      "title": "Ghoul",
+      "category": "Bollywood",
+      "videoTitle": "Ghoul | Official Trailer [HD] | Netflix"
+    },
+    {
+      "id": "80",
+      "title": "Special OPS",
+      "category": "Bollywood",
+      "videoTitle": "Special Ops | India's Longest Manhunt | Official Trailer | 17th March 2020"
+    },
+    {
+      "id": "81",
+      "title": "Stranger Things",
+      "category": "Bollywood",
+      "videoTitle": "Stranger Things | Official Final Trailer | Netflix"
+    },
+    {
+      "id": "82",
+      "title": "Breaking Bad",
+      "category": "Hollywood",
+      "videoTitle": "Breaking Bad Trailer (First Season)"
+    },
+    {
+      "id": "83",
+      "title": "Game of Thrones",
+      "category": "Bollywood",
+      "videoTitle": "Game of Thrones | Official Series Trailer (HBO)"
+    },
+    {
+      "id": "84",
+      "title": "The Witcher",
+      "category": "Bollywood",
+      "videoTitle": "THE WITCHER | MAIN TRAILER | NETFLIX"
+    },
+    {
+      "id": "85",
+      "title": "The Crown",
+      "category": "Bollywood",
+      "videoTitle": "The Crown | Official Trailer | Netflix"
+    },
+    {
+      "id": "86",
+      "title": "The Mandalorian",
+      "category": "Bollywood",
+      "videoTitle": "The Mandalorian | Official Trailer | Disney+ | Streaming Nov. 12"
+    },
+    {
+      "id": "87",
+      "title": "Money Heist",
+      "category": "Bollywood",
+      "videoTitle": "Money Heist | Series Trailer | Netflix"
+    },
+    {
+      "id": "88",
+      "title": "The Boys",
+      "category": "Bollywood",
+      "videoTitle": "The Boys - Official Trailer | Prime Video"
+    },
+    {
+      "id": "89",
+      "title": "The Queen's Gambit",
+      "category": "Bollywood",
+      "videoTitle": "The Queen's Gambit Limited Series Trailer | Rotten Tomatoes TV"
+    },
+    {
+      "id": "90",
+      "title": "House of Cards",
+      "category": "Bollywood",
+      "videoTitle": "House of Cards | Series Trailer [HD] | Netflix"
+    },
+    {
+      "id": "91",
+      "title": "Westworld",
+      "category": "Bollywood",
+      "videoTitle": "Westworld Season 1 - Official Trailer - HBO UK"
+    },
+    {
+      "id": "92",
+      "title": "Narcos",
+      "category": "Bollywood",
+      "videoTitle": "Narcos - Main Trailer - Netflix [HD]"
+    },
+    {
+      "id": "93",
+      "title": "Dark",
+      "category": "Bollywood",
+      "videoTitle": "DARK Season 1 Official Trailer # 2 (2017) Netflix Mystery TV Series HD"
+    },
+    {
+      "id": "94",
+      "title": "Ozark",
+      "category": "Bollywood",
+      "videoTitle": "Ozark | Official Trailer [HD] | Netflix"
+    },
+    {
+      "id": "95",
+      "title": "The Umbrella Academy",
+      "category": "Bollywood",
+      "videoTitle": "The Umbrella Academy | Official Trailer | Netflix"
+    },
+    {
+      "id": "96",
+      "title": "Peaky Blinders",
+      "category": "Bollywood",
+      "videoTitle": "Peaky Blinders - Season 1 | Trailer"
+    },
+    {
+      "id": "97",
+      "title": "Black Mirror",
+      "category": "Bollywood",
+      "videoTitle": "Black Mirror: Rachel, Jack and Ashley Too | Official Trailer | Netflix"
+    },
+    {
+      "id": "98",
+      "title": "Lost",
+      "category": "Bollywood",
+      "videoTitle": "Lost Trailer (First Season)"
+    },
+    {
+      "id": "99",
+      "title": "Sherlock",
+      "category": "Bollywood",
+      "videoTitle": "Sherlock Season 1 Trailer"
+    },
+    {
+      "id": "100",
+      "title": "Better Call Saul",
+      "category": "Bollywood",
+      "videoTitle": "Better Call Saul | Series Trailer [HD] | Netflix"
+    },
+    {
+      "id": "114",
+      "title": "Lupin",
+      "category": "Bollywood",
+      "videoTitle": "Lupin | Official Trailer | Netflix"
+    },
+    {
+      "id": "119",
+      "title": "Call My Agent!",
+      "category": "Bollywood",
+      "videoTitle": "Call My Agent Bollywood | Official Trailer | Aahana Kumra, Ayush Mehra, Rajat Kapoor, Soni Razdan"
+    },
+    {
+      "id": "225",
+      "title": "Loki",
+      "category": "Hollywood",
+      "videoTitle": "La Casa De Papel (Money Heist) - Season 1 Trailer"
+    },
+    {
+      "id": "174",
+      "title": "Vampire – Olivia Rodrigo",
+      "category": "Trending Music",
+      "videoTitle": "Taylor Swift - Look What You Made Me Do"
+    }
+  ]
+}

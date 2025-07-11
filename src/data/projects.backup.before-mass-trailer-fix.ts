@@ -2198,7 +2198,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.3,
-    "trailer": "https://www.youtube.com/watch?v=Sd68k9wgQnI",
+    "trailer": "https://www.youtube.com/watch?v=IjlQJjmTIcM",
     "movie": "Pyaasa",
     "keyPeople": [
       {
@@ -2676,7 +2676,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.1,
-    "trailer": "https://www.youtube.com/watch?v=DrPEnrhbX4Y",
+    "trailer": "https://www.youtube.com/watch?v=6f-EaUWCua0",
     "movie": "Munna Bhai M.B.B.S.",
     "keyPeople": [
       {
@@ -5988,7 +5988,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/watch?v=5xH0HfJHsaY",
+    "trailer": "https://www.youtube.com/watch?v=dKX6JwWQN5I",
     "movie": "Parasite",
     "keyPeople": [
       {
@@ -6193,7 +6193,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.9,
-    "trailer": "https://www.youtube.com/watch?v=YhCHw0Ovqf4",
+    "trailer": "https://www.youtube.com/watch?v=iV-kbJbFjJk",
     "movie": "Crouching Tiger, Hidden Dragon",
     "keyPeople": [
       {
@@ -6290,7 +6290,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=oLtnNw0KT78",
+    "trailer": "https://www.youtube.com/watch?v=HEFrLnS5sQY",
     "movie": "Amélie",
     "keyPeople": [
       {
@@ -6591,7 +6591,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=2HkjrJ6IK5E",
+    "trailer": "https://www.youtube.com/watch?v=pWDtqzN2Q7w",
     "movie": "Oldboy",
     "keyPeople": [
       {
@@ -6704,7 +6704,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.7,
-    "trailer": "https://www.youtube.com/watch?v=gBwRga4b1Os",
+    "trailer": "https://www.youtube.com/watch?v=6BS27VRZR74",
     "movie": "Roma",
     "keyPeople": [
       {
@@ -7207,7 +7207,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.8,
-    "trailer": "https://www.youtube.com/watch?v=f_vbAtFSEc0",
+    "trailer": "https://www.youtube.com/watch?v=f_vbAtFSEcA",
     "movie": "RRR",
     "keyPeople": [
       {
@@ -7332,7 +7332,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.9,
-    "trailer": "https://www.youtube.com/watch?v=BAk5ZCoTWY8",
+    "trailer": "https://www.youtube.com/watch?v=s0VcJgRx2uQ",
     "movie": "Jawan",
     "keyPeople": [
       {
@@ -7435,7 +7435,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.5,
-    "trailer": "https://www.youtube.com/watch?v=nf39Jpi3ZQ4",
+    "trailer": "https://www.youtube.com/watch?v=aIL-8Aev9pc",
     "movie": "Rocky Aur Rani Kii Prem Kahaani",
     "keyPeople": [
       {
@@ -7529,7 +7529,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.1,
-    "trailer": "https://www.youtube.com/watch?v=lIZ8Gsk8TVw",
+    "trailer": "https://www.youtube.com/watch?v=Dydmpfo6DAE",
     "movie": "Animal",
     "keyPeople": [
       {
@@ -7632,7 +7632,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6,
-    "trailer": "https://www.youtube.com/watch?v=TrVaKSCUttU",
+    "trailer": "https://www.youtube.com/watch?v=YGbLz0eJ4J4",
     "movie": "Tu Jhoothi Main Makkaar",
     "keyPeople": [
       {
@@ -7722,7 +7722,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.7,
-    "trailer": "https://www.youtube.com/watch?v=7kcjLAqdTy4",
+    "trailer": "https://www.youtube.com/watch?v=7wr-g4zKjio",
     "movie": "Satyaprem Ki Katha",
     "keyPeople": [
       {
@@ -7914,7 +7914,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.5,
-    "trailer": "https://www.youtube.com/watch?v=x-KtclLsK7Q",
+    "trailer": "https://www.youtube.com/watch?v=uP0yNxTUBrU",
     "movie": "OMG 2",
     "keyPeople": [
       {
@@ -8015,7 +8015,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.3,
-    "trailer": "https://www.youtube.com/watch?v=51LA7xzLgdE",
+    "trailer": "https://www.youtube.com/watch?v=o9kPJRCGAY4",
     "movie": "Dream Girl 2",
     "keyPeople": [
       {
@@ -8084,7 +8084,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.5,
-    "trailer": "https://www.youtube.com/watch?v=lGAKZ6L9IVo",
+    "trailer": "https://www.youtube.com/watch?v=G2f3kF8b2uI",
     "movie": "Bheed",
     "keyPeople": [
       {
@@ -8173,7 +8173,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.3,
-    "trailer": "https://www.youtube.com/watch?v=lVvMbXiJjko",
+    "trailer": "https://www.youtube.com/watch?v=bjKm_jSSjsU",
     "movie": "Mrs Chatterjee vs Norway",
     "keyPeople": [
       {
@@ -8265,7 +8265,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.7,
-    "trailer": "https://www.youtube.com/watch?v=hAYeoRFy024",
+    "trailer": "https://www.youtube.com/watch?v=kY6KjK6F8bA",
     "movie": "Selfiee",
     "keyPeople": [
       {
@@ -8365,7 +8365,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.5,
-    "trailer": "https://www.youtube.com/watch?v=CRazFLVBhw4",
+    "trailer": "https://www.youtube.com/watch?v=b6K6F8b2uIY",
     "movie": "Shehzada",
     "keyPeople": [
       {
@@ -8458,7 +8458,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/watch?v=jeiJxgOebuc",
+    "trailer": "https://www.youtube.com/watch?v=k6F8b2uIYQI",
     "movie": "Mission Majnu",
     "keyPeople": [
       {
@@ -9328,7 +9328,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.7,
-    "trailer": "https://www.youtube.com/watch?v=uqjmUK4RroM",
+    "trailer": "https://www.youtube.com/watch?v=nW94801-l5U",
     "movie": "The Hunger Games: The Ballad of Songbirds & Snakes",
     "keyPeople": [
       {
@@ -9422,7 +9422,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/watch?v=0phrAZx1GLQ",
+    "trailer": "https://www.youtube.com/watch?v=avz06pdDM58",
     "movie": "Mission: Impossible – Dead Reckoning Part One",
     "keyPeople": [
       {
@@ -9655,7 +9655,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.5,
-    "trailer": "https://www.youtube.com/watch?v=eQfMbSe7F2g",
+    "trailer": "https://www.youtube.com/watch?v=ZfVYgWYaHm0",
     "movie": "Indiana Jones and the Dial of Destiny",
     "keyPeople": [
       {
@@ -9761,7 +9761,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/watch?v=6IVnBjqFhKY",
+    "trailer": "https://www.youtube.com/watch?v=EPXmSJsuuqQ",
     "movie": "Killers of the Flower Moon",
     "keyPeople": [
       {
@@ -10048,7 +10048,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.8,
-    "trailer": "https://www.youtube.com/watch?v=6QJQysiUxKc",
+    "trailer": "https://www.youtube.com/watch?v=w11Iw7z4Zg0",
     "movie": "The Night Manager (India)",
     "keyPeople": [
       {
@@ -10103,7 +10103,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=rcQ_xZdzPBc",
+    "trailer": "https://www.youtube.com/watch?v=QsH4oRwM8Kw",
     "movie": "Farzi",
     "keyPeople": [
       {
@@ -10173,7 +10173,6 @@ export const projects: Project[] = [
     "createdAt": "2025-07-07T10:40:39.925Z",
     "updatedAt": "2025-07-07T10:40:39.925Z",
     "poster": "https://m.media-amazon.com/images/M/MV5BMjI4NzM4MzA3Ml5BMl5BanBnXkFtZTgwNzg4MjMzMzE@._V1_SX300.jpg",
-    "disabled": true,
     "description": "A compelling film that explores themes of love, life, and human connection.",
     "director": "",
     "genre": "Drama, Action",
@@ -10184,7 +10183,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.4,
-    "trailer": "https://www.youtube.com/watch?v=1oCIyDZ76IY",
+    "trailer": "https://www.youtube.com/watch?v=hGPWC3JvTiA",
     "movie": "Asur 2",
     "keyPeople": [
       {
@@ -10269,7 +10268,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/watch?v=FN9aqMPiyLQ",
+    "trailer": "https://www.youtube.com/watch?v=76543210zyx",
     "movie": "Rana Naidu",
     "keyPeople": [
       {
@@ -10348,7 +10347,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.1,
-    "trailer": "https://www.youtube.com/watch?v=zm6xa3ggt5A",
+    "trailer": "https://www.youtube.com/watch?v=qrstuvwxyz0",
     "movie": "Taaza Khabar",
     "keyPeople": [
       {
@@ -10566,7 +10565,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8,
-    "trailer": "https://www.youtube.com/watch?v=uQx8jKiIDTI",
+    "trailer": "https://www.youtube.com/watch?v=Di310WS8IDQ",
     "movie": "Wednesday",
     "keyPeople": [
       {
@@ -10671,7 +10670,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.9,
-    "trailer": "https://www.youtube.com/watch?v=odnRRZKhNPk",
+    "trailer": "https://www.youtube.com/watch?v=dcbaZYXWVUT",
     "movie": "The Mandalorian (Season 3)",
     "keyPeople": [
       {
@@ -10733,7 +10732,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.9,
-    "trailer": "https://www.youtube.com/watch?v=sSvpZGwaTZw",
+    "trailer": "https://www.youtube.com/watch?v=ONMLKJIHGFE",
     "movie": "You (Season 4)",
     "keyPeople": [],
     "actor": "",
@@ -10778,7 +10777,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.7,
-    "trailer": "https://www.youtube.com/watch?v=nW948Va-l10",
+    "trailer": "https://www.youtube.com/watch?v=SRQPONMLKJI",
     "movie": "Loki (Season 2)",
     "keyPeople": [
       {
@@ -10956,7 +10955,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.8,
-    "trailer": "https://www.youtube.com/watch?v=JkoA9sJbuNU",
+    "trailer": "https://www.youtube.com/watch?v=QyJ6rFQ5r4o",
     "movie": "Money Heist: Korea – Joint Economic Area",
     "keyPeople": [
       {
@@ -11035,7 +11034,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.8,
-    "trailer": "https://www.youtube.com/watch?v=U4JYAx5rNRA",
+    "trailer": "https://www.youtube.com/watch?v=mfBYfmdNIJ4",
     "movie": "Bridgerton (Season 3)",
     "keyPeople": [],
     "actor": "",
@@ -11080,7 +11079,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/watch?v=UHiwdDFPsZY",
+    "trailer": "https://www.youtube.com/watch?v=baZYXWVUTSR",
     "movie": "The Bear",
     "keyPeople": [
       {
@@ -11189,7 +11188,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.7,
-    "trailer": "https://www.youtube.com/watch?v=mmkLMXN_lpI",
+    "trailer": "https://www.youtube.com/watch?v=8CU25dGAf4A",
     "movie": "Gen V",
     "keyPeople": [
       {
@@ -11310,7 +11309,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.2,
-    "trailer": "https://www.youtube.com/watch?v=BKZNvBfHcJQ",
+    "trailer": "https://www.youtube.com/watch?v=75cE9tqTtZ4",
     "movie": "Brahmastra",
     "keyPeople": [
       {
@@ -11549,7 +11548,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.6,
-    "trailer": "https://www.youtube.com/watch?v=Q1NKMPhP8PY",
+    "trailer": "https://www.youtube.com/watch?v=Q1NKMPhV8aI",
     "movie": "Pushpa: The Rise",
     "keyPeople": [
       {
@@ -11650,7 +11649,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.9,
-    "trailer": "https://www.youtube.com/watch?v=u5r77-OQwa8",
+    "trailer": "https://www.youtube.com/watch?v=WzB6JX_SamI",
     "movie": "Sooryavanshi",
     "keyPeople": [
       {
@@ -12386,7 +12385,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 6.3,
-    "trailer": "https://www.youtube.com/watch?v=8g18jFHCLXk",
+    "trailer": "https://www.youtube.com/watch?v=n9xhJrPXop4",
     "movie": "Dune",
     "keyPeople": [
       {
@@ -12599,7 +12598,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.3,
-    "trailer": "https://www.youtube.com/watch?v=BIhNsAtPbPI",
+    "trailer": "https://www.youtube.com/watch?v=BIh2Atdk7AI",
     "movie": "No Time to Die",
     "keyPeople": [
       {
@@ -12817,7 +12816,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.7,
-    "trailer": "https://www.youtube.com/watch?v=32RAq6JzY-w",
+    "trailer": "https://www.youtube.com/watch?v=32RAAG6J_Ks",
     "movie": "Fast X",
     "keyPeople": [
       {
@@ -13562,7 +13561,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7.1,
-    "trailer": "https://www.youtube.com/watch?v=OstwwYcz8nI",
+    "trailer": "https://www.youtube.com/watch?v=GfLhuXcj4b4",
     "movie": "Breathe",
     "keyPeople": [
       {
@@ -14394,7 +14393,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.5,
-    "trailer": "https://www.youtube.com/watch?v=VwK1hmPH_e8",
+    "trailer": "https://www.youtube.com/watch?v=sjJmM97brLA",
     "movie": "TVF Tripling",
     "keyPeople": [
       {
@@ -14661,7 +14660,6 @@ export const projects: Project[] = [
     "createdAt": "2025-07-07T08:57:01.748Z",
     "updatedAt": "2025-07-07T08:57:01.748Z",
     "poster": "https://m.media-amazon.com/images/M/MV5BMjI2NzM4MzA3Ml5BMl5BanBnXkFtZTgwNzg4MjMzMzE@._V1_SX300.jpg",
-    "disabled": true,
     "description": "Rangbaaz Phir Se is inspired from the life of Anandpal Singh who was a gangster active in the state of Rajasthan. The series chronicles his rise to becoming the most wanted criminal in the history of Rajasthan.",
     "director": "",
     "genre": "Action, Biography, Crime",
@@ -17245,7 +17243,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=UHiwdDFPsZY",
+    "trailer": "https://www.youtube.com/watch?v=OJSx-pE4WN8",
     "movie": "Narcos: Mexico",
     "keyPeople": [
       {
@@ -17344,7 +17342,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 5.8,
-    "trailer": "https://www.youtube.com/watch?v=AZxfKCOzzKs",
+    "trailer": "https://www.youtube.com/watch?v=xwvutsrqpon",
     "movie": "Money Heist: Korea - Joint Economic Area",
     "keyPeople": [
       {
@@ -17427,7 +17425,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=4l-yByZpaaM",
+    "trailer": "https://www.youtube.com/watch?v=tOGJ7DjHX4Q",
     "movie": "Fauda",
     "keyPeople": [
       {
@@ -17747,7 +17745,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.6,
-    "trailer": "https://www.youtube.com/watch?v=UHiwdDFPsZY",
+    "trailer": "https://www.youtube.com/watch?v=wnCHLSYJe_w",
     "movie": "The Bridge",
     "keyPeople": [
       {
@@ -17866,7 +17864,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 7,
-    "trailer": "https://www.youtube.com/watch?v=4l-yByZpaaM",
+    "trailer": "https://www.youtube.com/watch?v=P_tcexIjWK0",
     "movie": "Gomorrah",
     "keyPeople": [
       {
@@ -17965,7 +17963,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=HJGtb9QYVRU",
+    "trailer": "https://www.youtube.com/watch?v=zhwA5j7A_is",
     "movie": "Call My Agent!",
     "keyPeople": [
       {
@@ -18056,7 +18054,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.3,
-    "trailer": "https://www.youtube.com/watch?v=4l-yByZpaaM",
+    "trailer": "https://www.youtube.com/watch?v=f5ur5HZgPpE",
     "movie": "Kingdom",
     "keyPeople": [
       {
@@ -18147,7 +18145,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 8.2,
-    "trailer": "https://www.youtube.com/watch?v=hMANIarjT50",
+    "trailer": "https://www.youtube.com/watch?v=nW948Va-l10",
     "movie": "Loki",
     "keyPeople": [
       {
@@ -18279,7 +18277,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.4,
-    "trailer": "https://www.youtube.com/watch?v=WcIcVapfqXw",
+    "trailer": "https://www.youtube.com/watch?v=0UFvHt-mjRj",
     "movie": "Calm Down – Rema & Selena Gomez",
     "keyPeople": [
       {
@@ -18441,7 +18439,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.2,
-    "trailer": "https://www.youtube.com/watch?v=b1kbLwvqugk",
+    "trailer": "https://www.youtube.com/watch?v=b1kbLWp7MDI",
     "movie": "Anti-Hero – Taylor Swift",
     "keyPeople": [
       {
@@ -18609,7 +18607,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 4.8,
-    "trailer": "https://www.youtube.com/watch?v=3tmd-ClpJxA",
+    "trailer": "https://www.youtube.com/watch?v=1v5hqJqS6h0",
     "movie": "Vampire – Olivia Rodrigo",
     "keyPeople": [],
     "actor": "",
@@ -18654,7 +18652,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.6,
-    "trailer": "https://www.youtube.com/watch?v=RlPNh_PBZb4",
+    "trailer": "https://www.youtube.com/watch?v=0KSOMA3QBU0",
     "movie": "Paint The Town Red – Doja Cat",
     "keyPeople": [],
     "actor": "",
@@ -18887,7 +18885,7 @@ export const projects: Project[] = [
       "Premiere Invite"
     ],
     "rating": 3.5,
-    "trailer": "https://www.youtube.com/watch?v=saGYMhApaH8",
+    "trailer": "https://www.youtube.com/watch?v=43210zyxwvu",
     "movie": "La Bebe – Yng Lvcas & Peso Pluma",
     "keyPeople": [
       {

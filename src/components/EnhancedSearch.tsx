@@ -104,7 +104,9 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (project.director && project.director.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (project.artist && project.artist.toLowerCase().includes(searchTerm.toLowerCase()));
+        (project.artist && project.artist.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (project.productionHouse && project.productionHouse.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (project.keyPeople && project.keyPeople.some(person => person.name.toLowerCase().includes(searchTerm.toLowerCase())));
       
       // Category filter
       const matchesCategory = activeCategory === 'all' || 
@@ -154,11 +156,11 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
         case 'rating':
           compareResult = (a.rating || 0) - (b.rating || 0);
           break;
-        case 'timeLeft': {
-          // Convert "X days" to number
-          const aDays = a.timeLeft ? parseInt(a.timeLeft.split(' ')[0]) : Infinity;
-          const bDays = b.timeLeft ? parseInt(b.timeLeft.split(' ')[0]) : Infinity;
-          compareResult = aDays - bDays;
+        case 'createdAt': {
+          // Sort by creation date
+          const aDate = new Date(a.createdAt);
+          const bDate = new Date(b.createdAt);
+          compareResult = aDate.getTime() - bDate.getTime();
           break;
         }
         default: // relevance - keep original order
@@ -242,7 +244,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search for projects by title, description, director, artist..."
+                placeholder="Search for projects by title, description, director, artist, production house, actors..."
                 className={`w-full pl-12 pr-4 py-4 rounded-lg border ${
                   theme === 'light'
                     ? 'border-gray-300 focus:border-purple-500 bg-white/50 text-gray-900'
@@ -541,7 +543,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
                       <option value="fundedPercentage">Funding %</option>
                       <option value="targetAmount">Target Amount</option>
                       <option value="rating">Rating</option>
-                      <option value="timeLeft">Time Left</option>
+                      <option value="createdAt">Created Date</option>
                     </select>
                     <ChevronDown className={`absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none ${
                       theme === 'light' ? 'text-gray-500' : 'text-gray-400'
@@ -765,9 +767,9 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
                           <div className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                             {project.fundedPercentage}% Funded
                           </div>
-                          {project.timeLeft && (
+                          {project.status === 'active' && (
                             <div className={`text-sm ${theme === 'light' ? 'text-orange-600' : 'text-orange-400'}`}>
-                              {project.timeLeft} left
+                              Active
                             </div>
                           )}
                         </div>
