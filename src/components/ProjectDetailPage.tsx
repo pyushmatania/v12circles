@@ -1,81 +1,75 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { 
   ArrowLeft, 
-  Film, 
-  Music, 
-  Tv, 
+  Play, 
+  Heart, 
+  Share2, 
   Star, 
   Clock, 
-  DollarSign, 
   Users, 
   Calendar,
+  TrendingUp,
+  DollarSign,
+  Target,
+  Award,
+  Film,
+  Music,
+  Tv,
   MapPin,
-  Heart,
-  Share2,
+  Globe,
+  Tag,
+  Eye,
+  ThumbsUp,
+  MessageCircle,
+  Bookmark,
   Download,
   ExternalLink,
-  TrendingUp,
-  Award,
-  Target,
-  BarChart3,
-  Eye,
-  MessageCircle,
-  Medal,
-  Box,
-  Gem,
-  Badge,
-  Globe,
-  Shield,
-  Gift,
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  ChevronRight,
+  CheckCircle,
+  X,
+  Plus,
+  Minus,
+  ChevronDown,
+  ChevronUp,
   ChevronLeft,
-  BookOpen,
-  Camera,
-  Mic,
-  Video,
-  FileText,
-  Settings,
-  HelpCircle,
-  FileCheck,
-  TrendingDown,
+  ChevronRight,
+  Filter,
+  Search,
+  BarChart3,
+  PieChart,
+  LineChart,
+  Activity,
   Zap,
   Crown,
-  Trophy,
-  Sparkles,
-  Film as FilmIcon,
-  Music as MusicIcon,
-  Tv as TvIcon,
-  UserCheck,
-  Star as StarIcon,
-  ThumbsUp,
-  MessageSquare,
-  Hash,
-  Tag,
-  Award as AwardIcon,
-  Globe as GlobeIcon,
-  FileText as FileTextIcon,
-  Settings as SettingsIcon,
-  HelpCircle as HelpCircleIcon,
-  FileCheck as FileCheckIcon,
-  Shield as ShieldIcon,
-  X,
-  Maximize,
-  Info,
-  AlertCircle,
-  CheckCircle,
+  Medal,
+  Gift,
+  Camera,
+  Ticket,
+  Plane,
+  ShoppingBag,
+  BookOpen,
+  HelpCircle,
+  FileCheck,
   Loader2,
-  RotateCcw,
-  Video as VideoIcon
+  VolumeX,
+  Volume2,
+  MessageSquare,
+  Shield,
+  FileText
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
-import { useAuth } from './auth/useAuth';
 import { Project } from '../types';
-import PixelCard from './PixelCard';
+import PortfolioAnalytics from './PortfolioAnalytics';
+
+// Import logo image
+import circlesLogo from '../images/circles-logo-main.png';
+
+// Create aliases for the icons used in the component
+const ShieldIcon = Shield;
+const AwardIcon = Award;
+const GlobeIcon = Globe;
+const FileTextIcon = FileText;
+const FileCheckIcon = FileCheck;
 
 interface ProjectDetailPageProps {
   project: Project;
@@ -86,7 +80,6 @@ interface ProjectDetailPageProps {
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose, onInvest, initialTab = 'overview' }) => {
   const { theme } = useTheme();
-  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState(initialTab);
   const [isLiked, setIsLiked] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState(10000);
@@ -842,7 +835,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
               ease: [0.4, 0, 0.2, 1]
             }}
           >
-            <img src="/circles-logo-main.png" alt="Circles Logo" className="h-20 w-20 object-contain drop-shadow-lg blur-[0.3px]" />
+            <img src={circlesLogo} alt="Circles Logo" className="h-20 w-20 object-contain drop-shadow-lg blur-[0.3px]" />
           </motion.div>
           <span className="text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent drop-shadow-lg tracking-wide blur-[0.2px] -ml-3">Circles</span>
         </div>

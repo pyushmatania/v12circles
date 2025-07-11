@@ -1,8 +1,34 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, BarChart3, Film, Users, LayoutDashboard, ShoppingBag, ChevronDown, ChevronUp, BarChart, GitCompareArrows as ArrowsCompare, Newspaper, MoreHorizontal, Sun, Moon, User } from 'lucide-react';
+import { 
+  Home, 
+  Film, 
+  BarChart3, 
+  Users, 
+  ShoppingBag, 
+  BarChart, 
+  GitCompareArrows as ArrowsCompare, 
+  Newspaper, 
+  LayoutDashboard,
+  User,
+  Sun,
+  Moon,
+  Menu,
+  X,
+  Search,
+  Bell,
+  Settings,
+  LogOut,
+  ChevronDown,
+  ChevronUp,
+  MoreHorizontal,
+  TrendingUp
+} from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './auth/useAuth';
+
+// Import logo image
+import circlesLogo from '../images/circles-logo-main.png';
 import SearchBar from './SearchBar';
 import NotificationDropdown from './NotificationDropdown';
 
@@ -177,7 +203,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                     }}
                   >
                     <img 
-                      src="/circles-logo-main.png" 
+                      src={circlesLogo} 
                       alt="Circles Logo" 
                       className="w-20 h-20 object-contain drop-shadow-lg"
                       onError={(e) => {
@@ -412,7 +438,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                       }}
                     >
                       <img 
-                        src="/circles-logo-main.png" 
+                        src={circlesLogo} 
                         alt="Circles Logo" 
                         className="w-12 h-12 object-contain drop-shadow-lg"
                         onError={(e) => {
