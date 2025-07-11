@@ -17,6 +17,7 @@ import { useAuth } from './components/auth/useAuth';
 import { useToast } from './hooks/useToast';
 import DebugPanel from './components/DebugPanel';
 import ErrorBoundary from './components/ErrorBoundary';
+import MobileOptimizer from './components/MobileOptimizer';
 import { Project } from './types';
 
 // Lazy load heavy components for better performance
@@ -322,7 +323,25 @@ function AppContent() {
           setCurrentView('project-detail');
         }}
       />
-      {renderCurrentView()}
+      <MobileOptimizer
+        enableSwipeGestures={true}
+        enablePullToRefresh={true}
+        enableHapticFeedback={true}
+        onPullToRefresh={() => {
+          // Refresh current view data
+          window.location.reload();
+        }}
+        onSwipeLeft={() => {
+          // Navigate to next view (optional)
+          console.log('Swiped left');
+        }}
+        onSwipeRight={() => {
+          // Navigate to previous view (optional)
+          console.log('Swiped right');
+        }}
+      >
+        {renderCurrentView()}
+      </MobileOptimizer>
       <DebugPanel currentView={currentView} />
       <AuthModal 
         isOpen={authModalOpen}

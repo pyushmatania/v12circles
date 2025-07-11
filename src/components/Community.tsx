@@ -734,7 +734,7 @@ const Community: React.FC = () => {
       }}
     >
       {/* Enhanced Background Effects - Consistent with Browse/Details */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         {/* Dynamic Red Floating Orbs */}
         <motion.div
           animate={{ 
@@ -850,15 +850,15 @@ const Community: React.FC = () => {
         >
           <div className="text-center mb-12">
             <h1 className={`text-4xl md:text-5xl font-black mb-4 ${
-              theme === 'light' 
+            theme === 'light' 
                 ? 'bg-gradient-to-r from-red-800 via-rose-700 to-pink-800 bg-clip-text text-transparent' 
                 : 'bg-gradient-to-r from-red-100 via-rose-200 to-pink-100 bg-clip-text text-transparent'
-            }`}>
+          }`}>
               Join Exclusive Circles
-            </h1>
-            <p className={`text-lg ${
-              theme === 'light' ? 'text-gray-600' : 'text-gray-300'
-            }`}>
+          </h1>
+          <p className={`text-lg ${
+            theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+          }`}>
               Connect with your favorite stars and creators in 3 simple steps
             </p>
           </div>
@@ -898,7 +898,7 @@ const Community: React.FC = () => {
                     className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center"
                   >
                     <Star className="w-3 h-3 text-white" />
-                  </motion.div>
+        </motion.div>
                 </motion.div>
               </div>
 
@@ -1121,7 +1121,7 @@ const Community: React.FC = () => {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="flex flex-col items-center gap-3 snap-center"
                 >
-                  <motion.button
+              <motion.button
                     onClick={() => {
                       setSelectedCategory(category.id as any);
                       setSelectedItem(null);
@@ -1178,7 +1178,7 @@ const Community: React.FC = () => {
                       <span className={`text-2xl ${
                         isSelected ? 'filter drop-shadow-lg' : ''
                       }`}>{category.icon}</span>
-                    </div>
+                  </div>
                     
                     {/* Active indicator dot */}
                     {isSelected && (
@@ -1216,9 +1216,9 @@ const Community: React.FC = () => {
 
         {/* Items Grid - Instagram Stories Style */}
         {!isItemSelected && (
-          <motion.div
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mb-8"
           >
@@ -1267,7 +1267,7 @@ const Community: React.FC = () => {
                           ? 'rounded-full' 
                           : 'rounded-2xl'
                       } ${
-                        theme === 'light'
+            theme === 'light'
                           ? 'bg-white shadow-lg hover:shadow-xl border border-red-200 hover:border-rose-400'
                           : 'bg-slate-800 shadow-lg hover:shadow-xl border border-red-700 hover:border-rose-500'
                       }`}
@@ -1323,8 +1323,8 @@ const Community: React.FC = () => {
                           <div className="flex items-center gap-2 mb-1">
                             <Users className="w-3 h-3 text-gray-300" />
                             <span className="text-gray-300 text-xs">{item.followers?.toLocaleString()}</span>
-                          </div>
-                        </div>
+                </div>
+              </div>
                       )}
                     </motion.button>
                     
@@ -1339,9 +1339,9 @@ const Community: React.FC = () => {
                                                  {item.verified && !isPerson && (
                            <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
                              <CheckCircle className="w-3 h-3 text-white" />
-                           </div>
+                </div>
                          )}
-                      </div>
+                </div>
                       <p className={`text-xs ${
                         theme === 'light' ? 'text-slate-500' : 'text-slate-400'
                       }`}>
@@ -1357,9 +1357,9 @@ const Community: React.FC = () => {
                           }`}>
                             {item.followers?.toLocaleString()}
                           </span>
-                        </div>
+                </div>
                       )}
-                    </div>
+              </div>
                   </motion.div>
                 );
               })}
@@ -1413,7 +1413,7 @@ const Community: React.FC = () => {
               >
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
                   <Users className="w-5 h-5 text-white" />
-                </div>
+          </div>
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
@@ -1427,7 +1427,7 @@ const Community: React.FC = () => {
                   transition={{ delay: 0.3 }}
                   className="flex items-center gap-6 mb-6"
                 >
-                  <div className="relative">
+                      <div className="relative">
                     <motion.img 
                       src={selectedItem.avatar}
                       alt={selectedItem.name}
@@ -1449,7 +1449,7 @@ const Community: React.FC = () => {
                       transition={{ duration: 2, repeat: Infinity }}
                       className="absolute -top-1 -left-1 w-4 h-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"
                     />
-                  </div>
+                      </div>
                   <div className="flex-1">
                     <h2 className="text-white text-3xl font-black mb-2 drop-shadow-lg">{selectedItem.name}</h2>
                     <p className="text-gray-200 text-lg leading-relaxed">{selectedItem.description}</p>
@@ -1498,7 +1498,7 @@ const Community: React.FC = () => {
           <div className="p-8">
             <div className="grid md:grid-cols-2 gap-8">
               {/* Enhanced Projects */}
-              <div>
+                      <div>
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -1540,11 +1540,11 @@ const Community: React.FC = () => {
                         <div className="flex-1">
                           <div className={`font-bold text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                             {project.title}
-                          </div>
-                          <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                            {project.genre}
-                          </div>
                         </div>
+                        <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                            {project.genre}
+                        </div>
+                      </div>
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -1552,7 +1552,7 @@ const Community: React.FC = () => {
                         >
                           <Play className="w-4 h-4 text-purple-400" />
                         </motion.button>
-                      </div>
+                    </div>
                     </motion.div>
                   ))}
                 </div>
@@ -1571,7 +1571,7 @@ const Community: React.FC = () => {
                   </div>
                   <h3 className={`text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                     Community Stats
-                  </h3>
+                </h3>
                 </motion.div>
                 <div className="space-y-4">
                   {[
@@ -1595,12 +1595,12 @@ const Community: React.FC = () => {
                           </div>
                           <span className={`text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
                             {stat.label}
-                          </span>
+                      </span>
                         </div>
                         <span className={`text-sm font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                           {stat.value}
-                        </span>
-                      </div>
+                      </span>
+                    </div>
                     </motion.div>
                   ))}
                 </div>
