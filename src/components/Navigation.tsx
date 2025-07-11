@@ -19,6 +19,7 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, onAuthRequired, onProjectSelect }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [logoAnimation, setLogoAnimation] = useState(false);
 
   const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, user } = useAuth();
@@ -49,6 +50,16 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
+
+  // Logo animation every 15 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLogoAnimation(true);
+      setTimeout(() => setLogoAnimation(false), 5000); // Animation duration
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleItemClick = useCallback((itemId: string) => {
     if (itemId === 'theme') {
@@ -86,18 +97,89 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                 {/* Logo */}
                 <motion.button 
                   onClick={() => setCurrentView('home')}
-                  className="hidden md:flex items-center gap-0 cursor-pointer"
+                  className="hidden md:flex items-center gap-0 cursor-pointer relative"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0, duration: 0.3 }}
                 >
-                  <div className="w-24 h-24 flex items-center justify-center">
+                  {/* Animated background glow */}
+                  <motion.div
+                    className="absolute inset-0 rounded-full"
+                    animate={logoAnimation ? {
+                      background: [
+                        'radial-gradient(circle, rgba(147,51,234,0.1) 0%, transparent 70%)',
+                        'radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)',
+                        'radial-gradient(circle, rgba(147,51,234,0.3) 0%, transparent 70%)',
+                        'radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)',
+                        'radial-gradient(circle, rgba(147,51,234,0.1) 0%, transparent 70%)'
+                      ],
+                      scale: [1, 1.2, 1.1, 1.3, 1],
+                      opacity: [0, 0.8, 0.6, 0.9, 0]
+                    } : {}}
+                    transition={{ duration: 2, ease: "easeInOut" }}
+                  />
+                  
+                  {/* Animated sparkles */}
+                  {logoAnimation && (
+                    <>
+                      <motion.div
+                        className="absolute -top-2 -left-2 w-3 h-3 bg-yellow-400 rounded-full"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ 
+                          scale: [0, 1, 0],
+                          opacity: [0, 1, 0],
+                          x: [0, -10, -20],
+                          y: [0, -10, -20]
+                        }}
+                        transition={{ duration: 2, ease: "easeOut" }}
+                      />
+                      <motion.div
+                        className="absolute -top-1 -right-1 w-2 h-2 bg-cyan-400 rounded-full"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ 
+                          scale: [0, 1, 0],
+                          opacity: [0, 1, 0],
+                          x: [0, 10, 20],
+                          y: [0, -5, -15]
+                        }}
+                        transition={{ duration: 2, delay: 0.3, ease: "easeOut" }}
+                      />
+                      <motion.div
+                        className="absolute -bottom-1 -left-1 w-2.5 h-2.5 bg-pink-400 rounded-full"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ 
+                          scale: [0, 1, 0],
+                          opacity: [0, 1, 0],
+                          x: [0, -8, -16],
+                          y: [0, 8, 16]
+                        }}
+                        transition={{ duration: 2, delay: 0.6, ease: "easeOut" }}
+                      />
+                    </>
+                  )}
+                  
+                  <motion.div 
+                    className="w-20 h-20 flex items-center justify-center relative overflow-hidden"
+                    animate={logoAnimation ? {
+                      rotate: [0, 360],
+                      scale: [1, 1.1, 1],
+                      filter: [
+                        'brightness(1) drop-shadow(0 0 10px rgba(147,51,234,0.3))',
+                        'brightness(1.3) drop-shadow(0 0 25px rgba(59,130,246,0.6))',
+                        'brightness(1) drop-shadow(0 0 10px rgba(147,51,234,0.3))'
+                      ]
+                    } : {}}
+                    transition={{ 
+                      duration: 5, 
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                  >
                     <img 
-                      src="/Improved Logo-01.png" 
+                      src="/circles-logo.png" 
                       alt="Circles Logo" 
-                      className="w-24 h-24 object-contain drop-shadow-lg"
+                      className="w-20 h-20 object-contain drop-shadow-lg"
                       onError={(e) => {
                         const target = e.currentTarget as HTMLImageElement;
                         target.style.display = 'none';
@@ -105,15 +187,12 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                         if (fallback) fallback.style.display = 'block';
                       }}
                     />
-                    <span className={`font-bold text-4xl hidden drop-shadow-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                    <span className={`font-bold text-4xl hidden drop-shadow-lg bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                       C
                     </span>
-                  </div>
-                  <span className={`font-bold text-4xl drop-shadow-lg transition-all duration-300 -ml-4 ${
-                    theme === 'light' 
-                      ? 'text-gray-900'
-                      : 'text-white'
-                  }`}>
+                  </motion.div>
+                  
+                  <span className="font-bold text-4xl drop-shadow-lg transition-all duration-300 -ml-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                     Circles
                   </span>
                 </motion.button>
@@ -183,7 +262,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
                           transition={{ duration: 0.2 }}
-                          className={`absolute right-0 mt-2 w-48 rounded-xl border overflow-hidden z-50 ${
+                          className={`absolute right-0 mt-2 w-48 rounded-xl border overflow-hidden z-[55] ${
                             theme === 'light'
                               ? 'bg-white border-gray-200 shadow-lg'
                               : 'bg-gray-900 border-white/20 shadow-lg shadow-black/20'
@@ -308,18 +387,34 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                   {/* Left: Logo Only */}
                   <motion.button 
                     onClick={() => setCurrentView('home')}
-                    className="flex items-center justify-center cursor-pointer flex-shrink-0"
+                    className="flex items-center justify-center cursor-pointer flex-shrink-0 relative"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0, duration: 0.3 }}
                   >
-                    <div className="w-8 h-8 flex items-center justify-center">
+                    {/* Mobile logo animation */}
+                    <motion.div 
+                      className="w-12 h-12 flex items-center justify-center overflow-hidden"
+                      animate={logoAnimation ? {
+                        rotate: [0, 360],
+                        scale: [1, 1.1, 1],
+                        filter: [
+                          'brightness(1) drop-shadow(0 0 8px rgba(147,51,234,0.3))',
+                          'brightness(1.3) drop-shadow(0 0 20px rgba(59,130,246,0.6))',
+                          'brightness(1) drop-shadow(0 0 8px rgba(147,51,234,0.3))'
+                        ]
+                      } : {}}
+                      transition={{ 
+                        duration: 5, 
+                        ease: [0.4, 0, 0.2, 1]
+                      }}
+                    >
                       <img 
-                        src="/Improved Logo-01.png" 
+                        src="/circles-logo.png" 
                         alt="Circles Logo" 
-                        className="w-8 h-8 object-contain drop-shadow-lg"
+                        className="w-12 h-12 object-contain drop-shadow-lg"
                         onError={(e) => {
                           const target = e.currentTarget as HTMLImageElement;
                           target.style.display = 'none';
@@ -327,10 +422,10 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                           if (fallback) fallback.style.display = 'block';
                         }}
                       />
-                      <span className={`font-bold text-lg hidden drop-shadow-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                      <span className={`font-bold text-2xl hidden drop-shadow-lg bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                         C
                       </span>
-                    </div>
+                    </motion.div>
                   </motion.button>
                   
                   {/* Center: Main Nav Items */}
@@ -532,7 +627,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                         animate={{ opacity: 1, x: 0, scale: 1 }}
                         exit={{ opacity: 0, x: 10, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className={`absolute left-16 top-0 w-48 rounded-xl border overflow-hidden z-50 ${
+                        className={`absolute left-16 top-0 w-48 rounded-xl border overflow-hidden z-[55] ${
                           theme === 'light'
                             ? 'bg-white border-gray-200 shadow-lg'
                             : 'bg-gray-900 border-white/20 shadow-lg shadow-black/20'

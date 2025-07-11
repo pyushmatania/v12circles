@@ -49,6 +49,9 @@ function AppContent() {
   const { isAuthenticated } = useAuth();
   const { toasts, toast, removeToast } = useToast();
   const [catalogScroll, setCatalogScroll] = useState(0);
+  const [previousView, setPreviousView] = useState<string>('home');
+  const [viewScrollPositions, setViewScrollPositions] = useState<Record<string, number>>({});
+  const [viewStates, setViewStates] = useState<Record<string, any>>({});
 
   // Handle logout redirect
   useEffect(() => {
@@ -86,14 +89,61 @@ function AppContent() {
         return;
       }
     }
+    
+    // Save current view's scroll position and state before changing
+    setViewScrollPositions(prev => ({
+      ...prev,
+      [currentView]: window.scrollY
+    }));
+    
+    // Save current view state (filters, search terms, etc.)
+    setViewStates(prev => ({
+      ...prev,
+      [currentView]: {
+        scrollY: window.scrollY,
+        timestamp: Date.now()
+      }
+    }));
+    
+    setPreviousView(currentView);
     setCurrentView(view);
-  }, [handleAuthRequired, toast]);
+  }, [handleAuthRequired, toast, currentView]);
 
   const handleProjectSelect = (project: Project, tab?: 'overview' | 'invest') => {
-    setCatalogScroll(window.scrollY);
+    // Save current view's scroll position and state before opening project detail
+    setViewScrollPositions(prev => ({
+      ...prev,
+      [currentView]: window.scrollY
+    }));
+    
+    setViewStates(prev => ({
+      ...prev,
+      [currentView]: {
+        scrollY: window.scrollY,
+        timestamp: Date.now()
+      }
+    }));
+    
+    setPreviousView(currentView);
     setSelectedProject(project);
     setProjectDetailTab(tab || 'overview');
     setCurrentView('project-detail');
+  };
+
+  const handleProjectDetailClose = () => {
+    // Restore previous view
+    setCurrentView(previousView as any);
+    
+    // Restore scroll position after a short delay to ensure view is rendered
+    setTimeout(() => {
+      const savedScrollY = viewScrollPositions[previousView];
+      if (savedScrollY !== undefined) {
+        window.scrollTo({
+          top: savedScrollY,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
   };
 
   // If admin view is selected, render the admin dashboard
@@ -154,6 +204,21 @@ function AppContent() {
               onTrackInvestment={() => handleViewChange('dashboard')} 
               setCurrentView={handleViewChange}
               onProjectSelect={(project, tab) => {
+                // Save current view's scroll position and state
+                setViewScrollPositions(prev => ({
+                  ...prev,
+                  [currentView]: window.scrollY
+                }));
+                
+                setViewStates(prev => ({
+                  ...prev,
+                  [currentView]: {
+                    scrollY: window.scrollY,
+                    timestamp: Date.now()
+                  }
+                }));
+                
+                setPreviousView(currentView);
                 setSelectedProject(project);
                 setProjectDetailTab(tab || 'overview');
                 setCurrentView('project-detail');
@@ -184,10 +249,7 @@ function AppContent() {
           <Suspense fallback={<LoadingSpinner />}>
             <ProjectDetailPage 
               project={selectedProject} 
-              onClose={() => {
-                setCurrentView('projects');
-                setTimeout(() => window.scrollTo(0, catalogScroll), 0);
-              }}
+              onClose={handleProjectDetailClose}
               onInvest={() => handleViewChange('dashboard')}
               initialTab={projectDetailTab}
             />
@@ -204,6 +266,21 @@ function AppContent() {
               onViewAll={() => handleViewChange('projects')}
               onTrackInvestment={() => handleViewChange('dashboard')}
               onProjectSelect={(project, tab) => {
+                // Save current view's scroll position and state
+                setViewScrollPositions(prev => ({
+                  ...prev,
+                  [currentView]: window.scrollY
+                }));
+                
+                setViewStates(prev => ({
+                  ...prev,
+                  [currentView]: {
+                    scrollY: window.scrollY,
+                    timestamp: Date.now()
+                  }
+                }));
+                
+                setPreviousView(currentView);
                 setSelectedProject(project);
                 setProjectDetailTab(tab || 'overview');
                 setCurrentView('project-detail');
@@ -225,6 +302,21 @@ function AppContent() {
         setCurrentView={handleViewChange}
         onAuthRequired={handleAuthRequired}
         onProjectSelect={(project, tab) => {
+          // Save current view's scroll position and state
+          setViewScrollPositions(prev => ({
+            ...prev,
+            [currentView]: window.scrollY
+          }));
+          
+          setViewStates(prev => ({
+            ...prev,
+            [currentView]: {
+              scrollY: window.scrollY,
+              timestamp: Date.now()
+            }
+          }));
+          
+          setPreviousView(currentView);
           setSelectedProject(project);
           setProjectDetailTab(tab || 'overview');
           setCurrentView('project-detail');

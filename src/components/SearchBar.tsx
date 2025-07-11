@@ -70,6 +70,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
     // Use setTimeout to prevent blocking the UI
     setTimeout(() => {
       let results = projects.filter(project => {
+        // Filter out disabled projects and music projects
+        if (project.disabled === true || project.type === 'music') {
+          return false;
+        }
+        
         return project.title.toLowerCase().includes(term.toLowerCase()) ||
           project.description.toLowerCase().includes(term.toLowerCase()) ||
           project.tags.some((tag: string) => tag.toLowerCase().includes(term.toLowerCase())) ||
@@ -264,7 +269,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
             animate={{ opacity: 1, y: 0, width: 'auto' }}
             exit={{ opacity: 0, y: 10, width: 0 }}
             transition={{ duration: 0.2 }}
-            className={`absolute top-0 right-0 rounded-xl border shadow-xl overflow-hidden z-50 ${
+            className={`absolute top-12 right-0 rounded-xl border shadow-xl overflow-hidden z-[60] ${
               theme === 'light'
                 ? 'bg-white border-gray-200'
                 : 'bg-gray-900 border-gray-700'

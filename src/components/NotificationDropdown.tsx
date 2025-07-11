@@ -199,7 +199,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onViewAll, 
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={`fixed md:absolute top-16 md:top-auto right-2 md:right-0 mt-0 md:mt-2 w-72 md:w-80 rounded-xl border shadow-xl z-50 overflow-hidden ${
+            className={`fixed md:absolute top-16 md:top-auto right-2 md:right-0 mt-0 md:mt-2 w-72 md:w-80 rounded-xl border shadow-xl z-[55] overflow-hidden ${
               theme === 'light'
                 ? 'bg-white border-gray-200'
                 : 'bg-gray-900 border-gray-700'

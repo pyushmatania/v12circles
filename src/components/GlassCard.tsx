@@ -94,7 +94,7 @@ const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onH
       }}
     >
       <div
-        className="relative w-full h-[450px] sm:h-[420px] md:h-[400px] rounded-2xl overflow-hidden cursor-pointer"
+        className="relative w-full h-[550px] sm:h-[520px] md:h-[500px] rounded-2xl overflow-hidden cursor-pointer"
         style={{
           perspective: '1500px',
           transformStyle: 'preserve-3d',
@@ -129,6 +129,16 @@ const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onH
                 ? 'from-black/60 via-transparent to-transparent'
                 : 'from-black/80 via-transparent to-transparent'
             } rounded-2xl`} />
+            {/* Subtle Left Edge Reflection */}
+            <div 
+              className="absolute left-0 top-0 h-full w-1"
+              style={{
+                background: theme === 'light'
+                  ? 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%)'
+                  : 'linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%)',
+                borderRadius: '8px 0 0 8px'
+              }}
+            />
             {/* Content Overlay */}
             <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
               <h4 className="text-xl font-bold mb-2 text-white drop-shadow-lg">
@@ -152,6 +162,16 @@ const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onH
               zIndex: 2
             }}
           >
+            {/* Subtle Left Edge Reflection */}
+            <div 
+              className="absolute left-0 top-0 h-full w-1"
+              style={{
+                background: theme === 'light'
+                  ? 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%)'
+                  : 'linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%)',
+                borderRadius: '8px 0 0 8px'
+              }}
+            />
             {/* Decorative Radial Gradient */}
             <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{background: 'radial-gradient(circle at 70% 30%, rgba(255,255,255,0.10) 0%, transparent 70%)'}} />
             {/* Blurred front image as background */}
@@ -205,75 +225,21 @@ const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onH
                 {illustration.backDescription}
               </div>
               {/* Gold Inscription */}
-              <div className="mt-auto w-full flex justify-end items-center gap-2">
-                <div className="relative w-12 h-12 flex items-center justify-center">
-                  <img src="/logo.png" alt="Circle Logo" className="w-full h-full object-contain object-center" style={{filter: 'brightness(1.25) drop-shadow(0 0 6px #ffe066) drop-shadow(0 0 2px #ffd700)'}} />
+              <div className="mt-auto w-full flex justify-end items-center gap-3">
+                <div className="relative w-20 h-20 flex items-center justify-center">
+                  <img src="/circles-logo.png" alt="Circle Logo" className="w-full h-full object-contain object-center" style={{filter: 'brightness(1.5) drop-shadow(0 0 12px #ffe066) drop-shadow(0 0 6px #ffd700) drop-shadow(0 0 20px rgba(255,215,0,0.6))'}} />
                   {/* Animated sparkles */}
-                  <span className="absolute w-2 h-2 rounded-full bg-yellow-200 opacity-90 animate-ping" style={{top: '18%', left: '70%'}} />
-                  <span className="absolute w-1.5 h-1.5 rounded-full bg-white opacity-80 animate-pulse" style={{top: '60%', left: '35%'}} />
-                  <span className="absolute w-1 h-1 rounded-full bg-yellow-300 opacity-80 animate-pulse" style={{top: '80%', left: '80%'}} />
+                  <span className="absolute w-3 h-3 rounded-full bg-yellow-200 opacity-90 animate-ping" style={{top: '15%', left: '75%'}} />
+                  <span className="absolute w-2 h-2 rounded-full bg-white opacity-80 animate-pulse" style={{top: '55%', left: '30%'}} />
+                  <span className="absolute w-2.5 h-2.5 rounded-full bg-yellow-300 opacity-80 animate-pulse" style={{top: '75%', left: '85%'}} />
+                  <span className="absolute w-1.5 h-1.5 rounded-full bg-yellow-400 opacity-70 animate-ping" style={{top: '25%', left: '20%'}} />
                 </div>
-                <span className="font-signature text-xl bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 bg-clip-text text-transparent" style={{fontFamily: 'cursive, "Dancing Script", "Pacifico", sans-serif', letterSpacing: '2px', textShadow: '0 2px 8px rgba(255,215,0,0.4)'}}>Official Perk</span>
+                <span className="font-signature text-2xl bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 bg-clip-text text-transparent" style={{fontFamily: 'cursive, "Dancing Script", "Pacifico", sans-serif', letterSpacing: '3px', textShadow: '0 4px 12px rgba(255,215,0,0.6)'}}>Official Perk</span>
               </div>
             </div>
           </div>
         </div>
-        {/* Left Edge (spine) */}
-        <div
-          className="absolute top-0 left-0 h-full rounded-2xl"
-          style={{
-            width: '32px',
-            background: theme === 'light'
-              ? 'linear-gradient(180deg, rgba(191,219,254,0.85) 0%, rgba(59,130,246,0.85) 100%)'
-              : 'linear-gradient(180deg, rgba(76,29,149,0.85) 0%, rgba(30,64,175,0.85) 100%)',
-            boxShadow: '8px 0 32px 0 rgba(30,64,175,0.18), 0 0 0 2px rgba(255,255,255,0.25) inset, 0 0 16px 2px rgba(255,255,255,0.18)',
-            borderRadius: '16px',
-            transform: `translateX(-16px) rotateY(90deg)`,
-            zIndex: 1
-          }}
-        />
-        {/* Right Edge (spine) */}
-        <div
-          className="absolute top-0 right-0 h-full rounded-2xl"
-          style={{
-            width: '32px',
-            background: theme === 'light'
-              ? 'linear-gradient(180deg, rgba(191,219,254,0.85) 0%, rgba(59,130,246,0.85) 100%)'
-              : 'linear-gradient(180deg, rgba(76,29,149,0.85) 0%, rgba(30,64,175,0.85) 100%)',
-            boxShadow: '-8px 0 32px 0 rgba(30,64,175,0.18), 0 0 0 2px rgba(255,255,255,0.18) inset, 0 0 16px 2px rgba(255,255,255,0.10)',
-            borderRadius: '16px',
-            transform: `translateX(16px) rotateY(90deg)`,
-            zIndex: 1
-          }}
-        />
-        {/* Top Edge (glass) */}
-        <div
-          className="absolute left-0 top-0 w-full rounded-2xl"
-          style={{
-            height: '32px',
-            background: theme === 'light'
-              ? 'linear-gradient(90deg, rgba(191,219,254,0.85) 0%, rgba(59,130,246,0.85) 100%)'
-              : 'linear-gradient(90deg, rgba(76,29,149,0.85) 0%, rgba(30,64,175,0.85) 100%)',
-            boxShadow: '0 4px 16px 0 rgba(30,64,175,0.12), 0 0 0 2px rgba(255,255,255,0.18) inset',
-            borderRadius: '16px',
-            transform: `translateY(-16px) rotateX(90deg)`,
-            zIndex: 1
-          }}
-        />
-        {/* Bottom Edge (glass) */}
-        <div
-          className="absolute left-0 bottom-0 w-full rounded-2xl"
-          style={{
-            height: '32px',
-            background: theme === 'light'
-              ? 'linear-gradient(90deg, rgba(191,219,254,0.85) 0%, rgba(59,130,246,0.85) 100%)'
-              : 'linear-gradient(90deg, rgba(76,29,149,0.85) 0%, rgba(30,64,175,0.85) 100%)',
-            boxShadow: '0 -4px 16px 0 rgba(30,64,175,0.12), 0 0 0 2px rgba(255,255,255,0.12) inset',
-            borderRadius: '16px',
-            transform: `translateY(16px) rotateX(-90deg)`,
-            zIndex: 1
-          }}
-        />
+
       </div>
     </div>
   );

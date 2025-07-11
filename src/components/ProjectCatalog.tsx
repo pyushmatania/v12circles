@@ -101,11 +101,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
   // Ultimate fallback - if still no projects, take any valid projects
   const ultimateFallback = finalFeaturedProjects.length === 0 ? projects.filter(p => p.disabled === false && p.poster && p.title).slice(0, 30) : finalFeaturedProjects;
   
-  // Debug logging
-  console.log('Featured projects count:', ultimateFallback.length);
-  console.log('Featured projects:', ultimateFallback.map(p => ({ title: p.title, rating: p.rating, disabled: p.disabled, featured: p.featured })));
-  console.log('Total projects with featured=true:', projects.filter(p => p.featured === true).length);
-  console.log('Total projects with disabled=false:', projects.filter(p => p.disabled === false).length);
+
 
   // Memoized callback functions to prevent unnecessary re-renders
   const handleProjectClick = useCallback((project: Project, tab: 'overview' | 'invest' = 'overview') => {
@@ -195,30 +191,105 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
     featured: Project[];
   } => {
     try {
-    const regionalContent = projects
-      .filter(p => p.category === 'Regional' && p.disabled === false && p.type !== 'music')
-      .slice(0, 10);
+      // Helper function to shuffle array
+      const shuffleArray = (array: Project[]) => {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+      };
 
-    const webSeries = projects
-      .filter(p => p.type === 'webseries' && p.disabled === false)
-      .slice(0, 10);
+      const regionalContent = shuffleArray(
+        projects.filter(p => p.category === 'Regional' && p.disabled === false && p.type !== 'music')
+      ).slice(0, 10);
 
-          const featuredProjects = projects
-      .filter(p => p.featured === true && p.disabled === false && p.poster && p.title && p.rating && !isNaN(p.rating))
-      .sort((a, b) => b.fundedPercentage - a.fundedPercentage)
-      .slice(0, 30);
+      const webSeries = shuffleArray(
+        projects.filter(p => p.type === 'webseries' && p.disabled === false)
+      ).slice(0, 10);
+
+      const featuredProjects = shuffleArray(
+        projects.filter(p => p.featured === true && p.disabled === false && p.poster && p.title && p.rating && !isNaN(p.rating))
+      ).slice(0, 30);
+
+      // Create dynamic shuffled arrays for each section
+      const trending = shuffleArray(
+        projects.filter(project => project.rating >= 7.0 && project.fundedPercentage >= 20 && project.disabled === false && project.type !== 'music')
+      ).slice(0, 12);
+
+      const bollywood = shuffleArray(
+        projects.filter(project => project.category === "Bollywood" && project.disabled === false && project.type !== 'music')
+      ).slice(0, 15);
+
+      const hollywood = shuffleArray(
+        projects.filter(project => project.category === "Hollywood" && project.disabled === false && project.type !== 'music')
+      ).slice(0, 15);
+
+      const actionThrillers = shuffleArray(
+        projects.filter(project => 
+          project.disabled === false && project.type !== 'music' &&
+          (project.genre?.toLowerCase().includes("action") || 
+           project.genre?.toLowerCase().includes("thriller") ||
+           project.tags?.some(tag => tag.toLowerCase().includes("action")) ||
+           project.tags?.some(tag => tag.toLowerCase().includes("thriller")))
+        )
+      ).slice(0, 12);
+
+      const dramaRomance = shuffleArray(
+        projects.filter(project => 
+          project.disabled === false && project.type !== 'music' &&
+          (project.genre?.toLowerCase().includes("drama") || 
+           project.genre?.toLowerCase().includes("romance") ||
+           project.tags?.some(tag => tag.toLowerCase().includes("drama")) ||
+           project.tags?.some(tag => tag.toLowerCase().includes("romance")))
+        )
+      ).slice(0, 12);
+
+      const comedyEntertainment = shuffleArray(
+        projects.filter(project => 
+          project.disabled === false && project.type !== 'music' &&
+          (project.genre?.toLowerCase().includes("comedy") || 
+           project.genre?.toLowerCase().includes("adventure") ||
+           project.tags?.some(tag => tag.toLowerCase().includes("comedy")) ||
+           project.tags?.some(tag => tag.toLowerCase().includes("adventure")))
+        )
+      ).slice(0, 12);
+
+      const sciFiFantasy = shuffleArray(
+        projects.filter(project => 
+          project.disabled === false && project.type !== 'music' &&
+          (project.genre?.toLowerCase().includes("sci-fi") || 
+           project.genre?.toLowerCase().includes("fantasy") ||
+           project.genre?.toLowerCase().includes("animation") ||
+           project.tags?.some(tag => tag.toLowerCase().includes("sci-fi")) ||
+           project.tags?.some(tag => tag.toLowerCase().includes("fantasy")))
+        )
+      ).slice(0, 12);
+
+      const highRated = shuffleArray(
+        projects.filter(project => project.rating >= 7.5 && project.disabled === false && project.type !== 'music')
+      ).slice(0, 12);
+
+      const newlyAdded = shuffleArray(
+        projects.filter(project => project.disabled === false && project.type !== 'music')
+      ).slice(0, 12);
+
+      const mostFunded = shuffleArray(
+        projects.filter(project => project.fundedPercentage >= 30 && project.disabled === false && project.type !== 'music')
+      ).slice(0, 12);
 
       return {
-        trending: trendingNow || [],
-        bollywood: bollywoodSection || [],
-        hollywood: hollywoodSection || [],
-        actionThrillers: actionThrillers || [],
-        dramaRomance: dramaRomance || [],
-        comedyEntertainment: comedyEntertainment || [],
-        sciFiFantasy: sciFiFantasy || [],
-        highRated: highRatedProjects || [],
-        newlyAdded: newlyAddedProjects || [],
-        mostFunded: mostFundedProjects || [],
+        trending,
+        bollywood,
+        hollywood,
+        actionThrillers,
+        dramaRomance,
+        comedyEntertainment,
+        sciFiFantasy,
+        highRated,
+        newlyAdded,
+        mostFunded,
         regional: regionalContent,
         webseries: webSeries,
         featured: featuredProjects
@@ -270,7 +341,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => {
       const nextIndex = (prev + 1) % ultimateFallback.length;
-      console.log('Next slide:', { prev, nextIndex, totalLength: ultimateFallback.length, project: ultimateFallback[nextIndex]?.title });
       return nextIndex;
     });
     resetAutoSlideTimer();
@@ -315,27 +385,51 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
         setSelectedCategory('bollywood');
         setSelectedType('film');
         break;
-
-      case 'webseries':
-        setSelectedType('webseries');
-        setSelectedCategory('all');
-        break;
-      case 'regional':
-        setSelectedCategory('regional');
-        setSelectedType('all');
-        break;
       case 'hollywood':
         setSelectedCategory('hollywood');
         setSelectedType('film');
+        break;
+      case 'action-thrillers':
+        setSelectedGenre('action');
+        setSelectedCategory('all');
+        setSelectedType('all');
+        break;
+      case 'drama-romance':
+        setSelectedGenre('drama');
+        setSelectedCategory('all');
+        setSelectedType('all');
+        break;
+      case 'comedy-entertainment':
+        setSelectedGenre('comedy');
+        setSelectedCategory('all');
+        setSelectedType('all');
+        break;
+      case 'sci-fi-fantasy':
+        setSelectedGenre('sci-fi');
+        setSelectedCategory('all');
+        setSelectedType('all');
         break;
       case 'high-rated':
         setSortBy('rating');
         setSelectedCategory('all');
         setSelectedType('all');
         break;
-      case 'new-releases':
+      case 'newly-added':
         setSortBy('newest');
         setSelectedCategory('all');
+        setSelectedType('all');
+        break;
+      case 'most-funded':
+        setSortBy('funding-high');
+        setSelectedCategory('all');
+        setSelectedType('all');
+        break;
+      case 'webseries':
+        setSelectedType('webseries');
+        setSelectedCategory('all');
+        break;
+      case 'regional':
+        setSelectedCategory('regional');
         setSelectedType('all');
         break;
       default:
@@ -749,7 +843,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
       )}
 
       {/* Search and Filter Section */}
-      <div className="max-w-7xl mx-auto px-6 py-8 mt-8">
+      <div className="max-w-7xl mx-auto px-6 py-8 mt-20">
         <div className="flex flex-col lg:flex-row gap-4 mb-8">
           {/* Search Bar */}
           <div className="relative flex-1 block">
@@ -958,6 +1052,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
             </div>
 
             {filteredProjects.length > 0 ? (
+              <div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                 {filteredProjects.map((project) => (
           <ProjectCard 
@@ -967,6 +1062,24 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
             onInvestClick={handleInvestClick}
           />
         ))}
+                </div>
+                
+                {/* View All Projects Button - appears at bottom of filtered results */}
+                {showAllProjects && showAllProjects !== 'all' && (
+                  <div className="mt-12 text-center">
+                    <button
+                      onClick={() => setShowAllProjects('all')}
+                      className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 hover:scale-105 shadow-lg"
+                    >
+                      <ArrowRight className="w-6 h-6" />
+                      View All Projects
+                      <span className="text-sm opacity-80">({projects.filter(p => p.disabled === false && p.type !== 'music').length} total)</span>
+                    </button>
+                    <p className="text-gray-400 mt-3 text-sm">
+                      Explore the complete collection of all available projects
+                    </p>
+                  </div>
+                )}
       </div>
     ) : (
       <div className="text-center py-16">
@@ -1125,6 +1238,7 @@ interface ProjectRowProps {
 
 const ProjectRow = React.memo<ProjectRowProps>(({ title, projects, onProjectClick, onInvestClick, onHeaderClick, featured, urgent }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [showViewAll, setShowViewAll] = useState(false);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -1135,6 +1249,30 @@ const ProjectRow = React.memo<ProjectRowProps>(({ title, projects, onProjectClic
       });
     }
   };
+
+  // Check if user has scrolled to the end
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 50; // Increased tolerance for better detection
+      setShowViewAll(isAtEnd);
+    }
+  };
+
+  // Add scroll event listener and check initial state
+  React.useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      
+      // Check initial state in case content is already at the end
+      setTimeout(() => {
+        handleScroll();
+      }, 100);
+      
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, [projects.length]); // Re-run when projects change
 
   if (projects.length === 0) return null;
 
@@ -1176,7 +1314,7 @@ const ProjectRow = React.memo<ProjectRowProps>(({ title, projects, onProjectClic
       {/* Projects Scroll Container */}
       <div 
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+        className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory relative"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {projects.map((project) => (
@@ -1189,6 +1327,32 @@ const ProjectRow = React.memo<ProjectRowProps>(({ title, projects, onProjectClic
             />
           </div>
         ))}
+        
+        {/* View All Projects Button - appears when scrolled to end */}
+        <AnimatePresence>
+          {showViewAll && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.3 }}
+              className="inline-block w-72 snap-center flex items-center justify-center"
+            >
+              <button
+                onClick={onHeaderClick}
+                className="w-full h-full min-h-[400px] bg-gradient-to-br from-purple-600/20 to-blue-600/20 border-2 border-dashed border-purple-400/30 rounded-xl flex flex-col items-center justify-center gap-4 hover:from-purple-600/30 hover:to-blue-600/30 hover:border-purple-400/50 transition-all duration-300 group/viewall"
+              >
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center group-hover/viewall:scale-110 transition-transform duration-300">
+                  <ArrowRight className="w-8 h-8 text-white" />
+                </div>
+                <div className="text-center">
+                  <h3 className="text-white font-bold text-lg mb-2">View All Projects</h3>
+                  <p className="text-gray-300 text-sm">Explore the complete collection</p>
+                </div>
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

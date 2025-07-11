@@ -116,6 +116,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   const [posterVisible, setPosterVisible] = useState(true);
   const [searchVideoId, setSearchVideoId] = useState<string | null>(null);
   const [isSearchVideoLoading, setIsSearchVideoLoading] = useState(false);
+  const [logoAnimation, setLogoAnimation] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -191,6 +192,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
     }
     return () => clearTimeout(timer);
   }, [isVideoLoaded]);
+
+  // Logo animation every 15 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLogoAnimation(true);
+      setTimeout(() => setLogoAnimation(false), 5000); // Animation duration
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleInvest = () => {
     if (onInvest) {
@@ -370,7 +381,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
 
   const videoId = getYouTubeVideoId(project.trailer);
   const finalVideoId = searchVideoId || videoId;
-  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=0&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1` : null;
+  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=0&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1&vq=hd720` : null;
   
   // Check if it's a search query URL
   const isSearchQuery = project.trailer?.includes('youtube.com/results?search_query=');
@@ -814,9 +825,26 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
         </div>
 
         {/* Circles Logo and Text - Top Right (moved up even more) */}
-        <div className="absolute top-6 right-0 z-30 flex items-center gap-3 m-6 select-none">
-          <img src="/logo.png" alt="Circles Logo" className="h-14 w-14 object-contain drop-shadow-lg blur-[0.5px]" />
-          <span className="text-xl font-extrabold text-white drop-shadow-lg tracking-wide blur-[0.3px]">Circles</span>
+        <div className="absolute top-6 right-0 z-30 flex items-center gap-0 m-6 select-none">
+          <motion.div 
+            className="h-20 w-20 flex items-center justify-center overflow-hidden"
+            animate={logoAnimation ? {
+              rotate: [0, 360],
+              scale: [1, 1.1, 1],
+              filter: [
+                'brightness(1) drop-shadow(0 0 10px rgba(147,51,234,0.3))',
+                'brightness(1.3) drop-shadow(0 0 25px rgba(59,130,246,0.6))',
+                'brightness(1) drop-shadow(0 0 10px rgba(147,51,234,0.3))'
+              ]
+            } : {}}
+            transition={{ 
+              duration: 5, 
+              ease: [0.4, 0, 0.2, 1]
+            }}
+          >
+            <img src="/circles-logo.png" alt="Circles Logo" className="h-20 w-20 object-contain drop-shadow-lg blur-[0.3px]" />
+          </motion.div>
+          <span className="text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent drop-shadow-lg tracking-wide blur-[0.2px] -ml-3">Circles</span>
         </div>
 
         {/* Netflix-style Hero Content */}
