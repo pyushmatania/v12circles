@@ -8,12 +8,7 @@ import {
   trendingNow, 
   bollywoodSection, 
   hollywoodSection, 
-  actionThrillers, 
-  dramaRomance, 
-  comedyEntertainment, 
-  sciFiFantasy, 
   allProjects, 
-  highRatedProjects, 
   newlyAddedProjects, 
   mostFundedProjects 
 } from '../data/projects';
@@ -38,8 +33,7 @@ const FILTER_OPTIONS = {
   types: [
     { id: 'all', label: 'All Types' },
     { id: 'film', label: 'Films' },
-    { id: 'webseries', label: 'Web Series' },
-    { id: 'music', label: 'Music' }
+    { id: 'webseries', label: 'Web Series' }
   ],
   languages: [
     { id: 'all', label: 'All Languages' },
@@ -74,7 +68,7 @@ const FILTER_OPTIONS = {
   ]
 } as const;
 
-const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onProjectSelect }) => {
+const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
   
@@ -85,7 +79,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   const autoSlideRef = useRef<number | null>(null);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchEndX, setTouchEndX] = useState(0);
-  const [lastSlideChange, setLastSlideChange] = useState(Date.now());
   
   // Filter states
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -131,6 +124,11 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   // Memoized filtered and sorted projects
   const filteredProjects = useMemo(() => {
     return projects.filter(project => {
+      // Filter out disabled projects and music projects
+      if (project.disabled === true || project.type === 'music') {
+        return false;
+      }
+
       const matchesSearch = searchTerm === '' || 
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -193,21 +191,16 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
     newlyAdded: Project[];
     mostFunded: Project[];
     regional: Project[];
-    music: Project[];
     webseries: Project[];
     featured: Project[];
   } => {
     try {
     const regionalContent = projects
-      .filter(p => p.category === 'Regional')
-      .slice(0, 10);
-
-    const musicProjects = projects
-      .filter(p => p.type === 'music')
+      .filter(p => p.category === 'Regional' && p.disabled === false && p.type !== 'music')
       .slice(0, 10);
 
     const webSeries = projects
-      .filter(p => p.type === 'webseries')
+      .filter(p => p.type === 'webseries' && p.disabled === false)
       .slice(0, 10);
 
           const featuredProjects = projects
@@ -227,7 +220,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
         newlyAdded: newlyAddedProjects || [],
         mostFunded: mostFundedProjects || [],
         regional: regionalContent,
-        music: musicProjects,
         webseries: webSeries,
         featured: featuredProjects
       };
@@ -246,7 +238,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
         newlyAdded: [],
         mostFunded: [],
         regional: [],
-        music: [],
         webseries: [],
         featured: []
     };
@@ -273,7 +264,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
   // Memoized callback functions for carousel controls
   const handleSlideChange = useCallback((index: number) => {
     setCurrentSlide(index);
-    setLastSlideChange(Date.now());
     resetAutoSlideTimer();
   }, [resetAutoSlideTimer]);
 
@@ -283,21 +273,15 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
       console.log('Next slide:', { prev, nextIndex, totalLength: ultimateFallback.length, project: ultimateFallback[nextIndex]?.title });
       return nextIndex;
     });
-    setLastSlideChange(Date.now());
     resetAutoSlideTimer();
   }, [ultimateFallback.length, resetAutoSlideTimer]);
 
   const prevSlide = useCallback(() => {
     setCurrentSlide(prev => prev === 0 ? Math.max(0, ultimateFallback.length - 1) : prev - 1);
-    setLastSlideChange(Date.now());
     resetAutoSlideTimer();
   }, [ultimateFallback.length, resetAutoSlideTimer]);
 
-  const goToBatch = useCallback((batchIndex: number) => {
-    const maxBatch = Math.floor((categorizedProjects.featured.length - 1) / 6);
-    const clampedBatch = Math.max(0, Math.min(maxBatch, batchIndex));
-    setCurrentSlide(clampedBatch * 6);
-  }, [categorizedProjects.featured.length]);
+
 
   const clearFilters = useCallback(() => {
     setSelectedCategory('all');
@@ -331,10 +315,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
         setSelectedCategory('bollywood');
         setSelectedType('film');
         break;
-      case 'music':
-        setSelectedType('music');
-        setSelectedCategory('all');
-        break;
+
       case 'webseries':
         setSelectedType('webseries');
         setSelectedCategory('all');
@@ -372,19 +353,19 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
 
 
   // Organize projects by categories for Netflix-style layout using diverse arrays
-  const trendingProjects = categorizedProjects.trending.length > 0 ? categorizedProjects.trending : projects.slice(0, 12);
-  const bollywoodFilms = categorizedProjects.bollywood.length > 0 ? categorizedProjects.bollywood : projects.filter(p => p.category === "Bollywood").slice(0, 15);
-  const hollywoodProjects = categorizedProjects.hollywood.length > 0 ? categorizedProjects.hollywood : projects.filter(p => p.category === "Hollywood").slice(0, 15);
-  const actionThrillers = categorizedProjects.actionThrillers.length > 0 ? categorizedProjects.actionThrillers : projects.filter(p => p.genre?.toLowerCase().includes("action")).slice(0, 12);
-  const dramaRomance = categorizedProjects.dramaRomance.length > 0 ? categorizedProjects.dramaRomance : projects.filter(p => p.genre?.toLowerCase().includes("drama")).slice(0, 12);
-  const comedyEntertainment = categorizedProjects.comedyEntertainment.length > 0 ? categorizedProjects.comedyEntertainment : projects.filter(p => p.genre?.toLowerCase().includes("comedy")).slice(0, 12);
-  const sciFiFantasy = categorizedProjects.sciFiFantasy.length > 0 ? categorizedProjects.sciFiFantasy : projects.filter(p => p.genre?.toLowerCase().includes("sci-fi")).slice(0, 12);
-  const highRatedProjects = categorizedProjects.highRated.length > 0 ? categorizedProjects.highRated : projects.filter(p => p.rating >= 7.0).slice(0, 12);
-  const newlyAdded = categorizedProjects.newlyAdded.length > 0 ? categorizedProjects.newlyAdded : projects.slice(0, 12);
-  const mostFunded = categorizedProjects.mostFunded.length > 0 ? categorizedProjects.mostFunded : projects.filter(p => p.fundedPercentage >= 20).slice(0, 12);
-  const regionalContent = categorizedProjects.regional.length > 0 ? categorizedProjects.regional : projects.filter(p => p.category === "Regional").slice(0, 10);
-  const musicProjects = categorizedProjects.music.length > 0 ? categorizedProjects.music : projects.filter(p => p.type === "music").slice(0, 10);
-  const webSeries = categorizedProjects.webseries.length > 0 ? categorizedProjects.webseries : projects.filter(p => p.type === "webseries").slice(0, 10);
+  const trendingProjects = categorizedProjects.trending.length > 0 ? categorizedProjects.trending : projects.filter(p => p.disabled === false && p.type !== 'music').slice(0, 12);
+  const bollywoodFilms = categorizedProjects.bollywood.length > 0 ? categorizedProjects.bollywood : projects.filter(p => p.category === "Bollywood" && p.disabled === false && p.type !== 'music').slice(0, 15);
+  const hollywoodProjects = categorizedProjects.hollywood.length > 0 ? categorizedProjects.hollywood : projects.filter(p => p.category === "Hollywood" && p.disabled === false && p.type !== 'music').slice(0, 15);
+  const actionThrillers = categorizedProjects.actionThrillers.length > 0 ? categorizedProjects.actionThrillers : projects.filter(p => p.genre?.toLowerCase().includes("action") && p.disabled === false && p.type !== 'music').slice(0, 12);
+  const dramaRomance = categorizedProjects.dramaRomance.length > 0 ? categorizedProjects.dramaRomance : projects.filter(p => p.genre?.toLowerCase().includes("drama") && p.disabled === false && p.type !== 'music').slice(0, 12);
+  const comedyEntertainment = categorizedProjects.comedyEntertainment.length > 0 ? categorizedProjects.comedyEntertainment : projects.filter(p => p.genre?.toLowerCase().includes("comedy") && p.disabled === false && p.type !== 'music').slice(0, 12);
+  const sciFiFantasy = categorizedProjects.sciFiFantasy.length > 0 ? categorizedProjects.sciFiFantasy : projects.filter(p => p.genre?.toLowerCase().includes("sci-fi") && p.disabled === false && p.type !== 'music').slice(0, 12);
+  const highRatedProjects = categorizedProjects.highRated.length > 0 ? categorizedProjects.highRated : projects.filter(p => p.rating >= 7.0 && p.disabled === false && p.type !== 'music').slice(0, 12);
+  const newlyAdded = categorizedProjects.newlyAdded.length > 0 ? categorizedProjects.newlyAdded : projects.filter(p => p.disabled === false && p.type !== 'music').slice(0, 12);
+  const mostFunded = categorizedProjects.mostFunded.length > 0 ? categorizedProjects.mostFunded : projects.filter(p => p.fundedPercentage >= 20 && p.disabled === false && p.type !== 'music').slice(0, 12);
+  const regionalContent = categorizedProjects.regional.length > 0 ? categorizedProjects.regional : projects.filter(p => p.category === "Regional" && p.disabled === false && p.type !== 'music').slice(0, 10);
+
+  const webSeries = categorizedProjects.webseries.length > 0 ? categorizedProjects.webseries : projects.filter(p => p.type === "webseries" && p.disabled === false).slice(0, 10);
 
   // Simple swipe detection for carousel
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -702,7 +683,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                       const dotsPerBatch = 6;
                       const currentBatch = Math.floor(currentSlide / dotsPerBatch);
                       const startIndex = currentBatch * dotsPerBatch;
-                      const endIndex = Math.min(startIndex + dotsPerBatch, totalProjects);
                       
                       return Array.from({ length: Math.min(dotsPerBatch, totalProjects) }, (_, i) => {
                         const projectIndex = startIndex + i;
@@ -1094,15 +1074,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onTrackInvestment, onPr
                 onHeaderClick={() => handleSectionClick('most-funded')}
               />
             )}
-            {musicProjects.length > 0 && (
-              <ProjectRow
-                title="🎵 Music & Albums"
-                projects={musicProjects}
-                onProjectClick={handleProjectClick}
-                onInvestClick={handleInvestClick}
-                onHeaderClick={() => handleSectionClick('music')}
-              />
-            )}
+
             {webSeries.length > 0 && (
               <ProjectRow
                 title="📺 Binge-Worthy Web Series"

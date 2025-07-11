@@ -43,10 +43,10 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
   // Get unique values for filters
-  const categories = ['all', ...Array.from(new Set(projects.map(p => p.category.toLowerCase())))];
-  const types = ['all', ...Array.from(new Set(projects.map(p => p.type)))];
-  const languages = ['all', ...Array.from(new Set(projects.map(p => p.language.toLowerCase())))];
-  const genres = ['all', ...Array.from(new Set(projects.map(p => {
+  const categories = ['all', ...Array.from(new Set(projects.filter(p => p.disabled === false && p.type !== 'music').map(p => p.category.toLowerCase())))];
+  const types = ['all', ...Array.from(new Set(projects.filter(p => p.disabled === false && p.type !== 'music').map(p => p.type)))];
+  const languages = ['all', ...Array.from(new Set(projects.filter(p => p.disabled === false && p.type !== 'music').map(p => p.language.toLowerCase())))];
+  const genres = ['all', ...Array.from(new Set(projects.filter(p => p.disabled === false && p.type !== 'music').map(p => {
     const genres = [];
     if (p.genre) genres.push(p.genre.toLowerCase());
     return genres;
@@ -98,6 +98,11 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
     
     // Filter projects based on criteria
     let results = projects.filter(project => {
+      // Filter out disabled projects and music projects
+      if (project.disabled === true || project.type === 'music') {
+        return false;
+      }
+
       // Search term filter
       const matchesTerm = !searchTerm.trim() || 
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
