@@ -10,6 +10,7 @@ import {
 
 import { Project } from '../types';
 import ProjectCard from './ProjectCard';
+import ElasticSlider from './ElasticSlider';
 
 interface ProjectCatalogProps {
   onTrackInvestment?: () => void;
@@ -526,9 +527,8 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
 
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Defensive: ensure we never access out-of-bounds index
-  const safeCurrentSlide = Math.min(currentSlide, Math.max(0, ultimateFallback.length - 1));
-  console.log('Slide debug:', { currentSlide, safeCurrentSlide, totalLength: ultimateFallback.length, project: ultimateFallback[safeCurrentSlide]?.title });
+  // Replace safeCurrentSlide with wrapped index
+  const wrappedSlide = ultimateFallback.length > 0 ? currentSlide % ultimateFallback.length : 0;
   
   // Reset image loaded state when slide changes
   React.useEffect(() => {
@@ -546,7 +546,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
     <div className="min-h-screen bg-black pb-[100px]">
       {/* Mobile Hero Carousel */}
       {!searchTerm && !showAllProjects && (
-        ultimateFallback.length > 0 && ultimateFallback[safeCurrentSlide] ? (
+        ultimateFallback.length > 0 && ultimateFallback[wrappedSlide] ? (
           <div
             className="md:hidden relative h-72 overflow-hidden"
             onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
@@ -560,15 +560,15 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 }
               }
             }}
-            onClick={() => handleProjectClick(ultimateFallback[safeCurrentSlide])}
+            onClick={() => handleProjectClick(ultimateFallback[wrappedSlide])}
           >
             <AnimatePresence mode="wait">
               <motion.img
                 key={`m-${currentSlide}`}
-                src={ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080')}
-                srcSet={ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
+                src={ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080')}
+                srcSet={ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
                 sizes="(min-width: 1024px) 900px, 100vw"
-                alt={ultimateFallback[safeCurrentSlide]?.title}
+                alt={ultimateFallback[wrappedSlide]?.title}
                 initial={{ x: 150, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -150, opacity: 0 }}
@@ -585,10 +585,10 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
             )}
             <div className="absolute bottom-12 left-0 w-full p-3 text-center flex flex-col items-center bg-gradient-to-t from-black/70 via-black/40 to-transparent">
               <h3 className="text-white text-base font-semibold">
-                {ultimateFallback[safeCurrentSlide]?.title}
+                {ultimateFallback[wrappedSlide]?.title}
               </h3>
               <span className="text-xs text-gray-300">
-                {ultimateFallback[safeCurrentSlide]?.genre}
+                {ultimateFallback[wrappedSlide]?.genre}
               </span>
             </div>
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
@@ -610,7 +610,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
       )}
       {/* Full-Screen Auto-Sliding Hero Carousel */}
       {!searchTerm && !showAllProjects && (
-        ultimateFallback.length > 0 && ultimateFallback[safeCurrentSlide] ? (
+        ultimateFallback.length > 0 && ultimateFallback[wrappedSlide] ? (
           <div 
             className="hidden md:block relative h-screen overflow-hidden"
             onTouchStart={handleTouchStart}
@@ -629,10 +629,10 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 onMouseLeave={() => setIsPaused(false)}
               >
                 <img 
-                  src={ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080')}
-                  srcSet={ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + ultimateFallback[safeCurrentSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
+                  src={ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080')}
+                  srcSet={ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
                   sizes="(min-width: 1024px) 900px, 100vw"
-                  alt={ultimateFallback[safeCurrentSlide]?.title}
+                  alt={ultimateFallback[wrappedSlide]?.title}
                   className={`w-full h-full object-cover transition-opacity duration-700 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                   style={{ objectPosition: 'center' }}
                   loading="lazy"
@@ -674,69 +674,85 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                   >
                     <div className="flex items-center gap-3 mb-4">
                       <div className={`flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-md ${
-                        ultimateFallback[safeCurrentSlide]?.type === 'film' ? 'bg-purple-500/20 border border-purple-500/30 text-purple-300' :
-                        ultimateFallback[safeCurrentSlide]?.type === 'music' ? 'bg-blue-500/20 border border-blue-500/30 text-blue-300' :
+                        ultimateFallback[wrappedSlide]?.type === 'film' ? 'bg-purple-500/20 border border-purple-500/30 text-purple-300' :
+                        ultimateFallback[wrappedSlide]?.type === 'music' ? 'bg-blue-500/20 border border-blue-500/30 text-blue-300' :
                         'bg-green-500/20 border border-green-500/30 text-green-300'
                       }`}>
-                        {ultimateFallback[safeCurrentSlide]?.type === 'film' ? <Film className="w-4 h-4" /> :
-                         ultimateFallback[safeCurrentSlide]?.type === 'music' ? <Music className="w-4 h-4" /> :
+                        {ultimateFallback[wrappedSlide]?.type === 'film' ? <Film className="w-4 h-4" /> :
+                         ultimateFallback[wrappedSlide]?.type === 'music' ? <Music className="w-4 h-4" /> :
                          <Tv className="w-4 h-4" />}
-                        <span className="text-sm font-medium uppercase">{ultimateFallback[safeCurrentSlide]?.type}</span>
+                        <span className="text-sm font-medium uppercase">{ultimateFallback[wrappedSlide]?.type}</span>
                       </div>
                       <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/20 border border-red-500/30">
                         <Fire className="w-4 h-4 text-red-400" />
-                        <span className="text-red-300 text-sm font-medium">Trending #{safeCurrentSlide + 1}</span>
+                        <span className="text-red-300 text-sm font-medium">Trending #{wrappedSlide + 1}</span>
                       </div>
                     </div>
 
                     <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white mb-4">
-                      {ultimateFallback[safeCurrentSlide]?.title}
+                      {ultimateFallback[wrappedSlide]?.title}
                     </h1>
                     
                     <p className="text-base sm:text-xl text-gray-300 mb-6 leading-relaxed">
-                      {ultimateFallback[safeCurrentSlide]?.description}
+                      {ultimateFallback[wrappedSlide]?.description}
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
                       <div className="flex items-center gap-2">
                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
                         <span className="text-white font-semibold">
-                          {ultimateFallback[safeCurrentSlide]?.rating && !isNaN(ultimateFallback[safeCurrentSlide]?.rating) 
-                            ? ultimateFallback[safeCurrentSlide]?.rating 
+                          {ultimateFallback[wrappedSlide]?.rating && !isNaN(ultimateFallback[wrappedSlide]?.rating) 
+                            ? ultimateFallback[wrappedSlide]?.rating 
                             : '4.8'}
                         </span>
                       </div>
                       <span className="text-gray-400">•</span>
-                      <span className="text-gray-300">{ultimateFallback[safeCurrentSlide]?.language}</span>
+                      <span className="text-gray-300">{ultimateFallback[wrappedSlide]?.language}</span>
                       <span className="text-gray-400">•</span>
-                      <span className="text-gray-300">{ultimateFallback[safeCurrentSlide]?.genre}</span>
+                      <span className="text-gray-300">{ultimateFallback[wrappedSlide]?.genre}</span>
                       <span className="text-gray-400">•</span>
-                      <span className="text-green-400 font-semibold">{ultimateFallback[safeCurrentSlide]?.fundedPercentage}% Funded</span>
+                      <span className="text-green-400 font-semibold">{ultimateFallback[wrappedSlide]?.fundedPercentage}% Funded</span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                       <button
-                        onClick={() => handleInvestClick(ultimateFallback[safeCurrentSlide])}
-                        className="flex items-center gap-3 px-8 py-4 bg-white text-black rounded-lg font-semibold text-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105"
+                        onClick={() => handleInvestClick(ultimateFallback[wrappedSlide])}
+                        className="group relative flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white rounded-2xl font-bold text-lg hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 transition-all duration-500 hover:scale-110 shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 border border-emerald-400/20 overflow-hidden"
                       >
-                        <Play className="w-6 h-6 fill-current" />
-                        Invest Now
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-teal-400/20 to-cyan-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        {/* White highlight */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <Play className="relative w-6 h-6 fill-current" />
+                        <span className="relative">Invest Now</span>
                       </button>
                       
                       <button 
-                        onClick={() => handleProjectClick(ultimateFallback[safeCurrentSlide])}
-                        className="flex items-center gap-3 px-8 py-4 bg-gray-600/80 text-white rounded-lg font-semibold text-lg hover:bg-gray-600 transition-all duration-300"
+                        onClick={() => handleProjectClick(ultimateFallback[wrappedSlide])}
+                        className="group relative flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 text-white rounded-2xl font-bold text-lg hover:from-purple-700 hover:via-pink-700 hover:to-rose-700 transition-all duration-500 hover:scale-110 shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 border border-purple-400/20 overflow-hidden"
                       >
-                        <Info className="w-6 h-6" />
-                        More Info
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 via-pink-400/20 to-rose-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        {/* White highlight */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <Info className="relative w-6 h-6" />
+                        <span className="relative">More Info</span>
                       </button>
 
-                      <button className="p-4 bg-black/50 text-white rounded-full hover:bg-black/70 transition-all duration-300">
-                        <Heart className="w-6 h-6" />
+                      <button className="group relative p-5 bg-gradient-to-r from-red-500 via-pink-500 to-rose-500 text-white rounded-2xl hover:from-red-600 hover:via-pink-600 hover:to-rose-600 transition-all duration-500 hover:scale-110 shadow-2xl shadow-red-500/30 hover:shadow-red-500/50 border border-red-400/20 overflow-hidden">
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 via-pink-400/20 to-rose-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        {/* White highlight */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <Heart className="relative w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
                       </button>
 
-                      <button className="p-4 bg-black/50 text-white rounded-full hover:bg-black/70 transition-all duration-300">
-                        <Share2 className="w-6 h-6" />
+                      <button className="group relative p-5 bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500 text-white rounded-2xl hover:from-blue-600 hover:via-cyan-600 hover:to-teal-600 transition-all duration-500 hover:scale-110 shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/50 border border-blue-400/20 overflow-hidden">
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 via-cyan-400/20 to-teal-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        {/* White highlight */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <Share2 className="relative w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
                       </button>
                     </div>
                   </motion.div>
@@ -745,90 +761,76 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
             </div>
 
             {/* Slide Indicators */}
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-20">
               <div className="flex flex-col items-center gap-3">
-                {/* Top Row - Play/Pause, Dots, Counter */}
-              <div className="flex items-center gap-3">
-                {/* Play/Pause Button */}
-                <button
-                  onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-                  className="p-2 bg-black/60 hover:bg-black/80 rounded-full text-white transition-all duration-300 backdrop-blur-sm"
-                >
-                  {isAutoPlaying && !isPaused ? (
-                    <div className="w-4 h-4 flex gap-1">
-                      <div className="w-1 h-4 bg-white"></div>
-                      <div className="w-1 h-4 bg-white"></div>
-                    </div>
-                  ) : (
-                    <Play className="w-4 h-4 fill-current" />
-                  )}
-                </button>
-
-                  {/* Dots - Centered */}
-                  <div className="flex justify-center">
-                                      <div className="flex gap-1.5">
-                    {(() => {
-                      const totalProjects = ultimateFallback.length;
-                      const dotsPerBatch = 6;
-                      const currentBatch = Math.floor(currentSlide / dotsPerBatch);
-                      const startIndex = currentBatch * dotsPerBatch;
-                      
-                      return Array.from({ length: Math.min(dotsPerBatch, totalProjects) }, (_, i) => {
-                        const projectIndex = startIndex + i;
-                        const isActive = projectIndex === currentSlide;
-                        
-                        return (
+                {/* Dots and Slider - Vertically Centered */}
+                <div className="flex flex-col items-center gap-2 mt-10">
+                  {/* Dots Row: Pause | Dots | Counter */}
+                  <div className="flex items-center justify-center w-full max-w-xs mx-auto gap-4">
+                    {/* Pause Button */}
                     <button
-                            key={projectIndex}
-                            onClick={() => handleSlideChange(projectIndex)}
-                            className={`relative w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                              isActive ? 'bg-white scale-110' : 'bg-white/30 hover:bg-white/50'
-                      }`}
+                      onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+                      className="p-1 w-6 h-6 flex items-center justify-center text-white"
+                      style={{ background: 'none', boxShadow: 'none' }}
                     >
-                            {isActive && isAutoPlaying && !isPaused && (
-                              <div className="absolute inset-0 rounded-full border border-white/60 animate-pulse"></div>
+                      {isAutoPlaying && !isPaused ? (
+                        <div className="w-3 h-3 flex gap-0.5">
+                          <div className="w-0.5 h-3 bg-white rounded-sm"></div>
+                          <div className="w-0.5 h-3 bg-white rounded-sm"></div>
+                        </div>
+                      ) : (
+                        <Play className="w-3 h-3 fill-current" />
                       )}
                     </button>
-                        );
-                      });
-                    })()}
-                  </div>
-                </div>
-
-                {/* Counter */}
-                <span className="text-white text-sm font-medium bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm">
-                  {safeCurrentSlide + 1}/{ultimateFallback.length}
-                </span>
-                </div>
-
-                {/* Bottom Row - ABCD Slider */}
-                {ultimateFallback.length > 6 && (
-                  <div className="flex justify-center items-center gap-2">
-                    <span className="text-white/60 text-xs">
-                      {String.fromCharCode(65 + Math.floor(currentSlide / 6))}
-                    </span>
-                    <div 
-                      className="w-16 h-1 bg-white/20 rounded-full cursor-pointer relative"
-                      onClick={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const clickX = e.clientX - rect.left;
-                        const percentage = clickX / rect.width;
-                        const totalBatches = Math.ceil(ultimateFallback.length / 6);
-                        const targetBatch = Math.floor(percentage * totalBatches);
-                        const newSlide = Math.min(targetBatch * 6, ultimateFallback.length - 1);
-                        setCurrentSlide(newSlide);
-                      }}
-                    >
-                      <div 
-                        className="h-full bg-white/60 rounded-full transition-all duration-300 relative"
-                        style={{ 
-                          width: `${(Math.floor(currentSlide / 6) / Math.ceil(ultimateFallback.length / 6 - 1)) * 100}%`,
-                          maxWidth: '100%'
-                        }}
-                      />
+                    {/* Dots */}
+                    <div className="flex gap-1.5">
+                      {(() => {
+                        const totalProjects = ultimateFallback.length;
+                        const dotsPerBatch = 6;
+                        const currentBatch = Math.floor(currentSlide / dotsPerBatch);
+                        const startIndex = currentBatch * dotsPerBatch;
+                        return Array.from({ length: Math.min(dotsPerBatch, totalProjects) }, (_, i) => {
+                          const projectIndex = startIndex + i;
+                          const isActive = projectIndex === currentSlide;
+                          return (
+                            <button
+                              key={projectIndex}
+                              onClick={() => handleSlideChange(projectIndex)}
+                              className={`relative w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                                isActive ? 'bg-white scale-110' : 'bg-white/30 hover:bg-white/50'
+                              }`}
+                            >
+                              {isActive && isAutoPlaying && !isPaused && (
+                                <div className="absolute inset-0 rounded-full border border-white/60 animate-pulse"></div>
+                              )}
+                            </button>
+                          );
+                        });
+                      })()}
                     </div>
+                    {/* Stats Counter */}
+                    <span className="text-blue-300 text-xs select-none min-w-[40px] text-right">
+                      {wrappedSlide + 1}/{ultimateFallback.length}
+                    </span>
                   </div>
-                )}
+                  {/* Slider - centered, no A/E letters */}
+                  <ElasticSlider
+                    startingValue={0}
+                    defaultValue={Math.floor(currentSlide / 6)}
+                    maxValue={Math.ceil(ultimateFallback.length / 6) - 1}
+                    isStepped
+                    stepSize={1}
+                    className="w-16"
+                    onValueChange={(value) => {
+                      const targetSlide = Math.floor(value) * 6;
+                      handleSlideChange(Math.min(targetSlide, ultimateFallback.length - 1));
+                    }}
+                  />
+                  {/* Current Section Letter */}
+                  <span className="text-indigo-300 text-[10px] font-mono -mt-1">
+                    {String.fromCharCode(65 + Math.floor(currentSlide / 6))}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -852,7 +854,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 setSearchTerm(e.target.value);
                 setShowAllProjects(null);
               }}
-              className="w-full pl-14 pr-12 py-4 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-red-500 focus:bg-gray-800 transition-all duration-300 text-lg"
+              className="w-full pl-14 pr-12 py-5 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border border-gray-700 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-800 focus:via-gray-700 focus:to-gray-800 transition-all duration-500 text-lg shadow-2xl shadow-purple-500/10 focus:shadow-purple-500/30"
             />
             {searchTerm && (
             <button
@@ -876,12 +878,16 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
               setShowFilters(!showFilters);
               setShowAllProjects(null);
             }}
-            className={`flex items-center gap-2 px-6 py-4 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all duration-300 ${showFilters ? 'hidden' : ''}`}
+            className={`group relative flex items-center gap-3 px-8 py-5 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white rounded-2xl font-bold hover:from-orange-600 hover:via-amber-600 hover:to-yellow-600 transition-all duration-500 hover:scale-105 shadow-2xl shadow-orange-500/30 hover:shadow-orange-500/50 border border-orange-400/20 overflow-hidden ${showFilters ? 'hidden' : ''}`}
           >
-            <Filter className="w-5 h-5" />
-            Filters
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-400/20 via-amber-400/20 to-yellow-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* White highlight */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <Filter className="relative w-5 h-5" />
+            <span className="relative">Filters</span>
             {(selectedCategory !== 'all' || selectedType !== 'all' || selectedLanguage !== 'all' || selectedGenre !== 'all') && (
-              <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+              <span className="relative w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
             )}
           </button>
         </div>
@@ -894,22 +900,30 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="mb-8 p-6 bg-gray-900 rounded-xl border border-gray-700"
+              className="mb-8 p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-3xl border border-gray-700/50 shadow-2xl shadow-purple-500/10"
             >
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-white text-lg font-semibold">Advanced Filters</h3>
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">Advanced Filters</h3>
                 <div className="flex items-center gap-4">
                   <button
                     onClick={clearFilters}
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="group relative px-4 py-2 bg-gradient-to-r from-red-500 via-pink-500 to-rose-500 text-white rounded-xl hover:from-red-600 hover:via-pink-600 hover:to-rose-600 transition-all duration-300 font-semibold overflow-hidden"
                   >
-                    Clear All
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 via-pink-400/20 to-rose-400/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* White highlight */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="relative">Clear All</span>
                   </button>
                   <button
                     onClick={() => setShowFilters(false)}
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="group relative p-2 bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 text-white rounded-xl hover:from-gray-500 hover:via-gray-600 hover:to-gray-700 transition-all duration-300 overflow-hidden"
                   >
-                    <X className="w-5 h-5" />
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-400/20 via-gray-500/20 to-gray-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* White highlight */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <X className="relative w-5 h-5" />
                   </button>
                 </div>
               </div>
@@ -921,7 +935,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
                   >
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
@@ -937,7 +951,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                   <select
                     value={selectedType}
                     onChange={(e) => setSelectedType(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
                   >
                     {types.map((type) => (
                       <option key={type.id} value={type.id}>
@@ -953,7 +967,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                   <select
                     value={selectedLanguage}
                     onChange={(e) => setSelectedLanguage(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
                   >
                     {languages.map((language) => (
                       <option key={language.id} value={language.id}>
@@ -969,7 +983,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                   <select
                     value={selectedGenre}
                     onChange={(e) => setSelectedGenre(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
                   >
                     {genres.map((genre) => (
                       <option key={genre.id} value={genre.id}>
@@ -1012,7 +1026,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-500"
+                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
                   >
                     {sortOptions.map((option) => (
                       <option key={option.id} value={option.id}>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
   Play, 
@@ -14,39 +14,18 @@ import {
   Target,
   Award,
   Film,
-  Music,
-  Tv,
   MapPin,
   Globe,
-  Tag,
   Eye,
   ThumbsUp,
   MessageCircle,
-  Bookmark,
-  Download,
   ExternalLink,
-  CheckCircle,
-  X,
-  Plus,
-  Minus,
-  ChevronDown,
-  ChevronUp,
   ChevronLeft,
   ChevronRight,
-  Filter,
-  Search,
-  BarChart3,
-  PieChart,
-  LineChart,
-  Activity,
   Zap,
   Crown,
   Medal,
-  Gift,
   Camera,
-  Ticket,
-  Plane,
-  ShoppingBag,
   BookOpen,
   HelpCircle,
   FileCheck,
@@ -57,9 +36,9 @@ import {
   Shield,
   FileText
 } from 'lucide-react';
-import { useTheme } from './ThemeContext';
-import { Project } from '../types';
-import PortfolioAnalytics from './PortfolioAnalytics';
+
+import { Project, KeyPerson } from '../types';
+
 
 // Import logo image
 import circlesLogo from '../images/circles-logo-main.png';
@@ -79,13 +58,12 @@ interface ProjectDetailPageProps {
 }
 
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose, onInvest, initialTab = 'overview' }) => {
-  const { theme } = useTheme();
+
   const [activeTab, setActiveTab] = useState(initialTab);
   const [isLiked, setIsLiked] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState(10000);
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [showFullScript, setShowFullScript] = useState(false);
+
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
@@ -116,7 +94,6 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   const trailerRef = useRef<HTMLIFrameElement>(null);
   const trailerContainerRef = useRef<HTMLDivElement>(null);
   const youtubePlayerRef = useRef<any>(null);
-  const { scrollY } = useScroll();
 
   // Calculate funding statistics
   const fundingStats = {
@@ -794,26 +771,22 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
             <ArrowLeft className="w-5 h-5" />
           </button>
 
-          {/* Like and Share Buttons - Top Right */}
-          <div className="flex items-center gap-4">
+          {/* Like and Share Icons - Top Right */}
+          <div className="flex items-center gap-3">
             <button
               onClick={handleLike}
-              className={`transition-colors duration-200 ${
-                isLiked 
-                  ? 'text-red-400 hover:text-red-300' 
-                  : 'text-white/80 hover:text-white'
-              }`}
+              className="text-white/60 hover:text-white transition-colors duration-300"
               title={isLiked ? 'Unlike' : 'Like'}
             >
-              <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
+              <Heart className={`w-5 h-5 ${isLiked ? 'fill-current text-white' : ''}`} />
             </button>
             <button
               onClick={handleShare}
-              className="text-white/80 hover:text-white transition-colors duration-200"
+              className="text-white/60 hover:text-white transition-colors duration-300"
               title="Share"
             >
               <Share2 className="w-5 h-5" />
-          </button>
+            </button>
           </div>
         </div>
 
@@ -933,22 +906,26 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                 {/* Play Button */}
                 <motion.button
                   onClick={handlePlayButton}
-                  className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105 backdrop-blur-sm"
+                  className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-blue-700 hover:via-cyan-700 hover:to-teal-700 transition-all duration-500 shadow-xl shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105 backdrop-blur-sm overflow-hidden"
                 >
-                  <Play className="w-6 h-6" />
-                  Play
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300" />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 via-cyan-400/20 to-teal-400/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300" />
+                  <Play className="relative w-6 h-6" />
+                  <span className="relative">Play</span>
                 </motion.button>
 
                 {/* Invest Now Button */}
                 <motion.button
                 onClick={() => setActiveTab('invest')}
-                  className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 px-8 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-xl shadow-purple-500/25 hover:shadow-purple-500/40 hover:scale-105 backdrop-blur-sm"
+                  className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white py-5 px-10 rounded-2xl font-bold text-lg hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 transition-all duration-500 shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-110 backdrop-blur-sm border border-emerald-400/20 overflow-hidden"
               >
-                  <DollarSign className="w-6 h-6" />
-                Invest Now
-                  <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300" />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/30 to-cyan-400/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
+                  {/* White highlight */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <DollarSign className="relative w-6 h-6" />
+                  <span className="relative">Invest Now</span>
+                  <ChevronRight className="relative w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
               </motion.button>
               </motion.div>
             </motion.div>
@@ -973,17 +950,19 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
           <div className="p-6">
             {/* Close Button */}
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-xl font-bold text-white">Project Details</h2>
+              <h2 className="text-xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">Project Details</h2>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 hover:text-white transition-all duration-300"
+                className="group relative p-3 rounded-xl bg-gradient-to-r from-gray-800/50 via-gray-700/50 to-gray-600/50 text-gray-300 hover:from-purple-600/20 hover:via-pink-600/20 hover:to-rose-600/20 hover:text-white transition-all duration-300 border border-gray-600/30 hover:border-purple-500/50 overflow-hidden"
               >
-                <ArrowLeft className="w-5 h-5" />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/10 via-pink-400/10 to-rose-400/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <ArrowLeft className="relative w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
               </button>
             </div>
 
             {/* Navigation Tabs */}
-            <div className="space-y-2">
+            <div className="space-y-3">
               {navigationTabs.map((tab, index) => (
                 <motion.button
                   key={tab.id}
@@ -991,20 +970,21 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1 }}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`w-full flex items-center gap-4 p-4 rounded-xl text-left transition-all duration-300 group ${
+                  className={`group relative w-full flex items-center gap-4 p-5 rounded-2xl text-left transition-all duration-500 overflow-hidden ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/30 text-white shadow-lg shadow-purple-500/20'
-                      : 'text-gray-300 hover:bg-gray-800/50 hover:text-white border border-transparent'
+                      ? 'bg-gradient-to-r from-purple-600/30 via-pink-600/20 to-rose-600/30 border border-purple-500/40 text-white shadow-2xl shadow-purple-500/30'
+                      : 'text-gray-300 hover:bg-gradient-to-r hover:from-gray-800/50 hover:to-gray-700/50 hover:text-white border border-transparent hover:border-gray-600/30'
                   }`}
                 >
-                  <div className={`p-2 rounded-lg bg-gradient-to-r ${tab.color} text-white shadow-lg`}>
-                    <tab.icon className="w-5 h-5" />
+                  <div className={`absolute inset-0 bg-gradient-to-r ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                  <div className={`relative p-3 rounded-xl bg-gradient-to-r ${tab.color} text-white shadow-lg group-hover:scale-110 transition-transform duration-300 overflow-hidden`}>
+                    <tab.icon className="relative w-5 h-5" />
                   </div>
-                  <span className="font-medium">{tab.label}</span>
+                  <span className="relative font-semibold text-sm">{tab.label}</span>
                   {activeTab === tab.id && (
                     <motion.div
                       layoutId="activeTab"
-                      className="w-1 h-8 bg-gradient-to-b from-purple-400 to-pink-400 rounded-full ml-auto"
+                      className="relative w-2 h-10 bg-gradient-to-b from-purple-400 via-pink-400 to-rose-400 rounded-full ml-auto shadow-lg shadow-purple-500/50"
                     />
                   )}
                 </motion.button>
@@ -1029,7 +1009,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
               >
                 {/* Content will be rendered based on activeTab */}
                 <div className="text-white">
-                  <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent drop-shadow-lg">
                     {navigationTabs.find(tab => tab.id === activeTab)?.label}
                   </h2>
                   
@@ -1041,11 +1021,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className="group relative bg-gradient-to-br from-gray-800/50 via-gray-900/50 to-black/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50 hover:border-purple-500/30 transition-all duration-500 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20"
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                            <BookOpen className="w-6 h-6 text-purple-400" />
-                            Project Overview
+                          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-rose-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <h3 className="relative text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                            <div className="p-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg">
+                              <BookOpen className="w-6 h-6 text-white" />
+                            </div>
+                            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Project Overview</span>
                           </h3>
                           
                           {/* Main Info Grid */}
@@ -1101,9 +1084,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                 {(project as any).tmdbGenres.map((genre: string, index: number) => (
                                   <span 
                                     key={index}
-                                    className="px-3 py-1 bg-purple-500/20 text-purple-300 text-sm rounded-full border border-purple-500/30"
+                                    className="group relative px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 text-sm rounded-full border border-purple-500/40 hover:from-purple-500/30 hover:to-pink-500/30 hover:border-purple-400/60 transition-all duration-300 shadow-lg hover:shadow-purple-500/20"
                                   >
-                                    {genre}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400/10 to-pink-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                    <span className="relative">{genre}</span>
                                   </span>
                                 ))}
                               </div>
@@ -1118,9 +1102,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                 {(project as any).spokenLanguages.map((language: string, index: number) => (
                                   <span 
                                     key={index}
-                                    className="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm rounded-full border border-blue-500/30"
+                                    className="group relative px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 text-sm rounded-full border border-blue-500/40 hover:from-blue-500/30 hover:to-cyan-500/30 hover:border-blue-400/60 transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
                                   >
-                                    {language}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-cyan-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                    <span className="relative">{language}</span>
                                   </span>
                                 ))}
                               </div>
@@ -1486,21 +1471,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           {/* Invest Button */}
                           <button
                             onClick={handleInvest}
-                            disabled={isProcessing}
-                            className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-6 px-8 rounded-2xl font-bold text-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-2xl shadow-green-500/25 hover:shadow-green-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="group relative w-full bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 text-white py-7 px-8 rounded-3xl font-bold text-xl hover:from-violet-700 hover:via-purple-700 hover:to-fuchsia-700 transition-all duration-500 shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 border border-purple-400/20 overflow-hidden"
                           >
-                            {isProcessing ? (
-                              <div className="flex items-center justify-center gap-3">
-                                <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                Processing...
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-center gap-3">
-                                <DollarSign className="w-8 h-8" />
-                                Invest Now
-                                <ChevronRight className="w-6 h-6" />
-                              </div>
-                            )}
+                            {/* Gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-fuchsia-400/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
+                            <div className="flex items-center justify-center gap-3">
+                              <DollarSign className="w-8 h-8" />
+                              Invest Now
+                              <ChevronRight className="w-6 h-6" />
+                            </div>
                           </button>
 
                           {/* Available Slots */}
@@ -1522,8 +1502,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
                         >
                           <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                            <Crown className="w-6 h-6 text-yellow-400" />
-                            Experience Tiers
+                            <div className="p-2 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 shadow-lg">
+                              <Crown className="w-6 h-6 text-white" />
+                            </div>
+                            <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">Experience Tiers</span>
                           </h3>
                           
                           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -1538,14 +1520,15 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-yellow-500/50 transition-all duration-300 hover:scale-105"
+                                className="group relative bg-gradient-to-br from-gray-900/50 via-gray-800/50 to-black/50 rounded-3xl p-6 border border-gray-700/50 hover:border-yellow-500/50 transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-yellow-500/20 overflow-hidden"
                               >
-                                <div className="text-center">
-                                  <div className="text-4xl mb-3">{tierInfo.icon}</div>
-                                  <h4 className="text-lg font-bold text-white mb-2">{tierInfo.name}</h4>
+                                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-orange-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="relative text-center">
+                                  <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300">{tierInfo.icon}</div>
+                                  <h4 className="text-lg font-bold text-white mb-2 group-hover:text-yellow-300 transition-colors duration-300">{tierInfo.name}</h4>
                                   <p className="text-gray-400 text-sm mb-4">Min. Investment</p>
-                                  <p className="text-2xl font-bold text-yellow-400">{formatCurrency(tierInfo.minAmount)}</p>
-                                  <div className={`w-full h-1 bg-gradient-to-r ${tierInfo.color} rounded-full mt-3`} />
+                                  <p className="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">{formatCurrency(tierInfo.minAmount)}</p>
+                                  <div className={`w-full h-2 bg-gradient-to-r ${tierInfo.color} rounded-full mt-4 shadow-lg`} />
                                 </div>
                               </motion.div>
                             ))}
@@ -1560,8 +1543,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
                         >
                           <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                            <Medal className="w-6 h-6 text-yellow-400" />
-                            Perks & Experiences
+                            <div className="p-2 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 shadow-lg">
+                              <Medal className="w-6 h-6 text-white" />
+                            </div>
+                            <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">Perks & Experiences</span>
                           </h3>
                           
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1652,23 +1637,24 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: index * 0.1 }}
-                                  className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 hover:scale-105"
+                                  className="group relative bg-gradient-to-br from-gray-900/50 via-gray-800/50 to-black/50 rounded-3xl p-6 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-purple-500/20 overflow-hidden"
                                 >
+                                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                   {/* Perk Icon */}
-                                  <div className="text-4xl mb-4 text-center">{perk.icon}</div>
+                                  <div className="relative text-5xl mb-4 text-center transform group-hover:scale-110 transition-transform duration-300">{perk.icon}</div>
                                   
                                   {/* Tier Badge */}
-                                  <div className="flex items-center justify-between mb-4">
-                                    <div className={`px-3 py-1 rounded-full text-xs font-bold ${tierInfo.color} text-white`}>
+                                  <div className="relative flex items-center justify-between mb-4">
+                                    <div className={`px-4 py-2 rounded-full text-xs font-bold bg-gradient-to-r ${tierInfo.color} text-white shadow-lg`}>
                                       {tierInfo.icon} {tierInfo.label}
                                     </div>
-                                    <div className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(perk.status)}`}>
+                                    <div className={`px-3 py-2 rounded-full text-xs font-medium ${getStatusColor(perk.status)} shadow-lg`}>
                                       {perk.status}
                                     </div>
                                   </div>
                                   
                                   {/* Perk Title */}
-                                  <h4 className="text-lg font-bold text-white mb-3 group-hover:text-purple-400 transition-colors duration-300">
+                                  <h4 className="relative text-lg font-bold text-white mb-3 group-hover:text-purple-400 transition-colors duration-300">
                                     {perk.title}
                                   </h4>
                                   
@@ -1946,18 +1932,75 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           </div>
 
                           {/* Key People Section */}
-                          {(project as any).keyPeople && (project as any).keyPeople.length > 0 && (
+                          {project.keyPeople && Array.isArray(project.keyPeople) && project.keyPeople.length > 0 && (
                             <div className="mb-8">
-                              <h4 className="text-xl font-bold text-white mb-6">Additional Crew</h4>
-                              <div className="flex flex-wrap gap-3">
-                                {(project as any).keyPeople.map((person: string, index: number) => (
-                                  <span 
-                                    key={index}
-                                    className="px-4 py-2 bg-gray-700/50 text-gray-300 rounded-full border border-gray-600/50 hover:bg-gray-600/50 hover:text-white transition-all duration-300"
-                                  >
-                                    {person}
-                                  </span>
-                                ))}
+                              <h4 className="text-xl font-bold text-white mb-6">Cast & Crew</h4>
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {project.keyPeople.map((person, index) => {
+                                  // Handle both object and string formats for backward compatibility
+                                  const personData: KeyPerson = typeof person === 'string' ? { 
+                                    name: person, 
+                                    role: 'other', 
+                                    id: `person-${index}`,
+                                    profileImage: undefined,
+                                    isMainCast: undefined
+                                  } : person;
+                                  
+                                  return (
+                                    <motion.div
+                                      key={personData.id || `person-${index}`}
+                                      initial={{ opacity: 0, y: 20 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      transition={{ delay: index * 0.1 }}
+                                      className="group relative bg-gray-900/50 rounded-2xl p-4 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
+                                    >
+                                      {/* Avatar */}
+                                      <div className="relative mb-3">
+                                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-2 border-gray-600 group-hover:border-blue-500 transition-colors duration-300 mx-auto flex items-center justify-center">
+                                          {personData.profileImage ? (
+                                            <img
+                                              src={personData.profileImage}
+                                              alt={personData.name || 'Cast member'}
+                                              className="w-full h-full rounded-full object-cover"
+                                            />
+                                          ) : (
+                                            <Users className="w-6 h-6 text-blue-400" />
+                                          )}
+                                        </div>
+                                        {personData.isMainCast && (
+                                          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                                            <Star className="w-3 h-3 text-white fill-current" />
+                                          </div>
+                                        )}
+                                      </div>
+                                      
+                                      {/* Name & Role */}
+                                      <div className="text-center">
+                                        <h5 className="text-white font-bold mb-1 group-hover:text-blue-400 transition-colors duration-300">
+                                          {personData.name || 'Unknown'}
+                                        </h5>
+                                        <p className="text-blue-400 font-semibold text-sm capitalize">
+                                          {(personData.role || 'other').replace('_', ' ')}
+                                        </p>
+                                      </div>
+                                      
+                                      {/* Role Badge */}
+                                      <div className="mt-3 text-center">
+                                        <span className={`px-2 py-1 text-xs rounded-full ${
+                                          personData.role === 'director' ? 'bg-purple-500/20 text-purple-300' :
+                                          personData.role === 'actor' || personData.role === 'actress' ? 'bg-green-500/20 text-green-300' :
+                                          personData.role === 'producer' ? 'bg-yellow-500/20 text-yellow-300' :
+                                          'bg-blue-500/20 text-blue-300'
+                                        }`}>
+                                          {personData.isMainCast ? 'Main Cast' : 'Crew'}
+                                        </span>
+                                      </div>
+                                      
+                                      {/* Hover Glow Effect */}
+                                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                    </motion.div>
+                                  );
+                                })}
                               </div>
                             </div>
                           )}
@@ -2367,21 +2410,25 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           
                           {/* Gallery Navigation */}
                           <div className="flex items-center justify-center gap-4 mt-8">
-                            <button className="p-3 rounded-full bg-gray-700/50 text-gray-300 hover:bg-violet-500/20 hover:text-violet-300 border border-gray-600/50 hover:border-violet-500/50 transition-all duration-300">
-                              <ChevronLeft className="w-5 h-5" />
+                            <button className="group relative p-3 rounded-full bg-gradient-to-r from-gray-700/50 via-gray-600/50 to-gray-500/50 text-gray-300 hover:from-violet-500/30 hover:via-purple-500/30 hover:to-pink-500/30 hover:text-violet-300 border border-gray-600/50 hover:border-violet-500/50 transition-all duration-500 overflow-hidden">
+                              {/* Gradient overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-r from-violet-400/10 via-purple-400/10 to-pink-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                              <ChevronLeft className="relative w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
                             </button>
                             <div className="flex gap-2">
                               {[1, 2, 3].map((page) => (
                                 <button
                                   key={page}
                                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                                    page === 1 ? 'bg-violet-500' : 'bg-gray-600 hover:bg-gray-500'
+                                    page === 1 ? 'bg-gradient-to-r from-violet-500 to-purple-500 shadow-lg shadow-violet-500/50' : 'bg-gray-600 hover:bg-gradient-to-r hover:from-gray-500 hover:to-gray-400'
                                   }`}
                                 />
                               ))}
                             </div>
-                            <button className="p-3 rounded-full bg-gray-700/50 text-gray-300 hover:bg-violet-500/20 hover:text-violet-300 border border-gray-600/50 hover:border-violet-500/50 transition-all duration-300">
-                              <ChevronRight className="w-5 h-5" />
+                            <button className="group relative p-3 rounded-full bg-gradient-to-r from-gray-700/50 via-gray-600/50 to-gray-500/50 text-gray-300 hover:from-violet-500/30 hover:via-purple-500/30 hover:to-pink-500/30 hover:text-violet-300 border border-gray-600/50 hover:border-violet-500/50 transition-all duration-500 overflow-hidden">
+                              {/* Gradient overlay */}
+                              <div className="absolute inset-0 bg-gradient-to-r from-violet-400/10 via-purple-400/10 to-pink-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                              <ChevronRight className="relative w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                             </button>
                           </div>
                         </motion.div>
@@ -2406,9 +2453,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                             {['All', 'Cast', 'Location', 'Trailer', 'Shooting', 'Music', 'Post-Production'].map((category) => (
                               <button
                                 key={category}
-                                className="px-4 py-2 rounded-full bg-gray-700/50 text-gray-300 hover:bg-amber-500/20 hover:text-amber-300 border border-gray-600/50 hover:border-amber-500/50 transition-all duration-300"
+                                className="group relative px-4 py-2 rounded-full bg-gradient-to-r from-gray-700/50 via-gray-600/50 to-gray-500/50 text-gray-300 hover:from-amber-500/30 hover:via-yellow-500/30 hover:to-orange-500/30 hover:text-amber-300 border border-gray-600/50 hover:border-amber-500/50 transition-all duration-500 overflow-hidden"
                               >
-                                {category}
+                                {/* Gradient overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-amber-400/10 via-yellow-400/10 to-orange-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <span className="relative">{category}</span>
                               </button>
                             ))}
                           </div>

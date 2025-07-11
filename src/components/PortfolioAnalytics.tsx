@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { 
   BarChart, 
   PieChart, 
@@ -12,15 +11,30 @@ import {
   Filter,
   Download,
   Zap,
-  ChevronRight,
   Calendar,
-  MapPin,
   Globe,
   Film,
   Music,
   Star,
-  Users,
-  Target
+  Target,
+  Gem,
+  Coins,
+  Banknote,
+  Calculator,
+  BarChart3,
+  Wallet,
+  Landmark,
+  Briefcase,
+  PiggyBank,
+  Activity,
+  Trophy,
+  AlertTriangle,
+  Brain,
+  Lightbulb,
+  Clock,
+  CheckCircle,
+  Play,
+  FileText
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { userInvestments } from '../data/investments';
@@ -32,7 +46,7 @@ const calculatePortfolioData = () => {
   const totalInvested = userInvestments.reduce((sum, inv) => sum + inv.investmentAmount, 0);
   const totalReturns = userInvestments.reduce((sum, inv) => sum + inv.returnAmount, 0);
   const totalProfit = totalReturns;
-  const roi = totalInvested > 0 ? (totalProfit / totalInvested) * 100 : 0;
+  const roi = totalInvested> 0 ? (totalProfit / totalInvested) * 100 : 0;
 
   // Calculate investments by category
   const categoryMap = new Map<string, number>();
@@ -86,7 +100,7 @@ const calculatePortfolioData = () => {
 
   // Top performing projects from real data
   const topPerformingProjects = userInvestments
-    .filter(inv => inv.returnPercentage > 0)
+    .filter(inv => inv.returnPercentage> 0)
     .sort((a, b) => b.returnPercentage - a.returnPercentage)
     .slice(0, 5)
     .map(inv => ({
@@ -96,7 +110,7 @@ const calculatePortfolioData = () => {
       returns: inv.currentValue,
       roi: inv.returnPercentage,
       trend: 'up' as const,
-      riskLevel: (inv.returnPercentage > 30 ? 'high' : inv.returnPercentage > 20 ? 'medium' : 'low') as 'high' | 'medium' | 'low'
+      riskLevel: (inv.returnPercentage> 30 ? 'high' : inv.returnPercentage> 20 ? 'medium' : 'low') as 'high' | 'medium' | 'low'
     }));
 
   // Underperforming projects (if any)
@@ -142,16 +156,15 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
   const [timeframe, setTimeframe] = useState<'1m' | '3m' | '6m' | '1y' | 'all'>('1y');
   const [showFilters, setShowFilters] = useState(false);
   const [sortKey, setSortKey] = useState<
-    'investmentDate' | 'projectName' | 'investmentAmount' | 'currentValue' | 'returnPercentage' | 'status' | 'projectType' | 'genre' | 'sector' | 'region' | 'language' | 'returnAmount' | 'maturityDate' | 'risk'
-  >('investmentDate');
+    'investmentDate' | 'projectName' | 'investmentAmount' | 'currentValue' | 'returnPercentage' | 'status' | 'projectType' | 'genre' | 'sector' | 'region' | 'language' | 'returnAmount' | 'maturityDate' | 'risk'>('investmentDate');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [filterStatus, setFilterStatus] = useState<string>('all');
-  const [expandedInvestments, setExpandedInvestments] = useState<Set<string>>(new Set());
+
   const [filterProjectType, setFilterProjectType] = useState<string>('all');
   const [filterGenre, setFilterGenre] = useState<string>('all');
   const [filterRegion, setFilterRegion] = useState<string>('all');
   const [filterRisk, setFilterRisk] = useState<string>('all');
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+
 
   // Sort and filter investments
   const filteredInvestments = userInvestments.filter(inv => {
@@ -172,7 +185,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
     if (aValue == null) aValue = '';
     if (bValue == null) bValue = '';
     if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
-    if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
+    if (aValue> bValue) return sortOrder === 'asc' ? 1 : -1;
     return 0;
   });
 
@@ -195,158 +208,144 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
   ];
 
   // Portfolio health calculation
-  const portfolioHealth = portfolioData.roi > 15 ? 'Excellent' : 
-                         portfolioData.roi > 10 ? 'Good' : 
-                         portfolioData.roi > 5 ? 'Average' : 'Needs Attention';
+  const portfolioHealth = portfolioData.roi> 15 ? 'Excellent' : 
+                         portfolioData.roi> 10 ? 'Good' : 
+                         portfolioData.roi> 5 ? 'Average' : 'Needs Attention';
 
   // Recommendation based on portfolio analysis
-  const recommendation = portfolioData.investmentsByCategory.length > 1 
+  const recommendation = portfolioData.investmentsByCategory.length> 1 
     ? "Your portfolio shows good diversification across films and music. Consider adding more thriller and comedy genres to balance your investments."
     : "Consider diversifying your portfolio with different project types and genres to reduce risk and increase potential returns.";
 
-  // Toggle investment expansion
-  const toggleInvestmentExpansion = (investmentId: string) => {
-    const newExpanded = new Set(expandedInvestments);
-    if (newExpanded.has(investmentId)) {
-      newExpanded.delete(investmentId);
-    } else {
-      newExpanded.add(investmentId);
-    }
-    setExpandedInvestments(newExpanded);
-  };
+
 
   return (
-    <div
-      className={`min-h-screen pt-20 pb-[100px] transition-all duration-[3000ms] max-md:h-[calc(100vh-80px)] max-md:overflow-y-auto max-md:scroll-smooth ${
+    <div className={`min-h-screen pt-20 pb-[100px] transition-all duration-[3000ms] max-md:h-[calc(100vh-80px)] max-md:overflow-y-auto max-md:scroll-smooth ${
         theme === 'light'
           ? 'bg-gradient-to-br from-gray-50 to-white'
-          : 'bg-gradient-to-br from-black via-gray-900 to-purple-900'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-8"
-        >
-          <h1 className={`text-3xl sm:text-4xl md:text-5xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'} mb-3 sm:mb-4`}>
-            Portfolio Analytics
-          </h1>
-          <p className={`text-base sm:text-lg ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
-            Detailed analysis of your investment performance and insights
-          </p>
-        </motion.div>
+          : 'bg-gradient-to-br from-black via-gray-900 to-emerald-900'
+      }`}>
 
-        {/* Filter Bar */}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8 relative z-10">
+        {/* Header with Wall Street Theme */}
+        <div className="mb-8 relative">
+          {/* Financial Emblems */}
+          <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-amber-400/10 to-yellow-500/10 rounded-full border border-amber-500/20">
+            <Landmark className="w-8 h-8 text-amber-600/40 m-2" />
+          </div>
+          <div className="absolute -top-2 -right-2 w-10 h-10 bg-gradient-to-br from-emerald-400/10 to-green-500/10 rounded-full border border-emerald-500/20">
+            <Briefcase className="w-6 h-6 text-emerald-600/40 m-2" />
+          </div>
+          
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 relative">
+            <span className="bg-gradient-to-r from-amber-400 via-yellow-500 to-emerald-500 bg-clip-text text-transparent flex items-center gap-3">
+              <Wallet className="w-8 h-8 sm:w-10 sm:h-10 text-amber-400" />
+              Portfolio Analytics
+              <Gem className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-400" />
+            </span>
+          </h1>
+          <p className="text-base sm:text-lg text-gray-300 flex items-center gap-2">
+            <Calculator className="w-5 h-5 text-amber-400" />
+            Wall Street-Grade Investment Analysis
+            <PiggyBank className="w-5 h-5 text-emerald-400" />
+          </p>
+        </div>
+
+        {/* Filter Bar with Trading Theme */}
         <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
           <div className="flex gap-3">
             <button 
-              onClick={() => setTimeframe('1m')}
-              className={`px-4 py-2 rounded-lg transition-colors ${
+              onClick={() => setTimeframe('1m')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === '1m'
-                  ? `${theme === 'light' ? 'bg-purple-500 text-white' : 'bg-purple-600 text-white'}`
-                  : `${theme === 'light' ? 'bg-white text-gray-700 border border-gray-300' : 'bg-gray-800 text-gray-300 border border-gray-700'}`
-              }`}
-            >
-              1M
+                  ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
+              }`}>
+              <span className="flex items-center gap-1">
+                <Coins className="w-4 h-4" />
+                1M
+              </span>
             </button>
             <button 
-              onClick={() => setTimeframe('3m')}
-              className={`px-4 py-2 rounded-lg transition-colors ${
+              onClick={() => setTimeframe('3m')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === '3m'
-                  ? `${theme === 'light' ? 'bg-purple-500 text-white' : 'bg-purple-600 text-white'}`
-                  : `${theme === 'light' ? 'bg-white text-gray-700 border border-gray-300' : 'bg-gray-800 text-gray-300 border border-gray-700'}`
-              }`}
-            >
-              3M
+                  ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
+              }`}>
+              <span className="flex items-center gap-1">
+                <BarChart className="w-4 h-4" />
+                3M
+              </span>
             </button>
             <button 
-              onClick={() => setTimeframe('6m')}
-              className={`px-4 py-2 rounded-lg transition-colors ${
+              onClick={() => setTimeframe('6m')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === '6m'
-                  ? `${theme === 'light' ? 'bg-purple-500 text-white' : 'bg-purple-600 text-white'}`
-                  : `${theme === 'light' ? 'bg-white text-gray-700 border border-gray-300' : 'bg-gray-800 text-gray-300 border border-gray-700'}`
-              }`}
-            >
-              6M
+                  ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
+              }`}>
+              <span className="flex items-center gap-1">
+                <TrendingUp className="w-4 h-4" />
+                6M
+              </span>
             </button>
             <button 
-              onClick={() => setTimeframe('1y')}
-              className={`px-4 py-2 rounded-lg transition-colors ${
+              onClick={() => setTimeframe('1y')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === '1y'
-                  ? `${theme === 'light' ? 'bg-purple-500 text-white' : 'bg-purple-600 text-white'}`
-                  : `${theme === 'light' ? 'bg-white text-gray-700 border border-gray-300' : 'bg-gray-800 text-gray-300 border border-gray-700'}`
-              }`}
-            >
-              1Y
+                  ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
+              }`}>
+              <span className="flex items-center gap-1">
+                <Gem className="w-4 h-4" />
+                1Y
+              </span>
             </button>
             <button 
-              onClick={() => setTimeframe('all')}
-              className={`px-4 py-2 rounded-lg transition-colors ${
+              onClick={() => setTimeframe('all')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === 'all'
-                  ? `${theme === 'light' ? 'bg-purple-500 text-white' : 'bg-purple-600 text-white'}`
-                  : `${theme === 'light' ? 'bg-white text-gray-700 border border-gray-300' : 'bg-gray-800 text-gray-300 border border-gray-700'}`
-              }`}
-            >
-              All
+                  ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
+                  : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
+              }`}>
+              <span className="flex items-center gap-1">
+                <Briefcase className="w-4 h-4" />
+                All
+              </span>
             </button>
           </div>
           
           <div className="flex gap-3">
             <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                theme === 'light'
-                  ? 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-                  : 'bg-gray-800 text-gray-300 border border-gray-700 hover:bg-gray-700'
-              }`}
-            >
+              onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20">
               <Filter className="w-5 h-5" />
               <span>Filters</span>
               <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
             </button>
             
-            <button
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                theme === 'light'
-                  ? 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-                  : 'bg-gray-800 text-gray-300 border border-gray-700 hover:bg-gray-700'
-              }`}
-            >
+            <button className="flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 bg-gradient-to-r from-emerald-500/20 to-green-500/20 text-emerald-300 border border-emerald-500/30 hover:border-emerald-500/50">
               <Download className="w-5 h-5" />
               <span>Export</span>
             </button>
           </div>
         </div>
 
-        {/* Filter Options (conditionally rendered) */}
+        {/* Filter Options with Wall Street Theme */}
         {showFilters && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className={`mb-8 p-6 rounded-xl border ${
-              theme === 'light'
-                ? 'bg-white border-gray-200'
-                : 'bg-gray-900/50 border-gray-700'
-            }`}
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="relative mb-8 p-6 rounded-2xl border bg-white/5 border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Trading Floor Emblem */}
+            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-amber-400/10 to-emerald-500/10 rounded-full border border-amber-500/20">
+              <BarChart3 className="w-6 h-6 text-amber-400/40 m-2" />
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
               <div>
-                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                <label className="block text-sm font-medium mb-2 text-gray-300 flex items-center gap-1">
+                  <Activity className="w-3 h-3 text-amber-500" />
                   Status
                 </label>
                 <select
                   value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    theme === 'light'
-                      ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
-                      : 'border-gray-600 focus:border-purple-500 bg-gray-800 text-white'
-                  } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
-                >
+                  onChange={(e) => setFilterStatus(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-amber-500/20 border-amber-500/30 focus:border-amber-500 bg-white/5 text-white">
                   <option value="all">All Status</option>
                   <option value="active">Active</option>
                   <option value="completed">Completed</option>
@@ -355,18 +354,13 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                <label className="block text-sm font-medium mb-2 text-gray-300 flex items-center gap-1">
+                  <Film className="w-3 h-3 text-emerald-500" />
                   Project Type
                 </label>
                 <select
                   value={filterProjectType}
-                  onChange={(e) => setFilterProjectType(e.target.value)}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    theme === 'light'
-                      ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
-                      : 'border-gray-600 focus:border-purple-500 bg-gray-800 text-white'
-                  } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
-                >
+                  onChange={(e) => setFilterProjectType(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border-emerald-500/30 focus:border-emerald-500 bg-white/5 text-white">
                   <option value="all">All Types</option>
                   <option value="film">Film</option>
                   <option value="music">Music</option>
@@ -374,18 +368,13 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                <label className="block text-sm font-medium mb-2 text-gray-300 flex items-center gap-1">
+                  <Star className="w-3 h-3 text-blue-500" />
                   Genre
                 </label>
                 <select
                   value={filterGenre}
-                  onChange={(e) => setFilterGenre(e.target.value)}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    theme === 'light'
-                      ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
-                      : 'border-gray-600 focus:border-purple-500 bg-gray-800 text-white'
-                  } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
-                >
+                  onChange={(e) => setFilterGenre(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-500/30 focus:border-blue-500 bg-white/5 text-white">
                   <option value="all">All Genres</option>
                   {portfolioData.investmentsByGenre.map(genre => (
                     <option key={genre.genre} value={genre.genre}>{genre.genre}</option>
@@ -394,18 +383,13 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                <label className="block text-sm font-medium mb-2 text-gray-300 flex items-center gap-1">
+                  <Globe className="w-3 h-3 text-purple-500" />
                   Region
                 </label>
                 <select
                   value={filterRegion}
-                  onChange={(e) => setFilterRegion(e.target.value)}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    theme === 'light'
-                      ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
-                      : 'border-gray-600 focus:border-purple-500 bg-gray-800 text-white'
-                  } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
-                >
+                  onChange={(e) => setFilterRegion(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-500/20 border-purple-500/30 focus:border-purple-500 bg-white/5 text-white">
                   <option value="all">All Regions</option>
                   <option value="Bollywood">Bollywood</option>
                   <option value="Hollywood">Hollywood</option>
@@ -415,18 +399,13 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                <label className="block text-sm font-medium mb-2 text-gray-300 flex items-center gap-1">
+                  <Target className="w-3 h-3 text-amber-500" />
                   Risk Level
                 </label>
                 <select
                   value={filterRisk}
-                  onChange={(e) => setFilterRisk(e.target.value)}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    theme === 'light'
-                      ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
-                      : 'border-gray-600 focus:border-purple-500 bg-gray-800 text-white'
-                  } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
-                >
+                  onChange={(e) => setFilterRisk(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-amber-500/20 border-amber-500/30 focus:border-amber-500 bg-white/5 text-white">
                   <option value="all">All Risk Levels</option>
                   <option value="low">Low Risk</option>
                   <option value="medium">Medium Risk</option>
@@ -435,18 +414,13 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                <label className="block text-sm font-medium mb-2 text-gray-300 flex items-center gap-1">
+                  <BarChart className="w-3 h-3 text-emerald-500" />
                   Sort By
                 </label>
                 <select
                   value={sortKey}
-                  onChange={(e) => setSortKey(e.target.value as any)}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    theme === 'light'
-                      ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
-                      : 'border-gray-600 focus:border-purple-500 bg-gray-800 text-white'
-                  } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
-                >
+                  onChange={(e) => setSortKey(e.target.value as any)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border-emerald-500/30 focus:border-emerald-500 bg-white/5 text-white">
                   <option value="investmentDate">Investment Date</option>
                   <option value="projectName">Project Name</option>
                   <option value="investmentAmount">Investment Amount</option>
@@ -457,28 +431,24 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                <label className="block text-sm font-medium mb-2 text-gray-300 flex items-center gap-1">
+                  <ChevronDown className="w-3 h-3 text-blue-500" />
                   Sort Order
                 </label>
                 <select
                   value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
-                  className={`w-full px-4 py-2 rounded-lg border ${
-                    theme === 'light'
-                      ? 'border-gray-300 focus:border-purple-500 bg-white text-gray-900'
-                      : 'border-gray-600 focus:border-purple-500 bg-gray-800 text-white'
-                  } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
-                >
+                  onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-500/30 focus:border-blue-500 bg-white/5 text-white">
                   <option value="desc">Descending</option>
                   <option value="asc">Ascending</option>
                 </select>
               </div>
 
-              <div className="sm:col-span-2">
-                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+              <div className="sm:col-span-1">
+                <label className="block text-sm font-medium mb-2 text-gray-300 flex items-center gap-1">
+                  <Zap className="w-3 h-3 text-purple-500" />
                   Quick Actions
                 </label>
-                <div className="flex gap-3">
+                <div className="flex gap-2">
                   <button
                     onClick={() => {
                       setFilterStatus('all');
@@ -486,254 +456,87 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                       setFilterGenre('all');
                       setFilterRegion('all');
                       setFilterRisk('all');
-                    }}
-                    className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-                      theme === 'light'
-                        ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                    }`}
-                  >
-                    Clear All Filters
+                    }} className="px-3 py-2 rounded-xl text-xs transition-all duration-300 bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20">
+                    Clear All
                   </button>
                   <button
-                    onClick={() => setSortKey('returnPercentage')}
-                    className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-                      theme === 'light'
-                        ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                        : 'bg-green-900/30 text-green-400 hover:bg-green-900/50'
-                    }`}
-                  >
-                    Show Best Performers
-                  </button>
-                  <button
-                    onClick={() => setFilterRisk('high')}
-                    className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-                      theme === 'light'
-                        ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                        : 'bg-red-900/30 text-red-400 hover:bg-red-900/50'
-                    }`}
-                  >
-                    High Risk Only
+                    onClick={() => setSortKey('returnPercentage')} className="px-3 py-2 rounded-xl text-xs transition-all duration-300 bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/30 hover:border-amber-500/50">
+                    Sort by ROI
                   </button>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
-        {/* Overview Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className={`p-4 sm:p-6 rounded-2xl backdrop-blur-xl border ${
-              theme === 'light'
-                ? 'bg-white/50 border-white/60 shadow-lg'
-                : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-2 sm:p-3 rounded-xl bg-green-500/20">
-                  <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
-                </div>
-                <div>
-                  <p className={`text-xs sm:text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Total Invested</p>
-                  <p className={`text-lg sm:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                    ₹{portfolioData.totalInvested.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                theme === 'light' ? 'bg-gray-100 text-gray-700' : 'bg-gray-800 text-gray-300'
-              }`}>
-                {timeframe}
-              </span>
-            </div>
-            <div className="w-full h-1 bg-gradient-to-r from-green-500 to-green-300 rounded-full" />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className={`p-6 rounded-2xl backdrop-blur-xl border ${
-              theme === 'light'
-                ? 'bg-white/50 border-white/60 shadow-lg'
-                : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-2 sm:p-3 rounded-xl bg-blue-500/20">
-                  <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
-                </div>
-                <div>
-                  <p className={`text-xs sm:text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Current Value</p>
-                  <p className={`text-lg sm:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                    ₹{portfolioData.totalReturns.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 text-green-500">
-                <ArrowUpRight className="w-4 h-4" />
-                <span className="text-xs font-medium">+{portfolioData.roi}%</span>
-              </div>
-            </div>
-            <div className="w-full h-1 bg-gradient-to-r from-blue-500 to-blue-300 rounded-full" />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className={`p-6 rounded-2xl backdrop-blur-xl border ${
-              theme === 'light'
-                ? 'bg-white/50 border-white/60 shadow-lg'
-                : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-2 sm:p-3 rounded-xl bg-purple-500/20">
-                  <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-purple-500" />
-                </div>
-                <div>
-                  <p className={`text-xs sm:text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Total Profit</p>
-                  <p className={`text-lg sm:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                    ₹{portfolioData.totalProfit.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 text-green-500">
-                <ArrowUpRight className="w-4 h-4" />
-                <span className="text-xs font-medium">+{portfolioData.roi}%</span>
-              </div>
-            </div>
-            <div className="w-full h-1 bg-gradient-to-r from-purple-500 to-purple-300 rounded-full" />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className={`p-6 rounded-2xl backdrop-blur-xl border ${
-              theme === 'light'
-                ? 'bg-white/50 border-white/60 shadow-lg'
-                : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-2 sm:p-3 rounded-xl bg-yellow-500/20">
-                  <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500" />
-                </div>
-                <div>
-                  <p className={`text-xs sm:text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Portfolio Health</p>
-                  <p className={`text-lg sm:text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                    {portfolioHealth}
-                  </p>
-                </div>
-              </div>
-              <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full ${
-                portfolioHealth === 'Excellent' 
-                  ? 'bg-green-500/20 text-green-500' 
-                  : portfolioHealth === 'Good' 
-                  ? 'bg-blue-500/20 text-blue-500' 
-                  : portfolioHealth === 'Average' 
-                  ? 'bg-yellow-500/20 text-yellow-500'
-                  : 'bg-red-500/20 text-red-500'
-              }`}>
-                {portfolioHealth === 'Excellent' || portfolioHealth === 'Good' 
-                  ? <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" /> 
-                  : <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5" />}
-              </div>
-            </div>
-            <div className="w-full h-1 bg-gradient-to-r from-yellow-500 to-yellow-300 rounded-full" />
-          </motion.div>
-        </div>
-
-        {/* Analytics Charts */}
+        {/* Analytics Charts with Trading Floor Theme */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Returns Over Time */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className={`p-4 sm:p-6 rounded-2xl backdrop-blur-xl border ${
-              theme === 'light'
-                ? 'bg-white/50 border-white/60 shadow-lg'
-                : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-yellow-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Chart Emblem */}
+            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-amber-400/10 to-yellow-500/10 rounded-full border border-amber-500/20">
+              <LineChart className="w-6 h-6 text-amber-400/40 m-2" />
+            </div>
+            
+            <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-2 rounded-lg bg-blue-500/20">
-                  <LineChart className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border border-amber-500/30">
+                  <LineChart className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
                 </div>
-                <h3 className={`font-bold text-base sm:text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Returns Over Time</h3>
+                <h3 className="font-bold text-base sm:text-lg text-white">Returns Over Time</h3>
               </div>
-              <div className={`text-xs px-2 py-1 rounded-full ${
-                theme === 'light' ? 'bg-green-100 text-green-700' : 'bg-green-900/30 text-green-400'
-              }`}>
+              <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border border-amber-500/30">
                 +{portfolioData.roi}% YTD
               </div>
             </div>
             
-            {/* Chart visualization - Simplified for this example */}
-            <div className="w-full h-48 sm:h-64 relative">
+            {/* Chart visualization */}
+            <div className="w-full h-48 sm:h-64 relative z-10">
               <div className="absolute bottom-0 left-0 right-0 flex items-end h-36 sm:h-48 justify-between">
                 {portfolioData.monthlyReturns.map((item, index) => (
                   <div key={index} className="flex flex-col items-center">
-                    <div 
-                      className="w-4 sm:w-6 rounded-t-md bg-gradient-to-t from-blue-500 to-purple-500 hover:from-blue-400 hover:to-purple-400 transition-all cursor-pointer"
+                    <div className="w-4 sm:w-6 rounded-t-md bg-gradient-to-t from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:via-yellow-400 hover:to-amber-500 transition-all cursor-pointer shadow-lg shadow-amber-500/25"
                       style={{ 
                         height: `${(item.returns / 72000) * 100}%`,
-                      }}
-                    >
+                      }}>
                       <div className="relative group">
-                        <div className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-20 sm:w-24 text-center p-1 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity ${
-                          theme === 'light' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
-                        }`}>
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-20 sm:w-24 text-center p-1 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
                           ₹{item.returns.toLocaleString()}
                         </div>
                       </div>
                     </div>
-                    <span className={`text-xs mt-2 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{item.month}</span>
+                    <span className="text-xs mt-2 text-gray-400">{item.month}</span>
                   </div>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Portfolio Allocation */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className={`p-4 sm:p-6 rounded-2xl backdrop-blur-xl border ${
-              theme === 'light'
-                ? 'bg-white/50 border-white/60 shadow-lg'
-                : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-emerald-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-green-500/5 to-emerald-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Pie Chart Emblem */}
+            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-emerald-400/10 to-green-500/10 rounded-full border border-emerald-500/20">
+              <PieChart className="w-6 h-6 text-emerald-400/40 m-2" />
+            </div>
+            
+            <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-2 rounded-lg bg-purple-500/20">
-                  <PieChart className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-500/30">
+                  <PieChart className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
                 </div>
-                <h3 className={`font-bold text-base sm:text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Portfolio Allocation</h3>
+                <h3 className="font-bold text-base sm:text-lg text-white">Portfolio Allocation</h3>
               </div>
-              <button className={`text-xs px-2 sm:px-3 py-1 rounded-lg border ${
-                theme === 'light' ? 'border-gray-300 text-gray-700 hover:bg-gray-100' : 'border-gray-700 text-gray-300 hover:bg-gray-800'
-              }`}>
+              <button className="text-xs px-2 sm:px-3 py-1 rounded-lg border bg-white/5 border-white/10 text-gray-300 hover:bg-white/10 hover:text-white hover:border-white/20">
                 By Category ▾
               </button>
             </div>
             
-            {/* Pie chart visualization - Simplified for this example */}
-            <div className="flex flex-col sm:flex-row items-center gap-4">
+            {/* Pie chart visualization */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 relative z-10">
               <div className="relative w-32 h-32 sm:w-48 sm:h-48">
                 <svg viewBox="0 0 100 100" className="w-full h-full">
                   {/* Film - 55.6% */}
@@ -742,7 +545,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                     cy="50"
                     r="40"
                     fill="none"
-                    stroke="#8b5cf6"
+                    stroke="#f59e0b"
                     strokeWidth="20"
                     strokeDasharray={`${55.6 * 2.51} ${100 * 2.51 - 55.6 * 2.51}`}
                     strokeDashoffset="0"
@@ -754,7 +557,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                     cy="50"
                     r="40"
                     fill="none"
-                    stroke="#3b82f6"
+                    stroke="#10b981"
                     strokeWidth="20"
                     strokeDasharray={`${26.7 * 2.51} ${100 * 2.51 - 26.7 * 2.51}`}
                     strokeDashoffset={`${-(55.6 * 2.51)}`}
@@ -766,7 +569,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                     cy="50"
                     r="40"
                     fill="none"
-                    stroke="#10b981"
+                    stroke="#3b82f6"
                     strokeWidth="20"
                     strokeDasharray={`${17.7 * 2.51} ${100 * 2.51 - 17.7 * 2.51}`}
                     strokeDashoffset={`${-(55.6 + 26.7) * 2.51}`}
@@ -774,8 +577,8 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center flex-col">
-                  <span className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Total</span>
-                  <span className={`text-lg sm:text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                  <span className="text-xs text-gray-400">Total</span>
+                  <span className="text-lg sm:text-xl font-bold text-white">
                     ₹{portfolioData.totalInvested.toLocaleString()}
                   </span>
                 </div>
@@ -786,53 +589,192 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                   <div key={index} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className={`w-3 h-3 rounded-full ${
-                        index === 0 ? 'bg-purple-500' : index === 1 ? 'bg-blue-500' : 'bg-green-500'
+                        index === 0 ? 'bg-amber-500' : index === 1 ? 'bg-emerald-500' : 'bg-blue-500'
                       }`} />
-                      <span className={`${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>{item.category}</span>
+                      <span className="text-gray-300">{item.category}</span>
                     </div>
                     <div className="text-right">
-                      <div className={`${theme === 'light' ? 'text-gray-900' : 'text-white'} font-medium`}>
+                      <div className="text-white font-medium">
                         ₹{item.amount.toLocaleString()}
                       </div>
-                      <div className={`text-xs ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                        {item.percentage}%
+                      <div className="text-xs text-gray-400">
+                        {item.percentage.toFixed(1)}%
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Sector and Region Breakdown Charts */}
+        {/* Overview Stats with Wall Street Money Theme */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/30 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-yellow-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Inscribed Coin Emblem */}
+            <div className="absolute top-2 right-2 w-8 h-8 bg-gradient-to-br from-amber-400/10 to-yellow-500/10 rounded-full border border-amber-500/20">
+              <Coins className="w-4 h-4 text-amber-400/40 m-2" />
+            </div>
+            
+            <div className="flex items-center justify-between mb-3 sm:mb-4 relative z-10">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="relative p-2 sm:p-3 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border border-amber-500/30">
+                  <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-400/60 rounded-full border border-amber-500/40"></div>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                    <Wallet className="w-3 h-3 text-amber-500" />
+                    Total Invested
+                  </p>
+                  <p className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
+                    ₹{portfolioData.totalInvested.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-amber-400 font-medium">Capital Deployed</p>
+                </div>
+              </div>
+              <span className="px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border border-amber-500/30">
+                {timeframe}
+              </span>
+            </div>
+            <div className="w-full h-1 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 rounded-full relative z-10 shadow-lg shadow-amber-500/30" />
+          </div>
+
+          <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-green-500/5 to-emerald-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Diamond Emblem */}
+            <div className="absolute top-2 right-2 w-8 h-8 bg-gradient-to-br from-emerald-400/10 to-green-500/10 rounded border border-emerald-500/20 rotate-45">
+              <Gem className="w-4 h-4 text-emerald-400/40 m-2 -rotate-45" />
+            </div>
+            
+            <div className="flex items-center justify-between mb-3 sm:mb-4 relative z-10">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="relative p-2 sm:p-3 rounded-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-500/30">
+                  <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400" />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-400/60 rounded-full border border-emerald-500/40"></div>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                    <PiggyBank className="w-3 h-3 text-emerald-500" />
+                    Current Value
+                  </p>
+                  <p className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
+                    ₹{portfolioData.totalReturns.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-emerald-400 font-medium">Portfolio Worth</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-emerald-500">
+                <ArrowUpRight className="w-4 h-4" />
+                <span className="text-xs font-medium">+{portfolioData.roi}%</span>
+              </div>
+            </div>
+            <div className="w-full h-1 bg-gradient-to-r from-emerald-500 via-green-500 to-emerald-600 rounded-full relative z-10 shadow-lg shadow-emerald-500/30" />
+          </div>
+
+          <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-blue-500/30 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Banknote Emblem */}
+            <div className="absolute top-2 right-2 w-10 h-6 bg-gradient-to-br from-blue-400/10 to-cyan-500/10 rounded border border-blue-500/20">
+              <Banknote className="w-6 h-4 text-blue-400/40 m-1" />
+            </div>
+            
+            <div className="flex items-center justify-between mb-3 sm:mb-4 relative z-10">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="relative p-2 sm:p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
+                  <BarChart className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-400/60 rounded-full border border-blue-500/40"></div>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                    <Calculator className="w-3 h-3 text-blue-500" />
+                    Total Profit
+                  </p>
+                  <p className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent">
+                    ₹{portfolioData.totalProfit.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-blue-400 font-medium">Net Gains</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-blue-500">
+                <ArrowUpRight className="w-4 h-4" />
+                <span className="text-xs font-medium">+{portfolioData.roi}%</span>
+              </div>
+            </div>
+            <div className="w-full h-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 rounded-full relative z-10 shadow-lg shadow-blue-500/30" />
+          </div>
+
+          <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-purple-500/30 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Purple Diamond Emblem */}
+            <div className="absolute top-2 right-2 w-8 h-8 bg-gradient-to-br from-purple-400/10 to-pink-500/10 rounded border border-purple-500/20 rotate-45">
+              <Gem className="w-4 h-4 text-purple-400/40 m-2 -rotate-45" />
+            </div>
+            
+            <div className="flex items-center justify-between mb-3 sm:mb-4 relative z-10">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="relative p-2 sm:p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30">
+                  <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-400/60 rounded-full border border-purple-500/40"></div>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
+                    <Activity className="w-3 h-3 text-purple-500" />
+                    Portfolio Health
+                  </p>
+                  <p className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                    {portfolioHealth}
+                  </p>
+                  <p className="text-xs text-purple-400 font-medium">Investment Grade</p>
+                </div>
+              </div>
+              <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full ${
+                portfolioHealth === 'Excellent' 
+                  ? 'bg-gradient-to-br from-amber-500/20 to-yellow-500/20 text-amber-400 border border-amber-500/30' 
+                  : portfolioHealth === 'Good' 
+                  ? 'bg-gradient-to-br from-emerald-500/20 to-green-500/20 text-emerald-400 border border-emerald-500/30' 
+                  : portfolioHealth === 'Average' 
+                  ? 'bg-gradient-to-br from-blue-500/20 to-cyan-500/20 text-blue-400 border border-blue-500/30'
+                  : 'bg-gradient-to-br from-purple-500/20 to-pink-500/20 text-purple-400 border border-purple-500/30'
+              }`}>
+                {portfolioHealth === 'Excellent' || portfolioHealth === 'Good' 
+                  ? <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" /> 
+                  : <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5" />}
+              </div>
+            </div>
+            <div className="w-full h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 rounded-full relative z-10 shadow-lg shadow-purple-500/30" />
+          </div>
+        </div>
+
+        {/* Sector and Region Breakdown Charts with Wall Street Theme */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Sector Breakdown */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className={`p-4 sm:p-6 rounded-2xl backdrop-blur-xl border ${
-              theme === 'light'
-                ? 'bg-white/50 border-white/60 shadow-lg'
-                : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Sector Emblem */}
+            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-amber-400/10 to-emerald-500/10 rounded-full border border-amber-500/20">
+              <BarChart className="w-6 h-6 text-amber-400/40 m-2" />
+            </div>
+            
+            <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-2 rounded-lg bg-indigo-500/20">
-                  <BarChart className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-500" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-emerald-500/20 border border-amber-500/30">
+                  <BarChart className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
                 </div>
-                <h3 className={`font-bold text-base sm:text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Sector Breakdown</h3>
+                <h3 className="font-bold text-base sm:text-lg text-white">Sector Breakdown</h3>
               </div>
-              <div className={`text-xs px-2 py-1 rounded-full ${
-                theme === 'light' ? 'bg-indigo-100 text-indigo-700' : 'bg-indigo-900/30 text-indigo-400'
-              }`}>
+              <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/30">
                 By Investment
               </div>
             </div>
             
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-3 sm:space-y-4 relative z-10">
               {Object.entries(userInvestments.reduce((acc, inv) => {
                 const sector = inv.sector || 'Unknown';
                 if (!acc[sector]) {
@@ -846,58 +788,54 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               .map(([sector, data]) => (
                 <div key={sector} className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className={`font-medium ${theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}>
+                    <span className="font-medium text-gray-200 flex items-center gap-2">
+                      <Briefcase className="w-4 h-4 text-amber-400" />
                       {sector}
                     </span>
-                    <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                    <span className="text-sm text-gray-400">
                       {data.count} projects
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div 
-                      className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                  <div className="w-full rounded-full h-2 bg-amber-500/20 border border-amber-500/30">
+                    <div className="bg-gradient-to-r from-amber-500 via-yellow-500 to-emerald-500 h-2 rounded-full transition-all duration-300 shadow-lg shadow-amber-500/25"
                       style={{ width: `${(data.amount / portfolioData.totalInvested) * 100}%` }}
                     />
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                    <span className="text-gray-400">
                       ₹{data.amount.toLocaleString()}
                     </span>
-                    <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                    <span className="text-gray-400">
                       {((data.amount / portfolioData.totalInvested) * 100).toFixed(1)}%
                     </span>
                   </div>
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Region Breakdown */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className={`p-4 sm:p-6 rounded-2xl backdrop-blur-xl border ${
-              theme === 'light'
-                ? 'bg-white/50 border-white/60 shadow-lg'
-                : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-emerald-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Region Emblem */}
+            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-emerald-400/10 to-blue-500/10 rounded-full border border-emerald-500/20">
+              <PieChart className="w-6 h-6 text-emerald-400/40 m-2" />
+            </div>
+            
+            <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-2 rounded-lg bg-teal-500/20">
-                  <PieChart className="w-4 h-4 sm:w-5 sm:h-5 text-teal-500" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-emerald-500/20 to-blue-500/20 border border-emerald-500/30">
+                  <PieChart className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
                 </div>
-                <h3 className={`font-bold text-base sm:text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Region Breakdown</h3>
+                <h3 className="font-bold text-base sm:text-lg text-white">Region Breakdown</h3>
               </div>
-              <div className={`text-xs px-2 py-1 rounded-full ${
-                theme === 'light' ? 'bg-teal-100 text-teal-700' : 'bg-teal-900/30 text-teal-400'
-              }`}>
+              <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-blue-500/20 text-emerald-300 border border-emerald-500/30">
                 By Market
               </div>
             </div>
             
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-3 sm:space-y-4 relative z-10">
               {Object.entries(userInvestments.reduce((acc, inv) => {
                 const region = inv.region || 'Unknown';
                 if (!acc[region]) {
@@ -911,92 +849,87 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               .map(([region, data]) => (
                 <div key={region} className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className={`font-medium ${theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}>
+                    <span className="font-medium text-gray-200 flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-emerald-400" />
                       {region}
                     </span>
-                    <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                    <span className="text-sm text-gray-400">
                       {data.count} projects
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div 
-                      className="bg-gradient-to-r from-teal-500 to-cyan-500 h-2 rounded-full transition-all duration-300"
+                  <div className="w-full rounded-full h-2 bg-emerald-500/20 border border-emerald-500/30">
+                    <div className="bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/25"
                       style={{ width: `${(data.amount / portfolioData.totalInvested) * 100}%` }}
                     />
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                    <span className="text-gray-400">
                       ₹{data.amount.toLocaleString()}
                     </span>
-                    <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                    <span className="text-gray-400">
                       {((data.amount / portfolioData.totalInvested) * 100).toFixed(1)}%
                     </span>
                   </div>
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Top Performing Projects */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className={`p-6 rounded-2xl backdrop-blur-xl border mb-8 ${
-            theme === 'light'
-              ? 'bg-white/50 border-white/60 shadow-lg'
-              : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-          }`}
-        >
-          <div className="flex items-center justify-between mb-6">
+        {/* Top Performing Projects with Wall Street Theme */}
+        <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden mb-8">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          {/* Trophy Emblem */}
+          <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-amber-400/10 to-yellow-500/10 rounded-full border border-amber-500/20">
+            <Trophy className="w-8 h-8 text-amber-400/40 m-2" />
+          </div>
+          
+          <div className="flex items-center justify-between mb-6 relative z-10">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-green-500/20">
-                <BarChart className="w-5 h-5 text-green-500" />
+              <div className="p-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-emerald-500/20 border border-amber-500/30">
+                <TrendingUp className="w-5 h-5 text-amber-400" />
               </div>
-              <h3 className={`font-bold text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Top Performing Projects</h3>
+              <h3 className="font-bold text-lg text-white">Top Performing Projects</h3>
             </div>
-            <div className={`text-xs px-2 py-1 rounded-full ${
-              theme === 'light' ? 'bg-green-100 text-green-700' : 'bg-green-900/30 text-green-400'
-            }`}>
-              {portfolioData.topPerformingProjects.length} Projects
+            <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/30">
+              Best ROI
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto relative z-10">
             <table className="w-full">
               <thead>
-                <tr className={`${theme === 'light' ? 'border-b border-gray-200' : 'border-b border-gray-700'}`}>
-                  <th className={`pb-3 text-left font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Project</th>
-                  <th className={`pb-3 text-right font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Invested</th>
-                  <th className={`pb-3 text-right font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Current Value</th>
-                  <th className={`pb-3 text-right font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>ROI</th>
-                  <th className={`pb-3 text-center font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Risk</th>
-                  <th className={`pb-3 text-right font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Action</th>
+                <tr className="border-b border-amber-500/20">
+                  <th className="pb-3 text-left font-medium text-gray-400">Project</th>
+                  <th className="pb-3 text-right font-medium text-gray-400">Invested</th>
+                  <th className="pb-3 text-right font-medium text-gray-400">Returns</th>
+                  <th className="pb-3 text-right font-medium text-gray-400">ROI</th>
+                  <th className="pb-3 text-center font-medium text-gray-400">Risk</th>
+                  <th className="pb-3 text-right font-medium text-gray-400">Action</th>
                 </tr>
               </thead>
               <tbody>
                 {portfolioData.topPerformingProjects.map((project, index) => (
-                  <tr key={index} className={`${
-                    theme === 'light' ? 'border-b border-gray-100' : 'border-b border-gray-800'
-                  } ${index === portfolioData.topPerformingProjects.length - 1 ? 'border-b-0' : ''}`}>
+                  <tr key={index} className={`border-b border-amber-500/10 ${index === portfolioData.topPerformingProjects.length - 1 ? 'border-b-0' : ''}`}>
                     <td className="py-4">
-                      <div className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                      <div className="font-medium text-white flex items-center gap-2">
+                        <Star className="w-4 h-4 text-amber-400" />
                         {project.title}
                       </div>
                     </td>
                     <td className="py-4 text-right">
-                      <div className={`${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                      <div className="text-gray-300">
                         ₹{project.amount.toLocaleString()}
                       </div>
                     </td>
                     <td className="py-4 text-right">
-                      <div className={`${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                      <div className="text-gray-300">
                         ₹{project.returns.toLocaleString()}
                       </div>
                     </td>
                     <td className="py-4 text-right">
-                      <div className="flex items-center justify-end gap-1 text-green-500">
+                      <div className="flex items-center justify-end gap-1 text-emerald-400">
                         <ArrowUpRight className="w-4 h-4" />
                         <span className="font-medium">{project.roi}%</span>
                       </div>
@@ -1004,20 +937,16 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                     <td className="py-4 text-center">
                       <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
                         project.riskLevel === 'low' 
-                          ? 'bg-green-100 text-green-700'
+                          ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 text-emerald-300 border border-emerald-500/30'
                           : project.riskLevel === 'medium'
-                          ? 'bg-yellow-100 text-yellow-700'
-                          : 'bg-red-100 text-red-700'
+                          ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border border-amber-500/30'
+                          : 'bg-gradient-to-r from-red-500/20 to-pink-500/20 text-red-300 border border-red-500/30'
                       }`}>
                         {project.riskLevel.charAt(0).toUpperCase() + project.riskLevel.slice(1)}
                       </div>
                     </td>
                     <td className="py-4 text-right">
-                      <button className={`px-3 py-1 rounded-lg text-sm transition-colors ${
-                        theme === 'light'
-                          ? 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-                          : 'bg-purple-900/30 text-purple-400 hover:bg-purple-900/50'
-                      }`}>
+                      <button className="px-3 py-1 rounded-xl text-sm transition-all duration-300 bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/30 hover:border-amber-500/50">
                         Details
                       </button>
                     </td>
@@ -1026,68 +955,63 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </tbody>
             </table>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Underperforming Projects */}
-        {portfolioData.underperformingProjects.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className={`p-6 rounded-2xl backdrop-blur-xl border mb-8 ${
-              theme === 'light'
-                ? 'bg-white/50 border-white/60 shadow-lg'
-                : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-6">
+        {/* Underperforming Projects with Wall Street Theme */}
+        {portfolioData.underperformingProjects.length> 0 && (
+          <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-red-500/20 transition-all duration-300 group overflow-hidden mb-8">
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-orange-500/5 to-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Warning Emblem */}
+            <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-red-400/10 to-orange-500/10 rounded-full border border-red-500/20">
+              <AlertTriangle className="w-8 h-8 text-red-400/40 m-2" />
+            </div>
+            
+            <div className="flex items-center justify-between mb-6 relative z-10">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-red-500/20">
-                  <TrendingDown className="w-5 h-5 text-red-500" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-red-500/20 to-orange-500/20 border border-red-500/30">
+                  <TrendingDown className="w-5 h-5 text-red-400" />
                 </div>
-                <h3 className={`font-bold text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Underperforming Projects</h3>
+                <h3 className="font-bold text-lg text-white">Underperforming Projects</h3>
               </div>
-              <div className={`text-xs px-2 py-1 rounded-full ${
-                theme === 'light' ? 'bg-red-100 text-red-700' : 'bg-red-900/30 text-red-400'
-              }`}>
+              <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-red-500/20 to-orange-500/20 text-red-300 border border-red-500/30">
                 Needs Attention
               </div>
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto relative z-10">
               <table className="w-full">
                 <thead>
-                  <tr className={`${theme === 'light' ? 'border-b border-gray-200' : 'border-b border-gray-700'}`}>
-                    <th className={`pb-3 text-left font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Project</th>
-                    <th className={`pb-3 text-right font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Invested</th>
-                    <th className={`pb-3 text-right font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Current Value</th>
-                    <th className={`pb-3 text-right font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>ROI</th>
-                    <th className={`pb-3 text-center font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Risk</th>
-                    <th className={`pb-3 text-right font-medium ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Action</th>
+                  <tr className="border-b border-red-500/20">
+                    <th className="pb-3 text-left font-medium text-gray-400">Project</th>
+                    <th className="pb-3 text-right font-medium text-gray-400">Invested</th>
+                    <th className="pb-3 text-right font-medium text-gray-400">Current Value</th>
+                    <th className="pb-3 text-right font-medium text-gray-400">ROI</th>
+                    <th className="pb-3 text-center font-medium text-gray-400">Risk</th>
+                    <th className="pb-3 text-right font-medium text-gray-400">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {portfolioData.underperformingProjects.map((project, index) => (
-                    <tr key={index} className={`${
-                      theme === 'light' ? 'border-b border-gray-100' : 'border-b border-gray-800'
-                    } ${index === portfolioData.underperformingProjects.length - 1 ? 'border-b-0' : ''}`}>
+                    <tr key={index} className={`border-b border-red-500/10 ${index === portfolioData.underperformingProjects.length - 1 ? 'border-b-0' : ''}`}>
                       <td className="py-4">
-                        <div className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                        <div className="font-medium text-white flex items-center gap-2">
+                          <AlertTriangle className="w-4 h-4 text-red-400" />
                           {project.title}
                         </div>
                       </td>
                       <td className="py-4 text-right">
-                        <div className={`${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <div className="text-gray-300">
                           ₹{project.amount.toLocaleString()}
                         </div>
                       </td>
                       <td className="py-4 text-right">
-                        <div className={`${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <div className="text-gray-300">
                           ₹{project.returns.toLocaleString()}
                         </div>
                       </td>
                       <td className="py-4 text-right">
-                        <div className="flex items-center justify-end gap-1 text-red-500">
+                        <div className="flex items-center justify-end gap-1 text-red-400">
                           <TrendingDown className="w-4 h-4" />
                           <span className="font-medium">{Math.abs(project.roi)}%</span>
                         </div>
@@ -1095,20 +1019,16 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                       <td className="py-4 text-center">
                         <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
                           project.riskLevel === 'low' 
-                            ? 'bg-green-100 text-green-700'
+                            ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 text-emerald-300 border border-emerald-500/30'
                             : project.riskLevel === 'medium'
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-red-100 text-red-700'
+                            ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border border-amber-500/30'
+                            : 'bg-gradient-to-r from-red-500/20 to-pink-500/20 text-red-300 border border-red-500/30'
                         }`}>
                           {project.riskLevel.charAt(0).toUpperCase() + project.riskLevel.slice(1)}
                         </div>
                       </td>
                       <td className="py-4 text-right">
-                        <button className={`px-3 py-1 rounded-lg text-sm transition-colors ${
-                          theme === 'light'
-                            ? 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-                            : 'bg-purple-900/30 text-purple-400 hover:bg-purple-900/50'
-                        }`}>
+                        <button className="px-3 py-1 rounded-xl text-sm transition-all duration-300 bg-gradient-to-r from-red-500/20 to-orange-500/20 text-red-300 border border-red-500/30 hover:border-red-500/50">
                           Details
                         </button>
                       </td>
@@ -1117,56 +1037,64 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 </tbody>
               </table>
             </div>
-          </motion.div>
+          </div>
         )}
 
-        {/* Insights and Recommendations */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className={`p-6 rounded-2xl backdrop-blur-xl border ${
-            theme === 'light'
-              ? 'bg-white/50 border-white/60 shadow-lg'
-              : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20'
-          }`}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-lg bg-yellow-500/20">
-              <Zap className="w-5 h-5 text-yellow-500" />
+        {/* Insights and Recommendations with Wall Street Theme */}
+        <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-purple-500/20 transition-all duration-300 group overflow-hidden mb-8">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          {/* AI Emblem */}
+          <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-purple-400/10 to-blue-500/10 rounded-full border border-purple-500/20">
+            <Brain className="w-8 h-8 text-purple-400/40 m-2" />
+          </div>
+          
+          <div className="flex items-center gap-3 mb-6 relative z-10">
+            <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30">
+              <Zap className="w-5 h-5 text-purple-400" />
             </div>
-            <h3 className={`font-bold text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+            <h3 className="font-bold text-lg text-white">
               AI-Powered Insights & Recommendations
             </h3>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 relative z-10">
             <div>
-              <h4 className={`font-medium mb-3 ${theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}>Next Quarter Projections</h4>
-              <div className={`p-4 rounded-xl ${
-                theme === 'light' ? 'bg-white/80 border border-gray-200' : 'bg-gray-800/50 border border-gray-700'
-              }`}>
+              <h4 className="font-medium mb-3 text-gray-200 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-purple-400" />
+                Next Quarter Projections
+              </h4>
+              <div className="relative p-4 rounded-xl bg-white/5 border border-purple-500/20 hover:border-purple-500/30 transition-all duration-300">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Expected Returns</span>
-                    <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                    <span className="text-gray-400 flex items-center gap-1">
+                      <DollarSign className="w-3 h-3 text-purple-400" />
+                      Expected Returns
+                    </span>
+                    <span className="font-medium text-white">
                       ₹{portfolioData.projectionsNextQuarter.expectedReturns.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Projected ROI</span>
-                    <span className="font-medium text-green-500">
+                    <span className="text-gray-400 flex items-center gap-1">
+                      <BarChart className="w-3 h-3 text-purple-400" />
+                      Projected ROI
+                    </span>
+                    <span className="font-medium text-purple-400">
                       +{portfolioData.projectionsNextQuarter.projectedROI}%
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Confidence Level</span>
+                    <span className="text-gray-400 flex items-center gap-1">
+                      <Target className="w-3 h-3 text-purple-400" />
+                      Confidence Level
+                    </span>
                     <span className={`font-medium capitalize ${
                       portfolioData.projectionsNextQuarter.confidenceLevel === 'high'
-                        ? 'text-green-500'
+                        ? 'text-emerald-400'
                         : portfolioData.projectionsNextQuarter.confidenceLevel === 'medium'
-                        ? 'text-yellow-500'
-                        : 'text-red-500'
+                        ? 'text-amber-400'
+                        : 'text-red-400'
                     }`}>
                       {portfolioData.projectionsNextQuarter.confidenceLevel}
                     </span>
@@ -1176,19 +1104,16 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
             </div>
 
             <div>
-              <h4 className={`font-medium mb-3 ${theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}>Recommendations</h4>
-              <div className={`p-4 rounded-xl ${
-                theme === 'light' ? 'bg-white/80 border border-gray-200' : 'bg-gray-800/50 border border-gray-700'
-              }`}>
-                <p className={`${theme === 'light' ? 'text-gray-700' : 'text-gray-300'} mb-4`}>
+              <h4 className="font-medium mb-3 text-gray-200 flex items-center gap-2">
+                <Lightbulb className="w-4 h-4 text-blue-400" />
+                Recommendations
+              </h4>
+              <div className="relative p-4 rounded-xl bg-white/5 border border-blue-500/20 hover:border-blue-500/30 transition-all duration-300">
+                <p className="text-gray-300 mb-4">
                   {recommendation}
                 </p>
                 <div className="flex justify-end">
-                  <button className={`flex items-center gap-2 px-3 py-1 rounded-lg text-sm transition-colors ${
-                    theme === 'light'
-                      ? 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-                      : 'bg-purple-900/30 text-purple-400 hover:bg-purple-900/50'
-                  }`}>
+                  <button className="flex items-center gap-2 px-3 py-1 rounded-xl text-sm transition-all duration-300 bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 border border-purple-500/30 hover:border-purple-500/50">
                     <Zap className="w-4 h-4" />
                     <span>Get Personalized Advice</span>
                   </button>
@@ -1196,276 +1121,102 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Investment Timeline */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-12"
-        >
-          <h2 className={`text-2xl font-bold mb-4 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Investment Timeline</h2>
+        {/* Investment Timeline with Wall Street Theme */}
+        <div className="mb-12 relative">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-emerald-500/20 border border-amber-500/30">
+              <Clock className="w-5 h-5 text-amber-400" />
+            </div>
+            <h2 className="text-2xl font-bold text-white">Investment Timeline</h2>
+            <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-amber-300 border border-amber-500/30">
+              Chronological View
+            </div>
+          </div>
+          
           <div className="overflow-x-auto">
             <div className="flex gap-6">
               {userInvestments
                 .sort((a, b) => new Date(a.investmentDate).getTime() - new Date(b.investmentDate).getTime())
                 .map(inv => (
-                  <div key={inv.id} className={`min-w-[220px] p-4 rounded-xl border ${theme === 'light' ? 'bg-white border-gray-200' : 'bg-gray-900/50 border-gray-700'} flex flex-col items-center`}>
-                    <img src={inv.projectPoster} alt={inv.projectName} className="w-20 h-28 object-cover rounded-lg mb-2" />
-                    <div className="font-semibold mb-1 text-center">{inv.projectName}</div>
-                    <div className="text-xs mb-1 text-gray-500">{inv.projectType.toUpperCase()} | {inv.genre}</div>
-                    <div className="text-xs mb-1 text-gray-500">Invested: ₹{inv.investmentAmount.toLocaleString()}</div>
-                    <div className="text-xs mb-1 text-gray-500">Date: {new Date(inv.investmentDate).toLocaleDateString()}</div>
-                    <div className={`text-xs px-2 py-1 rounded-full mt-1 ${inv.status === 'completed' ? 'bg-green-100 text-green-700' : inv.status === 'active' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700'}`}>{inv.status.toUpperCase()}</div>
+                  <div key={inv.id} className="min-w-[220px] p-4 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group">
+                    <div className="relative">
+                      <img src={inv.projectPoster} alt={inv.projectName} className="w-full h-28 object-cover rounded-lg mb-3" />
+                      
+                      {/* Status Emblem */}
+                      <div className={`absolute top-2 right-2 w-6 h-6 rounded-full border-2 ${
+                        inv.status === 'completed' 
+                          ? 'bg-emerald-500/20 border-emerald-500/40' 
+                          : inv.status === 'active' 
+                          ? 'bg-blue-500/20 border-blue-500/40' 
+                          : 'bg-amber-500/20 border-amber-500/40'
+                      }`}>
+                        {inv.status === 'completed' && <CheckCircle className="w-4 h-4 text-emerald-400 m-1" />}
+                        {inv.status === 'active' && <Play className="w-4 h-4 text-blue-400 m-1" />}
+                        {inv.status === 'pending' && <Clock className="w-4 h-4 text-amber-400 m-1" />}
+                      </div>
+                    </div>
+                    
+                    <div className="font-semibold mb-2 text-center text-white">{inv.projectName}</div>
+                    <div className="text-xs mb-2 text-gray-400 text-center flex items-center justify-center gap-1">
+                      {inv.projectType === 'film' ? <Film className="w-3 h-3" /> : <Music className="w-3 h-3" />}
+                      {inv.projectType.toUpperCase()} | {inv.genre}
+                    </div>
+                    <div className="text-xs mb-1 text-gray-400 text-center flex items-center justify-center gap-1">
+                      <DollarSign className="w-3 h-3 text-amber-400" />
+                      Invested: ₹{inv.investmentAmount.toLocaleString()}
+                    </div>
+                    <div className="text-xs mb-2 text-gray-400 text-center flex items-center justify-center gap-1">
+                      <Calendar className="w-3 h-3 text-emerald-400" />
+                      {new Date(inv.investmentDate).toLocaleDateString()}
+                    </div>
+                    <div className={`text-xs px-2 py-1 rounded-full text-center font-medium ${
+                      inv.status === 'completed' 
+                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' 
+                        : inv.status === 'active' 
+                        ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' 
+                        : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                    }`}>
+                      {inv.status.toUpperCase()}
+                    </div>
                   </div>
                 ))}
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Detailed Investment Table */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-12"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>All Investments</h2>
-            <CSVLink data={sortedInvestments} headers={csvHeaders} filename="portfolio.csv" className="px-4 py-2 rounded-lg bg-purple-500 text-white hover:bg-purple-600 transition-colors">Export CSV</CSVLink>
+        {/* Detailed Investment Table with Wall Street Theme */}
+        <div className="mb-12 relative">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-emerald-500/20 to-blue-500/20 border border-emerald-500/30">
+                <FileText className="w-5 h-5 text-emerald-400" />
+              </div>
+              <h2 className="text-2xl font-bold text-white">All Investments</h2>
+              <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-blue-500/20 text-emerald-300 border border-emerald-500/30">
+                Complete Portfolio
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <CSVLink 
+                data={sortedInvestments} 
+                headers={csvHeaders} 
+                filename="portfolio.csv" className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500/20 to-blue-500/20 text-emerald-300 border border-emerald-500/30 hover:border-emerald-500/50 transition-all duration-300">
+                <Download className="w-4 h-4" />
+                Export CSV
+              </CSVLink>
+            </div>
           </div>
-          <div className="space-y-4">
-            {sortedInvestments.map(inv => {
-              const isExpanded = expandedInvestments.has(inv.id);
-              const project = projects.find(p => p.title === inv.projectName);
-              
-              return (
-                <motion.div
-                  key={inv.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`rounded-xl border transition-all duration-300 ${
-                    theme === 'light'
-                      ? 'bg-white border-gray-200 hover:border-purple-300'
-                      : 'bg-gray-900/50 border-gray-700 hover:border-purple-500/50'
-                  }`}
-                >
-                  {/* Main Investment Row */}
-                  <div 
-                    className="p-4 cursor-pointer hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors"
-                    onClick={() => toggleInvestmentExpansion(inv.id)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <img 
-                          src={inv.projectPoster} 
-                          alt={inv.projectName} 
-                          className="w-16 h-20 object-cover rounded-lg"
-                        />
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <h3 className={`font-bold text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                              {inv.projectName}
-                            </h3>
-                            <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              inv.status === 'completed' 
-                                ? 'bg-green-100 text-green-700' 
-                                : inv.status === 'active' 
-                                ? 'bg-blue-100 text-blue-700' 
-                                : 'bg-yellow-100 text-yellow-700'
-                            }`}>
-                              {inv.status.toUpperCase()}
-                            </div>
-                            <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              inv.risk === 'low' 
-                                ? 'bg-green-100 text-green-700'
-                                : inv.risk === 'medium'
-                                ? 'bg-yellow-100 text-yellow-700'
-                                : 'bg-red-100 text-red-700'
-                            }`}>
-                              {inv.risk.charAt(0).toUpperCase() + inv.risk.slice(1)} Risk
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                            <div className="flex items-center gap-1">
-                              {inv.projectType === 'film' ? <Film className="w-4 h-4" /> : <Music className="w-4 h-4" />}
-                              <span>{inv.projectType.toUpperCase()}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Star className="w-4 h-4" />
-                              <span>{inv.genre}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <MapPin className="w-4 h-4" />
-                              <span>{inv.region}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Globe className="w-4 h-4" />
-                              <span>{inv.language}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-6">
-                        <div className="text-right">
-                          <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Invested</div>
-                          <div className={`font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                            ₹{inv.investmentAmount.toLocaleString()}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Current Value</div>
-                          <div className={`font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                            ₹{inv.currentValue.toLocaleString()}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Returns</div>
-                          <div className={`font-bold ${inv.returnPercentage >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                            ₹{inv.returnAmount.toLocaleString()}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>ROI</div>
-                          <div className={`font-bold ${inv.returnPercentage >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                            {inv.returnPercentage >= 0 ? '+' : ''}{inv.returnPercentage}%
-                          </div>
-                        </div>
-                        <motion.div
-                          animate={{ rotate: isExpanded ? 90 : 0 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <ChevronRight className={`w-5 h-5 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} />
-                        </motion.div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Expanded Details */}
-                  <motion.div
-                    initial={false}
-                    animate={{ 
-                      height: isExpanded ? 'auto' : 0,
-                      opacity: isExpanded ? 1 : 0
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className={`px-4 pb-4 border-t ${
-                      theme === 'light' ? 'border-gray-100' : 'border-gray-800'
-                    }`}>
-                      <div className="grid md:grid-cols-2 gap-6 pt-4">
-                        {/* Project Details */}
-                        <div>
-                          <h4 className={`font-semibold mb-3 ${theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}>
-                            Project Details
-                          </h4>
-                          <div className="space-y-3">
-                            <div className="flex justify-between">
-                              <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Sector</span>
-                              <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{inv.sector}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Genre</span>
-                              <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{inv.genre}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Region</span>
-                              <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{inv.region}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Language</span>
-                              <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{inv.language}</span>
-                            </div>
-                            {project && (
-                              <>
-                                <div className="flex justify-between">
-                                  <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Director</span>
-                                  <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{project.director}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Cast</span>
-                                  <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{project.cast}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Budget</span>
-                                  <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>₹{project.budget?.toLocaleString() || 'N/A'}</span>
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Investment Timeline */}
-                        <div>
-                          <h4 className={`font-semibold mb-3 ${theme === 'light' ? 'text-gray-800' : 'text-gray-200'}`}>
-                            Investment Timeline
-                          </h4>
-                          <div className="space-y-3">
-                            <div className="flex justify-between">
-                              <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Investment Date</span>
-                              <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                                {new Date(inv.investmentDate).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Maturity Date</span>
-                              <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                                {new Date(inv.maturityDate).toLocaleDateString()}
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Duration</span>
-                              <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                                {Math.ceil((new Date(inv.maturityDate).getTime() - new Date(inv.investmentDate).getTime()) / (1000 * 60 * 60 * 24))} days
-                              </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Days Remaining</span>
-                              <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                                {Math.max(0, Math.ceil((new Date(inv.maturityDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)))} days
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <button className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-                          theme === 'light'
-                            ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-                            : 'bg-blue-900/30 text-blue-400 hover:bg-blue-900/50'
-                        }`}>
-                          View Project Details
-                        </button>
-                        <button className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-                          theme === 'light'
-                            ? 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-                            : 'bg-purple-900/30 text-purple-400 hover:bg-purple-900/50'
-                        }`}>
-                          Track Performance
-                        </button>
-                        <button className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-                          theme === 'light'
-                            ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                            : 'bg-green-900/30 text-green-400 hover:bg-green-900/50'
-                        }`}>
-                          Add to Watchlist
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default PortfolioAnalytics;
+
+
+
+
+
