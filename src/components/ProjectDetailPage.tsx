@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import { 
   ArrowLeft, 
   Play, 
@@ -63,6 +64,47 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   const [isLiked, setIsLiked] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState(10000);
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
+  
+  // Animation states for invest flow
+  const [showCirclesAnimation, setShowCirclesAnimation] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showFinalMessage, setShowFinalMessage] = useState(false);
+
+  // Scroll to appropriate section when component mounts or initialTab changes
+  useEffect(() => {
+    setActiveTab(initialTab);
+    
+    // Scroll to the content area after a short delay to ensure rendering
+    setTimeout(() => {
+      if (contentAreaRef.current) {
+        contentAreaRef.current.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
+  }, [initialTab]);
+
+  // Scroll to top when activeTab changes
+  useEffect(() => {
+    if (contentAreaRef.current) {
+      // Immediate scroll
+      contentAreaRef.current.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
+      // Additional scroll after content renders
+      setTimeout(() => {
+        if (contentAreaRef.current) {
+          contentAreaRef.current.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    }
+  }, [activeTab]);
 
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -94,6 +136,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   const trailerRef = useRef<HTMLIFrameElement>(null);
   const trailerContainerRef = useRef<HTMLDivElement>(null);
   const youtubePlayerRef = useRef<any>(null);
+  const contentAreaRef = useRef<HTMLDivElement>(null);
 
   // Calculate funding statistics
   const fundingStats = {
@@ -174,9 +217,51 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   }, []);
 
   const handleInvest = () => {
+    // Start the animation flow
+    setShowCirclesAnimation(true);
+    
+    // Trigger confetti at the start
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+    
+    // After circles animation, show confirmation
+    setTimeout(() => {
+      setShowCirclesAnimation(false);
+      setShowConfirmation(true);
+      
+      // Trigger more confetti for confirmation
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 },
+        colors: ['#10b981', '#059669', '#047857']
+      });
+    }, 3000);
+    
+    // After confirmation, show final message
+    setTimeout(() => {
+      setShowConfirmation(false);
+      setShowFinalMessage(true);
+      
+      // Final confetti burst
+      confetti({
+        particleCount: 200,
+        spread: 120,
+        origin: { y: 0.6 },
+        colors: ['#8b5cf6', '#a855f7', '#c084fc']
+      });
+    }, 6000);
+    
+    // Finally, navigate to community page
+    setTimeout(() => {
+      setShowFinalMessage(false);
     if (onInvest) {
       onInvest(project);
     }
+    }, 9000);
   };
 
   const formatCurrency = (amount: number) => {
@@ -916,7 +1001,15 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
 
                 {/* Invest Now Button */}
                 <motion.button
-                onClick={() => setActiveTab('invest')}
+                onClick={() => {
+                  setActiveTab('invest');
+                  // Scroll the main content area into view
+                  setTimeout(() => {
+                    if (contentAreaRef.current) {
+                      contentAreaRef.current.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }, 100);
+                }}
                   className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white py-5 px-10 rounded-2xl font-bold text-lg hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 transition-all duration-500 shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-110 backdrop-blur-sm border border-emerald-400/20 overflow-hidden"
               >
                   {/* Gradient overlay */}
@@ -994,7 +1087,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
         </motion.div>
 
         {/* Right Content Area */}
-        <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-900 to-black">
+        <div ref={contentAreaRef} className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-900 to-black">
 
           {/* Content Sections */}
           <div className="relative z-10">
@@ -1468,18 +1561,42 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                             </div>
                           </div>
 
-                          {/* Invest Button */}
+                          {/* Own It Button */}
                           <button
                             onClick={handleInvest}
-                            className="group relative w-full bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 text-white py-7 px-8 rounded-3xl font-bold text-xl hover:from-violet-700 hover:via-purple-700 hover:to-fuchsia-700 transition-all duration-500 shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 border border-purple-400/20 overflow-hidden"
+                            className="group relative w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-8 px-8 rounded-2xl font-bold text-xl hover:from-slate-800 hover:via-purple-800 hover:to-slate-800 transition-all duration-500 shadow-2xl shadow-purple-500/20 hover:shadow-purple-500/40 border border-purple-500/30 hover:border-purple-400/50 overflow-hidden backdrop-blur-sm"
                           >
-                            {/* Gradient overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-fuchsia-400/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-                            <div className="flex items-center justify-center gap-3">
-                              <DollarSign className="w-8 h-8" />
-                              Invest Now
-                              <ChevronRight className="w-6 h-6" />
+                            {/* Rich gradient overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            
+                            {/* Elegant border glow */}
+                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
+                            
+                            {/* Subtle animated particles */}
+                            <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                              <div className="absolute top-2 left-4 w-1 h-1 bg-purple-400/60 rounded-full group-hover:animate-pulse" />
+                              <div className="absolute bottom-3 right-6 w-1 h-1 bg-fuchsia-400/60 rounded-full group-hover:animate-pulse delay-300" />
+                              <div className="absolute top-1/2 left-1/4 w-0.5 h-0.5 bg-purple-300/40 rounded-full group-hover:animate-pulse delay-500" />
+                              </div>
+                            
+                            <div className="relative flex items-center justify-center gap-4">
+                              {/* Rotating circles logo */}
+                              <div className="relative w-8 h-8 flex items-center justify-center">
+                                <img 
+                                  src={circlesLogo} 
+                                  alt="Circles Logo" 
+                                  className="w-full h-full object-contain filter brightness-0 invert group-hover:animate-spin transition-all duration-300"
+                                  style={{ 
+                                    animationDuration: '3s',
+                                    transform: 'rotate(0deg)',
+                                    transformOrigin: 'center'
+                                  }}
+                                />
+                              </div>
+                              <span className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent font-semibold tracking-wide">
+                                Own it
+                              </span>
+                              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300 text-purple-300" />
                             </div>
                           </button>
 
@@ -1492,6 +1609,156 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                         </motion.div>
                       </div>
                     )}
+
+                    {/* Animation Overlays */}
+                    <AnimatePresence>
+                      {/* Circles Animation */}
+                      {showCirclesAnimation && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 bg-black/80 backdrop-blur-lg z-50 flex items-center justify-center"
+                        >
+                          <div className="text-center">
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ duration: 0.8, ease: "easeOut" }}
+                              className="mb-8"
+                            >
+                              <img 
+                                src={circlesLogo} 
+                                alt="Circles Logo" 
+                                className="w-32 h-32 mx-auto drop-shadow-2xl animate-spin object-contain"
+                                style={{ animationDuration: '3s' }}
+                              />
+                            </motion.div>
+                            
+                            {/* Animated circles around the logo */}
+                            <div className="relative">
+                              {[...Array(6)].map((_, i) => (
+                                <motion.div
+                                  key={i}
+                                  initial={{ scale: 0, opacity: 0 }}
+                                  animate={{ scale: 1, opacity: 1 }}
+                                  transition={{ 
+                                    duration: 1, 
+                                    delay: i * 0.2,
+                                    ease: "easeOut"
+                                  }}
+                                  className="absolute w-4 h-4 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"
+                                  style={{
+                                    left: '50%',
+                                    top: '50%',
+                                    transform: `translate(-50%, -50%) rotate(${i * 60}deg) translateY(-80px)`,
+                                  }}
+                                />
+                              ))}
+                            </div>
+                            
+                            <motion.h2
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 1, duration: 0.5 }}
+                              className="text-3xl font-bold text-white mt-8 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                            >
+                              Processing Your Investment...
+                            </motion.h2>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {/* Confirmation Animation */}
+                      {showConfirmation && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 bg-black/80 backdrop-blur-lg z-50 flex items-center justify-center"
+                        >
+                          <div className="text-center">
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ duration: 0.5, ease: "easeOut" }}
+                              className="w-24 h-24 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl"
+                            >
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ delay: 0.3, duration: 0.3 }}
+                                className="text-white text-4xl"
+                              >
+                                ✓
+                              </motion.div>
+                            </motion.div>
+                            
+                            <motion.h2
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.5, duration: 0.5 }}
+                              className="text-3xl font-bold text-white mb-4"
+                            >
+                              Investment Confirmed!
+                            </motion.h2>
+                            
+                            <motion.p
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.7, duration: 0.5 }}
+                              className="text-xl text-gray-300"
+                            >
+                              Welcome to the exclusive circle of investors
+                            </motion.p>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {/* Final Message */}
+                      {showFinalMessage && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="fixed inset-0 bg-black/80 backdrop-blur-lg z-50 flex items-center justify-center"
+                        >
+                          <div className="text-center">
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ duration: 0.8, ease: "easeOut" }}
+                              className="mb-8"
+                            >
+                              <img 
+                                src={circlesLogo} 
+                                alt="Circles Logo" 
+                                className="w-32 h-32 mx-auto drop-shadow-2xl animate-spin object-contain"
+                                style={{ animationDuration: '3s' }}
+                              />
+                            </motion.div>
+                            
+                            <motion.h2
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.5, duration: 0.5 }}
+                              className="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                            >
+                              Now Enter Circles
+                            </motion.h2>
+                            
+                            <motion.p
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.7, duration: 0.5 }}
+                              className="text-xl text-gray-300"
+                            >
+                              Connecting you to the community...
+                            </motion.p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                     
                     {activeTab === 'perks' && (
                       <div className="space-y-8">

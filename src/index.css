@@ -1038,6 +1038,3 @@ html, body {
   background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%) !important;
 }
 
-/* Import mobile optimizations */
-@import './styles/mobile.css';
-

@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './auth/useAuth';
+import useIsMobile from '../hooks/useIsMobile';
 
 // Import logo image
 import circlesLogo from '../images/circles-logo-main.png';
@@ -49,6 +50,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
 
   const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, user } = useAuth();
+  const isMobile = useIsMobile();
 
   const mainNavItems = useMemo(() => [
     { id: 'home', label: 'Home', icon: Home, requiresAuth: false },
@@ -795,11 +797,13 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
       </AnimatePresence>
 
 
-      <MobileBottomBar
-        currentView={currentView}
-        setCurrentView={setCurrentView}
-        onAuthRequired={onAuthRequired}
-      />
+      {isMobile && (
+        <MobileBottomBar
+          currentView={currentView}
+          setCurrentView={setCurrentView}
+          onAuthRequired={onAuthRequired}
+        />
+      )}
     </>
   );
 };

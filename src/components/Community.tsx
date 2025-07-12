@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, 
@@ -18,7 +18,6 @@ import {
   Clock,
   MapPin,
   Gift,
-  Plus,
   CheckCircle,
   ShoppingBag,
   Activity,
@@ -29,17 +28,16 @@ import {
   Film,
   Star,
   TrendingUp,
-  Sparkles
+  Sparkles,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import useIsMobile from '../hooks/useIsMobile';
 import Merchandise from './Merchandise';
-import { Project } from '../types';
-import { realCommunityData, getCommunityDataByType, type RealCommunityItem } from '../data/realCommunityData';
+import { realCommunityData, type RealCommunityItem } from '../data/realCommunityData';
 
 // Enhanced interfaces for hierarchical community structure
-interface CommunityItem extends RealCommunityItem {}
-
 interface FeedPost {
   id: string;
   user: {
@@ -57,9 +55,16 @@ interface FeedPost {
 }
 
 const Community: React.FC = () => {
+  // Static Community Data
+  const movies = realCommunityData.movies;
+  const actors = realCommunityData.actors;
+  const actresses = realCommunityData.actresses;
+  const directors = realCommunityData.directors;
+  const productionHouses = realCommunityData.productionHouses;
+
   // Hierarchical community state
   const [selectedCategory, setSelectedCategory] = useState<'productionHouse' | 'movie' | 'director' | 'actor' | 'actress'>('movie');
-  const [selectedItem, setSelectedItem] = useState<CommunityItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<RealCommunityItem | null>(null);
   const [isItemSelected, setIsItemSelected] = useState(false);
   
   // Original state for when item is selected
@@ -424,19 +429,28 @@ const Community: React.FC = () => {
   const { theme } = useTheme();
   const isMobile = useIsMobile();
 
-  // Use real community data
+  // Use TMDB community data
   const getCommunityData = (): Record<string, RealCommunityItem[]> => {
     return {
-      productionHouse: getCommunityDataByType('productionHouse'),
-      movie: getCommunityDataByType('movie'),
-      director: getCommunityDataByType('director'),
-      actor: getCommunityDataByType('actor'),
-      actress: getCommunityDataByType('actress')
+      productionHouse: productionHouses,
+      movie: movies,
+      director: directors,
+      actor: actors,
+      actress: actresses
     };
   };
 
   const communityData = getCommunityData();
   const currentCategoryItems = communityData[selectedCategory] || [];
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(currentCategoryItems.length / itemsPerPage);
+  const paginatedItems = currentCategoryItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+  // Reset page when category changes
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [selectedCategory]);
 
   // Define tabs for navigation
   const tabs = [
@@ -537,175 +551,7 @@ const Community: React.FC = () => {
     setter(null);
   };
 
-  // Mock circles data with key people and detailed info
-  const myCircles = [
-    {
-      id: 'pathaan-circle',
-      name: 'Pathaan Universe',
-      type: 'film',
-      category: 'Bollywood',
-      members: 15420,
-      activeMembers: 2847,
-      avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=100',
-      cover: 'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Official community for Shah Rukh Khan\'s action franchise',
-      keyPeople: [
-        { name: 'Shah Rukh Khan', role: 'Lead Actor', verified: true, avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Deepika Padukone', role: 'Lead Actress', verified: true, avatar: 'https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Siddharth Anand', role: 'Director', verified: true, avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'John Abraham', role: 'Antagonist', verified: true, avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=50' }
-      ],
-      movieInfo: {
-        budget: '₹250 Crores',
-        releaseDate: 'January 25, 2023',
-        boxOffice: '₹1050 Crores',
-        rating: '8.2/10',
-        genre: 'Action, Thriller, Spy'
-      },
-      lastActivity: '2 minutes ago',
-      unreadMessages: 12,
-      isJoined: true,
-      level: 'Producer'
-    },
-    {
-      id: 'ar-rahman-circle',
-      name: 'A.R. Rahman Music Circle',
-      type: 'music',
-      category: 'Classical Fusion',
-      members: 8950,
-      activeMembers: 1234,
-      avatar: 'https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=100',
-      cover: 'https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Celebrating the Mozart of Madras and his musical journey',
-      keyPeople: [
-        { name: 'A.R. Rahman', role: 'Composer', verified: true, avatar: 'https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Hariharan', role: 'Vocalist', verified: true, avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Shreya Ghoshal', role: 'Vocalist', verified: true, avatar: 'https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Ustad Zakir Hussain', role: 'Percussionist', verified: true, avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=50' }
-      ],
-      movieInfo: {
-        albums: '150+ Albums',
-        awards: '6 National Awards, 2 Oscars',
-        genres: 'Classical, Fusion, World Music',
-        collaborations: '200+ Artists',
-        experience: '30+ Years'
-      },
-      lastActivity: '5 minutes ago',
-      unreadMessages: 5,
-      isJoined: true,
-      level: 'Executive'
-    },
-    {
-      id: 'rrr-circle',
-      name: 'RRR Epic Universe',
-      type: 'film',
-      category: 'Regional',
-      members: 22100,
-      activeMembers: 4567,
-      avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=100',
-      cover: 'https://images.pexels.com/photos/2449665/pexels-photo-2449665.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Rise, Roar, Revolt - The epic that conquered the world',
-      keyPeople: [
-        { name: 'S.S. Rajamouli', role: 'Director', verified: true, avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Ram Charan', role: 'Alluri Sitarama Raju', verified: true, avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Jr. NTR', role: 'Komaram Bheem', verified: true, avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Alia Bhatt', role: 'Sita', verified: true, avatar: 'https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=50' }
-      ],
-      movieInfo: {
-        budget: '₹550 Crores',
-        releaseDate: 'March 25, 2022',
-        boxOffice: '₹1387 Crores',
-        rating: '8.8/10',
-        awards: 'Oscar Winner, Golden Globe'
-      },
-      lastActivity: '1 hour ago',
-      unreadMessages: 0,
-      isJoined: true,
-      level: 'Backer'
-    },
-    {
-      id: 'spider-man-circle',
-      name: 'Spider-Verse Community',
-      type: 'film',
-      category: 'Hollywood',
-      members: 34500,
-      activeMembers: 6789,
-      avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=100',
-      cover: 'https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Your friendly neighborhood Spider-Man multiverse',
-      keyPeople: [
-        { name: 'Tom Holland', role: 'Spider-Man', verified: true, avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Zendaya', role: 'MJ', verified: true, avatar: 'https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Jon Watts', role: 'Director', verified: true, avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=50' }
-      ],
-      movieInfo: {
-        budget: '$200 Million',
-        releaseDate: 'December 17, 2021',
-        boxOffice: '$1.9 Billion',
-        rating: '8.4/10',
-        genre: 'Superhero, Action, Adventure'
-      },
-      lastActivity: '30 minutes ago',
-      unreadMessages: 3,
-      isJoined: true,
-      level: 'Supporter'
-    },
-    {
-      id: 'taylor-swift-circle',
-      name: 'Swifties United',
-      type: 'music',
-      category: 'Pop',
-      members: 67890,
-      activeMembers: 12345,
-      avatar: 'https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=100',
-      cover: 'https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'The ultimate Taylor Swift fan community',
-      keyPeople: [
-        { name: 'Taylor Swift', role: 'Artist', verified: true, avatar: 'https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Jack Antonoff', role: 'Producer', verified: true, avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Aaron Dessner', role: 'Producer', verified: true, avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=50' }
-      ],
-      movieInfo: {
-        albums: '10 Studio Albums',
-        awards: '12 Grammy Awards',
-        tours: 'Eras Tour 2023-2024',
-        fanbase: '200M+ Followers',
-        achievements: 'Billionaire Artist'
-      },
-      lastActivity: '15 minutes ago',
-      unreadMessages: 8,
-      isJoined: true,
-      level: 'VIP'
-    },
-    {
-      id: 'stranger-things-circle',
-      name: 'Hawkins Community',
-      type: 'webseries',
-      category: 'Sci-Fi Horror',
-      members: 45670,
-      activeMembers: 8901,
-      avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=100',
-      cover: 'https://images.pexels.com/photos/2449665/pexels-photo-2449665.jpeg?auto=compress&cs=tinysrgb&w=600',
-      description: 'Exploring the Upside Down with fellow fans',
-      keyPeople: [
-        { name: 'The Duffer Brothers', role: 'Creators', verified: true, avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Millie Bobby Brown', role: 'Eleven', verified: true, avatar: 'https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'Finn Wolfhard', role: 'Mike Wheeler', verified: true, avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=50' },
-        { name: 'David Harbour', role: 'Jim Hopper', verified: true, avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=50' }
-      ],
-      movieInfo: {
-        seasons: '4 Seasons',
-        episodes: '42 Episodes',
-        platform: 'Netflix',
-        rating: '8.7/10',
-        awards: 'Emmy Nominations'
-      },
-      lastActivity: '45 minutes ago',
-      unreadMessages: 2,
-      isJoined: true,
-      level: 'Member'
-    }
-  ];
+
 
   const channels = [
     { id: 'announcements', name: 'announcements', icon: '📢', unread: 3 },
@@ -842,12 +688,7 @@ const Community: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
         
         {/* 3-Step Interactive Guide */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-16"
-        >
+        <div className="mb-16">
           <div className="text-center mb-12">
             <h1 className={`text-4xl md:text-5xl font-black mb-4 ${
             theme === 'light' 
@@ -865,16 +706,11 @@ const Community: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Step 1: Select Category */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className={`relative p-8 rounded-3xl ${
+            <div className={`relative p-8 rounded-3xl ${
                 theme === 'light'
                   ? 'bg-white/80 backdrop-blur-sm border border-red-200 shadow-xl'
                   : 'bg-slate-800/80 backdrop-blur-sm border border-red-700 shadow-xl'
-              }`}
-            >
+              }`}>
               {/* Step Number */}
               <div className="absolute -top-4 left-8">
                 <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-rose-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
@@ -884,22 +720,14 @@ const Community: React.FC = () => {
 
               {/* Interactive Icon */}
               <div className="flex justify-center mb-6">
-                <motion.div
-                  animate={{ rotate: [0, 10, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative"
-                >
+                <div className="relative">
                   <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg">
                     <Film className="w-10 h-10 text-white" />
                   </div>
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center"
-                  >
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center">
                     <Star className="w-3 h-3 text-white" />
-        </motion.div>
-                </motion.div>
+                  </div>
+                </div>
               </div>
 
               <h3 className={`text-xl font-bold mb-3 text-center ${
@@ -916,29 +744,22 @@ const Community: React.FC = () => {
               {/* Mini Category Preview */}
               <div className="flex justify-center gap-2">
                 {['🎬', '👨‍🎭', '🎥', '🏢'].map((icon, idx) => (
-                  <motion.div
+                  <div
                     key={idx}
-                    animate={{ y: [0, -5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, delay: idx * 0.2 }}
                     className="w-8 h-8 bg-gradient-to-br from-red-100 to-rose-100 rounded-lg flex items-center justify-center text-sm"
                   >
                     {icon}
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
             {/* Step 2: Select Item */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className={`relative p-8 rounded-3xl ${
+            <div className={`relative p-8 rounded-3xl ${
                 theme === 'light'
                   ? 'bg-white/80 backdrop-blur-sm border border-rose-200 shadow-xl'
                   : 'bg-slate-800/80 backdrop-blur-sm border border-rose-700 shadow-xl'
-              }`}
-            >
+              }`}>
               {/* Step Number */}
               <div className="absolute -top-4 left-8">
                 <div className="w-8 h-8 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
@@ -948,20 +769,12 @@ const Community: React.FC = () => {
 
               {/* Interactive Icon */}
               <div className="flex justify-center mb-6">
-                <motion.div
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative"
-                >
+                <div className="relative">
                   <div className="w-20 h-20 bg-gradient-to-br from-rose-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
                     <Users className="w-10 h-10 text-white" />
                   </div>
-                  <motion.div
-                    animate={{ rotate: [0, 360] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                    className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-red-500 to-rose-500 rounded-full"
-                  />
-                </motion.div>
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-red-500 to-rose-500 rounded-full" />
+                </div>
               </div>
 
               <h3 className={`text-xl font-bold mb-3 text-center ${
@@ -977,30 +790,21 @@ const Community: React.FC = () => {
 
               {/* Mini Profile Preview */}
               <div className="flex justify-center">
-                <motion.div
-                  animate={{ rotate: [0, 5, -5, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative"
-                >
+                <div className="relative">
                   <div className="w-12 h-12 bg-gradient-to-br from-rose-100 to-pink-100 rounded-full flex items-center justify-center">
                     <span className="text-lg">⭐</span>
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
-                </motion.div>
+                </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Step 3: Connect */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className={`relative p-8 rounded-3xl ${
+            <div className={`relative p-8 rounded-3xl ${
                 theme === 'light'
                   ? 'bg-white/80 backdrop-blur-sm border border-pink-200 shadow-xl'
                   : 'bg-slate-800/80 backdrop-blur-sm border border-pink-700 shadow-xl'
-              }`}
-            >
+              }`}>
               {/* Step Number */}
               <div className="absolute -top-4 left-8">
                 <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
@@ -1010,22 +814,14 @@ const Community: React.FC = () => {
 
               {/* Interactive Icon */}
               <div className="flex justify-center mb-6">
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative"
-                >
+                <div className="relative">
                   <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
                     <Sparkles className="w-10 h-10 text-white" />
                   </div>
-                  <motion.div
-                    animate={{ scale: [0, 1, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                    className="absolute top-0 right-0 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center"
-                  >
+                  <div className="absolute top-0 right-0 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
                     <TrendingUp className="w-3 h-3 text-white" />
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
               </div>
 
               <h3 className={`text-xl font-bold mb-3 text-center ${
@@ -1046,49 +842,28 @@ const Community: React.FC = () => {
                   { icon: Heart, color: 'from-red-400 to-red-500' },
                   { icon: Share2, color: 'from-green-400 to-green-500' }
                 ].map((item, idx) => (
-                  <motion.div
+                  <div
                     key={idx}
-                    animate={{ rotate: [0, 360] }}
-                    transition={{ duration: 3, repeat: Infinity, delay: idx * 0.5 }}
                     className={`w-8 h-8 bg-gradient-to-br ${item.color} rounded-full flex items-center justify-center shadow-sm`}
                   >
                     <item.icon className="w-4 h-4 text-white" />
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Call to Action */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="text-center mt-12"
-          >
-            <motion.div
-              animate={{ scale: [1, 1.02, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-rose-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-            >
+          <div className="text-center mt-12">
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-rose-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
               <span>Get Started Below</span>
-              <motion.div
-                animate={{ y: [0, 5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                ⬇️
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
+              <div>⬇️</div>
+            </div>
+          </div>
+        </div>
 
         {/* Category Selector - Instagram Stories Style */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <div className="text-center mb-6">
             <h2 className={`text-2xl font-bold mb-2 ${
               theme === 'light' ? 'text-gray-900' : 'text-white'
@@ -1114,25 +889,16 @@ const Community: React.FC = () => {
               const isPerson = category.shape === 'round';
               
               return (
-                <motion.div
+                <div
                   key={category.id}
-                  initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="flex flex-col items-center gap-3 snap-center"
                 >
-              <motion.button
+              <button
                     onClick={() => {
                       setSelectedCategory(category.id as any);
                       setSelectedItem(null);
                       setIsItemSelected(false);
                     }}
-                    whileHover={{ 
-                      scale: 1.05,
-                      y: -5,
-                      transition: { duration: 0.2 }
-                    }}
-                    whileTap={{ scale: 0.95 }}
                     className={`relative w-20 h-20 p-1 transition-all duration-300 group overflow-hidden ${
                       isPerson ? 'rounded-full' : 'rounded-2xl'
                     } ${
@@ -1157,7 +923,7 @@ const Community: React.FC = () => {
                         <div className={`w-full h-full ${
                           theme === 'light' ? 'bg-white' : 'bg-slate-900'
                         } ${isPerson ? 'rounded-full' : 'rounded-xl'}`} />
-                      </motion.div>
+        </motion.div>
                     )}
                     
                     {/* Shimmer Effect */}
@@ -1178,20 +944,20 @@ const Community: React.FC = () => {
                       <span className={`text-2xl ${
                         isSelected ? 'filter drop-shadow-lg' : ''
                       }`}>{category.icon}</span>
-                  </div>
+                    </div>
                     
                     {/* Active indicator dot */}
                     {isSelected && (
-                      <motion.div
+        <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full shadow-lg z-30"
                       />
                     )}
-                  </motion.button>
+                  </button>
                   
                   {/* Category Label */}
-                  <motion.span 
+                  <span 
                     className={`text-sm font-medium transition-colors duration-300 ${
                       isSelected 
                         ? theme === 'light' 
@@ -1201,27 +967,18 @@ const Community: React.FC = () => {
                           ? 'text-slate-600' 
                           : 'text-slate-400'
                     }`}
-                    animate={{ 
-                      scale: isSelected ? 1.05 : 1,
-                      fontWeight: isSelected ? 600 : 500
-                    }}
                   >
                     {category.label}
-                  </motion.span>
-                </motion.div>
+                  </span>
+                </div>
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
         {/* Items Grid - Instagram Stories Style */}
         {!isItemSelected && (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-8"
-          >
+        <div className="mb-8">
             <div className="text-center mb-6">
               <h3 className={`text-xl font-bold mb-2 ${
                 theme === 'light' ? 'text-gray-900' : 'text-white'
@@ -1238,141 +995,204 @@ const Community: React.FC = () => {
                 Tap to join a community
               </p>
             </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {currentCategoryItems.map((item, index) => {
-                const isPerson = selectedCategory === 'director' || selectedCategory === 'actor' || selectedCategory === 'actress';
-                
-                return (
+                        {/* Carousel-style Arrow Navigation + Data Grid Wrapper */}
+            <div className="relative">
+              {/* Left Arrow */}
+              <motion.button
+                onClick={() => setCurrentPage((p) => p === 0 ? totalPages - 1 : p - 1)}
+                disabled={totalPages === 1}
+                whileHover={{ scale: 1.1, x: -5 }}
+                whileTap={{ scale: 0.9 }}
+                className={`absolute -left-6 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-sm border transition-all duration-300 shadow-lg ${
+                  totalPages === 1
+                    ? 'opacity-50 cursor-not-allowed bg-gray-200/50 dark:bg-gray-700/50 border-gray-300/50 dark:border-gray-600/50'
+                    : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 border-purple-300/30 dark:border-purple-600/30 hover:shadow-xl hover:shadow-purple-500/25'
+                }`}
+              >
+                <motion.div
+                  animate={currentPage === 0 ? {} : { x: [0, -3, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <ChevronLeft className={`w-7 h-7 ${
+                    currentPage === 0 
+                      ? 'text-gray-400 dark:text-gray-500' 
+                      : 'text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300'
+                  }`} />
+                </motion.div>
+                {currentPage !== 0 && (
                   <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.05 }}
-                    className="flex flex-col items-center gap-3"
-                  >
-                    <motion.button
-                      onClick={() => {
-                        setSelectedItem(item);
-                        setIsItemSelected(true);
-                      }}
-                      whileHover={{ 
-                        scale: 1.05,
-                        y: -5,
-                        transition: { duration: 0.2 }
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      className={`group relative aspect-square w-full max-w-[120px] overflow-hidden transition-all duration-300 ${
-                        isPerson 
-                          ? 'rounded-full' 
-                          : 'rounded-2xl'
-                      } ${
-            theme === 'light'
-                          ? 'bg-white shadow-lg hover:shadow-xl border border-red-200 hover:border-rose-400'
-                          : 'bg-slate-800 shadow-lg hover:shadow-xl border border-red-700 hover:border-rose-500'
-                      }`}
-                    >
-                      {/* Instagram-style gradient border for active users */}
-                      {item.isActive && (
-                        <div className={`absolute inset-0 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 ${
-                          isPerson ? 'rounded-full' : 'rounded-2xl'
-                        } p-0.5 z-10`}>
-                          <div className={`w-full h-full ${
-                            theme === 'light' ? 'bg-white' : 'bg-slate-800'
-                          } ${isPerson ? 'rounded-full' : 'rounded-xl'}`} />
-                        </div>
-                      )}
-                      
-                      {/* Background Image */}
-                      <img 
-                        src={item.avatar}
-                        alt={item.name}
-                        className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 relative z-20 ${
-                          isPerson ? 'rounded-full' : 'rounded-2xl'
-                        } ${item.isActive ? 'p-0.5' : ''}`}
-                      />
-                      
-                      {/* Overlay for non-person items */}
-                      {!isPerson && (
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-30 rounded-2xl" />
-                      )}
-                      
-                      {/* Verified Badge */}
-                      {item.verified && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-red-500 to-rose-500 rounded-full flex items-center justify-center shadow-lg z-40"
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileHover={{ scale: 1, opacity: 1 }}
+                    className="absolute inset-0 rounded-full border-2 border-purple-400/50"
+                  />
+                )}
+              </motion.button>
+
+              {/* Right Arrow */}
+              <motion.button
+                onClick={() => setCurrentPage((p) => p === totalPages - 1 ? 0 : p + 1)}
+                disabled={totalPages === 1}
+                whileHover={{ scale: 1.1, x: 5 }}
+                whileTap={{ scale: 0.9 }}
+                className={`absolute -right-6 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-sm border transition-all duration-300 shadow-lg ${
+                  totalPages === 1
+                    ? 'opacity-50 cursor-not-allowed bg-gray-200/50 dark:bg-gray-700/50 border-gray-300/50 dark:border-gray-600/50'
+                    : 'bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 border-pink-300/30 dark:border-pink-600/30 hover:shadow-xl hover:shadow-pink-500/25'
+                }`}
+              >
+                <motion.div
+                  animate={currentPage >= totalPages - 1 ? {} : { x: [0, 3, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <ChevronRight className={`w-7 h-7 ${
+                    currentPage >= totalPages - 1 
+                      ? 'text-gray-400 dark:text-gray-500' 
+                      : 'text-pink-600 dark:text-pink-400 group-hover:text-pink-700 dark:group-hover:text-pink-300'
+                  }`} />
+                </motion.div>
+                {currentPage < totalPages - 1 && (
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileHover={{ scale: 1, opacity: 1 }}
+                    className="absolute inset-0 rounded-full border-2 border-pink-400/50"
+                  />
+                )}
+              </motion.button>
+
+              {/* Data Grid with Smooth Transitions */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentPage}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
+                >
+                  {paginatedItems.map((item, index) => {
+                    const isPerson = selectedCategory === 'director' || selectedCategory === 'actor' || selectedCategory === 'actress';
+                    return (
+                      <div
+                        key={item.id}
+                        className="flex flex-col items-center gap-3"
+                      >
+                        <button
+                          onClick={() => {
+                            setSelectedItem(item);
+                            setIsItemSelected(true);
+                          }}
+                          className={`group relative aspect-square w-full max-w-[120px] overflow-hidden transition-all duration-300 ${
+                            isPerson 
+                              ? 'rounded-full' 
+                              : 'rounded-2xl'
+                          } ${
+                theme === 'light'
+                              ? 'bg-white shadow-lg hover:shadow-xl border border-red-200 hover:border-rose-400'
+                              : 'bg-slate-800 shadow-lg hover:shadow-xl border border-red-700 hover:border-rose-500'
+                          }`}
                         >
-                          <CheckCircle className="w-4 h-4 text-white" />
-                        </motion.div>
-                      )}
-                      
-                      {/* Active Status Indicator */}
-                      {item.isActive && (
-                        <motion.div
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="absolute top-2 right-2 w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-lg z-40"
-                        />
-                      )}
-                      
-                      {/* Content overlay for movies/studios */}
-                      {!isPerson && (
-                        <div className="absolute bottom-0 left-0 right-0 p-3 z-30">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Users className="w-3 h-3 text-gray-300" />
-                            <span className="text-gray-300 text-xs">{item.followers?.toLocaleString()}</span>
-                </div>
-              </div>
-                      )}
-                    </motion.button>
-                    
-                    {/* Item Info */}
-                    <div className="text-center space-y-1">
-                      <div className="flex items-center justify-center gap-2">
-                        <h4 className={`text-sm font-semibold truncate max-w-[100px] ${
-                          theme === 'light' ? 'text-slate-900' : 'text-white'
-                        }`}>
-                          {item.name}
-                        </h4>
-                                                 {item.verified && !isPerson && (
-                           <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                             <CheckCircle className="w-3 h-3 text-white" />
-                </div>
-                         )}
-                </div>
-                      <p className={`text-xs ${
-                        theme === 'light' ? 'text-slate-500' : 'text-slate-400'
-                      }`}>
-                        {item.description}
-                      </p>
-                      {isPerson && (
-                        <div className="flex items-center justify-center gap-1 text-xs">
-                          <Users className={`w-3 h-3 ${
-                            theme === 'light' ? 'text-slate-400' : 'text-slate-500'
-                          }`} />
-                          <span className={`${
-                            theme === 'light' ? 'text-slate-400' : 'text-slate-500'
+                          {/* Instagram-style gradient border for active users */}
+                          {item.isActive && (
+                            <div className={`absolute inset-0 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 ${
+                              isPerson ? 'rounded-full' : 'rounded-2xl'
+                            } p-0.5 z-10`}>
+                              <div className={`w-full h-full ${
+                                theme === 'light' ? 'bg-white' : 'bg-slate-800'
+                              } ${isPerson ? 'rounded-full' : 'rounded-xl'}`} />
+                            </div>
+                          )}
+                          
+                          {/* Background Image */}
+                          <img 
+                            src={item.avatar}
+                            alt={item.name}
+                            className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 relative z-20 ${
+                              isPerson ? 'rounded-full' : 'rounded-2xl'
+                            } ${item.isActive ? 'p-0.5' : ''}`}
+                          />
+                          
+                          {/* Overlay for non-person items */}
+                          {!isPerson && (
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-30 rounded-2xl" />
+                          )}
+                          
+                          {/* Verified Badge */}
+                          {item.verified && (
+                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-red-500 to-rose-500 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/50">
+                              <CheckCircle className="w-4 h-4 text-white" />
+                  </div>
+                )}
+                          
+                          {/* Active Status Indicator */}
+                          {item.isActive && (
+                            <div className="absolute top-2 right-2 w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-lg z-40" />
+                          )}
+                          
+                          {/* Content overlay for movies/studios */}
+                          {!isPerson && (
+                            <div className="absolute bottom-0 left-0 right-0 p-3 z-30">
+                              <div className="flex items-center gap-2 mb-1">
+                                <Users className="w-3 h-3 text-gray-300" />
+                                <span className="text-gray-300 text-xs">{item.followers?.toLocaleString()}</span>
+          </div>
+                            </div>
+                          )}
+                        </button>
+                        
+                        {/* Item Info */}
+                        <div className="text-center space-y-1">
+                          <div className="flex items-center justify-center gap-2">
+                            <h4 className={`text-sm font-semibold truncate max-w-[100px] ${
+                              theme === 'light' ? 'text-slate-900' : 'text-white'
+                            }`}>
+                              {item.name}
+                            </h4>
+                            {item.verified && !isPerson && (
+                              <div className="w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                                <CheckCircle className="w-3 h-3 text-white" />
+                              </div>
+                            )}
+                          </div>
+                          <p className={`text-xs ${
+                            theme === 'light' ? 'text-slate-500' : 'text-slate-400'
                           }`}>
-                            {item.followers?.toLocaleString()}
-                          </span>
-                </div>
-                      )}
+                            {item.description}
+                          </p>
+                          {isPerson && (
+                            <div className="flex items-center justify-center gap-1 text-xs">
+                              <Users className={`w-3 h-3 ${
+                                theme === 'light' ? 'text-slate-400' : 'text-slate-500'
+                              }`} />
+                              <span className={`${
+                                theme === 'light' ? 'text-slate-400' : 'text-slate-500'
+                              }`}>
+                                {item.followers?.toLocaleString()}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+        </motion.div>
+              </AnimatePresence>
+              {/* Subtle Page Counter */}
+              <div className="w-full flex justify-center mt-2">
+                <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
+                  {currentPage + 1} / {totalPages}
+                </span>
               </div>
-                  </motion.div>
-                );
-              })}
             </div>
-          </motion.div>
+          </div>
         )}
+        
 
         {/* Selected Item Community Display */}
         {isItemSelected && selectedItem && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
             className="relative overflow-hidden rounded-3xl backdrop-blur-xl border mb-12 group"
             style={{
               background: theme === 'light' 
@@ -1386,7 +1206,7 @@ const Community: React.FC = () => {
               <motion.img 
                 src={selectedItem.cover || selectedItem.avatar}
                 alt={selectedItem.name}
-                className="w-full h-full object-cover"
+              className="w-full h-full object-cover"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6 }}
               />
@@ -1413,10 +1233,10 @@ const Community: React.FC = () => {
               >
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
                   <Users className="w-5 h-5 text-white" />
-          </div>
+                </div>
                 <div className="w-10 h-10 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20">
                   <MessageCircle className="w-5 h-5 text-white" />
-                </div>
+              </div>
               </motion.div>
               
               {/* Item Info Overlay */}
@@ -1449,11 +1269,11 @@ const Community: React.FC = () => {
                       transition={{ duration: 2, repeat: Infinity }}
                       className="absolute -top-1 -left-1 w-4 h-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"
                     />
-                      </div>
+                </div>
                   <div className="flex-1">
                     <h2 className="text-white text-3xl font-black mb-2 drop-shadow-lg">{selectedItem.name}</h2>
                     <p className="text-gray-200 text-lg leading-relaxed">{selectedItem.description}</p>
-                  </div>
+                </div>
                 </motion.div>
                 
                 {/* Enhanced Stats */}
@@ -1491,14 +1311,14 @@ const Community: React.FC = () => {
                     {selectedItem.type.charAt(0).toUpperCase() + selectedItem.type.slice(1)}
                   </motion.div>
                 </motion.div>
-              </div>
             </div>
+          </div>
 
           {/* Enhanced Projects & Stats Info */}
           <div className="p-8">
             <div className="grid md:grid-cols-2 gap-8">
               {/* Enhanced Projects */}
-                      <div>
+              <div>
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -1510,7 +1330,7 @@ const Community: React.FC = () => {
                   </div>
                   <h3 className={`text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                     Projects
-                  </h3>
+                </h3>
                 </motion.div>
                 <div className="space-y-4">
                   {selectedItem.projects?.slice(0, 5).map((project, index) => (
@@ -1523,7 +1343,7 @@ const Community: React.FC = () => {
                       className="group relative p-4 rounded-2xl bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 transition-all duration-300"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="relative">
+                      <div className="relative">
                           <motion.img 
                             src={project.poster}
                             alt={project.title}
@@ -1536,7 +1356,7 @@ const Community: React.FC = () => {
                             transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
                             className="absolute -top-1 -left-1 w-3 h-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"
                           />
-                        </div>
+                          </div>
                         <div className="flex-1">
                           <div className={`font-bold text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                             {project.title}

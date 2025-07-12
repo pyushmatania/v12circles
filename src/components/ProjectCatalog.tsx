@@ -599,7 +599,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                     e.stopPropagation();
                     handleSlideChange(index);
                   }}
-                  className={`w-2 h-2 rounded-full transition-colors duration-300 ${index === currentSlide ? 'bg-white' : 'bg-white/40'}`}
+                  className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${index === currentSlide ? 'bg-white' : 'bg-white/40'}`}
                 />
               ))}
             </div>
