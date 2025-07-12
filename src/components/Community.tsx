@@ -26,9 +26,6 @@ import {
   Ticket,
   ArrowLeft,
   Film,
-  Star,
-  TrendingUp,
-  Sparkles,
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
@@ -564,8 +561,6 @@ const Community: React.FC = () => {
 
 
 
-  const currentItem = selectedItem || currentCategoryItems[0];
-
   return (
     <div
       className={`relative min-h-screen pt-16 pb-[100px] ${
@@ -687,181 +682,6 @@ const Community: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
         
-        {/* 3-Step Interactive Guide */}
-        <div className="mb-16">
-          <div className="text-center mb-12">
-            <h1 className={`text-4xl md:text-5xl font-black mb-4 ${
-            theme === 'light' 
-                ? 'bg-gradient-to-r from-red-800 via-rose-700 to-pink-800 bg-clip-text text-transparent' 
-                : 'bg-gradient-to-r from-red-100 via-rose-200 to-pink-100 bg-clip-text text-transparent'
-          }`}>
-              Join Exclusive Circles
-          </h1>
-          <p className={`text-lg ${
-            theme === 'light' ? 'text-gray-600' : 'text-gray-300'
-          }`}>
-              Connect with your favorite stars and creators in 3 simple steps
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Step 1: Select Category */}
-            <div className={`relative p-8 rounded-3xl ${
-                theme === 'light'
-                  ? 'bg-white/80 backdrop-blur-sm border border-red-200 shadow-xl'
-                  : 'bg-slate-800/80 backdrop-blur-sm border border-red-700 shadow-xl'
-              }`}>
-              {/* Step Number */}
-              <div className="absolute -top-4 left-8">
-                <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-rose-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                  1
-                </div>
-              </div>
-
-              {/* Interactive Icon */}
-              <div className="flex justify-center mb-6">
-                <div className="relative">
-                  <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Film className="w-10 h-10 text-white" />
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center">
-                    <Star className="w-3 h-3 text-white" />
-                  </div>
-                </div>
-              </div>
-
-              <h3 className={`text-xl font-bold mb-3 text-center ${
-                theme === 'light' ? 'text-gray-800' : 'text-white'
-              }`}>
-                Choose Your Interest
-              </h3>
-              <p className={`text-center mb-4 ${
-                theme === 'light' ? 'text-gray-600' : 'text-gray-300'
-              }`}>
-                Select from Movies, Actors, Directors, or Studios
-              </p>
-
-              {/* Mini Category Preview */}
-              <div className="flex justify-center gap-2">
-                {['🎬', '👨‍🎭', '🎥', '🏢'].map((icon, idx) => (
-                  <div
-                    key={idx}
-                    className="w-8 h-8 bg-gradient-to-br from-red-100 to-rose-100 rounded-lg flex items-center justify-center text-sm"
-                  >
-                    {icon}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Step 2: Select Item */}
-            <div className={`relative p-8 rounded-3xl ${
-                theme === 'light'
-                  ? 'bg-white/80 backdrop-blur-sm border border-rose-200 shadow-xl'
-                  : 'bg-slate-800/80 backdrop-blur-sm border border-rose-700 shadow-xl'
-              }`}>
-              {/* Step Number */}
-              <div className="absolute -top-4 left-8">
-                <div className="w-8 h-8 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                  2
-                </div>
-              </div>
-
-              {/* Interactive Icon */}
-              <div className="flex justify-center mb-6">
-                <div className="relative">
-                  <div className="w-20 h-20 bg-gradient-to-br from-rose-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
-                    <Users className="w-10 h-10 text-white" />
-                  </div>
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-red-500 to-rose-500 rounded-full" />
-                </div>
-              </div>
-
-              <h3 className={`text-xl font-bold mb-3 text-center ${
-                theme === 'light' ? 'text-gray-800' : 'text-white'
-              }`}>
-                Pick Your Favorite
-              </h3>
-              <p className={`text-center mb-4 ${
-                theme === 'light' ? 'text-gray-600' : 'text-gray-300'
-              }`}>
-                Browse and select any movie, actor, or creator
-              </p>
-
-              {/* Mini Profile Preview */}
-              <div className="flex justify-center">
-                <div className="relative">
-                  <div className="w-12 h-12 bg-gradient-to-br from-rose-100 to-pink-100 rounded-full flex items-center justify-center">
-                    <span className="text-lg">⭐</span>
-                  </div>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
-                </div>
-              </div>
-            </div>
-
-            {/* Step 3: Connect */}
-            <div className={`relative p-8 rounded-3xl ${
-                theme === 'light'
-                  ? 'bg-white/80 backdrop-blur-sm border border-pink-200 shadow-xl'
-                  : 'bg-slate-800/80 backdrop-blur-sm border border-pink-700 shadow-xl'
-              }`}>
-              {/* Step Number */}
-              <div className="absolute -top-4 left-8">
-                <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                  3
-                </div>
-              </div>
-
-              {/* Interactive Icon */}
-              <div className="flex justify-center mb-6">
-                <div className="relative">
-                  <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Sparkles className="w-10 h-10 text-white" />
-                  </div>
-                  <div className="absolute top-0 right-0 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
-                    <TrendingUp className="w-3 h-3 text-white" />
-                  </div>
-                </div>
-              </div>
-
-              <h3 className={`text-xl font-bold mb-3 text-center ${
-                theme === 'light' ? 'text-gray-800' : 'text-white'
-              }`}>
-                Join & Connect
-              </h3>
-              <p className={`text-center mb-4 ${
-                theme === 'light' ? 'text-gray-600' : 'text-gray-300'
-              }`}>
-                Access exclusive content, chat, and network
-              </p>
-
-              {/* Feature Icons */}
-              <div className="flex justify-center gap-3">
-                {[
-                  { icon: MessageCircle, color: 'from-blue-400 to-blue-500' },
-                  { icon: Heart, color: 'from-red-400 to-red-500' },
-                  { icon: Share2, color: 'from-green-400 to-green-500' }
-                ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`w-8 h-8 bg-gradient-to-br ${item.color} rounded-full flex items-center justify-center shadow-sm`}
-                  >
-                    <item.icon className="w-4 h-4 text-white" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Call to Action */}
-          <div className="text-center mt-12">
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-rose-500 text-white rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-              <span>Get Started Below</span>
-              <div>⬇️</div>
-            </div>
-          </div>
-        </div>
-
         {/* Category Selector - Instagram Stories Style */}
         <div className="mb-8">
           <div className="text-center mb-6">
@@ -912,7 +732,7 @@ const Community: React.FC = () => {
                   >
                     {/* Instagram-style gradient ring for selected state */}
                     {isSelected && (
-                      <motion.div
+        <motion.div
                         initial={{ scale: 0, rotate: 0 }}
                         animate={{ scale: 1, rotate: 360 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -1018,7 +838,7 @@ const Community: React.FC = () => {
                       ? 'text-gray-400 dark:text-gray-500' 
                       : 'text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300'
                   }`} />
-                </motion.div>
+        </motion.div>
                 {currentPage !== 0 && (
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
@@ -1040,7 +860,7 @@ const Community: React.FC = () => {
                     : 'bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 border-pink-300/30 dark:border-pink-600/30 hover:shadow-xl hover:shadow-pink-500/25'
                 }`}
               >
-                <motion.div
+        <motion.div
                   animate={currentPage >= totalPages - 1 ? {} : { x: [0, 3, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                 >

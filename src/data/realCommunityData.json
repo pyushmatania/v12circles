@@ -1,0 +1,98 @@
+// scripts/fetchTMDBImages.cjs
+const fs = require('fs');
+const path = require('path');
+const fetch = require('node-fetch');
+
+const TMDB_API_KEY = "00c8935eeb21058413bf54ae11048768";
+const TMDB_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMGM4OTM1ZWViMjEwNTg0MTNiZjU0YWUxMTA0ODc2OCIsIm5iZiI6MTc1MjIwNzkwMi44ODksInN1YiI6IjY4NzA5MjFlNWFiYmI2OWUzZDlhNTgxYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7udmAb8IF7qfjyIxOLB1UguBBRUFgh04DvN2TLk6WMM";
+const DATA_PATH = path.join(__dirname, '../src/data/realCommunityData.json');
+const OUTPUT_PATH = path.join(__dirname, '../src/data/realCommunityData.tmdb.json');
+const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
+const BATCH_SIZE = 10;
+const BATCH_DELAY = 1000; // ms
+
+function loadCommunityData() {
+  return JSON.parse(fs.readFileSync(DATA_PATH, 'utf-8'));
+}
+
+function saveCommunityData(data) {
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(data, null, 2));
+  console.log(`Updated data saved to ${OUTPUT_PATH}`);
+}
+
+async function tmdbSearch(endpoint, query) {
+  const url = `https://api.themoviedb.org/3/search/${endpoint}?query=${encodeURIComponent(query)}&api_key=${TMDB_API_KEY}`;
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${TMDB_ACCESS_TOKEN}` }
+  });
+  if (!res.ok) throw new Error(`TMDB search failed: ${res.status}`);
+  const data = await res.json();
+  return data.results && data.results.length > 0 ? data.results[0] : null;
+}
+
+async function fetchImageForItem(type, name) {
+  try {
+    if (type === 'movie') {
+      const result = await tmdbSearch('movie', name);
+      return result && result.poster_path ? TMDB_IMAGE_BASE + result.poster_path : null;
+    } else if (type === 'productionHouse') {
+      const result = await tmdbSearch('company', name);
+      return result && result.logo_path ? TMDB_IMAGE_BASE + result.logo_path : null;
+    } else if (['actor', 'actress', 'director'].includes(type)) {
+      const result = await tmdbSearch('person', name);
+      return result && result.profile_path ? TMDB_IMAGE_BASE + result.profile_path : null;
+    }
+  } catch (e) {
+    console.error(`Error fetching image for ${type} '${name}':`, e.message);
+    return null;
+  }
+}
+
+async function batchProcess(items, type, key = 'avatar') {
+  let updated = [];
+  for (let i = 0; i < items.length; i += BATCH_SIZE) {
+    const batch = items.slice(i, i + BATCH_SIZE);
+    const results = await Promise.all(batch.map(async item => {
+      const img = await fetchImageForItem(type, item.name);
+      if (img) {
+        item[key] = img;
+        console.log(`[OK] ${type}: ${item.name}`);
+      } else {
+        console.warn(`[NOT FOUND] ${type}: ${item.name}`);
+      }
+      return item;
+    }));
+    updated = updated.concat(results);
+    if (i + BATCH_SIZE < items.length) await new Promise(res => setTimeout(res, BATCH_DELAY));
+  }
+  return updated;
+}
+
+async function main() {
+  let data = loadCommunityData();
+
+  if (data.movies) {
+    console.log('Fetching images for movies...');
+    data.movies = await batchProcess(data.movies, 'movie');
+  }
+  if (data.productionHouses) {
+    console.log('Fetching logos for production houses...');
+    data.productionHouses = await batchProcess(data.productionHouses, 'productionHouse');
+  }
+  if (data.directors) {
+    console.log('Fetching images for directors...');
+    data.directors = await batchProcess(data.directors, 'director');
+  }
+  if (data.actors) {
+    console.log('Fetching images for actors...');
+    data.actors = await batchProcess(data.actors, 'actor');
+  }
+  if (data.actresses) {
+    console.log('Fetching images for actresses...');
+    data.actresses = await batchProcess(data.actresses, 'actress');
+  }
+
+  saveCommunityData(data);
+}
+
+main();
