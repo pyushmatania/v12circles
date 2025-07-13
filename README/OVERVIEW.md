@@ -1,6 +1,6 @@
 # 🎬 Circles - Entertainment Investment Platform
 
-> **Don't just watch stories. Own them.**
+> **Lights, Camera, Ownership!**
 
 ## 🚀 Quick Overview
 

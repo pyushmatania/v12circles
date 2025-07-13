@@ -13,14 +13,7 @@ This document outlines all visual enhancements made to the ProjectDetailPage and
 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500
 hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600
 
-/* Shiny Effects */
-- Shimmer overlay: slides from left to right on hover
-- Gradient overlay: emerald-400/30 to cyan-400/30
-- White highlight: opacity transition on hover
-- Duration: 1000ms shimmer, 500ms transitions
-- Scale: hover:scale-110
-- Shadows: shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50
-```
+
 
 #### Play Button
 ```css
@@ -44,10 +37,6 @@ bg-gradient-to-r from-red-500 via-pink-500 to-rose-500
 bg-gradient-to-r from-gray-700/50 via-gray-600/50 to-gray-500/50
 hover:from-red-500/30 hover:via-pink-500/30 hover:to-rose-500/30
 
-/* Shiny Effects */
-- Shimmer overlay: animated slide effect
-- Icon scale: group-hover:scale-110
-- Shadows: shadow-2xl shadow-red-500/30 (active state)
 ```
 
 #### Share Button
@@ -55,12 +44,6 @@ hover:from-red-500/30 hover:via-pink-500/30 hover:to-rose-500/30
 /* Gradient: Blue → Cyan → Teal */
 bg-gradient-to-r from-gray-700/50 via-gray-600/50 to-gray-500/50
 hover:from-blue-500/30 hover:via-cyan-500/30 hover:to-teal-500/30
-
-/* Shiny Effects */
-- Shimmer overlay: smooth slide animation
-- Icon scale: group-hover:scale-110
-- Gradient overlay: blue-400/10 via-cyan-400/10 to-teal-400/10
-```
 
 ### 🎨 **Navigation Elements**
 
@@ -70,13 +53,6 @@ hover:from-blue-500/30 hover:via-cyan-500/30 hover:to-teal-500/30
 bg-gradient-to-r from-gray-800/50 via-gray-700/50 to-gray-600/50
 hover:from-purple-600/20 hover:via-pink-600/20 hover:to-rose-600/20
 
-/* Shiny Effects */
-- Shimmer overlay: left-to-right slide
-- Gradient overlay: purple-400/10 via-pink-400/10 to-rose-400/10
-- Icon animation: group-hover:-translate-x-1
-```
-
-#### Navigation Tabs
 ```css
 /* Active State */
 bg-gradient-to-r from-purple-600/30 via-pink-600/20 to-rose-600/30

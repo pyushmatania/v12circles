@@ -1,0 +1,1769 @@
+[
+  {
+    "id": "1",
+    "title": "The Shawshank Redemption",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.421Z",
+    "updatedAt": "2025-07-07T12:37:14.421Z",
+    "poster": "https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Frank Darabont",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.6,
+    "trailer": "https://www.youtube.com/watch?v=PLl99DlL6b4",
+    "movie": "The Shawshank Redemption",
+    "keyPeople": [],
+    "actor": "Tim Robbins",
+    "actress": "",
+    "productionHouse": "Castle Rock Entertainment",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_1",
+        "movieId": "1",
+        "movieName": "The Shawshank Redemption",
+        "productionHouse": "Castle Rock Entertainment",
+        "keyPeople": [
+          "Tim Robbins",
+          "Morgan Freeman",
+          "Bob Gunton",
+          "Frank Darabont"
+        ],
+        "actor": "Tim Robbins",
+        "actress": "",
+        "director": "Frank Darabont"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/zfbjgQE1uSd9wiPTX4VzsLi0rGG.jpg",
+    "tmdbId": 278,
+    "tmdbRating": 8.712,
+    "runtime": 142,
+    "releaseYear": 1994,
+    "country": "United States of America",
+    "revenue": 28341469,
+    "tmdbGenres": [
+      "Drama",
+      "Crime"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "Imprisoned in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.",
+    "tagline": "Fear can hold you prisoner. Hope can set you free.",
+    "imdbId": "tt0111161"
+  },
+  {
+    "id": "2",
+    "title": "The Godfather",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.421Z",
+    "updatedAt": "2025-07-07T12:37:14.421Z",
+    "poster": "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Francis Ford Coppola",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4,
+    "trailer": "https://www.youtube.com/watch?v=UaVTIH8mujA",
+    "movie": "The Godfather",
+    "keyPeople": [],
+    "actor": "Marlon Brando",
+    "actress": "",
+    "productionHouse": "Paramount Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_2",
+        "movieId": "2",
+        "movieName": "The Godfather",
+        "productionHouse": "Paramount Pictures",
+        "keyPeople": [
+          "Marlon Brando",
+          "Al Pacino",
+          "James Caan",
+          "Francis Ford Coppola"
+        ],
+        "actor": "Marlon Brando",
+        "actress": "",
+        "director": "Francis Ford Coppola"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/tmU7GeKVybMWFButWEGl2M4GeiP.jpg",
+    "tmdbId": 238,
+    "tmdbRating": 8.688,
+    "runtime": 175,
+    "releaseYear": 1972,
+    "country": "United States of America",
+    "revenue": 245066411,
+    "tmdbGenres": [
+      "Drama",
+      "Crime"
+    ],
+    "spokenLanguages": [
+      "English",
+      "Italiano",
+      "Latin"
+    ],
+    "tmdbOverview": "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
+    "tagline": "An offer you can't refuse.",
+    "imdbId": "tt0068646"
+  },
+  {
+    "id": "3",
+    "title": "The Dark Knight",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.421Z",
+    "updatedAt": "2025-07-07T12:37:14.421Z",
+    "poster": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Christopher Nolan",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.1,
+    "trailer": "https://www.youtube.com/watch?v=EXeTwQWrcwY",
+    "movie": "The Dark Knight",
+    "keyPeople": [],
+    "actor": "Christian Bale",
+    "actress": "",
+    "productionHouse": "Warner Bros. Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_3",
+        "movieId": "3",
+        "movieName": "The Dark Knight",
+        "productionHouse": "Warner Bros. Pictures",
+        "keyPeople": [
+          "Christian Bale",
+          "Heath Ledger",
+          "Aaron Eckhart",
+          "Christopher Nolan"
+        ],
+        "actor": "Christian Bale",
+        "actress": "",
+        "director": "Christopher Nolan"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/enNubozHn9pXi0ycTVYUWfpHZm.jpg",
+    "tmdbId": 155,
+    "tmdbRating": 8.521,
+    "runtime": 152,
+    "releaseYear": 2008,
+    "country": "United Kingdom",
+    "revenue": 1004558444,
+    "tmdbGenres": [
+      "Drama",
+      "Action",
+      "Crime",
+      "Thriller"
+    ],
+    "spokenLanguages": [
+      "English",
+      "普通话"
+    ],
+    "tmdbOverview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
+    "tagline": "Welcome to a world without rules.",
+    "imdbId": "tt0468569"
+  },
+  {
+    "id": "4",
+    "title": "Pulp Fiction",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.421Z",
+    "updatedAt": "2025-07-07T12:37:14.421Z",
+    "poster": "https://image.tmdb.org/t/p/w500/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Quentin Tarantino",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.4,
+    "trailer": "https://www.youtube.com/watch?v=s7EdQ4FqbhY",
+    "movie": "Pulp Fiction",
+    "keyPeople": [],
+    "actor": "John Travolta",
+    "actress": "",
+    "productionHouse": "Miramax",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_4",
+        "movieId": "4",
+        "movieName": "Pulp Fiction",
+        "productionHouse": "Miramax",
+        "keyPeople": [
+          "John Travolta",
+          "Samuel L. Jackson",
+          "Uma Thurman",
+          "Quentin Tarantino"
+        ],
+        "actor": "John Travolta",
+        "actress": "",
+        "director": "Quentin Tarantino"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/suaEOtk1N1sgg2MTM7oZd2cfVp3.jpg",
+    "tmdbId": 680,
+    "tmdbRating": 8.489,
+    "runtime": 154,
+    "releaseYear": 1994,
+    "country": "United States of America",
+    "revenue": 213928762,
+    "tmdbGenres": [
+      "Thriller",
+      "Crime",
+      "Comedy"
+    ],
+    "spokenLanguages": [
+      "English",
+      "Español",
+      "Français"
+    ],
+    "tmdbOverview": "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+    "tagline": "Violence. Redemption. Cheeseburgers",
+    "imdbId": "tt0110912"
+  },
+  {
+    "id": "5",
+    "title": "Forrest Gump",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.421Z",
+    "updatedAt": "2025-07-07T12:37:14.421Z",
+    "poster": "https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Robert Zemeckis",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.7,
+    "trailer": "https://www.youtube.com/watch?v=bLvqoHBptjg",
+    "movie": "Forrest Gump",
+    "keyPeople": [],
+    "actor": "Tom Hanks",
+    "actress": "",
+    "productionHouse": "Paramount Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_5",
+        "movieId": "5",
+        "movieName": "Forrest Gump",
+        "productionHouse": "Paramount Pictures",
+        "keyPeople": [
+          "Tom Hanks",
+          "Robin Wright",
+          "Gary Sinise",
+          "Robert Zemeckis"
+        ],
+        "actor": "Tom Hanks",
+        "actress": "",
+        "director": "Robert Zemeckis"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/tlEFuIlaxRPXIYVHXbOSAMCfWqk.jpg",
+    "tmdbId": 13,
+    "tmdbRating": 8.468,
+    "runtime": 142,
+    "releaseYear": 1994,
+    "country": "United States of America",
+    "revenue": 677387716,
+    "tmdbGenres": [
+      "Comedy",
+      "Drama",
+      "Romance"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "A man with a low IQ has accomplished great things in his life and been present during significant historic events—in each case, far exceeding what anyone imagined he could do. But despite all he has achieved, his one true love eludes him.",
+    "tagline": "The world will never be the same once you've seen it through the eyes of Forrest Gump.",
+    "imdbId": "tt0109830"
+  },
+  {
+    "id": "6",
+    "title": "Inception",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.421Z",
+    "updatedAt": "2025-07-07T12:37:14.421Z",
+    "poster": "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Christopher Nolan",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.5,
+    "trailer": "https://www.youtube.com/watch?v=YoHD9XEInc0",
+    "movie": "Inception",
+    "keyPeople": [],
+    "actor": "Leonardo DiCaprio",
+    "actress": "",
+    "productionHouse": "Legendary Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_6",
+        "movieId": "6",
+        "movieName": "Inception",
+        "productionHouse": "Legendary Pictures",
+        "keyPeople": [
+          "Leonardo DiCaprio",
+          "Joseph Gordon-Levitt",
+          "Ken Watanabe",
+          "Christopher Nolan"
+        ],
+        "actor": "Leonardo DiCaprio",
+        "actress": "",
+        "director": "Christopher Nolan"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg",
+    "tmdbId": 27205,
+    "tmdbRating": 8.369,
+    "runtime": 148,
+    "releaseYear": 2010,
+    "country": "United Kingdom",
+    "revenue": 839030630,
+    "tmdbGenres": [
+      "Action",
+      "Science Fiction",
+      "Adventure"
+    ],
+    "spokenLanguages": [
+      "English",
+      "Français",
+      "日本語",
+      "Kiswahili"
+    ],
+    "tmdbOverview": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
+    "tagline": "Your mind is the scene of the crime.",
+    "imdbId": "tt1375666"
+  },
+  {
+    "id": "7",
+    "title": "Fight Club",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.421Z",
+    "updatedAt": "2025-07-07T12:37:14.421Z",
+    "poster": "https://image.tmdb.org/t/p/w500/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "David Fincher",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.2,
+    "trailer": "https://www.youtube.com/watch?v=qtRKdVHc-cE",
+    "movie": "Fight Club",
+    "keyPeople": [],
+    "actor": "Edward Norton",
+    "actress": "",
+    "productionHouse": "Fox 2000 Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_7",
+        "movieId": "7",
+        "movieName": "Fight Club",
+        "productionHouse": "Fox 2000 Pictures",
+        "keyPeople": [
+          "Edward Norton",
+          "Brad Pitt",
+          "Helena Bonham Carter",
+          "David Fincher"
+        ],
+        "actor": "Edward Norton",
+        "actress": "",
+        "director": "David Fincher"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg",
+    "tmdbId": 550,
+    "tmdbRating": 8.438,
+    "runtime": 139,
+    "releaseYear": 1999,
+    "country": "Germany",
+    "revenue": 100853753,
+    "tmdbGenres": [
+      "Drama"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
+    "tagline": "Mischief. Mayhem. Soap.",
+    "imdbId": "tt0137523"
+  },
+  {
+    "id": "8",
+    "title": "The Matrix",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.421Z",
+    "updatedAt": "2025-07-07T12:37:14.421Z",
+    "poster": "https://image.tmdb.org/t/p/w500/p96dm7sCMn4VYAStA6siNz30G1r.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Lana Wachowski",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.5,
+    "trailer": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
+    "movie": "The Matrix",
+    "keyPeople": [],
+    "actor": "Keanu Reeves",
+    "actress": "",
+    "productionHouse": "Village Roadshow Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_8",
+        "movieId": "8",
+        "movieName": "The Matrix",
+        "productionHouse": "Village Roadshow Pictures",
+        "keyPeople": [
+          "Keanu Reeves",
+          "Laurence Fishburne",
+          "Carrie-Anne Moss",
+          "Lana Wachowski"
+        ],
+        "actor": "Keanu Reeves",
+        "actress": "",
+        "director": "Lana Wachowski"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/icmmSD4vTTDKOq2vvdulafOGw93.jpg",
+    "tmdbId": 603,
+    "tmdbRating": 8.229,
+    "runtime": 136,
+    "releaseYear": 1999,
+    "country": "United States of America",
+    "revenue": 463517383,
+    "tmdbGenres": [
+      "Action",
+      "Science Fiction"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.",
+    "tagline": "Believe the unbelievable.",
+    "imdbId": "tt0133093"
+  },
+  {
+    "id": "9",
+    "title": "Interstellar",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Christopher Nolan",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.1,
+    "trailer": "https://www.youtube.com/watch?v=zSWdZVtXT7E",
+    "movie": "Interstellar",
+    "keyPeople": [],
+    "actor": "Matthew McConaughey",
+    "actress": "",
+    "productionHouse": "Legendary Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_9",
+        "movieId": "9",
+        "movieName": "Interstellar",
+        "productionHouse": "Legendary Pictures",
+        "keyPeople": [
+          "Matthew McConaughey",
+          "Anne Hathaway",
+          "Michael Caine",
+          "Christopher Nolan"
+        ],
+        "actor": "Matthew McConaughey",
+        "actress": "",
+        "director": "Christopher Nolan"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/l33oR0mnvf20avWyIMxW02EtQxn.jpg",
+    "tmdbId": 157336,
+    "tmdbRating": 8.456,
+    "runtime": 169,
+    "releaseYear": 2014,
+    "country": "United Kingdom",
+    "revenue": 746606706,
+    "tmdbGenres": [
+      "Adventure",
+      "Drama",
+      "Science Fiction"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.",
+    "tagline": "Mankind was born on Earth. It was never meant to die here.",
+    "imdbId": "tt0816692"
+  },
+  {
+    "id": "10",
+    "title": "Gladiator",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/ty8TGRuvJLPUmAR1H1nRIsgwvim.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Ridley Scott",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4,
+    "trailer": "https://www.youtube.com/watch?v=P5ieIbInFpg",
+    "movie": "Gladiator",
+    "keyPeople": [],
+    "actor": "Russell Crowe",
+    "actress": "",
+    "productionHouse": "Universal Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_10",
+        "movieId": "10",
+        "movieName": "Gladiator",
+        "productionHouse": "Universal Pictures",
+        "keyPeople": [
+          "Russell Crowe",
+          "Joaquin Phoenix",
+          "Connie Nielsen",
+          "Ridley Scott"
+        ],
+        "actor": "Russell Crowe",
+        "actress": "",
+        "director": "Ridley Scott"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/Ar7QuJ7sJEiC0oP3I8fKBKIQD9u.jpg",
+    "tmdbId": 98,
+    "tmdbRating": 8.22,
+    "runtime": 155,
+    "releaseYear": 2000,
+    "country": "United Kingdom",
+    "revenue": 465516248,
+    "tmdbGenres": [
+      "Action",
+      "Drama",
+      "Adventure"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "After the death of Emperor Marcus Aurelius, his devious son takes power and demotes Maximus, one of Rome's most capable generals who Marcus preferred. Eventually, Maximus is forced to become a gladiator and battle to the death against other men for the amusement of paying audiences.",
+    "tagline": "What we do in life echoes in eternity.",
+    "imdbId": "tt0172495"
+  },
+  {
+    "id": "11",
+    "title": "Titanic",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "James Cameron",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.7,
+    "trailer": "https://www.youtube.com/watch?v=kVrqfYjkTdQ",
+    "movie": "Titanic",
+    "keyPeople": [],
+    "actor": "Leonardo DiCaprio",
+    "actress": "",
+    "productionHouse": "Paramount Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_11",
+        "movieId": "11",
+        "movieName": "Titanic",
+        "productionHouse": "Paramount Pictures",
+        "keyPeople": [
+          "Leonardo DiCaprio",
+          "Kate Winslet",
+          "Billy Zane",
+          "James Cameron"
+        ],
+        "actor": "Leonardo DiCaprio",
+        "actress": "",
+        "director": "James Cameron"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/sCzcYW9h55WcesOqA12cgEr9Exw.jpg",
+    "tmdbId": 597,
+    "tmdbRating": 7.906,
+    "runtime": 194,
+    "releaseYear": 1997,
+    "country": "United States of America",
+    "revenue": 2264162353,
+    "tmdbGenres": [
+      "Drama",
+      "Romance"
+    ],
+    "spokenLanguages": [
+      "English",
+      "Français",
+      "Deutsch",
+      "svenska",
+      "Italiano",
+      "Pусский"
+    ],
+    "tmdbOverview": "101-year-old Rose DeWitt Bukater tells the story of her life aboard the Titanic, 84 years later. A young Rose boards the ship with her mother and fiancé. Meanwhile, Jack Dawson and Fabrizio De Rossi win third-class tickets aboard the ship. Rose tells the whole story from Titanic's departure through to its death—on its first and last voyage—on April 15, 1912.",
+    "tagline": "Nothing On Earth Could Come Between Them.",
+    "imdbId": "tt0120338"
+  },
+  {
+    "id": "12",
+    "title": "Jurassic Park",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/63viWuPfYQjRYLSZSZNq7dglJP5.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Steven Spielberg",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.5,
+    "trailer": "https://www.youtube.com/watch?v=jan5CFWs9ic",
+    "movie": "Jurassic Park",
+    "keyPeople": [],
+    "actor": "Sam Neill",
+    "actress": "",
+    "productionHouse": "Universal Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_12",
+        "movieId": "12",
+        "movieName": "Jurassic Park",
+        "productionHouse": "Universal Pictures",
+        "keyPeople": [
+          "Sam Neill",
+          "Laura Dern",
+          "Jeff Goldblum",
+          "Steven Spielberg"
+        ],
+        "actor": "Sam Neill",
+        "actress": "",
+        "director": "Steven Spielberg"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/jzt9HuhIAdH9qp0K2MA1m5V8sgq.jpg",
+    "tmdbId": 329,
+    "tmdbRating": 7.959,
+    "runtime": 127,
+    "releaseYear": 1993,
+    "country": "United States of America",
+    "revenue": 920100000,
+    "tmdbGenres": [
+      "Adventure",
+      "Science Fiction"
+    ],
+    "spokenLanguages": [
+      "English",
+      "Español"
+    ],
+    "tmdbOverview": "A wealthy entrepreneur secretly creates a theme park featuring living dinosaurs drawn from prehistoric DNA. Before opening day, he invites a team of experts and his two eager grandchildren to experience the park and help calm anxious investors. However, the park is anything but amusing as the security systems go off-line and the dinosaurs escape.",
+    "tagline": "An adventure 65 million years in the making.",
+    "imdbId": "tt0107290"
+  },
+  {
+    "id": "13",
+    "title": "Avatar",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "James Cameron",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.1,
+    "trailer": "https://www.youtube.com/watch?v=5PSNL1qE6VY",
+    "movie": "Avatar",
+    "keyPeople": [],
+    "actor": "Sam Worthington",
+    "actress": "",
+    "productionHouse": "Dune Entertainment",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_13",
+        "movieId": "13",
+        "movieName": "Avatar",
+        "productionHouse": "Dune Entertainment",
+        "keyPeople": [
+          "Sam Worthington",
+          "Zoe Saldaña",
+          "Sigourney Weaver",
+          "James Cameron"
+        ],
+        "actor": "Sam Worthington",
+        "actress": "",
+        "director": "James Cameron"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/vL5LR6WdxWPjLPFRLe133jXWsh5.jpg",
+    "tmdbId": 19995,
+    "tmdbRating": 7.59,
+    "runtime": 162,
+    "releaseYear": 2009,
+    "country": "United States of America",
+    "revenue": 2923706026,
+    "tmdbGenres": [
+      "Action",
+      "Adventure",
+      "Fantasy",
+      "Science Fiction"
+    ],
+    "spokenLanguages": [
+      "English",
+      "Español"
+    ],
+    "tmdbOverview": "In the 22nd century, a paraplegic Marine is dispatched to the moon Pandora on a unique mission, but becomes torn between following orders and protecting an alien civilization.",
+    "tagline": "Enter the world of Pandora.",
+    "imdbId": "tt0499549"
+  },
+  {
+    "id": "14",
+    "title": "The Lord of the Rings: The Return of the King",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Peter Jackson",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.7,
+    "trailer": "https://www.youtube.com/watch?v=r5X-hFf6Bwo",
+    "movie": "The Lord of the Rings: The Return of the King",
+    "keyPeople": [],
+    "actor": "Elijah Wood",
+    "actress": "",
+    "productionHouse": "New Line Cinema",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_14",
+        "movieId": "14",
+        "movieName": "The Lord of the Rings: The Return of the King",
+        "productionHouse": "New Line Cinema",
+        "keyPeople": [
+          "Elijah Wood",
+          "Ian McKellen",
+          "Viggo Mortensen",
+          "Peter Jackson"
+        ],
+        "actor": "Elijah Wood",
+        "actress": "",
+        "director": "Peter Jackson"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/2u7zbn8EudG6kLlBzUYqP8RyFU4.jpg",
+    "tmdbId": 122,
+    "tmdbRating": 8.487,
+    "runtime": 201,
+    "releaseYear": 2003,
+    "country": "New Zealand",
+    "revenue": 1118888979,
+    "tmdbGenres": [
+      "Adventure",
+      "Fantasy",
+      "Action"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "As armies mass for a final battle that will decide the fate of the world--and powerful, ancient forces of Light and Dark compete to determine the outcome--one member of the Fellowship of the Ring is revealed as the noble heir to the throne of the Kings of Men. Yet, the sole hope for triumph over evil lies with a brave hobbit, Frodo, who, accompanied by his loyal friend Sam and the hideous, wretched Gollum, ventures deep into the very dark heart of Mordor on his seemingly impossible quest to destroy the Ring of Power.​",
+    "tagline": "There can be no triumph without loss. No victory without suffering. No freedom without sacrifice.",
+    "imdbId": "tt0167260"
+  },
+  {
+    "id": "15",
+    "title": "Star Wars: Episode V - The Empire Strikes Back",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/nNAeTmF4CtdSgMDplXTDPOpYzsX.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Irvin Kershner",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.7,
+    "trailer": "https://www.youtube.com/watch?v=JNwNXF9Y6kY",
+    "movie": "Star Wars: Episode V - The Empire Strikes Back",
+    "keyPeople": [],
+    "actor": "Mark Hamill",
+    "actress": "",
+    "productionHouse": "Lucasfilm Ltd.",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_15",
+        "movieId": "15",
+        "movieName": "Star Wars: Episode V - The Empire Strikes Back",
+        "productionHouse": "Lucasfilm Ltd.",
+        "keyPeople": [
+          "Mark Hamill",
+          "Harrison Ford",
+          "Carrie Fisher",
+          "Irvin Kershner"
+        ],
+        "actor": "Mark Hamill",
+        "actress": "",
+        "director": "Irvin Kershner"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/kgjvZgs6cV2v5bigzzzWqJ9EMGs.jpg",
+    "tmdbId": 1891,
+    "tmdbRating": 8.396,
+    "runtime": 124,
+    "releaseYear": 1980,
+    "country": "United States of America",
+    "revenue": 538400000,
+    "tmdbGenres": [
+      "Adventure",
+      "Action",
+      "Science Fiction"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "The epic saga continues as Luke Skywalker, in hopes of defeating the evil Galactic Empire, learns the ways of the Jedi from aging master Yoda. But Darth Vader is more determined than ever to capture Luke. Meanwhile, rebel leader Princess Leia, cocky Han Solo, Chewbacca, and droids C-3PO and R2-D2 are thrown into various stages of capture, betrayal and despair.",
+    "tagline": "The Star Wars saga continues.",
+    "imdbId": "tt0080684"
+  },
+  {
+    "id": "16",
+    "title": "Back to the Future",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/vN5B5WgYscRGcQpVhHl6p9DDTP0.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Robert Zemeckis",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.2,
+    "trailer": "https://www.youtube.com/watch?v=qvsgGtivCgs",
+    "movie": "Back to the Future",
+    "keyPeople": [],
+    "actor": "Michael J. Fox",
+    "actress": "",
+    "productionHouse": "Universal Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_16",
+        "movieId": "16",
+        "movieName": "Back to the Future",
+        "productionHouse": "Universal Pictures",
+        "keyPeople": [
+          "Michael J. Fox",
+          "Christopher Lloyd",
+          "Crispin Glover",
+          "Robert Zemeckis"
+        ],
+        "actor": "Michael J. Fox",
+        "actress": "",
+        "director": "Robert Zemeckis"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/yz8QL8WFD8yj0LA5zIlNOgcHvZK.jpg",
+    "tmdbId": 105,
+    "tmdbRating": 8.322,
+    "runtime": 116,
+    "releaseYear": 1985,
+    "country": "United States of America",
+    "revenue": 381109762,
+    "tmdbGenres": [
+      "Adventure",
+      "Comedy",
+      "Science Fiction"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "Eighties teenager Marty McFly is accidentally sent back in time to 1955, inadvertently disrupting his parents' first meeting and attracting his mother's romantic interest. Marty must repair the damage to history by rekindling his parents' romance and - with the help of his eccentric inventor friend Doc Brown - return to 1985.",
+    "tagline": "He was never in time for his classes. He wasn't in time for his dinner. Then one day...he wasn't in his time at all.",
+    "imdbId": "tt0088763"
+  },
+  {
+    "id": "17",
+    "title": "The Silence of the Lambs",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Jonathan Demme",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.9,
+    "trailer": "https://www.youtube.com/watch?v=6iB21hsprAQ",
+    "movie": "The Silence of the Lambs",
+    "keyPeople": [],
+    "actor": "Jodie Foster",
+    "actress": "",
+    "productionHouse": "Orion Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_17",
+        "movieId": "17",
+        "movieName": "The Silence of the Lambs",
+        "productionHouse": "Orion Pictures",
+        "keyPeople": [
+          "Jodie Foster",
+          "Anthony Hopkins",
+          "Scott Glenn",
+          "Jonathan Demme"
+        ],
+        "actor": "Jodie Foster",
+        "actress": "",
+        "director": "Jonathan Demme"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/aYcnDyLMnpKce1FOYUpZrXtgUye.jpg",
+    "tmdbId": 274,
+    "tmdbRating": 8.347,
+    "runtime": 119,
+    "releaseYear": 1991,
+    "country": "United States of America",
+    "revenue": 272742922,
+    "tmdbGenres": [
+      "Crime",
+      "Drama",
+      "Thriller"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "Clarice Starling is a top student at the FBI's training academy.  Jack Crawford wants Clarice to interview Dr. Hannibal Lecter, a brilliant psychiatrist who is also a violent psychopath, serving life behind bars for various acts of murder and cannibalism.  Crawford believes that Lecter may have insight into a case and that Starling, as an attractive young woman, may be just the bait to draw him out.",
+    "tagline": "To enter the mind of a killer she must challenge the mind of a madman.",
+    "imdbId": "tt0102926"
+  },
+  {
+    "id": "18",
+    "title": "Saving Private Ryan",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/uqx37cS8cpHg8U35f9U5IBlrCV3.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Steven Spielberg",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.2,
+    "trailer": "https://www.youtube.com/watch?v=S1Qj_AVu2pA",
+    "movie": "Saving Private Ryan",
+    "keyPeople": [],
+    "actor": "Tom Hanks",
+    "actress": "",
+    "productionHouse": "DreamWorks Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_18",
+        "movieId": "18",
+        "movieName": "Saving Private Ryan",
+        "productionHouse": "DreamWorks Pictures",
+        "keyPeople": [
+          "Tom Hanks",
+          "Tom Sizemore",
+          "Edward Burns",
+          "Steven Spielberg"
+        ],
+        "actor": "Tom Hanks",
+        "actress": "",
+        "director": "Steven Spielberg"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/rW2xRFlJRbTnBJlQTSjQmjevIwb.jpg",
+    "tmdbId": 857,
+    "tmdbRating": 8.219,
+    "runtime": 169,
+    "releaseYear": 1998,
+    "country": "United States of America",
+    "revenue": 481840909,
+    "tmdbGenres": [
+      "Drama",
+      "History",
+      "War"
+    ],
+    "spokenLanguages": [
+      "Český",
+      "Deutsch",
+      "English",
+      "Français"
+    ],
+    "tmdbOverview": "As U.S. troops storm the beaches of Normandy, three brothers lie dead on the battlefield, with a fourth trapped behind enemy lines. Ranger captain John Miller and seven men are tasked with penetrating German-held territory and bringing the boy home.",
+    "tagline": "The mission is a man.",
+    "imdbId": "tt0120815"
+  },
+  {
+    "id": "19",
+    "title": "The Lion King",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Roger Allers",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.9,
+    "trailer": "https://www.youtube.com/watch?v=7TavVZMewpY",
+    "movie": "The Lion King",
+    "keyPeople": [],
+    "actor": "Matthew Broderick",
+    "actress": "",
+    "productionHouse": "Walt Disney Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_19",
+        "movieId": "19",
+        "movieName": "The Lion King",
+        "productionHouse": "Walt Disney Pictures",
+        "keyPeople": [
+          "Matthew Broderick",
+          "Moira Kelly",
+          "Nathan Lane",
+          "Roger Allers"
+        ],
+        "actor": "Matthew Broderick",
+        "actress": "",
+        "director": "Roger Allers"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/wXsQvli6tWqja51pYxXNG1LFIGV.jpg",
+    "tmdbId": 8587,
+    "tmdbRating": 8.257,
+    "runtime": 89,
+    "releaseYear": 1994,
+    "country": "United States of America",
+    "revenue": 763455561,
+    "tmdbGenres": [
+      "Family",
+      "Animation",
+      "Drama"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "Young lion prince Simba, eager to one day become king of the Pride Lands, grows up under the watchful eye of his father Mufasa; all the while his villainous uncle Scar conspires to take the throne for himself. Amid betrayal and tragedy, Simba must confront his past and find his rightful place in the Circle of Life.",
+    "tagline": "The greatest adventure of all is finding our place in the Circle of Life.",
+    "imdbId": "tt0110357"
+  },
+  {
+    "id": "20",
+    "title": "Schindler's List",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-07T12:37:14.422Z",
+    "updatedAt": "2025-07-07T12:37:14.422Z",
+    "poster": "https://image.tmdb.org/t/p/w500/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "Steven Spielberg",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.4,
+    "trailer": "https://www.youtube.com/watch?v=mxphAlJID9U",
+    "movie": "Schindler's List",
+    "keyPeople": [],
+    "actor": "Liam Neeson",
+    "actress": "",
+    "productionHouse": "Amblin Entertainment",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_20",
+        "movieId": "20",
+        "movieName": "Schindler's List",
+        "productionHouse": "Amblin Entertainment",
+        "keyPeople": [
+          "Liam Neeson",
+          "Ben Kingsley",
+          "Ralph Fiennes",
+          "Steven Spielberg"
+        ],
+        "actor": "Liam Neeson",
+        "actress": "",
+        "director": "Steven Spielberg"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/zb6fM1CX41D9rF9hdgclu0peUmy.jpg",
+    "tmdbId": 424,
+    "tmdbRating": 8.565,
+    "runtime": 195,
+    "releaseYear": 1993,
+    "country": "United States of America",
+    "revenue": 321365567,
+    "tmdbGenres": [
+      "Drama",
+      "History",
+      "War"
+    ],
+    "spokenLanguages": [
+      "Deutsch",
+      "Polski",
+      "עִבְרִית",
+      "English"
+    ],
+    "tmdbOverview": "The true story of how businessman Oskar Schindler saved over a thousand Jewish lives from the Nazis while they worked as slaves in his factory during World War II.",
+    "tagline": "Whoever saves one life, saves the world entire.",
+    "imdbId": "tt0108052"
+  },
+  {
+    "id": "21",
+    "title": "Yeh Jawaani Hai Deewani",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.455Z",
+    "updatedAt": "2025-07-10T16:10:34.455Z",
+    "poster": "https://image.tmdb.org/t/p/w500/em39H81XLCDgXsI7V4IcBZseEO6.jpg",
+    "description": "Kabir and Naina bond during a trekking trip. Before Naina can express herself, Kabir leaves India to pursue his career. They meet again years later, but he still cherishes his dreams more than bonds.",
+    "director": "Ayan Mukerji",
+    "genre": "Comedy, Drama, Musical",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 7.3,
+    "trailer": "https://www.youtube.com/watch?v=Rbp2XUSeUNE",
+    "movie": "Yeh Jawaani Hai Deewani",
+    "keyPeople": [],
+    "actor": "Ranbir Kapoor",
+    "actress": "",
+    "productionHouse": "Dharma Productions",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_21",
+        "movieId": "21",
+        "movieName": "Yeh Jawaani Hai Deewani",
+        "productionHouse": "Dharma Productions",
+        "keyPeople": [
+          "Ranbir Kapoor",
+          "Deepika Padukone",
+          "Aditya Roy Kapur",
+          "Ayan Mukerji"
+        ],
+        "actor": "Ranbir Kapoor",
+        "actress": "",
+        "director": "Ayan Mukerji"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/hvaSiRRM93aCSzTmKlY4sHERL0S.jpg",
+    "tmdbId": 185008,
+    "tmdbRating": 7.262,
+    "runtime": 160,
+    "releaseYear": 2013,
+    "country": "India",
+    "revenue": 46000000,
+    "tmdbGenres": [
+      "Romance",
+      "Comedy"
+    ],
+    "spokenLanguages": [
+      "हिन्दी"
+    ],
+    "tmdbOverview": "On a trekking trip, an introverted Naina falls for a charming ex-classmate, whose thirst for adventure drives them apart. Years later, their paths cross again.",
+    "tagline": "one cannot be wise and old without being young and crazy",
+    "imdbId": "tt2178470"
+  },
+  {
+    "id": "22",
+    "title": "Stree",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://image.tmdb.org/t/p/w500/mQ19rXBHzeg3s5TbDNmx48NGVuH.jpg",
+    "description": "In the small town of Chanderi, the menfolk live in fear of an evil spirit named \"Stree\" who abducts men in the night. Based on the urban legend of \"Nale Ba\" that went viral in Karnataka in the 1990s.",
+    "director": "Amar Kaushik",
+    "genre": "Comedy, Horror",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 7.5,
+    "trailer": "https://www.youtube.com/watch?v=gzeaGcLLl_A",
+    "movie": "Stree",
+    "keyPeople": [],
+    "actor": "Rajshree",
+    "actress": "",
+    "productionHouse": "",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_22",
+        "movieId": "22",
+        "movieName": "Stree",
+        "productionHouse": "",
+        "keyPeople": [
+          "Rajshree"
+        ],
+        "actor": "Rajshree",
+        "actress": "",
+        "director": "Amar Kaushik"
+      }
+    ],
+    "backdrop": "",
+    "tmdbId": 767586,
+    "tmdbRating": 5,
+    "runtime": 139,
+    "releaseYear": 1961,
+    "country": "India",
+    "revenue": 0,
+    "tmdbGenres": [],
+    "spokenLanguages": [],
+    "tmdbOverview": "Stree is a 1961 Indian fantasy film selected as the Indian entry for the Best Foreign Language Film at the 34th Academy Awards, but not nominated.",
+    "tagline": "",
+    "imdbId": "tt0176192"
+  },
+  {
+    "id": "23",
+    "title": "Tu Jhooti Main Makkaar",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://via.placeholder.com/300x450/cccccc/666666?text=Movie+Poster",
+    "description": "A compelling film that explores themes of love, life, and human connection.",
+    "director": "",
+    "genre": "Drama, Action",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 3.4,
+    "trailer": "https://www.youtube.com/watch?v=JzGGF4JPFIQ",
+    "movie": "Tu Jhooti Main Makkaar",
+    "keyPeople": [],
+    "actor": "",
+    "actress": "",
+    "productionHouse": "",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_23",
+        "movieId": "23",
+        "movieName": "Tu Jhooti Main Makkaar",
+        "productionHouse": "",
+        "keyPeople": [],
+        "actor": "",
+        "actress": "",
+        "director": ""
+      }
+    ]
+  },
+  {
+    "id": "24",
+    "title": "Superman",
+    "type": "film",
+    "category": "Hollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://image.tmdb.org/t/p/w500/ombsmhYUqR4qqOLOxAyr5V8hbyv.jpg",
+    "description": "An alien orphan is sent from his dying planet to Earth, where he grows up to become his adoptive home's first and greatest superhero.",
+    "director": "James Gunn",
+    "genre": "Action, Adventure, Sci-Fi",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 7.4,
+    "trailer": "https://www.youtube.com/watch?v=Ox8ZLF6cGM0",
+    "movie": "Superman",
+    "keyPeople": [],
+    "actor": "David Corenswet",
+    "actress": "",
+    "productionHouse": "DC Studios",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_24",
+        "movieId": "24",
+        "movieName": "Superman",
+        "productionHouse": "DC Studios",
+        "keyPeople": [
+          "David Corenswet",
+          "Rachel Brosnahan",
+          "Nicholas Hoult",
+          "James Gunn"
+        ],
+        "actor": "David Corenswet",
+        "actress": "",
+        "director": "James Gunn"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/eU7IfdWq8KQy0oNd4kKXS0QUR08.jpg",
+    "tmdbId": 1061474,
+    "tmdbRating": 7.4,
+    "runtime": 130,
+    "releaseYear": 2025,
+    "country": "United States of America",
+    "revenue": 96500000,
+    "tmdbGenres": [
+      "Science Fiction",
+      "Adventure",
+      "Action"
+    ],
+    "spokenLanguages": [
+      "English"
+    ],
+    "tmdbOverview": "Superman, a journalist in Metropolis, embarks on a journey to reconcile his Kryptonian heritage with his human upbringing as Clark Kent.",
+    "tagline": "Look up.",
+    "imdbId": "tt5950044"
+  },
+  {
+    "id": "25",
+    "title": "The Flash",
+    "type": "webseries",
+    "category": "Webseries",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://image.tmdb.org/t/p/w500/rktDFPbfHfUbArZ6OOOKsXcv0Bm.jpg",
+    "description": "After being struck by lightning, Barry Allen wakes up from his coma to discover he's been given the power of super speed, becoming the Flash, and fighting crime in Central City.",
+    "director": "Andy Muschietti",
+    "genre": "Action, Adventure, Drama",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 7.5,
+    "trailer": "https://www.youtube.com/watch?v=UMRBs0-OXCA",
+    "movie": "The Flash",
+    "keyPeople": [],
+    "actor": "Ezra Miller",
+    "actress": "",
+    "productionHouse": "Warner Bros. Pictures",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_25",
+        "movieId": "25",
+        "movieName": "The Flash",
+        "productionHouse": "Warner Bros. Pictures",
+        "keyPeople": [
+          "Ezra Miller",
+          "Sasha Calle",
+          "Michael Keaton",
+          "Andy Muschietti"
+        ],
+        "actor": "Ezra Miller",
+        "actress": "",
+        "director": "Andy Muschietti"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/yF1eOkaYvwiORauRCPWznV9xVvi.jpg",
+    "tmdbId": 298618,
+    "tmdbRating": 6.647,
+    "runtime": 144,
+    "releaseYear": 2023,
+    "country": "United States of America",
+    "revenue": 271333313,
+    "tmdbGenres": [
+      "Adventure",
+      "Action",
+      "Science Fiction"
+    ],
+    "spokenLanguages": [
+      "English",
+      "Español",
+      "Pусский"
+    ],
+    "tmdbOverview": "When his attempt to save his family inadvertently alters the future, Barry Allen becomes trapped in a reality in which General Zod has returned and there are no Super Heroes to turn to. In order to save the world that he is in and return to the future that he knows, Barry's only hope is to race for his life. But will making the ultimate sacrifice be enough to reset the universe?",
+    "tagline": "Worlds collide.",
+    "imdbId": "tt0439572"
+  },
+  {
+    "id": "26",
+    "title": "Krrish 3",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://image.tmdb.org/t/p/w500/tuHHTj59CNXGhI9eRZM47aa3zuC.jpg",
+    "description": "Krrish and his scientist father must save the world and their own family from an evil man named Kaal and his gang of mutants, led by the ruthless Kaya.",
+    "director": "Rakesh Roshan",
+    "genre": "Action, Adventure, Sci-Fi",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 5.3,
+    "trailer": "https://www.youtube.com/watch?v=_6Ix1VF_yWM",
+    "movie": "Krrish 3",
+    "keyPeople": [],
+    "actor": "Hrithik Roshan",
+    "actress": "",
+    "productionHouse": "Film Kraft",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_26",
+        "movieId": "26",
+        "movieName": "Krrish 3",
+        "productionHouse": "Film Kraft",
+        "keyPeople": [
+          "Hrithik Roshan",
+          "Priyanka Chopra Jonas",
+          "Vivek Oberoi",
+          "Rakesh Roshan"
+        ],
+        "actor": "Hrithik Roshan",
+        "actress": "",
+        "director": "Rakesh Roshan"
+      }
+    ],
+    "backdrop": "https://image.tmdb.org/t/p/w1280/rG2pFglPrNS1H0UmFu5z5KTTPtJ.jpg",
+    "tmdbId": 204435,
+    "tmdbRating": 5.648,
+    "runtime": 152,
+    "releaseYear": 2013,
+    "country": "India",
+    "revenue": 84000000,
+    "tmdbGenres": [
+      "Action",
+      "Science Fiction"
+    ],
+    "spokenLanguages": [
+      "English",
+      "हिन्दी"
+    ],
+    "tmdbOverview": "Krrish and his father must team up to save the world from a psychokinetic evil man named Kaal and his army of mutants.",
+    "tagline": "",
+    "imdbId": "tt1029231"
+  },
+  {
+    "id": "27",
+    "title": "Kalki",
+    "type": "film",
+    "category": "Bollywood",
+    "status": "active",
+    "fundedPercentage": 0,
+    "targetAmount": 0,
+    "raisedAmount": 0,
+    "createdAt": "2025-07-10T16:10:34.456Z",
+    "updatedAt": "2025-07-10T16:10:34.456Z",
+    "poster": "https://m.media-amazon.com/images/M/MV5BNjYwMGQ5MGItNzg5MC00NmJmLWI4NDktYzI0OWU4YjI5OWMzXkEyXkFqcGc@._V1_SX300.jpg",
+    "description": "Nanchenkotta is beset by problems and civilian life there is a nightmare. However, the arrival of a fearless police officer with a strong sense of justice is about to change Nanchenkotta's law-and-order situation--once and for all.",
+    "director": "K. Balachander",
+    "genre": "Action, Comedy, Crime",
+    "tags": [],
+    "perks": [
+      "Behind-the-scenes",
+      "Signed Poster",
+      "Premiere Invite"
+    ],
+    "rating": 4.9,
+    "trailer": "https://www.youtube.com/watch?v=aninoDcPWo4",
+    "movie": "Kalki",
+    "keyPeople": [],
+    "actor": "Geetha",
+    "actress": "",
+    "productionHouse": "Gramco Films",
+    "targetAmountHuman": "",
+    "raisedAmountHuman": "",
+    "keyCommunityData": [
+      {
+        "id": "kc_27",
+        "movieId": "27",
+        "movieName": "Kalki",
+        "productionHouse": "Gramco Films",
+        "keyPeople": [
+          "Geetha",
+          "Prakash Raj",
+          "Renuka",
+          "K. Balachander"
+        ],
+        "actor": "Geetha",
+        "actress": "",
+        "director": "K. Balachander"
+      }
+    ],
+    "backdrop": "",
+    "tmdbId": 324622,
+    "tmdbRating": 5.5,
+    "runtime": 161,
+    "releaseYear": 1996,
+    "country": "India",
+    "revenue": 0,
+    "tmdbGenres": [
+      "Romance",
+      "Family",
+      "Drama"
+    ],
+    "spokenLanguages": [
+      "தமிழ்"
+    ],
+    "tmdbOverview": "Chellammaa (Geetha), a singer, is wedded to a chauvinistic, sadistic industrialist named Prakash (Prakash Raj). She is unable to beget a child and hence is the target of hurting words from Prakash and his mother. When he prohibits her from singing, it is the last straw for her and they divorce. He marries Karpagam (Renuka), a doormat wife, while Chellammaa stays single, with a cook Kokila (newsreader Fathima Babu in her first movie appearance) around to help her. Kalki (Shruti) works in an ad agency and is relentlessly pursued by co-worker and model Paranjothi (Rahman) but she not only rejects him but debunks love and sentiments. Chellammaa becomes friends with Kalki after a few encounters and Kalki moves in as a paying guest. But she strikes up a friendship with Prakash and as the result of an affair with him, she ends up bearing his child. What happens of this leads up to the climax.",
+    "tagline": "",
+    "imdbId": "tt0140303"
+  }
+]

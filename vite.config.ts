@@ -115,7 +115,11 @@ export default defineConfig({
     // Enable HMR with optimized settings
     hmr: {
       overlay: false // Disable error overlay for cleaner dev experience
-    }
+    },
+    headers: {
+      // Cache images for 1 year
+      'Cache-Control': 'public, max-age=31536000, immutable',
+    },
   },
 
   // CSS optimizations

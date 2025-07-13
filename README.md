@@ -1,4 +1,4 @@
-# V12 Circles - Movie Investment Platform
+# V12 Circles - Lights, Camera, Ownership!
 
 A modern, Instagram-style platform for investing in movies and connecting with the film industry community.
 

@@ -32,7 +32,11 @@ import {
 import { useTheme } from './ThemeContext';
 import useIsMobile from '../hooks/useIsMobile';
 import Merchandise from './Merchandise';
-import { realCommunityData, type RealCommunityItem } from '../data/realCommunityData';
+import { comprehensiveCommunityData, type RealCommunityItem } from '../data/comprehensiveCommunityData';
+import OptimizedImage from './OptimizedImage';
+import imagePreloader from '../services/imagePreloader';
+import { useImagePerformance } from '../hooks/useImagePerformance';
+import ImagePerformancePanel from './ImagePerformancePanel';
 
 // Enhanced interfaces for hierarchical community structure
 interface FeedPost {
@@ -52,12 +56,49 @@ interface FeedPost {
 }
 
 const Community: React.FC = () => {
-  // Static Community Data
-  const movies = realCommunityData.movies;
-  const actors = realCommunityData.actors;
-  const actresses = realCommunityData.actresses;
-  const directors = realCommunityData.directors;
-  const productionHouses = realCommunityData.productionHouses;
+  // Comprehensive Community Data
+  const movies = comprehensiveCommunityData.movies;
+  const actors = comprehensiveCommunityData.actors;
+  const actresses = comprehensiveCommunityData.actresses;
+  const directors = comprehensiveCommunityData.directors;
+  const productionHouses = comprehensiveCommunityData.productionHouses;
+
+  // Performance monitoring
+  const { startMonitoring, stopMonitoring, getPerformanceReport } = useImagePerformance();
+
+  // Preload images when component mounts
+  useEffect(() => {
+    const preloadImages = async () => {
+      try {
+        // Start performance monitoring
+        startMonitoring();
+        
+        // Set up global performance tracker
+        window.imagePerformanceTracker = (url: string, loadTime: number, success: boolean) => {
+          console.log(`Image loaded: ${url} in ${loadTime.toFixed(2)}ms (${success ? 'success' : 'failed'})`);
+        };
+        
+        await imagePreloader.preloadAllCommunityImages();
+        console.log('Community images preloaded:', imagePreloader.getStats());
+        
+        // Log performance report after 5 seconds
+        setTimeout(() => {
+          const report = getPerformanceReport();
+          console.log('Image Performance Report:', report);
+        }, 5000);
+        
+      } catch (error) {
+        console.warn('Error preloading images:', error);
+      }
+    };
+
+    preloadImages();
+
+    return () => {
+      stopMonitoring();
+      delete window.imagePerformanceTracker;
+    };
+  }, [startMonitoring, stopMonitoring, getPerformanceReport]);
 
   // Hierarchical community state
   const [selectedCategory, setSelectedCategory] = useState<'productionHouse' | 'movie' | 'director' | 'actor' | 'actress'>('movie');
@@ -923,9 +964,11 @@ const Community: React.FC = () => {
                           )}
                           
                           {/* Background Image */}
-                          <img 
+                          <OptimizedImage 
                             src={item.avatar}
                             alt={item.name}
+                            width={120}
+                            height={120}
                             className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 relative z-20 ${
                               isPerson ? 'rounded-full' : 'rounded-2xl'
                             } ${item.isActive ? 'p-0.5' : ''}`}
@@ -1023,12 +1066,12 @@ const Community: React.FC = () => {
           >
             {/* Cover Image with Parallax Effect */}
             <div className="relative h-64 overflow-hidden">
-              <motion.img 
+              <OptimizedImage 
                 src={selectedItem.cover || selectedItem.avatar}
                 alt={selectedItem.name}
-              className="w-full h-full object-cover"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.6 }}
+                width={400}
+                height={256}
+                className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
               
@@ -1068,12 +1111,12 @@ const Community: React.FC = () => {
                   className="flex items-center gap-6 mb-6"
                 >
                       <div className="relative">
-                    <motion.img 
+                    <OptimizedImage 
                       src={selectedItem.avatar}
                       alt={selectedItem.name}
+                      width={80}
+                      height={80}
                       className="w-20 h-20 rounded-2xl object-cover border-4 border-white/30 shadow-2xl"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.3 }}
                     />
                     {selectedItem.verified && (
                       <motion.div
@@ -2034,6 +2077,9 @@ const Community: React.FC = () => {
           )}
         </AnimatePresence>
       </div>
+      
+      {/* Performance Monitoring Panel */}
+      <ImagePerformancePanel />
     </div>
   );
 };
