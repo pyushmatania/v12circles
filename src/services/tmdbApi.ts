@@ -22,6 +22,7 @@ export interface TMDBActor {
   known_for_department: string;
   popularity: number;
   known_for: TMDBMovie[];
+  gender?: number;
 }
 
 export interface TMDBProductionCompany {
@@ -40,6 +41,9 @@ export interface TMDBMovieDetails {
   popularity: number;
   vote_average: number;
   release_date: string;
+  runtime?: number;
+  tagline?: string;
+  genres?: Array<{ id: number; name: string }>;
   production_companies: TMDBProductionCompany[];
   credits?: {
     cast: TMDBActor[];

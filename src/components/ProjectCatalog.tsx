@@ -1,7 +1,7 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { Film, Music, Tv, Search, Star, Clock, ChevronLeft, ChevronRight, Play, Info, Siren as Fire, Filter, Heart, Share2, X, ArrowRight } from 'lucide-react';
+import { Film, Music, Tv, Search, Star, Clock, ChevronLeft, ChevronRight, Play, Info, Siren as Fire, Filter, Heart, Share2, X, ArrowRight, Grid, RotateCcw, Globe, MessageSquare, DollarSign, TrendingUp } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { 
   projects, 
@@ -24,12 +24,15 @@ const FILTER_OPTIONS = {
     { id: 'bollywood', label: 'Bollywood' },
     { id: 'hollywood', label: 'Hollywood' },
     { id: 'regional', label: 'Regional' },
-    { id: 'independent', label: 'Independent' }
+    { id: 'independent', label: 'Independent' },
+    { id: 'hindi music', label: 'Hindi Music' },
+    { id: 'hollywood music', label: 'Hollywood Music' }
   ],
   types: [
     { id: 'all', label: 'All Types' },
     { id: 'film', label: 'Films' },
-    { id: 'webseries', label: 'Web Series' }
+    { id: 'webseries', label: 'Web Series' },
+    { id: 'music', label: 'Music' }
   ],
   languages: [
     { id: 'all', label: 'All Languages' },
@@ -50,7 +53,14 @@ const FILTER_OPTIONS = {
     { id: 'horror', label: 'Horror' },
     { id: 'sci-fi', label: 'Sci-Fi' },
     { id: 'fantasy', label: 'Fantasy' },
-    { id: 'documentary', label: 'Documentary' }
+    { id: 'documentary', label: 'Documentary' },
+    { id: 'pop', label: 'Pop' },
+    { id: 'r&b', label: 'R&B' },
+    { id: 'film soundtrack', label: 'Film Soundtrack' },
+    { id: 'hip hop', label: 'Hip Hop' },
+    { id: 'reggaeton', label: 'Reggaeton' },
+    { id: 'indie folk', label: 'Indie Folk' },
+    { id: 'country pop', label: 'Country Pop' }
   ],
   sortOptions: [
     { id: 'trending', label: 'Trending' },
@@ -84,18 +94,41 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
   const [fundingRange, setFundingRange] = useState<[number, number]>([0, 100]);
   const [sortBy, setSortBy] = useState<string>('trending');
   const [showAllProjects, setShowAllProjects] = useState<string | null>(null);
+  const [sectionFilter, setSectionFilter] = useState<'all' | 'movies' | 'webseries' | 'music'>('all');
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Get featured projects directly from the projects array
-  const featuredProjects = projects.filter(p => p.featured === true && p.disabled === false && p.poster && p.title && p.rating && !isNaN(p.rating)).slice(0, 30);
+  // Get featured projects for carousel (movies and web series only)
+  const featuredProjects = projects.filter(p => 
+    p.featured === true && 
+    p.disabled === false && 
+    p.poster && 
+    p.title && 
+    p.rating && 
+    !isNaN(p.rating) &&
+    (p.type === 'film' || p.type === 'webseries')
+  ).slice(0, 30);
   
-  // Fallback to high-rated projects if no featured projects available
-  const fallbackProjects = projects.filter(p => p.disabled === false && p.poster && p.title && p.rating && !isNaN(p.rating) && p.rating >= 6.0).slice(0, 30);
+  // Fallback to high-rated projects if no featured projects available (movies and web series only)
+  const fallbackProjects = projects.filter(p => 
+    p.disabled === false && 
+    p.poster && 
+    p.title && 
+    p.rating && 
+    !isNaN(p.rating) && 
+    p.rating >= 6.0 &&
+    (p.type === 'film' || p.type === 'webseries')
+  ).slice(0, 30);
   const finalFeaturedProjects = featuredProjects.length > 0 ? featuredProjects : fallbackProjects;
   
-  // Ultimate fallback - if still no projects, take any valid projects
-  const ultimateFallback = finalFeaturedProjects.length === 0 ? projects.filter(p => p.disabled === false && p.poster && p.title).slice(0, 30) : finalFeaturedProjects;
+  // Ultimate fallback - if still no projects, take any valid projects (movies and web series only)
+  const ultimateFallback = finalFeaturedProjects.length === 0 ? 
+    projects.filter(p => 
+      p.disabled === false && 
+      p.poster && 
+      p.title &&
+      (p.type === 'film' || p.type === 'webseries')
+    ).slice(0, 30) : finalFeaturedProjects;
   
 
 
@@ -116,8 +149,8 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
   // Memoized filtered and sorted projects
   const filteredProjects = useMemo(() => {
     return projects.filter(project => {
-      // Filter out disabled projects and music projects
-      if (project.disabled === true || project.type === 'music') {
+      // Filter out disabled projects only
+      if (project.disabled === true) {
         return false;
       }
 
@@ -185,6 +218,9 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
     regional: Project[];
     webseries: Project[];
     featured: Project[];
+    hindiMusic: Project[];
+    hollywoodMusic: Project[];
+    musicAlbums: Project[];
   } => {
     try {
       // Helper function to shuffle array
@@ -198,7 +234,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
       };
 
       const regionalContent = shuffleArray(
-        projects.filter(p => p.category === 'Regional' && p.disabled === false && p.type !== 'music')
+        projects.filter(p => p.category === 'Regional' && p.disabled === false)
       ).slice(0, 10);
 
       const webSeries = shuffleArray(
@@ -211,20 +247,20 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
 
       // Create dynamic shuffled arrays for each section
       const trending = shuffleArray(
-        projects.filter(project => project.rating >= 7.0 && project.fundedPercentage >= 20 && project.disabled === false && project.type !== 'music')
+        projects.filter(project => project.rating >= 7.0 && project.fundedPercentage >= 20 && project.disabled === false)
       ).slice(0, 12);
 
       const bollywood = shuffleArray(
-        projects.filter(project => project.category === "Bollywood" && project.disabled === false && project.type !== 'music')
+        projects.filter(project => project.category === "Bollywood" && project.disabled === false)
       ).slice(0, 15);
 
       const hollywood = shuffleArray(
-        projects.filter(project => project.category === "Hollywood" && project.disabled === false && project.type !== 'music')
+        projects.filter(project => project.category === "Hollywood" && project.disabled === false)
       ).slice(0, 15);
 
       const actionThrillers = shuffleArray(
         projects.filter(project => 
-          project.disabled === false && project.type !== 'music' &&
+          project.disabled === false &&
           (project.genre?.toLowerCase().includes("action") || 
            project.genre?.toLowerCase().includes("thriller") ||
            project.tags?.some(tag => tag.toLowerCase().includes("action")) ||
@@ -234,7 +270,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
 
       const dramaRomance = shuffleArray(
         projects.filter(project => 
-          project.disabled === false && project.type !== 'music' &&
+          project.disabled === false &&
           (project.genre?.toLowerCase().includes("drama") || 
            project.genre?.toLowerCase().includes("romance") ||
            project.tags?.some(tag => tag.toLowerCase().includes("drama")) ||
@@ -244,7 +280,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
 
       const comedyEntertainment = shuffleArray(
         projects.filter(project => 
-          project.disabled === false && project.type !== 'music' &&
+          project.disabled === false &&
           (project.genre?.toLowerCase().includes("comedy") || 
            project.genre?.toLowerCase().includes("adventure") ||
            project.tags?.some(tag => tag.toLowerCase().includes("comedy")) ||
@@ -254,7 +290,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
 
       const sciFiFantasy = shuffleArray(
         projects.filter(project => 
-          project.disabled === false && project.type !== 'music' &&
+          project.disabled === false &&
           (project.genre?.toLowerCase().includes("sci-fi") || 
            project.genre?.toLowerCase().includes("fantasy") ||
            project.genre?.toLowerCase().includes("animation") ||
@@ -264,16 +300,28 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
       ).slice(0, 12);
 
       const highRated = shuffleArray(
-        projects.filter(project => project.rating >= 7.5 && project.disabled === false && project.type !== 'music')
+        projects.filter(project => project.rating >= 7.5 && project.disabled === false)
       ).slice(0, 12);
 
       const newlyAdded = shuffleArray(
-        projects.filter(project => project.disabled === false && project.type !== 'music')
+        projects.filter(project => project.disabled === false)
       ).slice(0, 12);
 
       const mostFunded = shuffleArray(
-        projects.filter(project => project.fundedPercentage >= 30 && project.disabled === false && project.type !== 'music')
+        projects.filter(project => project.fundedPercentage >= 30 && project.disabled === false)
       ).slice(0, 12);
+
+      const hindiMusic = shuffleArray(
+        projects.filter(project => project.category === "Hindi Music" && project.disabled === false)
+      ).slice(0, 15);
+
+      const hollywoodMusic = shuffleArray(
+        projects.filter(project => project.category === "Hollywood Music" && project.disabled === false)
+      ).slice(0, 15);
+
+      const musicAlbums = shuffleArray(
+        projects.filter(project => project.type === "music" && project.disabled === false)
+      ).slice(0, 20);
 
       return {
         trending,
@@ -288,7 +336,10 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
         mostFunded,
         regional: regionalContent,
         webseries: webSeries,
-        featured: featuredProjects
+        featured: featuredProjects,
+        hindiMusic,
+        hollywoodMusic,
+        musicAlbums
       };
     } catch (error) {
       console.error('Error in categorizedProjects:', error);
@@ -306,7 +357,10 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
         mostFunded: [],
         regional: [],
         webseries: [],
-        featured: []
+        featured: [],
+        hindiMusic: [],
+        hollywoodMusic: [],
+        musicAlbums: []
     };
     }
   }, []);
@@ -428,6 +482,18 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
         setSelectedCategory('regional');
         setSelectedType('all');
         break;
+      case 'hindi-music':
+        setSelectedCategory('hindi music');
+        setSelectedType('music');
+        break;
+      case 'hollywood-music':
+        setSelectedCategory('hollywood music');
+        setSelectedType('music');
+        break;
+      case 'music':
+        setSelectedCategory('all');
+        setSelectedType('music');
+        break;
       default:
         break;
     }
@@ -443,19 +509,24 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
 
 
   // Organize projects by categories for Netflix-style layout using diverse arrays
-  const trendingProjects = categorizedProjects.trending.length > 0 ? categorizedProjects.trending : projects.filter(p => p.disabled === false && p.type !== 'music').slice(0, 12);
-  const bollywoodFilms = categorizedProjects.bollywood.length > 0 ? categorizedProjects.bollywood : projects.filter(p => p.category === "Bollywood" && p.disabled === false && p.type !== 'music').slice(0, 15);
-  const hollywoodProjects = categorizedProjects.hollywood.length > 0 ? categorizedProjects.hollywood : projects.filter(p => p.category === "Hollywood" && p.disabled === false && p.type !== 'music').slice(0, 15);
-  const actionThrillers = categorizedProjects.actionThrillers.length > 0 ? categorizedProjects.actionThrillers : projects.filter(p => p.genre?.toLowerCase().includes("action") && p.disabled === false && p.type !== 'music').slice(0, 12);
-  const dramaRomance = categorizedProjects.dramaRomance.length > 0 ? categorizedProjects.dramaRomance : projects.filter(p => p.genre?.toLowerCase().includes("drama") && p.disabled === false && p.type !== 'music').slice(0, 12);
-  const comedyEntertainment = categorizedProjects.comedyEntertainment.length > 0 ? categorizedProjects.comedyEntertainment : projects.filter(p => p.genre?.toLowerCase().includes("comedy") && p.disabled === false && p.type !== 'music').slice(0, 12);
-  const sciFiFantasy = categorizedProjects.sciFiFantasy.length > 0 ? categorizedProjects.sciFiFantasy : projects.filter(p => p.genre?.toLowerCase().includes("sci-fi") && p.disabled === false && p.type !== 'music').slice(0, 12);
-  const highRatedProjects = categorizedProjects.highRated.length > 0 ? categorizedProjects.highRated : projects.filter(p => p.rating >= 7.0 && p.disabled === false && p.type !== 'music').slice(0, 12);
-  const newlyAdded = categorizedProjects.newlyAdded.length > 0 ? categorizedProjects.newlyAdded : projects.filter(p => p.disabled === false && p.type !== 'music').slice(0, 12);
-  const mostFunded = categorizedProjects.mostFunded.length > 0 ? categorizedProjects.mostFunded : projects.filter(p => p.fundedPercentage >= 20 && p.disabled === false && p.type !== 'music').slice(0, 12);
-  const regionalContent = categorizedProjects.regional.length > 0 ? categorizedProjects.regional : projects.filter(p => p.category === "Regional" && p.disabled === false && p.type !== 'music').slice(0, 10);
+  const trendingProjects = categorizedProjects.trending.length > 0 ? categorizedProjects.trending : projects.filter(p => p.disabled === false).slice(0, 12);
+  const bollywoodFilms = categorizedProjects.bollywood.length > 0 ? categorizedProjects.bollywood : projects.filter(p => p.category === "Bollywood" && p.disabled === false).slice(0, 15);
+  const hollywoodProjects = categorizedProjects.hollywood.length > 0 ? categorizedProjects.hollywood : projects.filter(p => p.category === "Hollywood" && p.disabled === false).slice(0, 15);
+  const actionThrillers = categorizedProjects.actionThrillers.length > 0 ? categorizedProjects.actionThrillers : projects.filter(p => p.genre?.toLowerCase().includes("action") && p.disabled === false).slice(0, 12);
+  const dramaRomance = categorizedProjects.dramaRomance.length > 0 ? categorizedProjects.dramaRomance : projects.filter(p => p.genre?.toLowerCase().includes("drama") && p.disabled === false).slice(0, 12);
+  const comedyEntertainment = categorizedProjects.comedyEntertainment.length > 0 ? categorizedProjects.comedyEntertainment : projects.filter(p => p.genre?.toLowerCase().includes("comedy") && p.disabled === false).slice(0, 12);
+  const sciFiFantasy = categorizedProjects.sciFiFantasy.length > 0 ? categorizedProjects.sciFiFantasy : projects.filter(p => p.genre?.toLowerCase().includes("sci-fi") && p.disabled === false).slice(0, 12);
+  const highRatedProjects = categorizedProjects.highRated.length > 0 ? categorizedProjects.highRated : projects.filter(p => p.rating >= 7.0 && p.disabled === false).slice(0, 12);
+  const newlyAdded = categorizedProjects.newlyAdded.length > 0 ? categorizedProjects.newlyAdded : projects.filter(p => p.disabled === false).slice(0, 12);
+  const mostFunded = categorizedProjects.mostFunded.length > 0 ? categorizedProjects.mostFunded : projects.filter(p => p.fundedPercentage >= 20 && p.disabled === false).slice(0, 12);
+  const regionalContent = categorizedProjects.regional.length > 0 ? categorizedProjects.regional : projects.filter(p => p.category === "Regional" && p.disabled === false).slice(0, 10);
 
   const webSeries = categorizedProjects.webseries.length > 0 ? categorizedProjects.webseries : projects.filter(p => p.type === "webseries" && p.disabled === false).slice(0, 10);
+  
+  // Music sections
+  const hindiMusic = categorizedProjects.hindiMusic.length > 0 ? categorizedProjects.hindiMusic : projects.filter(p => p.category === "Hindi Music" && p.disabled === false).slice(0, 15);
+  const hollywoodMusic = categorizedProjects.hollywoodMusic.length > 0 ? categorizedProjects.hollywoodMusic : projects.filter(p => p.category === "Hollywood Music" && p.disabled === false).slice(0, 15);
+  const musicAlbums = categorizedProjects.musicAlbums.length > 0 ? categorizedProjects.musicAlbums : projects.filter(p => p.type === "music" && p.disabled === false).slice(0, 20);
 
   // Simple swipe detection for carousel
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -544,6 +615,39 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
 
   return (
     <div className="min-h-screen bg-black pb-[100px]">
+      <style>{`
+        .slider::-webkit-slider-thumb {
+          appearance: none;
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+          cursor: pointer;
+          box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+          transition: all 0.3s ease;
+        }
+        
+        .slider::-webkit-slider-thumb:hover {
+          transform: scale(1.2);
+          box-shadow: 0 0 15px rgba(139, 92, 246, 0.8);
+        }
+        
+        .slider::-moz-range-thumb {
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+          cursor: pointer;
+          border: none;
+          box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+          transition: all 0.3s ease;
+        }
+        
+        .slider::-moz-range-thumb:hover {
+          transform: scale(1.2);
+          box-shadow: 0 0 15px rgba(139, 92, 246, 0.8);
+        }
+      `}</style>
       {/* Mobile Hero Carousel */}
       {!searchTerm && !showAllProjects && (
         ultimateFallback.length > 0 && ultimateFallback[wrappedSlide] ? (
@@ -892,148 +996,272 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
           </button>
         </div>
 
-        {/* Advanced Filters */}
+        {/* Completely Redesigned Advanced Filters */}
         <AnimatePresence>
           {showFilters && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="mb-8 p-8 bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-3xl border border-gray-700/50 shadow-2xl shadow-purple-500/10"
+              initial={{ opacity: 0, height: 0, y: -20 }}
+              animate={{ opacity: 1, height: 'auto', y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -20 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="mb-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl border border-slate-700 shadow-2xl shadow-blue-500/10 relative overflow-hidden"
             >
-              <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">Advanced Filters</h3>
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={clearFilters}
-                    className="group relative px-4 py-2 bg-gradient-to-r from-red-500 via-pink-500 to-rose-500 text-white rounded-xl hover:from-red-600 hover:via-pink-600 hover:to-rose-600 transition-all duration-300 font-semibold overflow-hidden"
-                  >
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 via-pink-400/20 to-rose-400/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    {/* White highlight */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <span className="relative">Clear All</span>
-                  </button>
-                  <button
-                    onClick={() => setShowFilters(false)}
-                    className="group relative p-2 bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 text-white rounded-xl hover:from-gray-500 hover:via-gray-600 hover:to-gray-700 transition-all duration-300 overflow-hidden"
-                  >
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-400/20 via-gray-500/20 to-gray-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    {/* White highlight */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <X className="relative w-5 h-5" />
-                  </button>
+              {/* Header */}
+              <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+                      <Filter className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white">Advanced Filters</h3>
+                      <p className="text-blue-100 text-sm">Refine your search with precision</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={clearFilters}
+                      className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-all duration-300 font-medium"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                      Clear All
+                    </button>
+                    <button
+                      onClick={() => setShowFilters(false)}
+                      className="p-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-all duration-300"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {/* Category Filter */}
-                <div>
-                  <label className="block text-white font-medium mb-2">Category</label>
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
-                  >
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              {/* Filter Content */}
+              <div className="p-6 space-y-6">
+                {/* Main Filters Grid */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Category Filter */}
+                  <div>
+                    <label className="block text-slate-300 font-medium mb-2 flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-blue-400" />
+                      Category
+                    </label>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="w-full px-3 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-300"
+                    >
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id} className="bg-slate-800 text-white">
+                          {category.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                {/* Type Filter */}
-                <div>
-                  <label className="block text-white font-medium mb-2">Type</label>
-                  <select
-                    value={selectedType}
-                    onChange={(e) => setSelectedType(e.target.value)}
-                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
-                  >
-                    {types.map((type) => (
-                      <option key={type.id} value={type.id}>
-                        {type.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                  {/* Type Filter */}
+                  <div>
+                    <label className="block text-slate-300 font-medium mb-2 flex items-center gap-2">
+                      <Film className="w-4 h-4 text-purple-400" />
+                      Type
+                    </label>
+                    <select
+                      value={selectedType}
+                      onChange={(e) => setSelectedType(e.target.value)}
+                      className="w-full px-3 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300"
+                    >
+                      {types.map((type) => (
+                        <option key={type.id} value={type.id} className="bg-slate-800 text-white">
+                          {type.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                {/* Language Filter */}
-                <div>
-                  <label className="block text-white font-medium mb-2">Language</label>
-                  <select
-                    value={selectedLanguage}
-                    onChange={(e) => setSelectedLanguage(e.target.value)}
-                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
-                  >
-                    {languages.map((language) => (
-                      <option key={language.id} value={language.id}>
-                        {language.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                  {/* Language Filter */}
+                  <div>
+                    <label className="block text-slate-300 font-medium mb-2 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4 text-green-400" />
+                      Language
+                    </label>
+                    <select
+                      value={selectedLanguage}
+                      onChange={(e) => setSelectedLanguage(e.target.value)}
+                      className="w-full px-3 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-300"
+                    >
+                      {languages.map((language) => (
+                        <option key={language.id} value={language.id} className="bg-slate-800 text-white">
+                          {language.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-                {/* Genre Filter */}
-                <div>
-                  <label className="block text-white font-medium mb-2">Genre</label>
-                  <select
-                    value={selectedGenre}
-                    onChange={(e) => setSelectedGenre(e.target.value)}
-                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
-                  >
-                    {genres.map((genre) => (
-                      <option key={genre.id} value={genre.id}>
-                        {genre.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 mt-6">
-                {/* Funding Range */}
-                <div>
-                  <label className="block text-white font-medium mb-2">
-                    Funding Progress: {fundingRange[0]}% - {fundingRange[1]}%
-                  </label>
-                  <div className="flex items-center gap-4">
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={fundingRange[0]}
-                      onChange={(e) => setFundingRange([Number(e.target.value), fundingRange[1]])}
-                      className="flex-1"
-                    />
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={fundingRange[1]}
-                      onChange={(e) => setFundingRange([fundingRange[0], Number(e.target.value)])}
-                      className="flex-1"
-                    />
+                  {/* Genre Filter */}
+                  <div>
+                    <label className="block text-slate-300 font-medium mb-2 flex items-center gap-2">
+                      <Star className="w-4 h-4 text-yellow-400" />
+                      Genre
+                    </label>
+                    <select
+                      value={selectedGenre}
+                      onChange={(e) => setSelectedGenre(e.target.value)}
+                      className="w-full px-3 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all duration-300"
+                    >
+                      {genres.map((genre) => (
+                        <option key={genre.id} value={genre.id} className="bg-slate-800 text-white">
+                          {genre.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
-                {/* Sort By */}
-                <div>
-                  <label className="block text-white font-medium mb-2">Sort By</label>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-4 py-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-700 focus:via-gray-600 focus:to-gray-700 transition-all duration-300 shadow-lg"
-                  >
-                    {sortOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
+                {/* Range and Sort Section */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Funding Range */}
+                  <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+                    <label className="block text-slate-300 font-medium mb-4 flex items-center gap-2">
+                      <DollarSign className="w-4 h-4 text-emerald-400" />
+                      Funding Progress Range
+                    </label>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between text-sm text-slate-400">
+                        <span>Min: {fundingRange[0]}%</span>
+                        <span>Max: {fundingRange[1]}%</span>
+                      </div>
+                      <div className="space-y-3">
+                        <div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={fundingRange[0]}
+                            onChange={(e) => setFundingRange([Number(e.target.value), fundingRange[1]])}
+                            className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                            style={{
+                              background: `linear-gradient(to right, #10b981 0%, #10b981 ${fundingRange[0]}%, #475569 ${fundingRange[0]}%, #475569 100%)`
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={fundingRange[1]}
+                            onChange={(e) => setFundingRange([fundingRange[0], Number(e.target.value)])}
+                            className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                            style={{
+                              background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${fundingRange[1]}%, #475569 ${fundingRange[1]}%, #475569 100%)`
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <span className="text-slate-400 text-sm">
+                          Range: {fundingRange[0]}% - {fundingRange[1]}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Sort Section */}
+                  <div className="bg-slate-800/50 rounded-xl p-4 border border-slate-700">
+                    <label className="block text-slate-300 font-medium mb-4 flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4 text-purple-400" />
+                      Sort & Display
+                    </label>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-slate-400 text-sm mb-2">Sort By</label>
+                        <select
+                          value={sortBy}
+                          onChange={(e) => setSortBy(e.target.value)}
+                          className="w-full px-3 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-300"
+                        >
+                          {sortOptions.map((option) => (
+                            <option key={option.id} value={option.id} className="bg-slate-800 text-white">
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      
+                      {/* Quick Presets */}
+                      <div>
+                        <label className="block text-slate-400 text-sm mb-2">Quick Presets</label>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() => {
+                              setFundingRange([50, 100]);
+                              setSortBy('funding-high');
+                              setSelectedGenre('all');
+                            }}
+                            className="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs hover:bg-emerald-700 transition-all duration-300"
+                          >
+                            High Funding
+                          </button>
+                          <button
+                            onClick={() => {
+                              setFundingRange([0, 50]);
+                              setSortBy('ending-soon');
+                              setSelectedGenre('all');
+                            }}
+                            className="px-3 py-1 bg-orange-600 text-white rounded-lg text-xs hover:bg-orange-700 transition-all duration-300"
+                          >
+                            Ending Soon
+                          </button>
+                          <button
+                            onClick={() => {
+                              setFundingRange([0, 100]);
+                              setSortBy('rating');
+                              setSelectedGenre('all');
+                            }}
+                            className="px-3 py-1 bg-yellow-600 text-white rounded-lg text-xs hover:bg-yellow-700 transition-all duration-300"
+                          >
+                            Top Rated
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Active Filters Summary */}
+                <div className="bg-slate-800/30 rounded-xl p-4 border border-slate-700">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Info className="w-4 h-4 text-blue-400" />
+                    <span className="text-slate-300 font-medium">Active Filters</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedCategory !== 'all' && (
+                      <span className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm">
+                        Category: {categories.find(c => c.id === selectedCategory)?.label}
+                      </span>
+                    )}
+                    {selectedType !== 'all' && (
+                      <span className="px-3 py-1 bg-purple-600 text-white rounded-lg text-sm">
+                        Type: {types.find(t => t.id === selectedType)?.label}
+                      </span>
+                    )}
+                    {selectedLanguage !== 'all' && (
+                      <span className="px-3 py-1 bg-green-600 text-white rounded-lg text-sm">
+                        Language: {languages.find(l => l.id === selectedLanguage)?.label}
+                      </span>
+                    )}
+                    {selectedGenre !== 'all' && (
+                      <span className="px-3 py-1 bg-yellow-600 text-white rounded-lg text-sm">
+                        Genre: {genres.find(g => g.id === selectedGenre)?.label}
+                      </span>
+                    )}
+                    <span className="px-3 py-1 bg-emerald-600 text-white rounded-lg text-sm">
+                      Funding: {fundingRange[0]}% - {fundingRange[1]}%
+                    </span>
+                    <span className="px-3 py-1 bg-purple-600 text-white rounded-lg text-sm">
+                      Sort: {sortOptions.find(s => s.id === sortBy)?.label}
+                    </span>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -1082,7 +1310,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                     >
                       <ArrowRight className="w-6 h-6" />
                       View All Projects
-                      <span className="text-sm opacity-80">({projects.filter(p => p.disabled === false && p.type !== 'music').length} total)</span>
+                      <span className="text-sm opacity-80">({projects.filter(p => p.disabled === false).length} total)</span>
                     </button>
                     <p className="text-gray-400 mt-3 text-sm">
                       Explore the complete collection of all available projects
@@ -1106,7 +1334,45 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
   </div>
 ) : (
           <div className="space-y-12">
-            {trendingProjects.length > 0 && (
+                         <div className="flex gap-3 mb-6">
+               <button
+                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium shadow-sm
+                   ${sectionFilter === 'all' ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-transparent' : 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'}
+                 `}
+                 onClick={() => setSectionFilter('all')}
+                 aria-label="Show All Projects"
+               >
+                 <Grid className="w-4 h-4" /> All
+               </button>
+               <button
+                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium shadow-sm
+                   ${sectionFilter === 'movies' ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-transparent' : 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'}
+                 `}
+                 onClick={() => setSectionFilter('movies')}
+                 aria-label="Show Movies Only"
+               >
+                 <Film className="w-4 h-4" /> Movies
+               </button>
+               <button
+                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium shadow-sm
+                   ${sectionFilter === 'webseries' ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-transparent' : 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'}
+                 `}
+                 onClick={() => setSectionFilter('webseries')}
+                 aria-label="Show Web Series Only"
+               >
+                 <Tv className="w-4 h-4" /> Web Series
+               </button>
+               <button
+                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium shadow-sm
+                   ${sectionFilter === 'music' ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-transparent' : 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'}
+                 `}
+                 onClick={() => setSectionFilter('music')}
+                 aria-label="Show Music Projects"
+               >
+                 <Music className="w-4 h-4" /> Music
+               </button>
+             </div>
+            {sectionFilter === 'all' && trendingProjects.length > 0 && (
             <ProjectRow
               title="🔥 Trending Now"
               projects={trendingProjects}
@@ -1115,7 +1381,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
               onHeaderClick={() => handleSectionClick('trending')}
             />
             )}
-            {bollywoodFilms.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && bollywoodFilms.length > 0 && (
               <ProjectRow
                 title="🎬 Bollywood Blockbusters"
                 projects={bollywoodFilms}
@@ -1124,7 +1390,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 onHeaderClick={() => handleSectionClick('bollywood')}
               />
             )}
-            {hollywoodProjects.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && hollywoodProjects.length > 0 && (
             <ProjectRow
                 title="🌟 Hollywood International"
                 projects={hollywoodProjects}
@@ -1133,7 +1399,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 onHeaderClick={() => handleSectionClick('hollywood')}
             />
             )}
-            {actionThrillers.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && actionThrillers.length > 0 && (
             <ProjectRow
                 title="💥 Action & Thrillers"
                 projects={actionThrillers}
@@ -1142,7 +1408,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 onHeaderClick={() => handleSectionClick('action-thrillers')}
             />
             )}
-            {dramaRomance.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && dramaRomance.length > 0 && (
             <ProjectRow
                 title="💕 Drama & Romance"
                 projects={dramaRomance}
@@ -1151,7 +1417,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 onHeaderClick={() => handleSectionClick('drama-romance')}
             />
             )}
-            {comedyEntertainment.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && comedyEntertainment.length > 0 && (
             <ProjectRow
                 title="😂 Comedy & Entertainment"
                 projects={comedyEntertainment}
@@ -1160,7 +1426,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 onHeaderClick={() => handleSectionClick('comedy-entertainment')}
               />
             )}
-            {sciFiFantasy.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && sciFiFantasy.length > 0 && (
               <ProjectRow
                 title="🚀 Sci-Fi & Fantasy"
                 projects={sciFiFantasy}
@@ -1169,7 +1435,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 onHeaderClick={() => handleSectionClick('sci-fi-fantasy')}
             />
             )}
-            {highRatedProjects.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && highRatedProjects.length > 0 && (
             <ProjectRow
               title="🏆 Highly Rated Projects"
               projects={highRatedProjects}
@@ -1178,7 +1444,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
               onHeaderClick={() => handleSectionClick('high-rated')}
             />
             )}
-            {newlyAdded.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && newlyAdded.length > 0 && (
             <ProjectRow
                 title="🆕 Newly Added"
                 projects={newlyAdded}
@@ -1187,7 +1453,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 onHeaderClick={() => handleSectionClick('newly-added')}
             />
             )}
-            {mostFunded.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && mostFunded.length > 0 && (
               <ProjectRow
                 title="💰 Most Funded"
                 projects={mostFunded}
@@ -1197,7 +1463,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
               />
             )}
 
-            {webSeries.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'webseries') && webSeries.length > 0 && (
               <ProjectRow
                 title="📺 Binge-Worthy Web Series"
                 projects={webSeries}
@@ -1206,13 +1472,40 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 onHeaderClick={() => handleSectionClick('webseries')}
               />
             )}
-            {regionalContent.length > 0 && (
+            {(sectionFilter === 'all' || sectionFilter === 'movies') && regionalContent.length > 0 && (
               <ProjectRow
                 title="🌍 Regional Cinema Gems"
                 projects={regionalContent}
                 onProjectClick={handleProjectClick}
                 onInvestClick={handleInvestClick}
                 onHeaderClick={() => handleSectionClick('regional')}
+              />
+            )}
+            {(sectionFilter === 'all' || sectionFilter === 'music') && hindiMusic.length > 0 && (
+              <ProjectRow
+                title="🎵 Hindi Music"
+                projects={hindiMusic}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('hindi-music')}
+              />
+            )}
+            {(sectionFilter === 'all' || sectionFilter === 'music') && hollywoodMusic.length > 0 && (
+              <ProjectRow
+                title="🎶 Hollywood Music"
+                projects={hollywoodMusic}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('hollywood-music')}
+              />
+            )}
+            {(sectionFilter === 'all' || sectionFilter === 'music') && musicAlbums.length > 0 && (
+              <ProjectRow
+                title="🎼 All Music"
+                projects={musicAlbums}
+                onProjectClick={handleProjectClick}
+                onInvestClick={handleInvestClick}
+                onHeaderClick={() => handleSectionClick('music')}
               />
             )}
             {/* All Projects Section */}

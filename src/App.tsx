@@ -16,7 +16,7 @@ import { AuthProvider } from './components/auth/AuthProvider';
 import { useAuth } from './components/auth/useAuth';
 import { useToast } from './hooks/useToast';
 import DebugPanel from './components/DebugPanel';
-import ErrorBoundary from './components/ErrorBoundary';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Project } from './types';
 
 // Lazy load heavy components for better performance
@@ -323,7 +323,7 @@ function AppContent() {
         }}
       />
       {renderCurrentView()}
-      <DebugPanel currentView={currentView} />
+      <DebugPanel />
       <AuthModal 
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}

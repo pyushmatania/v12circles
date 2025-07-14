@@ -44,8 +44,8 @@
     },
     {
       "id": "actor_4",
-      "name": "Akshay Kumar",
-      "avatar": "https://image.tmdb.org/t/p/w500/ynbrjFIC9jRKUL2xw4G3HvvFSIH.jpg",
+      "name": "Vicky Kaushal",
+      "avatar": "https://image.tmdb.org/t/p/w500/hKSa4DWEAD7DYhABYGwjPmxdpAY.jpg",
       "cover": "",
       "description": "1K+ followers",
       "type": "actor",
@@ -1448,8 +1448,8 @@
     },
     {
       "id": "director_12",
-      "name": "Akshay Kumar",
-      "avatar": "https://image.tmdb.org/t/p/w500/ynbrjFIC9jRKUL2xw4G3HvvFSIH.jpg",
+      "name": "Rohit Shetty",
+      "avatar": "https://image.tmdb.org/t/p/w500/9hQ4sX2XgOWvfJFv39z4uYrisqs.jpg",
       "cover": "",
       "description": "7K+ followers",
       "type": "director",
@@ -1990,8 +1990,8 @@
     },
     {
       "id": "movie_5",
-      "name": "Sultan",
-      "avatar": "https://image.tmdb.org/t/p/w500/o9V9CJxW1yHlmpm05HZHMWeWkXh.jpg",
+      "name": "Chhichhore",
+      "avatar": "https://image.tmdb.org/t/p/w500/cGDPQtQ5igtPMt3oJ6BCAor6dFp.jpg",
       "cover": "",
       "description": "3K+ followers",
       "type": "movie",
@@ -2002,7 +2002,7 @@
       "category": "bollywood",
       "country": "India",
       "rating": 8,
-      "releaseDate": "2024-01-01"
+      "releaseDate": "2019-09-06"
     },
     {
       "id": "movie_6",

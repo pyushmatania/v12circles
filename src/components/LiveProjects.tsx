@@ -22,7 +22,7 @@ const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onTrackInvestmen
   const { theme } = useTheme();
   const [statsInView, setStatsInView] = useState<{ [key: number]: boolean }>({});
   const sorted = [...projects]
-    .filter(p => p.disabled === false && p.type !== 'music')
+    .filter(p => p.disabled === false)
     .sort((a, b) => b.raisedAmount - a.raisedAmount);
   const isMobile = useIsMobile();
   const visibleProjects = isMobile ? sorted.slice(0, 3) : sorted.slice(0, 6);

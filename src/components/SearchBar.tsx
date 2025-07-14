@@ -70,8 +70,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
     // Use setTimeout to prevent blocking the UI
     setTimeout(() => {
       let results = projects.filter(project => {
-        // Filter out disabled projects and music projects
-        if (project.disabled === true || project.type === 'music') {
+        // Filter out disabled projects only
+        if (project.disabled === true) {
           return false;
         }
         

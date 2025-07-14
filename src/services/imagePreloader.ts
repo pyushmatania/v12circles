@@ -75,7 +75,7 @@ class ImagePreloader {
   }
 
   // Preload community images by category
-  async preloadCommunityImages(category: 'actors' | 'actresses' | 'directors' | 'movies' | 'productionHouses'): Promise<void> {
+  async preloadCommunityImages(category: 'actors' | 'actresses' | 'directors' | 'movies' | 'productionHouses' | 'musicArtists'): Promise<void> {
     try {
       const { comprehensiveCommunityData } = await import('../data/comprehensiveCommunityData');
       const items = comprehensiveCommunityData[category];
@@ -95,8 +95,8 @@ class ImagePreloader {
 
   // Preload all community images
   async preloadAllCommunityImages(): Promise<void> {
-    const categories: Array<'actors' | 'actresses' | 'directors' | 'movies' | 'productionHouses'> = [
-      'actors', 'actresses', 'directors', 'movies', 'productionHouses'
+    const categories: Array<'actors' | 'actresses' | 'directors' | 'movies' | 'productionHouses' | 'musicArtists'> = [
+      'actors', 'actresses', 'directors', 'movies', 'productionHouses', 'musicArtists'
     ];
 
     for (const category of categories) {

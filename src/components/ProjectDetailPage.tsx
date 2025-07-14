@@ -39,7 +39,7 @@ import {
 } from 'lucide-react';
 
 import { Project, KeyPerson } from '../types';
-
+import { useTMDBProjectData, getMainCast, getKeyCrew } from '../hooks/useTMDBProjectData';
 
 // Import logo image
 import circlesLogo from '../images/circles-logo-main.png';
@@ -64,6 +64,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
   const [isLiked, setIsLiked] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState(10000);
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
+  
+  // TMDB data integration
+  const { movieDetails, cast, crew, loading: tmdbLoading, error: tmdbError } = useTMDBProjectData(
+    project.title, 
+    (project as any).tmdbId ? parseInt((project as any).tmdbId.toString()) : undefined
+  );
   
   // Animation states for invest flow
   const [showCirclesAnimation, setShowCirclesAnimation] = useState(false);
@@ -1128,40 +1134,52 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Director</p>
-                              <p className="text-white font-semibold">{project.director || 'TBA'}</p>
+                              <p className="text-white font-semibold">
+                                {movieDetails?.credits?.crew?.find(c => c.known_for_department === 'Directing')?.name || project.director || 'TBA'}
+                              </p>
                             </div>
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Lead Actor</p>
-                              <p className="text-white font-semibold">{(project as any).actor || 'TBA'}</p>
+                              <p className="text-white font-semibold">
+                                {cast.length > 0 ? cast[0]?.name : (project as any).actor || 'TBA'}
+                              </p>
                             </div>
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Lead Actress</p>
-                              <p className="text-white font-semibold">{(project as any).actress || 'TBA'}</p>
+                              <p className="text-white font-semibold">
+                                {cast.find(c => c.known_for_department === 'Acting' && c.gender === 1)?.name || (project as any).actress || 'TBA'}
+                              </p>
                             </div>
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Production House</p>
-                              <p className="text-white font-semibold">{project.productionHouse || 'TBA'}</p>
+                              <p className="text-white font-semibold">
+                                {movieDetails?.production_companies?.[0]?.name || project.productionHouse || 'TBA'}
+                              </p>
                             </div>
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Runtime</p>
                               <p className="text-white font-semibold">
-                                {(project as any).runtime ? `${(project as any).runtime} min` : '150 min'}
+                                {movieDetails?.runtime ? `${movieDetails.runtime} min` : (project as any).runtime ? `${(project as any).runtime} min` : '150 min'}
                               </p>
                             </div>
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">TMDB Rating</p>
                               <p className="text-white font-semibold flex items-center gap-1">
                                 <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                                {(project as any).tmdbRating || project.rating || 'N/A'}
+                                {movieDetails?.vote_average ? movieDetails.vote_average.toFixed(1) : (project as any).tmdbRating || project.rating || 'N/A'}
                               </p>
                             </div>
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Country</p>
-                              <p className="text-white font-semibold">{(project as any).country || 'India'}</p>
+                              <p className="text-white font-semibold">
+                                {movieDetails?.production_companies?.[0]?.origin_country || (project as any).country || 'India'}
+                              </p>
                             </div>
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Release Year</p>
-                              <p className="text-white font-semibold">{(project as any).releaseYear || 'TBA'}</p>
+                              <p className="text-white font-semibold">
+                                {movieDetails?.release_date ? new Date(movieDetails.release_date).getFullYear() : (project as any).releaseYear || 'TBA'}
+                              </p>
                             </div>
                             <div className="space-y-2">
                               <p className="text-gray-400 text-sm">Language</p>
@@ -1206,11 +1224,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           )}
 
                           {/* TMDB Overview */}
-                          {(project as any).tmdbOverview && (
+                          {(movieDetails?.overview || (project as any).tmdbOverview) && (
                             <div className="mb-6">
-                              <p className="text-gray-400 text-sm mb-3">Plot Summary</p>
+                              <p className="text-gray-400 text-sm mb-3 flex items-center gap-2">
+                                Plot Summary
+                                {tmdbLoading && <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />}
+                              </p>
                               <p className="text-gray-300 leading-relaxed">
-                                {(project as any).tmdbOverview}
+                                {movieDetails?.overview || (project as any).tmdbOverview}
                               </p>
                             </div>
                           )}
@@ -2063,10 +2084,62 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                             Team & Cast
                           </h3>
                           
-                          {/* Key Cast Section */}
+                          {/* TMDB Cast Section */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6">Main Cast</h4>
+                            <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                              Main Cast
+                              {tmdbLoading && <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />}
+                            </h4>
+                            
+                            {tmdbError && (
+                              <div className="text-red-400 text-center py-4">
+                                {tmdbError} - Showing fallback data
+                              </div>
+                            )}
+                            
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                              {/* TMDB Cast Members */}
+                              {cast.length > 0 ? (
+                                getMainCast(cast).map((member, index) => (
+                                  <motion.div
+                                    key={member.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
+                                  >
+                                    <div className="relative mb-4">
+                                      <img
+                                        src={member.profile_path ? `https://image.tmdb.org/t/p/w185${member.profile_path}` : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'}
+                                        alt={member.name}
+                                        className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-gray-600 group-hover:border-blue-500 transition-colors duration-300"
+                                        onError={(e) => {
+                                          e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face';
+                                        }}
+                                      />
+                                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <span className="text-white text-xs font-bold">⭐</span>
+                                      </div>
+                                    </div>
+                                    <div className="text-center mb-4">
+                                      <h5 className="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors duration-300">
+                                        {member.name}
+                                      </h5>
+                                      <p className="text-blue-400 font-semibold text-sm">
+                                        {member.known_for_department || 'Actor'}
+                                      </p>
+                                    </div>
+                                    <div className="mb-4">
+                                      <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">
+                                        {member.known_for_department || 'Actor'}
+                                      </span>
+                                    </div>
+                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                  </motion.div>
+                                ))
+                              ) : (
+                                // Fallback to original data
+                                <>
                               {/* Director */}
                               {project.director && (
                                 <motion.div
@@ -2194,9 +2267,61 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                   </div>
                                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 </motion.div>
+                                  )}
+                                </>
                               )}
                             </div>
                           </div>
+
+                          {/* TMDB Crew Section */}
+                          {crew.length > 0 && (
+                            <div className="mb-8">
+                              <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                                Key Crew
+                                {tmdbLoading && <Loader2 className="w-5 h-5 text-green-400 animate-spin" />}
+                              </h4>
+                              
+                              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {getKeyCrew(crew).map((member, index) => (
+                                  <motion.div
+                                    key={member.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-green-500/50 transition-all duration-300 hover:scale-105"
+                                  >
+                                    <div className="relative mb-4">
+                                      <img
+                                        src={member.profile_path ? `https://image.tmdb.org/t/p/w185${member.profile_path}` : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'}
+                                        alt={member.name}
+                                        className="w-20 h-20 rounded-full object-cover mx-auto border-2 border-gray-600 group-hover:border-green-500 transition-colors duration-300"
+                                        onError={(e) => {
+                                          e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face';
+                                        }}
+                                      />
+                                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                        <span className="text-white text-xs font-bold">🎬</span>
+                                      </div>
+                                    </div>
+                                    <div className="text-center mb-4">
+                                      <h5 className="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors duration-300">
+                                        {member.name}
+                                      </h5>
+                                      <p className="text-green-400 font-semibold text-sm">
+                                        {member.known_for_department || 'Crew'}
+                                      </p>
+                                    </div>
+                                    <div className="mb-4">
+                                      <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">
+                                        {member.known_for_department || 'Crew'}
+                                      </span>
+                                    </div>
+                                    <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                  </motion.div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
 
                           {/* Key People Section */}
                           {project.keyPeople && Array.isArray(project.keyPeople) && project.keyPeople.length > 0 && (
@@ -2396,142 +2521,195 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                             Story & Plot
                           </h3>
                           
-                          {/* Story Overview */}
+                          {/* TMDB Story Overview */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-4">Synopsis</h4>
+                            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                              Synopsis
+                              {tmdbLoading && <Loader2 className="w-5 h-5 text-teal-400 animate-spin" />}
+                            </h4>
+                            {tmdbError && (
+                              <div className="text-red-400 text-center py-4 mb-4 bg-red-500/10 rounded-lg">
+                                {tmdbError} - Showing fallback data
+                              </div>
+                            )}
                             <p className="text-gray-300 leading-relaxed text-lg">
-                              Set against the backdrop of a bustling Indian metropolis, "The Dream Chasers" follows the journey of three friends from different walks of life who come together to pursue their shared passion for filmmaking. When they discover an old, abandoned cinema hall that holds the key to their dreams, they embark on an emotional rollercoaster filled with laughter, tears, and the unbreakable bonds of friendship.
+                              {movieDetails?.overview || (project as any).tmdbOverview || project.description || "Plot summary not available."}
                             </p>
+                            {movieDetails?.tagline && (
+                              <div className="mt-4 p-4 bg-teal-500/10 rounded-lg border border-teal-500/20">
+                                <p className="text-teal-300 font-semibold italic text-center">
+                                  "{movieDetails.tagline}"
+                                </p>
+                              </div>
+                            )}
                           </div>
                           
-                          {/* Story Elements Grid */}
+                          {/* TMDB Story Elements Grid */}
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                             <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                               <div className="text-4xl mb-3">🎭</div>
                               <h5 className="text-white font-bold mb-2">Genre</h5>
-                              <p className="text-gray-400 text-sm">Drama, Comedy, Coming-of-Age</p>
+                              <p className="text-gray-400 text-sm">
+                                {movieDetails?.genres?.map(g => g.name).join(', ') || (project as any).tmdbGenres?.join(', ') || project.genre || 'Not specified'}
+                              </p>
                             </div>
                             <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                              <div className="text-4xl mb-3">🎨</div>
-                              <h5 className="text-white font-bold mb-2">Tone</h5>
-                              <p className="text-gray-400 text-sm">Heartwarming, Inspirational</p>
+                              <div className="text-4xl mb-3">⏱️</div>
+                              <h5 className="text-white font-bold mb-2">Runtime</h5>
+                              <p className="text-gray-400 text-sm">
+                                {movieDetails?.runtime ? `${movieDetails.runtime} minutes` : (project as any).runtime ? `${(project as any).runtime} minutes` : 'Not specified'}
+                              </p>
                             </div>
                             <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                              <div className="text-4xl mb-3">🌍</div>
-                              <h5 className="text-white font-bold mb-2">Setting</h5>
-                              <p className="text-gray-400 text-sm">Mumbai, Present Day</p>
+                              <div className="text-4xl mb-3">📅</div>
+                              <h5 className="text-white font-bold mb-2">Release Date</h5>
+                              <p className="text-gray-400 text-sm">
+                                {movieDetails?.release_date ? new Date(movieDetails.release_date).toLocaleDateString() : (project as any).releaseYear ? `${(project as any).releaseYear}` : 'Not specified'}
+                              </p>
                             </div>
                             <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                              <div className="text-4xl mb-3">🎯</div>
-                              <h5 className="text-white font-bold mb-2">Target Audience</h5>
-                              <p className="text-gray-400 text-sm">Family, 12+ Years</p>
+                              <div className="text-4xl mb-3">⭐</div>
+                              <h5 className="text-white font-bold mb-2">Rating</h5>
+                              <p className="text-gray-400 text-sm">
+                                {movieDetails?.vote_average ? `${movieDetails.vote_average}/10` : (project as any).tmdbRating ? `${(project as any).tmdbRating}/10` : 'Not rated'}
+                              </p>
                             </div>
                           </div>
                           
-                          {/* Character Profiles */}
+                          {/* TMDB Character Profiles */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6">Main Characters</h4>
+                            <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                              Main Cast
+                              {tmdbLoading && <Loader2 className="w-5 h-5 text-teal-400 animate-spin" />}
+                            </h4>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                              {[
-                                {
-                                  name: 'Arjun',
-                                  actor: 'Aamir Khan',
-                                  description: 'A struggling filmmaker with big dreams and a bigger heart. His passion for cinema drives the story forward.',
-                                  traits: ['Dreamer', 'Leader', 'Optimistic'],
-                                  arc: 'From failure to success'
-                                },
-                                {
-                                  name: 'Priya',
-                                  actor: 'Deepika Padukone',
-                                  description: 'A talented screenwriter who believes in the power of storytelling to change lives.',
-                                  traits: ['Creative', 'Determined', 'Wise'],
-                                  arc: 'Finding her voice'
-                                },
-                                {
-                                  name: 'Rahul',
-                                  actor: 'R. Madhavan',
-                                  description: 'A practical businessman who learns to embrace his artistic side through friendship.',
-                                  traits: ['Practical', 'Loyal', 'Growth-minded'],
-                                  arc: 'Rediscovering passion'
-                                }
-                              ].map((character, index) => (
+                              {cast.length > 0 ? (
+                                getMainCast(cast).map((member, index) => (
                                 <motion.div
-                                  key={character.name}
+                                    key={member.id}
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: index * 0.1 }}
                                   className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-teal-500/50 transition-all duration-300"
                                 >
-                                  <h5 className="text-lg font-bold text-white mb-2">{character.name}</h5>
-                                  <p className="text-teal-400 text-sm mb-3">Played by {character.actor}</p>
-                                  <p className="text-gray-400 text-sm mb-4 leading-relaxed">{character.description}</p>
-                                  
+                                    <div className="flex items-center gap-3 mb-3">
+                                      <img
+                                        src={member.profile_path ? `https://image.tmdb.org/t/p/w92${member.profile_path}` : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=92&h=92&fit=crop&crop=face'}
+                                        alt={member.name}
+                                        className="w-12 h-12 rounded-full object-cover"
+                                        onError={(e) => {
+                                          e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=92&h=92&fit=crop&crop=face';
+                                        }}
+                                      />
+                                      <div>
+                                        <h5 className="text-lg font-bold text-white">{member.name}</h5>
+                                        <p className="text-teal-400 text-sm">Actor</p>
+                                      </div>
+                                    </div>
                                   <div className="mb-4">
-                                    <p className="text-gray-500 text-xs mb-2">Key Traits:</p>
+                                      <p className="text-gray-500 text-xs mb-2">Known For:</p>
                                     <div className="flex flex-wrap gap-1">
-                                      {character.traits.map((trait) => (
-                                        <span key={trait} className="px-2 py-1 bg-teal-500/20 text-teal-300 text-xs rounded-full">
-                                          {trait}
+                                        {member.known_for?.slice(0, 2).map((movie) => (
+                                          <span key={movie.id} className="px-2 py-1 bg-teal-500/20 text-teal-300 text-xs rounded-full">
+                                            {movie.title}
                                         </span>
                                       ))}
                                     </div>
                                   </div>
-                                  
                                   <div>
-                                    <p className="text-gray-500 text-xs mb-1">Character Arc:</p>
-                                    <p className="text-white text-sm font-semibold">{character.arc}</p>
+                                      <p className="text-gray-500 text-xs mb-1">Popularity:</p>
+                                      <p className="text-white text-sm font-semibold">{Math.round(member.popularity)}</p>
                                   </div>
                                 </motion.div>
-                              ))}
+                                ))
+                              ) : (
+                                <div className="col-span-3 text-center py-8">
+                                  <p className="text-gray-400">Cast information not available</p>
+                                </div>
+                              )}
                             </div>
                           </div>
                           
-                          {/* Director's Vision */}
+                          {/* TMDB Director's Vision */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-4">Director's Vision</h4>
+                            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                              Director
+                              {tmdbLoading && <Loader2 className="w-5 h-5 text-teal-400 animate-spin" />}
+                            </h4>
                             <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              {crew.length > 0 ? (
+                                (() => {
+                                  const director = crew.find(member => 
+                                    member.known_for_department === 'Directing' || 
+                                    member.known_for_department?.toLowerCase().includes('director')
+                                  );
+                                  return director ? (
                               <div className="flex items-start gap-4">
                                 <img
-                                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face"
-                                  alt="Rajkumar Hirani"
+                                        src={director.profile_path ? `https://image.tmdb.org/t/p/w185${director.profile_path}` : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face'}
+                                        alt={director.name}
                                   className="w-16 h-16 rounded-full object-cover"
+                                        onError={(e) => {
+                                          e.currentTarget.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face';
+                                        }}
                                 />
                                 <div>
-                                  <h5 className="text-white font-bold mb-2">Rajkumar Hirani</h5>
+                                        <h5 className="text-white font-bold mb-2">{director.name}</h5>
+                                        <p className="text-teal-400 text-sm mb-3">Director</p>
                                   <p className="text-gray-300 leading-relaxed">
-                                    "This film is about the magic of cinema and the power of dreams. I wanted to create a story that resonates with every person who has ever dared to dream big. The abandoned cinema hall represents the forgotten dreams of our society, and through our characters, we show how these dreams can be revived and celebrated."
+                                          {director.known_for?.length > 0 
+                                            ? `Known for directing ${director.known_for[0]?.title || 'various films'}.`
+                                            : 'Esteemed director with a passion for storytelling.'
+                                          }
                                   </p>
                                 </div>
                               </div>
+                                  ) : (
+                                    <div className="text-center py-4">
+                                      <p className="text-gray-400">Director information not available</p>
+                                    </div>
+                                  );
+                                })()
+                              ) : (
+                                <div className="text-center py-4">
+                                  <p className="text-gray-400">Director information not available</p>
+                                </div>
+                              )}
                             </div>
                           </div>
                           
-                          {/* Themes & Messages */}
+                          {/* TMDB Production Information */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-4">Themes & Messages</h4>
+                            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                              Production Information
+                              {tmdbLoading && <Loader2 className="w-5 h-5 text-teal-400 animate-spin" />}
+                            </h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3">🎬 The Power of Dreams</h5>
+                                <h5 className="text-white font-bold mb-3">🎬 Production Companies</h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
-                                  The film explores how dreams can transform lives and bring people together, even in the face of adversity.
+                                  {movieDetails?.production_companies?.length > 0 
+                                    ? movieDetails.production_companies.map(company => company.name).join(', ')
+                                    : project.productionHouse || 'Not specified'
+                                  }
                                 </p>
                               </div>
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3">🤝 Friendship & Unity</h5>
+                                <h5 className="text-white font-bold mb-3">🌍 Country of Origin</h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
-                                  The unbreakable bonds of friendship that help overcome obstacles and achieve the impossible.
+                                  {movieDetails?.production_companies?.[0]?.origin_country || (project as any).country || 'Not specified'}
                                 </p>
                               </div>
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3">🎭 Art vs Commerce</h5>
+                                <h5 className="text-white font-bold mb-3">🗣️ Spoken Languages</h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
-                                  The eternal struggle between artistic integrity and commercial success in the entertainment industry.
+                                  {(project as any).spokenLanguages?.join(', ') || project.language || 'Not specified'}
                                 </p>
                               </div>
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3">🏛️ Cultural Heritage</h5>
+                                <h5 className="text-white font-bold mb-3">📊 Popularity Score</h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
-                                  Preserving and celebrating the rich cultural heritage of Indian cinema and storytelling traditions.
+                                  {movieDetails?.popularity ? Math.round(movieDetails.popularity) : 'Not available'}
                                 </p>
                               </div>
                             </div>
@@ -2715,52 +2893,80 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                             Updates & News
                           </h3>
                           
-                          {/* Update Categories */}
+                          {/* Enhanced Update Categories with Counts */}
                           <div className="flex flex-wrap gap-3 mb-8">
-                            {['All', 'Cast', 'Location', 'Trailer', 'Shooting', 'Music', 'Post-Production'].map((category) => (
+                            {[
+                              { name: 'All', count: 12, icon: '📰' },
+                              { name: 'Cast', count: 4, icon: '🎭' },
+                              { name: 'Location', count: 3, icon: '📍' },
+                              { name: 'Trailer', count: 2, icon: '🎬' },
+                              { name: 'Shooting', count: 2, icon: '🎥' },
+                              { name: 'Music', count: 2, icon: '🎵' },
+                              { name: 'Post-Production', count: 1, icon: '✂️' },
+                              { name: 'Behind Scenes', count: 3, icon: '🎪' },
+                              { name: 'Press', count: 2, icon: '📢' }
+                            ].map((category) => (
                               <button
-                                key={category}
+                                key={category.name}
                                 className="group relative px-4 py-2 rounded-full bg-gradient-to-r from-gray-700/50 via-gray-600/50 to-gray-500/50 text-gray-300 hover:from-amber-500/30 hover:via-yellow-500/30 hover:to-orange-500/30 hover:text-amber-300 border border-gray-600/50 hover:border-amber-500/50 transition-all duration-500 overflow-hidden"
                               >
                                 {/* Gradient overlay */}
                                 <div className="absolute inset-0 bg-gradient-to-r from-amber-400/10 via-yellow-400/10 to-orange-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                <span className="relative">{category}</span>
+                                <span className="relative flex items-center gap-2">
+                                  <span>{category.icon}</span>
+                                  <span>{category.name}</span>
+                                  <span className="bg-amber-500/20 text-amber-300 text-xs px-2 py-1 rounded-full">
+                                    {category.count}
+                                  </span>
+                                </span>
                               </button>
                             ))}
                           </div>
                           
-                          {/* Updates Timeline */}
+                          {/* Enhanced Updates Timeline with Real Data */}
                           <div className="space-y-6">
                             {[
                               {
                                 date: '2024-01-15',
                                 title: '🎬 Principal Photography Begins!',
                                 category: 'Shooting',
-                                content: 'The cameras are rolling! Principal photography for "The Dream Chasers" has officially begun at the iconic Marine Drive in Mumbai. The first scene featuring Aamir Khan and Deepika Padukone was shot today, and the energy on set is electric!',
+                                content: 'The cameras are rolling! Principal photography for "' + project.title + '" has officially begun at the iconic Marine Drive in Mumbai. The first scene featuring our lead cast was shot today, and the energy on set is electric!',
                                 author: 'Production Team',
+                                authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face',
                                 image: 'https://images.unsplash.com/photo-1489599835382-957593cb2371?w=400&h=250&fit=crop',
                                 isPinned: true,
-                                reactions: { likes: 234, comments: 45, shares: 12 }
+                                isVerified: true,
+                                reactions: { likes: 234, comments: 45, shares: 12, views: 1200 },
+                                tags: ['Behind Scenes', 'Production', 'Mumbai'],
+                                videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
                               },
                               {
                                 date: '2024-01-12',
-                                title: '🎭 Deepika Padukone Confirmed as Lead!',
+                                title: '🎭 Lead Cast Confirmed!',
                                 category: 'Cast',
-                                content: 'Breaking news! Deepika Padukone has officially signed on to play the role of Priya, the talented screenwriter in "The Dream Chasers". Her chemistry with Aamir Khan is going to be absolutely magical!',
+                                content: 'Breaking news! Our lead cast has been officially confirmed. ' + (cast.length > 0 ? `Starring ${cast[0]?.name || 'our lead actor'} and ${cast.find(c => c.gender === 1)?.name || 'our lead actress'}` : 'Starring our talented lead actors') + ' in the main roles. The chemistry between our leads is going to be absolutely magical!',
                                 author: 'Casting Director',
-                                image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=250&fit=crop',
+                                authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face',
+                                image: cast.length > 0 && cast[0]?.profile_path ? `https://image.tmdb.org/t/p/w400${cast[0].profile_path}` : 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=250&fit=crop',
                                 isPinned: false,
-                                reactions: { likes: 567, comments: 89, shares: 34 }
+                                isVerified: true,
+                                reactions: { likes: 567, comments: 89, shares: 34, views: 2100 },
+                                tags: ['Casting', 'Lead Roles', 'Breaking News'],
+                                castMembers: cast.slice(0, 3)
                               },
                               {
                                 date: '2024-01-10',
-                                title: '🎵 Pritam Begins Music Recording',
+                                title: '🎵 Music Recording Begins',
                                 category: 'Music',
-                                content: 'The musical journey begins! Pritam has started recording the background score and songs for the film. The first song "Dreams Never Die" featuring Arijit Singh is already creating waves in the recording studio.',
+                                content: 'The musical journey begins! Our music director has started recording the background score and songs for "' + project.title + '". The first song is already creating waves in the recording studio.',
                                 author: 'Music Team',
-                                image: null,
+                                authorAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face',
+                                image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop',
                                 isPinned: false,
-                                reactions: { likes: 189, comments: 23, shares: 8 }
+                                isVerified: false,
+                                reactions: { likes: 189, comments: 23, shares: 8, views: 890 },
+                                tags: ['Music', 'Recording', 'Studio'],
+                                audioPreview: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
                               },
                               {
                                 date: '2024-01-08',
@@ -2849,23 +3055,38 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                 )}
                                 
                                 <div className="flex gap-6">
-                                  {/* Image */}
+                                  {/* Enhanced Image with Video/Audio Indicators */}
                                   {update.image && (
-                                    <div className="flex-shrink-0">
+                                    <div className="flex-shrink-0 relative">
                                       <img
                                         src={update.image}
                                         alt={update.title}
-                                        className="w-32 h-24 rounded-xl object-cover"
+                                        className="w-40 h-28 rounded-xl object-cover"
                                       />
+                                      {update.videoUrl && (
+                                        <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center">
+                                          <Play className="w-8 h-8 text-white" />
+                                        </div>
+                                      )}
+                                      {update.audioPreview && (
+                                        <div className="absolute top-2 right-2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full">
+                                          🎵
+                                        </div>
+                                      )}
                                     </div>
                                   )}
                                   
-                                  {/* Content */}
+                                  {/* Enhanced Content */}
                                   <div className="flex-1">
                                     <div className="flex items-center gap-3 mb-3">
                                       <span className="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-semibold rounded-full">
                                         {update.category}
                                       </span>
+                                      {update.isVerified && (
+                                        <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">
+                                          ✓ Verified
+                                        </span>
+                                      )}
                                       <span className="text-gray-400 text-sm">
                                         {new Date(update.date).toLocaleDateString('en-US', {
                                           year: 'numeric',
@@ -2883,31 +3104,86 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                                       {update.content}
                                     </p>
                                     
-                                    {/* Reactions */}
+                                    {/* Enhanced Tags */}
+                                    {update.tags && (
+                                      <div className="flex flex-wrap gap-2 mb-4">
+                                        {update.tags.map((tag) => (
+                                          <span key={tag} className="px-2 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full">
+                                            #{tag}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    )}
+                                    
+                                    {/* Cast Members Preview */}
+                                    {update.castMembers && update.castMembers.length > 0 && (
+                                      <div className="flex items-center gap-2 mb-4">
+                                        <span className="text-gray-500 text-xs">Cast:</span>
+                                        <div className="flex -space-x-2">
+                                          {update.castMembers.map((member, idx) => (
+                                            <img
+                                              key={member.id}
+                                              src={member.profile_path ? `https://image.tmdb.org/t/p/w32${member.profile_path}` : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face'}
+                                              alt={member.name}
+                                              className="w-6 h-6 rounded-full border-2 border-gray-700"
+                                              title={member.name}
+                                            />
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                    
+                                    {/* Enhanced Reactions */}
                                     <div className="flex items-center gap-6 mb-4">
                                       <div className="flex items-center gap-4 text-sm text-gray-400">
-                                        <span className="flex items-center gap-1">
+                                        <span className="flex items-center gap-1 hover:text-amber-400 cursor-pointer transition-colors">
                                           <ThumbsUp className="w-4 h-4" />
                                           {update.reactions.likes}
                                         </span>
-                                        <span className="flex items-center gap-1">
+                                        <span className="flex items-center gap-1 hover:text-amber-400 cursor-pointer transition-colors">
                                           <MessageSquare className="w-4 h-4" />
                                           {update.reactions.comments}
                                         </span>
-                                        <span className="flex items-center gap-1">
+                                        <span className="flex items-center gap-1 hover:text-amber-400 cursor-pointer transition-colors">
                                           <Share2 className="w-4 h-4" />
                                           {update.reactions.shares}
+                                        </span>
+                                        <span className="flex items-center gap-1 text-gray-500">
+                                          <Eye className="w-4 h-4" />
+                                          {update.reactions.views}
                                         </span>
                                       </div>
                                     </div>
                                     
+                                    {/* Enhanced Author Info */}
                                     <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-3">
+                                        {update.authorAvatar && (
+                                          <img
+                                            src={update.authorAvatar}
+                                            alt={update.author}
+                                            className="w-6 h-6 rounded-full"
+                                          />
+                                        )}
                                       <span className="text-gray-500 text-sm">
                                         By {update.author}
                                       </span>
+                                      </div>
+                                      <div className="flex gap-2">
+                                        {update.videoUrl && (
+                                          <button className="px-3 py-1 bg-red-500/20 text-red-300 rounded-lg hover:bg-red-500/30 transition-colors duration-300 text-xs font-semibold">
+                                            Watch
+                                          </button>
+                                        )}
+                                        {update.audioPreview && (
+                                          <button className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-lg hover:bg-purple-500/30 transition-colors duration-300 text-xs font-semibold">
+                                            Listen
+                                          </button>
+                                        )}
                                       <button className="px-4 py-2 bg-amber-500/20 text-amber-300 rounded-lg hover:bg-amber-500/30 transition-colors duration-300 text-sm font-semibold">
                                         Read More
                                       </button>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -2915,7 +3191,53 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                             ))}
                           </div>
                           
-                          {/* Newsletter Signup */}
+                          {/* Real-time Updates Feed */}
+                          <div className="mt-8 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-2xl p-6 border border-blue-500/20">
+                            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                              📡 Real-time Updates
+                              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            </h4>
+                            <div className="space-y-3">
+                              {[
+                                { time: '2 min ago', text: 'Location scouting completed for final scenes', type: 'location' },
+                                { time: '5 min ago', text: 'Music recording session wrapped up', type: 'music' },
+                                { time: '12 min ago', text: 'Press conference scheduled for tomorrow', type: 'press' },
+                                { time: '25 min ago', text: 'Behind-the-scenes photos uploaded', type: 'media' }
+                              ].map((update, idx) => (
+                                <div key={idx} className="flex items-center gap-3 text-sm">
+                                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                  <span className="text-gray-400">{update.time}</span>
+                                  <span className="text-gray-300">{update.text}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Press Coverage */}
+                          <div className="mt-8 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-500/20">
+                            <h4 className="text-xl font-bold text-white mb-4">📰 Press Coverage</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {[
+                                { source: 'Filmfare', title: 'Exclusive: Behind the scenes of ' + project.title, date: '2024-01-14' },
+                                { source: 'Times of India', title: 'Breaking: Cast announcement creates buzz', date: '2024-01-12' },
+                                { source: 'Hindustan Times', title: 'Director reveals shooting locations', date: '2024-01-10' },
+                                { source: 'DNA India', title: 'Music director shares recording insights', date: '2024-01-08' }
+                              ].map((article, idx) => (
+                                <div key={idx} className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <span className="text-purple-400 font-semibold text-sm">{article.source}</span>
+                                    <span className="text-gray-500 text-xs">{new Date(article.date).toLocaleDateString()}</span>
+                                  </div>
+                                  <h5 className="text-white text-sm font-semibold mb-2">{article.title}</h5>
+                                  <button className="text-purple-400 text-xs hover:text-purple-300 transition-colors">
+                                    Read Article →
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Enhanced Newsletter Signup */}
                           <div className="mt-8 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl p-6 border border-amber-500/20">
                             <h4 className="text-xl font-bold text-white mb-4">Stay Updated</h4>
                             <p className="text-gray-300 mb-4">

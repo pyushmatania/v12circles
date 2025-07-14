@@ -27,16 +27,18 @@ import {
   ArrowLeft,
   Film,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Music,
+  Star
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import useIsMobile from '../hooks/useIsMobile';
 import Merchandise from './Merchandise';
 import { comprehensiveCommunityData, type RealCommunityItem } from '../data/comprehensiveCommunityData';
 import OptimizedImage from './OptimizedImage';
-import imagePreloader from '../services/imagePreloader';
-import { useImagePerformance } from '../hooks/useImagePerformance';
-import ImagePerformancePanel from './ImagePerformancePanel';
+
+
+import { getSpotifyArtistData, hasSpotifyData } from '../data/spotifyArtistImages';
 
 // Enhanced interfaces for hierarchical community structure
 interface FeedPost {
@@ -62,48 +64,19 @@ const Community: React.FC = () => {
   const actresses = comprehensiveCommunityData.actresses;
   const directors = comprehensiveCommunityData.directors;
   const productionHouses = comprehensiveCommunityData.productionHouses;
+  const musicArtists = comprehensiveCommunityData.musicArtists;
 
-  // Performance monitoring
-  const { startMonitoring, stopMonitoring, getPerformanceReport } = useImagePerformance();
 
-  // Preload images when component mounts
-  useEffect(() => {
-    const preloadImages = async () => {
-      try {
-        // Start performance monitoring
-        startMonitoring();
-        
-        // Set up global performance tracker
-        window.imagePerformanceTracker = (url: string, loadTime: number, success: boolean) => {
-          console.log(`Image loaded: ${url} in ${loadTime.toFixed(2)}ms (${success ? 'success' : 'failed'})`);
-        };
-        
-        await imagePreloader.preloadAllCommunityImages();
-        console.log('Community images preloaded:', imagePreloader.getStats());
-        
-        // Log performance report after 5 seconds
-        setTimeout(() => {
-          const report = getPerformanceReport();
-          console.log('Image Performance Report:', report);
-        }, 5000);
-        
-      } catch (error) {
-        console.warn('Error preloading images:', error);
-      }
-    };
-
-    preloadImages();
-
-    return () => {
-      stopMonitoring();
-      delete window.imagePerformanceTracker;
-    };
-  }, [startMonitoring, stopMonitoring, getPerformanceReport]);
 
   // Hierarchical community state
-  const [selectedCategory, setSelectedCategory] = useState<'productionHouse' | 'movie' | 'director' | 'actor' | 'actress'>('movie');
+  const [selectedCategory, setSelectedCategory] = useState<'productionHouse' | 'movie' | 'director' | 'actor' | 'actress' | 'musicArtist'>('movie');
   const [selectedItem, setSelectedItem] = useState<RealCommunityItem | null>(null);
   const [isItemSelected, setIsItemSelected] = useState(false);
+  
+  // Static data integration - no API calls
+  const [mergedMusicArtists, setMergedMusicArtists] = useState<RealCommunityItem[]>([]);
+  const [isLoadingSpotifyArtists, setIsLoadingSpotifyArtists] = useState(false);
+
   
   // Original state for when item is selected
   const [activeTab, setActiveTab] = useState<'feed' | 'channels' | 'friends' | 'media' | 'perks' | 'merch'>('feed');
@@ -467,14 +440,15 @@ const Community: React.FC = () => {
   const { theme } = useTheme();
   const isMobile = useIsMobile();
 
-  // Use TMDB community data
+  // Use TMDB community data with Spotify for music artists
   const getCommunityData = (): Record<string, RealCommunityItem[]> => {
     return {
       productionHouse: productionHouses,
       movie: movies,
       director: directors,
       actor: actors,
-      actress: actresses
+      actress: actresses,
+      musicArtist: mergedMusicArtists.length > 0 ? mergedMusicArtists : musicArtists
     };
   };
 
@@ -484,6 +458,56 @@ const Community: React.FC = () => {
   const itemsPerPage = 10;
   const totalPages = Math.ceil(currentCategoryItems.length / itemsPerPage);
   const paginatedItems = currentCategoryItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+
+  // Static music artist data processing - no API calls
+  useEffect(() => {
+    const processMusicArtists = () => {
+      setIsLoadingSpotifyArtists(true);
+      
+      try {
+        // Process local music artists with saved Spotify images
+        const processedData = musicArtists.map(artist => {
+          const spotifyData = getSpotifyArtistData(artist.name);
+          
+          if (spotifyData) {
+            // Use saved Spotify data if available
+            return {
+              ...artist,
+              avatar: spotifyData.avatar,
+              cover: spotifyData.cover,
+              description: spotifyData.genres?.slice(0, 3).join(', ') || artist.description,
+              followers: spotifyData.followers || artist.followers,
+              verified: spotifyData.popularity > 70,
+              rating: (spotifyData.popularity || 50) / 10,
+              knownFor: spotifyData.genres?.slice(0, 3) || artist.knownFor,
+              spotifyUrl: spotifyData.spotifyUrl
+            };
+          } else {
+            // Use high-quality placeholder images for artists not found in Spotify
+            return {
+              ...artist,
+              avatar: artist.avatar.includes('tmdb.org') || artist.avatar.includes('placeholder') || !artist.avatar
+                ? `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=face&auto=format&q=80`
+                : artist.avatar,
+              cover: artist.cover.includes('tmdb.org') || artist.cover.includes('placeholder') || !artist.cover
+                ? `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop&auto=format&q=80`
+                : artist.cover
+            };
+          }
+        });
+        
+        // Set final processed data
+        setMergedMusicArtists(processedData);
+        
+      } catch (error) {
+        console.error('Error processing music artist data:', error);
+      } finally {
+        setIsLoadingSpotifyArtists(false);
+      }
+    };
+    
+    processMusicArtists();
+  }, [musicArtists]);
 
   // Reset page when category changes
   useEffect(() => {
@@ -744,7 +768,8 @@ const Community: React.FC = () => {
               { id: 'productionHouse', label: 'Studios', icon: '🏢', color: 'from-rose-500 to-pink-500', shape: 'square' },
               { id: 'director', label: 'Directors', icon: '🎥', color: 'from-red-600 to-rose-600', shape: 'round' },
               { id: 'actor', label: 'Actors', icon: '👨‍🎭', color: 'from-pink-500 to-rose-500', shape: 'round' },
-              { id: 'actress', label: 'Actresses', icon: '👩‍🎭', color: 'from-rose-600 to-red-600', shape: 'round' }
+              { id: 'actress', label: 'Actresses', icon: '👩‍🎭', color: 'from-rose-600 to-red-600', shape: 'round' },
+              { id: 'musicArtist', label: 'Music Artists', icon: '🎤', color: 'from-blue-500 to-teal-500', shape: 'round' }
             ].map((category, index) => {
               const isSelected = selectedCategory === category.id;
               const isPerson = category.shape === 'round';
@@ -849,11 +874,32 @@ const Community: React.FC = () => {
                 {selectedCategory === 'director' && 'Famous Directors'}
                 {selectedCategory === 'actor' && 'Leading Actors'}
                 {selectedCategory === 'actress' && 'Leading Actresses'}
+                {selectedCategory === 'musicArtist' && (
+                  <div className="flex items-center justify-center gap-2">
+                    <Music className="w-6 h-6 text-green-500" />
+                    <span>Music Artists</span>
+                    {isLoadingSpotifyArtists && (
+                      <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+                    )}
+                  </div>
+                )}
               </h3>
               <p className={`text-gray-500 ${
                 theme === 'light' ? 'text-gray-600' : 'text-gray-400'
               }`}>
-                Tap to join a community
+                {selectedCategory === 'musicArtist' ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <span>Curated collection with real Spotify data</span>
+                    {isLoadingSpotifyArtists && (
+                      <span className="text-blue-500 text-xs">(Processing music artists...)</span>
+                    )}
+                    {!isLoadingSpotifyArtists && (
+                      <span className="text-green-500 text-xs">✓ Real Spotify images loaded</span>
+                    )}
+                  </div>
+                ) : (
+                  'Tap to join a community'
+                )}
               </p>
             </div>
                         {/* Carousel-style Arrow Navigation + Data Grid Wrapper */}
@@ -928,10 +974,24 @@ const Community: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
+                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 min-h-[400px]"
                 >
+                  {/* Loading state - only show if no items available */}
+                  {selectedCategory === 'musicArtist' && isLoadingSpotifyArtists && paginatedItems.length === 0 && (
+                    Array.from({ length: 10 }).map((_, index) => (
+                      <div key={`loading-${index}`} className="flex flex-col items-center gap-3">
+                        <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 animate-pulse" />
+                        <div className="w-20 h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+                        <div className="w-16 h-3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+                      </div>
+                    ))
+                  )}
+                  
+
+                  
+                  {/* Regular items - always show if available */}
                   {paginatedItems.map((item, index) => {
-                    const isPerson = selectedCategory === 'director' || selectedCategory === 'actor' || selectedCategory === 'actress';
+                    const isPerson = selectedCategory === 'director' || selectedCategory === 'actor' || selectedCategory === 'actress' || selectedCategory === 'musicArtist';
                     return (
                       <div
                         key={item.id}
@@ -939,9 +999,15 @@ const Community: React.FC = () => {
                       >
                         <button
                           onClick={() => {
+                            // For Spotify music artists, open Spotify link if available
+                            if (selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') && item.spotifyUrl) {
+                              window.open(item.spotifyUrl, '_blank');
+                              return;
+                            }
                             setSelectedItem(item);
                             setIsItemSelected(true);
                           }}
+                          title={selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') ? 'Click to open Spotify profile' : 'Click to view details'}
                           className={`group relative aspect-square w-full max-w-[120px] overflow-hidden transition-all duration-300 ${
                             isPerson 
                               ? 'rounded-full' 
@@ -950,7 +1016,7 @@ const Community: React.FC = () => {
                 theme === 'light'
                               ? 'bg-white shadow-lg hover:shadow-xl border border-red-200 hover:border-rose-400'
                               : 'bg-slate-800 shadow-lg hover:shadow-xl border border-red-700 hover:border-rose-500'
-                          }`}
+                          } ${selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') ? 'cursor-pointer hover:scale-105' : ''}`}
                         >
                           {/* Instagram-style gradient border for active users */}
                           {item.isActive && (
@@ -983,8 +1049,15 @@ const Community: React.FC = () => {
                           {item.verified && (
                             <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-red-500 to-rose-500 rounded-full flex items-center justify-center shadow-lg shadow-purple-500/50">
                               <CheckCircle className="w-4 h-4 text-white" />
-                  </div>
-                )}
+                            </div>
+                          )}
+                          
+                          {/* Spotify Badge for Music Artists */}
+                          {selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') && (
+                            <div className="absolute -bottom-1 -left-1 w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/50">
+                              <Music className="w-3 h-3 text-white" />
+                            </div>
+                          )}
                           
                           {/* Active Status Indicator */}
                           {item.isActive && (
@@ -1030,6 +1103,20 @@ const Community: React.FC = () => {
                                 theme === 'light' ? 'text-slate-400' : 'text-slate-500'
                               }`}>
                                 {item.followers?.toLocaleString()}
+                              </span>
+                            </div>
+                          )}
+                          
+                          {/* Spotify Link for Music Artists */}
+                          {selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') && (
+                            <div className="flex items-center justify-center gap-1 text-xs">
+                              <Music className={`w-3 h-3 ${
+                                theme === 'light' ? 'text-green-500' : 'text-green-400'
+                              }`} />
+                              <span className={`${
+                                theme === 'light' ? 'text-green-600' : 'text-green-400'
+                              }`}>
+                                Spotify
                               </span>
                             </div>
                           )}
@@ -2079,7 +2166,7 @@ const Community: React.FC = () => {
       </div>
       
       {/* Performance Monitoring Panel */}
-      <ImagePerformancePanel />
+      
     </div>
   );
 };

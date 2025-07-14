@@ -1,5 +1,6 @@
 import { Project } from '../types';
 import { Testimonial } from '../types';
+import { musicAlbums } from './musicAlbums';
 
 export const projects: Project[] = [
   {
@@ -93,6 +94,7 @@ export const projects: Project[] = [
     ],
     "disabled": false,
     "tmdbRating": 7,
+    "tmdbId": 11831,
     "runtime": 210,
     "releaseYear": 1975,
     "country": "India",
@@ -187,6 +189,7 @@ export const projects: Project[] = [
     ],
     "disabled": false,
     "tmdbRating": 8.518,
+    "tmdbId": 19404,
     "runtime": 190,
     "releaseYear": 1995,
     "country": "India",
@@ -10173,7 +10176,6 @@ export const projects: Project[] = [
     "createdAt": "2025-07-07T10:40:39.925Z",
     "updatedAt": "2025-07-07T10:40:39.925Z",
     "poster": "https://m.media-amazon.com/images/M/MV5BMjI4NzM4MzA3Ml5BMl5BanBnXkFtZTgwNzg4MjMzMzE@._V1_SX300.jpg",
-    "disabled": true,
     "description": "A compelling film that explores themes of love, life, and human connection.",
     "director": "",
     "genre": "Drama, Action",
@@ -14648,115 +14650,7 @@ export const projects: Project[] = [
     ],
     "disabled": false
   },
-  {
-    "id": "78",
-    "title": "Rangbaaz",
-    "type": "webseries",
-    "category": "Bollywood",
-    "language": "Hindi",
-    "status": "active",
-    "fundedPercentage": 81,
-    "targetAmount": 83800000,
-    "raisedAmount": 67900000,
-    "createdAt": "2025-07-07T08:57:01.748Z",
-    "updatedAt": "2025-07-07T08:57:01.748Z",
-    "poster": "https://m.media-amazon.com/images/M/MV5BMjI2NzM4MzA3Ml5BMl5BanBnXkFtZTgwNzg4MjMzMzE@._V1_SX300.jpg",
-    "disabled": true,
-    "description": "Rangbaaz Phir Se is inspired from the life of Anandpal Singh who was a gangster active in the state of Rajasthan. The series chronicles his rise to becoming the most wanted criminal in the history of Rajasthan.",
-    "director": "",
-    "genre": "Action, Biography, Crime",
-    "tags": [
-      "Action",
-      "Biography",
-      "Crime"
-    ],
-    "perks": [
-      "Behind-the-scenes",
-      "Signed Poster",
-      "Premiere Invite"
-    ],
-    "rating": 7.8,
-    "trailer": "https://www.youtube.com/watch?v=Ghy63iXUg-U",
-    "movie": "Rangbaaz",
-    "keyPeople": [
-      {
-        "id": "shakib_khan_actor",
-        "name": "Shakib Khan",
-        "role": "actor",
-        "isMainCast": true,
-        "orderIndex": 0
-      },
-      {
-        "id": "shobnom_bubly_actress",
-        "name": "Shobnom Bubly",
-        "role": "actress",
-        "isMainCast": true,
-        "orderIndex": 1
-      },
-      {
-        "id": "ruprong_films_limited_producer",
-        "name": "Ruprong Films Limited",
-        "role": "producer",
-        "isMainCast": false,
-        "orderIndex": 2
-      },
-      {
-        "id": "jay_joshi_other",
-        "name": "Jay Joshi",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 3
-      },
-      {
-        "id": "saqib_saleem_other",
-        "name": "Saqib Saleem",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 4
-      },
-      {
-        "id": "jimmy_shergill_other",
-        "name": "Jimmy Shergill",
-        "role": "other",
-        "isMainCast": false,
-        "orderIndex": 5
-      }
-    ],
-    "actor": "Shakib Khan",
-    "actress": "Shobnom Bubly",
-    "productionHouse": "Ruprong Films Limited",
-    "targetAmountHuman": "8 crore 38 lakh",
-    "raisedAmountHuman": "6 crore 79 lakh",
-    "keyCommunityData": [
-      {
-        "id": "kc_78",
-        "movieId": "78",
-        "movieName": "Rangbaaz",
-        "productionHouse": "Ruprong Films Limited",
-        "keyPeople": [
-          "Jay Joshi",
-          "Saqib Saleem",
-          "Jimmy Shergill"
-        ],
-        "actor": "Jay Joshi",
-        "actress": "Saqib Saleem",
-        "director": "N/A"
-      }
-    ],
-    "disabled": true,
-    "releaseYear": 2017,
-    "country": "Bangladesh",
-    "tmdbGenres": [
-      "Comedy",
-      "Action"
-    ],
-    "spokenLanguages": [
-      "Bengali"
-    ],
-    "tmdbOverview": "A widow gang lady want her son to follow her husband path of becoming one of the most dangerous gang leader in the city, while trying to fulfilling his mother wise Sallu get involve in love and things get hilarious when he start failing on every mission.",
-    "tagline": "Shakib Khan's Rangbaz",
-    "imdbId": "tt6799506"
-  },
+
   {
     "id": "79",
     "title": "Ghoul",
@@ -18961,7 +18855,9 @@ export const projects: Project[] = [
       }
     ],
     "disabled": true
-  }
+  },
+  // Music Albums from Spotify API
+  ...musicAlbums
 ];
 
 // Diverse, Randomized Arrays for Different Sections

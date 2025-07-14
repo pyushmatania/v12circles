@@ -54,7 +54,7 @@ const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, 
     
     if (term.length > 2) {
       const results = projects
-        .filter(project => project.disabled === false && project.type !== 'music')
+        .filter(project => project.disabled === false)
         .filter(project => !compareProjects.some(p => p.id === project.id))
         .filter(project => 
           project.title.toLowerCase().includes(term.toLowerCase()) ||

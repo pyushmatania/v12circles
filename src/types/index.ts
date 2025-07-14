@@ -53,6 +53,7 @@ export interface Project {
   artist?: string;
   
   // New TMDB enriched fields
+  tmdbId?: number;
   tmdbRating?: number;
   runtime?: number;
   releaseYear?: number;
@@ -63,6 +64,16 @@ export interface Project {
   tmdbOverview?: string;
   tagline?: string;
   imdbId?: string;
+  
+  // Spotify API fields for music albums
+  spotifyId?: string;
+  spotifyUrl?: string;
+  artistSpotifyId?: string;
+  artistSpotifyUrl?: string;
+  albumType?: string;
+  totalTracks?: number;
+  popularity?: number;
+  followers?: number;
 }
 
 export interface Testimonial {
