@@ -86,10 +86,10 @@ export const useTMDBData = () => {
         if (import.meta.env.DEV) {
           debug.error('Error fetching data:', err);
         }
-      } finally {
-        setLoading(false);
-      }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
     fetchAllData();
   }, []);

@@ -52,8 +52,8 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
   // 🚀 Load recent searches from localStorage
   useEffect(() => {
     try {
-      const savedSearches = localStorage.getItem('circles_recent_searches');
-      if (savedSearches) {
+    const savedSearches = localStorage.getItem('circles_recent_searches');
+    if (savedSearches) {
         const parsed = JSON.parse(savedSearches);
         if (Array.isArray(parsed)) {
           setRecentSearches(parsed);
@@ -163,7 +163,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
     setRecentSearches(updatedSearches);
     
     try {
-      localStorage.setItem('circles_recent_searches', JSON.stringify(updatedSearches));
+    localStorage.setItem('circles_recent_searches', JSON.stringify(updatedSearches));
     } catch (error) {
       console.warn('Failed to save recent searches:', error);
     }
@@ -173,7 +173,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
   const clearRecentSearches = useCallback(() => {
     setRecentSearches([]);
     try {
-      localStorage.removeItem('circles_recent_searches');
+    localStorage.removeItem('circles_recent_searches');
     } catch (error) {
       console.warn('Failed to clear recent searches:', error);
     }
@@ -233,15 +233,15 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
     
     try {
       const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-      const parts = text.split(regex);
-      
-      return parts.map((part, index) => 
-        regex.test(part) ? (
-          <span key={index} className="bg-yellow-400/30 text-yellow-200 font-semibold">
-            {part}
-          </span>
-        ) : part
-      );
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) => 
+      regex.test(part) ? (
+        <span key={index} className="bg-yellow-400/30 text-yellow-200 font-semibold">
+          {part}
+        </span>
+      ) : part
+    );
     } catch (error) {
       // Fallback to original text if regex fails
       return text;
@@ -250,22 +250,22 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
 
   // 🚀 Handle keyboard navigation with enhanced logic
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    const totalItems = searchResults.length > 0 
-      ? searchResults.length 
-      : recentSearches.length;
-
+        const totalItems = searchResults.length > 0 
+          ? searchResults.length 
+          : recentSearches.length;
+        
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
         if (isOpen && totalItems > 0) {
-          setSelectedIndex(prev => (prev + 1) % totalItems);
-        } else {
-          setIsOpen(true);
-        }
+        setSelectedIndex(prev => (prev + 1) % totalItems);
+      } else {
+        setIsOpen(true);
+      }
         break;
-        
+    
       case 'ArrowUp':
-        e.preventDefault();
+      e.preventDefault();
         if (isOpen && totalItems > 0) {
           setSelectedIndex(prev => prev <= 0 ? totalItems - 1 : prev - 1);
         }
@@ -415,13 +415,13 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
             } text-sm`}
           />
           {searchTerm && (
-            <button
+      <button
               type="button"
               onClick={clearSearch}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
             >
               <X className="w-4 h-4" />
-            </button>
+      </button>
           )}
         </div>
       </form>
@@ -440,10 +440,10 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
                 : 'bg-gray-900 border-gray-600'
             }`}
           >
-            {isLoading ? (
+              {isLoading ? (
               <div className="flex items-center justify-center py-4">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
-              </div>
+            </div>
             ) : searchResults.length > 0 ? (
               <>
                 {SearchResults}
