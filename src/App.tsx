@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense, useCallback, memo, useEffect } from 'react';
+import { useState, lazy, Suspense, useCallback, memo, useEffect, useMemo } from 'react';
 import Hero from './components/Hero';
 import ProblemSolution from './components/ProblemSolution';
 import HowItWorks from './components/HowItWorks';
@@ -19,7 +19,7 @@ import DebugPanel from './components/DebugPanel';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Project } from './types';
 
-// Lazy load heavy components for better performance
+// 🚀 Lazy load heavy components for optimal performance
 const Dashboard = lazy(() => import('./components/Dashboard'));
 const ProjectCatalog = lazy(() => import('./components/ProjectCatalog'));
 const Community = lazy(() => import('./components/Community'));
@@ -33,46 +33,68 @@ const NewsAndUpdates = lazy(() => import('./components/NewsAndUpdates'));
 const NotificationCenter = lazy(() => import('./components/NotificationCenter'));
 const EnhancedSearch = lazy(() => import('./components/EnhancedSearch'));
 
-// Optimized loading component for lazy-loaded routes
+// 🎯 Optimized loading component with memoization
 const LoadingSpinner = memo(() => (
   <div className="min-h-screen flex items-center justify-center bg-black">
     <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
   </div>
 ));
 
+LoadingSpinner.displayName = 'LoadingSpinner';
+
+// 🛡️ Type definitions for better type safety
+type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail';
+type ProjectDetailTab = 'overview' | 'invest';
+type AuthModalMode = 'login' | 'register';
+
+
+
+/**
+ * 🎯 AppContent - Main application content with optimized state management
+ * @description Handles view navigation, authentication, and component rendering
+ */
 function AppContent() {
-  const [currentView, setCurrentView] = useState<'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail'>('home');
-  const [selectedProject, setSelectedProject] = useState<any>(null);
-  const [projectDetailTab, setProjectDetailTab] = useState<'overview' | 'invest'>('overview');
+  // 🎯 State management with proper typing
+  const [currentView, setCurrentView] = useState<ViewType>('home');
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [projectDetailTab, setProjectDetailTab] = useState<ProjectDetailTab>('overview');
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
+  const [authModalMode, setAuthModalMode] = useState<AuthModalMode>('login');
+  const [previousView, setPreviousView] = useState<ViewType>('home');
+  const [viewScrollPositions, setViewScrollPositions] = useState<Record<string, number>>({});
+
+  // 🎯 Hooks
   const { isAuthenticated } = useAuth();
   const { toasts, toast, removeToast } = useToast();
-  const [catalogScroll, setCatalogScroll] = useState(0);
-  const [previousView, setPreviousView] = useState<string>('home');
-  const [viewScrollPositions, setViewScrollPositions] = useState<Record<string, number>>({});
-  const [viewStates, setViewStates] = useState<Record<string, any>>({});
 
-  // Handle logout redirect
+  // 🚀 Memoized constants for performance
+  const protectedViews = useMemo(() => ['profile', 'portfolio'] as const, []);
+  const isCurrentViewProtected = useMemo(() => 
+    protectedViews.includes(currentView as any), 
+    [currentView, protectedViews]
+  );
+
+  // 🛡️ Handle logout redirect with proper cleanup
   useEffect(() => {
     const logoutTimestamp = localStorage.getItem('logout_timestamp');
     if (logoutTimestamp && !isAuthenticated) {
       // Redirect to home if on protected views
-      if (['profile', 'portfolio'].includes(currentView)) {
+      if (isCurrentViewProtected) {
         setCurrentView('home');
       }
       localStorage.removeItem('logout_timestamp');
     }
-  }, [isAuthenticated, currentView]);
+  }, [isAuthenticated, isCurrentViewProtected]);
 
-  // Additional safety check for protected views
+  // 🛡️ Additional safety check for protected views
   useEffect(() => {
-    if (!isAuthenticated && ['profile', 'portfolio'].includes(currentView)) {
+    if (!isAuthenticated && isCurrentViewProtected) {
       setCurrentView('home');
     }
-  }, [isAuthenticated, currentView]);
+  }, [isAuthenticated, isCurrentViewProtected]);
 
-  const handleAuthRequired = useCallback((mode: 'login' | 'register' = 'login') => {
+  // 🚀 Optimized authentication handler with useCallback
+  const handleAuthRequired = useCallback((mode: AuthModalMode = 'login'): boolean => {
     if (!isAuthenticated) {
       setAuthModalMode(mode);
       setAuthModalOpen(true);
@@ -81,9 +103,20 @@ function AppContent() {
     return true;
   }, [isAuthenticated]);
 
-  const handleViewChange = useCallback((view: typeof currentView) => {
+  // 🚀 Optimized view state management
+  const saveCurrentViewState = useCallback(() => {
+    const currentScrollY = window.scrollY;
+    
+    setViewScrollPositions(prev => ({
+      ...prev,
+      [currentView]: currentScrollY
+    }));
+  }, [currentView]);
+
+  // 🚀 Optimized view change handler
+  const handleViewChange = useCallback((view: ViewType) => {
     // Check if authentication is required for certain views
-    if (['profile', 'portfolio'].includes(view)) {
+    if (protectedViews.includes(view as any)) {
       if (!handleAuthRequired()) {
         toast.info('Please sign in', 'You need to be logged in to access this page');
         return;
@@ -91,48 +124,27 @@ function AppContent() {
     }
     
     // Save current view's scroll position and state before changing
-    setViewScrollPositions(prev => ({
-      ...prev,
-      [currentView]: window.scrollY
-    }));
-    
-    // Save current view state (filters, search terms, etc.)
-    setViewStates(prev => ({
-      ...prev,
-      [currentView]: {
-        scrollY: window.scrollY,
-        timestamp: Date.now()
-      }
-    }));
+    saveCurrentViewState();
     
     setPreviousView(currentView);
     setCurrentView(view);
-  }, [handleAuthRequired, toast, currentView]);
+  }, [handleAuthRequired, toast, currentView, protectedViews, saveCurrentViewState]);
 
-  const handleProjectSelect = (project: Project, tab?: 'overview' | 'invest') => {
+  // 🚀 Optimized project selection handler
+  const handleProjectSelect = useCallback((project: Project, tab?: ProjectDetailTab) => {
     // Save current view's scroll position and state before opening project detail
-    setViewScrollPositions(prev => ({
-      ...prev,
-      [currentView]: window.scrollY
-    }));
-    
-    setViewStates(prev => ({
-      ...prev,
-      [currentView]: {
-        scrollY: window.scrollY,
-        timestamp: Date.now()
-      }
-    }));
+    saveCurrentViewState();
     
     setPreviousView(currentView);
     setSelectedProject(project);
     setProjectDetailTab(tab || 'overview');
     setCurrentView('project-detail');
-  };
+  }, [currentView, saveCurrentViewState]);
 
-  const handleProjectDetailClose = () => {
+  // 🚀 Optimized project detail close handler
+  const handleProjectDetailClose = useCallback(() => {
     // Restore previous view
-    setCurrentView(previousView as any);
+    setCurrentView(previousView);
     
     // Restore scroll position after a short delay to ensure view is rendered
     setTimeout(() => {
@@ -144,9 +156,43 @@ function AppContent() {
         });
       }
     }, 100);
-  };
+  }, [previousView, viewScrollPositions]);
 
-  // If admin view is selected, render the admin dashboard
+  // 🚀 Optimized project selection from navigation
+  const handleNavigationProjectSelect = useCallback((project: Project, tab?: ProjectDetailTab) => {
+    // Save current view's scroll position and state
+    saveCurrentViewState();
+    
+    setPreviousView(currentView);
+    setSelectedProject(project);
+    setProjectDetailTab(tab || 'overview');
+    setCurrentView('project-detail');
+  }, [currentView, saveCurrentViewState]);
+
+  // 🚀 Optimized project selection from comparison
+  const handleComparisonProjectSelect = useCallback((project: Project, tab?: ProjectDetailTab) => {
+    // Save current view's scroll position and state
+    saveCurrentViewState();
+    
+    setPreviousView(currentView);
+    setSelectedProject(project);
+    setProjectDetailTab(tab || 'overview');
+    setCurrentView('project-detail');
+  }, [currentView, saveCurrentViewState]);
+
+  // 🚀 Optimized project selection from live projects
+  const handleLiveProjectsSelect = useCallback((project: Project, tab?: ProjectDetailTab) => {
+    // Save current view's scroll position and state
+    saveCurrentViewState();
+    
+    setPreviousView(currentView);
+    setSelectedProject(project);
+    setProjectDetailTab(tab || 'overview');
+    setCurrentView('project-detail');
+  }, [currentView, saveCurrentViewState]);
+
+  // 🚀 Memoized admin view renderer
+  const adminView = useMemo(() => {
   if (currentView === 'admin') {
     return (
       <Suspense fallback={<LoadingSpinner />}>
@@ -154,8 +200,11 @@ function AppContent() {
       </Suspense>
     );
   }
+    return null;
+  }, [currentView]);
 
-  const renderCurrentView = () => {
+  // 🚀 Memoized current view renderer
+  const renderCurrentView = useCallback(() => {
     switch (currentView) {
       case 'projects':
         return (
@@ -203,26 +252,7 @@ function AppContent() {
             <ProjectComparison 
               onTrackInvestment={() => handleViewChange('dashboard')} 
               setCurrentView={handleViewChange}
-              onProjectSelect={(project, tab) => {
-                // Save current view's scroll position and state
-                setViewScrollPositions(prev => ({
-                  ...prev,
-                  [currentView]: window.scrollY
-                }));
-                
-                setViewStates(prev => ({
-                  ...prev,
-                  [currentView]: {
-                    scrollY: window.scrollY,
-                    timestamp: Date.now()
-                  }
-                }));
-                
-                setPreviousView(currentView);
-                setSelectedProject(project);
-                setProjectDetailTab(tab || 'overview');
-                setCurrentView('project-detail');
-              }}
+              onProjectSelect={handleComparisonProjectSelect}
             />
           </Suspense>
         );
@@ -265,26 +295,7 @@ function AppContent() {
             <LiveProjects
               onViewAll={() => handleViewChange('projects')}
               onTrackInvestment={() => handleViewChange('dashboard')}
-              onProjectSelect={(project, tab) => {
-                // Save current view's scroll position and state
-                setViewScrollPositions(prev => ({
-                  ...prev,
-                  [currentView]: window.scrollY
-                }));
-                
-                setViewStates(prev => ({
-                  ...prev,
-                  [currentView]: {
-                    scrollY: window.scrollY,
-                    timestamp: Date.now()
-                  }
-                }));
-                
-                setPreviousView(currentView);
-                setSelectedProject(project);
-                setProjectDetailTab(tab || 'overview');
-                setCurrentView('project-detail');
-              }}
+              onProjectSelect={handleLiveProjectsSelect}
             />
             <WhyThisMatters onJoin={() => handleAuthRequired('register')} />
             <TechTrust />
@@ -293,50 +304,60 @@ function AppContent() {
           </>
         );
     }
-  };
+  }, [
+    currentView,
+    handleViewChange,
+    handleProjectSelect,
+    handleComparisonProjectSelect,
+    handleLiveProjectsSelect,
+    handleProjectDetailClose,
+    isAuthenticated,
+    selectedProject,
+    projectDetailTab,
+    handleAuthRequired
+  ]);
+
+  // 🚀 Memoized navigation props
+  const navigationProps = useMemo(() => ({
+    currentView,
+    setCurrentView: handleViewChange,
+    onAuthRequired: handleAuthRequired,
+    onProjectSelect: handleNavigationProjectSelect
+  }), [currentView, handleViewChange, handleAuthRequired, handleNavigationProjectSelect]);
+
+  // 🚀 Memoized auth modal props
+  const authModalProps = useMemo(() => ({
+    isOpen: authModalOpen,
+    onClose: () => setAuthModalOpen(false),
+    initialMode: authModalMode
+  }), [authModalOpen, authModalMode]);
+
+  // 🚀 Memoized toast container props
+  const toastContainerProps = useMemo(() => ({
+    toasts,
+    onClose: removeToast
+  }), [toasts, removeToast]);
+
+  // 🚀 Early return for admin view
+  if (adminView) {
+    return adminView;
+  }
 
   return (
     <div className="min-h-screen transition-colors duration-300 overflow-x-hidden">
-      <Navigation
-        currentView={currentView}
-        setCurrentView={handleViewChange}
-        onAuthRequired={handleAuthRequired}
-        onProjectSelect={(project, tab) => {
-          // Save current view's scroll position and state
-          setViewScrollPositions(prev => ({
-            ...prev,
-            [currentView]: window.scrollY
-          }));
-          
-          setViewStates(prev => ({
-            ...prev,
-            [currentView]: {
-              scrollY: window.scrollY,
-              timestamp: Date.now()
-            }
-          }));
-          
-          setPreviousView(currentView);
-          setSelectedProject(project);
-          setProjectDetailTab(tab || 'overview');
-          setCurrentView('project-detail');
-        }}
-      />
+      <Navigation {...navigationProps} />
       {renderCurrentView()}
       <DebugPanel />
-      <AuthModal 
-        isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-        initialMode={authModalMode}
-      />
-      <ToastContainer 
-        toasts={toasts}
-        onClose={removeToast}
-      />
+      <AuthModal {...authModalProps} />
+      <ToastContainer {...toastContainerProps} />
     </div>
   );
 }
 
+/**
+ * 🎯 App - Root application component with error boundary and providers
+ * @description Wraps the application with necessary providers and error handling
+ */
 function App() {
   return (
     <ErrorBoundary>

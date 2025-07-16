@@ -16,7 +16,6 @@ import {
   X 
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
-import ProjectDetailModal from './ProjectDetailModal';
 import { Project } from '../types';
 import { projects } from '../data/projects';
 import confetti from 'canvas-confetti';
@@ -143,11 +142,12 @@ const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, 
     
     if (criterion === 'fundedPercentage' || criterion === 'rating') {
       return Math.max(...compareProjects.map(p => p[criterion] as number || 0));
-    } else if (criterion === 'timeLeft') {
+    } else if (criterion === 'timeLeft' as keyof Project) {
       // For timeLeft, lower days is better (closer to funding goal)
       const daysLeft = compareProjects.map(p => {
-        if (!p.timeLeft) return Infinity;
-        const days = parseInt(p.timeLeft.split(' ')[0]);
+        const timeLeft = (p as any).timeLeft;
+        if (!timeLeft) return Infinity;
+        const days = parseInt(timeLeft.split(' ')[0]);
         return isNaN(days) ? Infinity : days;
       });
       return Math.min(...daysLeft);

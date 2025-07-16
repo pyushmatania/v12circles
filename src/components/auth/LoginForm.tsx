@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, AlertCircle, CheckCircle, Loader, ArrowLeft } from 'lucide-react';
 import { useAuth } from './useAuth';

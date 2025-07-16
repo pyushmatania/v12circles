@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { ThemeContext } from './ThemeContext';
+import { createContext, useState, useEffect, ReactNode } from 'react';
 
-interface ThemeProviderProps {
-  children: React.ReactNode;
+interface ThemeContextType {
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
+  currentGradient: number;
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
   const [currentGradient, setCurrentGradient] = useState(0);
 

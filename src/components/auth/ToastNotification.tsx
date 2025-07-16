@@ -4,7 +4,7 @@ import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
 
 interface ToastProps {
   id: string;
-  type: 'success' | 'error' | 'info';
+  type: 'success' | 'error' | 'info' | 'warning';
   title: string;
   message?: string;
   duration?: number;
@@ -23,13 +23,15 @@ const Toast: React.FC<ToastProps> = ({ id, type, title, message, duration = 5000
   const icons = {
     success: CheckCircle,
     error: AlertCircle,
-    info: Info
+    info: Info,
+    warning: AlertCircle
   };
 
   const colors = {
     success: 'from-green-500 to-emerald-500',
     error: 'from-red-500 to-pink-500',
-    info: 'from-blue-500 to-cyan-500'
+    info: 'from-blue-500 to-cyan-500',
+    warning: 'from-yellow-500 to-orange-500'
   };
 
   const Icon = icons[type];
@@ -80,7 +82,7 @@ const Toast: React.FC<ToastProps> = ({ id, type, title, message, duration = 5000
 interface ToastContainerProps {
   toasts: Array<{
     id: string;
-    type: 'success' | 'error' | 'info';
+    type: 'success' | 'error' | 'info' | 'warning';
     title: string;
     message?: string;
     duration?: number;

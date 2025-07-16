@@ -7,18 +7,36 @@ import { initSentry } from './services/sentry';
 import { debug } from './utils/debug';
 import './index.css';
 
-// Initialize Sentry for error tracking
+// 🚀 Initialize Sentry for error tracking
 initSentry();
 
-// Performance monitoring in development
+// 🎯 Performance monitoring and development utilities
 if (import.meta.env.DEV) {
-  console.log('🚀 Circles - Elite Performance Mode Active');
-  console.log('📊 Performance monitoring enabled');
-  console.log('🐛 Debug logging enabled');
-  debug.info('Application starting in development mode');
+  debug.info('🚀 Circles - Elite Performance Mode Active');
+  debug.info('📊 Performance monitoring enabled');
+  debug.info('🐛 Debug logging enabled');
+  
+  // 🚀 Performance monitoring setup
+  window.addEventListener('load', () => {
+    const loadTime = performance.now();
+    debug.info(`⚡ Page load time: ${loadTime}ms`);
+  });
 }
 
-createRoot(document.getElementById('root')!).render(
+// 🚀 Initialize development mode
+if (import.meta.env.DEV) {
+  debug.setEnabled(true);
+}
+
+// 🎯 Root element validation
+const container = document.getElementById('root');
+if (!container) {
+  throw new Error('Root element not found');
+}
+
+// 🚀 Create and render the application
+const root = createRoot(container);
+root.render(
   <StrictMode>
     <ErrorBoundary>
       <Suspense fallback={<LoadingFallback />}>

@@ -1,85 +1,173 @@
-# V12 Circles - Lights, Camera, Ownership!
+# V12 Circles - Elite Entertainment Investment Platform
 
-A modern, Instagram-style platform for investing in movies and connecting with the film industry community.
+A modern, high-performance React application for entertainment industry investments with real-time data integration.
 
-## TMDB API Integration
+## 🚀 Features
 
-This project integrates with The Movie Database (TMDB) API to fetch real movie data, including:
-- Popular movies and their details
-- Actor and actress information
-- Director profiles
-- Production company data
+- **Real-time Entertainment Data**: Integration with TMDB and Spotify APIs
+- **Investment Portfolio**: Track and manage entertainment investments  
+- **Community Platform**: Connect with industry professionals and enthusiasts
+- **Admin Dashboard**: Comprehensive content and user management
+- **Responsive Design**: Optimized for all devices with modern UI/UX
+- **Performance Optimized**: Advanced caching, lazy loading, and error boundaries
 
-### TMDB API Credentials
+## 🛠️ Tech Stack
 
-**API Key:** `00c8935eeb21058413bf54ae11048768`
+- **Frontend**: React 18, TypeScript, Tailwind CSS
+- **Animation**: Framer Motion, GSAP
+- **Data Visualization**: React CSV, Custom Charts
+- **3D Graphics**: Three.js, React Three Fiber
+- **Build Tool**: Vite
+- **Linting**: ESLint
+- **Error Tracking**: Sentry
 
-**Access Token:** `eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwMGM4OTM1ZWViMjEwNTg0MTNiZjU0YWUxMTA0ODc2OCIsIm5iZiI6MTc1MjIwNzkwMi44ODksInN1YiI6IjY4NzA5MjFlNWFiYmI2OWUzZDlhNTgxYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7udmAb8IF7qfjyIxOLB1UguBBRUFgh04DvN2TLk6WMM`
+## 📦 Installation
 
-**Base URL:** `https://api.themoviedb.org/3`
+```bash
+# Clone repository
+git clone https://github.com/your-repo/v12-circles.git
+cd v12-circles
 
-### API Usage
+# Install dependencies
+npm install
 
-The TMDB API is used to:
-- Fetch popular, top-rated, and now-playing movies
-- Get actor/actress profiles and their known works
-- Search for production companies
-- Retrieve movie posters, backdrops, and other media assets
+# Start development server
+npm run dev
 
-### Rate Limits
+# Build for production
+npm run build
 
-TMDB API has the following rate limits:
-- 40 requests per 10 seconds for API key authentication
-- 1000 requests per day for API key authentication
-- Higher limits available with Bearer token authentication
+# Preview production build
+npm run preview
+```
 
-## Features
+## 🎯 Development Scripts
 
-- **Real Movie Data**: Integration with TMDB API for authentic movie information
-- **Community Hub**: Instagram-style interface for connecting with movie communities
-- **Investment Platform**: Invest in movies and track your portfolio
-- **Social Features**: Chat, share, and interact with other investors and fans
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production  
+npm run lint         # Run ESLint
+npm run preview      # Preview production build
+npm run test         # Run tests
+```
 
-## Getting Started
-
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Start the development server: `npm run dev`
-4. Open [http://localhost:5173](http://localhost:5173) in your browser
-
-## Tech Stack
-
-- React 18 with TypeScript
-- Vite for build tooling
-- Tailwind CSS for styling
-- Framer Motion for animations
-- TMDB API for movie data
-
-## Project Structure
+## 🗂️ Project Structure
 
 ```
 src/
-├── components/          # React components
-├── hooks/              # Custom React hooks
-├── services/           # API services (including TMDB)
-├── data/               # Static data and types
-├── types/              # TypeScript type definitions
-└── images/             # Static images and assets
+├── components/           # React components
+│   ├── admin/           # Admin dashboard components
+│   ├── auth/            # Authentication components
+│   └── ...
+├── data/                # Data files and API responses
+├── hooks/               # Custom React hooks
+├── services/            # API services and utilities
+├── types/               # TypeScript type definitions
+└── utils/               # Utility functions
+
+omdb-fetcher/            # Data enrichment scripts
+scripts/                 # Build and utility scripts
 ```
 
-## API Services
+## 🎨 Key Components
 
-- `src/services/tmdbApi.ts` - TMDB API integration
-- `src/hooks/useTMDBData.ts` - Custom hook for managing TMDB data
+- **Hero**: Landing page with dynamic animations
+- **Dashboard**: Investment portfolio and analytics  
+- **ProjectCatalog**: Browse and filter entertainment projects
+- **Community**: Social features and user interactions
+- **AdminDashboard**: Content management system
 
-## Contributing
+## 🔧 Configuration
+
+### Environment Variables
+```bash
+VITE_TMDB_API_KEY=your_tmdb_api_key
+VITE_SPOTIFY_CLIENT_ID=your_spotify_client_id
+VITE_SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+```
+
+### API Integration
+- **TMDB**: Movie and TV show data, cast information
+- **Spotify**: Music artist data and album information
+- **Sentry**: Error tracking and performance monitoring
+
+## 🎪 Data Management
+
+The project includes automated scripts for data enrichment:
+
+```bash
+# Generate enriched project data
+npm run generate:projects
+
+# Enhance projects with TMDB data
+node scripts/enhanceProjectsWithTMDB.cjs
+
+# Fetch community data
+node scripts/fetchTMDBCommunityData.cjs
+```
+
+## 🎭 Performance Features
+
+- **Lazy Loading**: Components loaded on demand
+- **Image Optimization**: Responsive images with preloading
+- **Memoization**: Optimized re-renders with React.memo
+- **Error Boundaries**: Graceful error handling
+- **Debug Tools**: Development debugging panel
+
+## 🎬 TMDB Integration
+
+Fetch real entertainment industry data:
+- Popular movies and TV shows
+- Cast and crew information  
+- Production company details
+- Ratings and reviews
+
+## 🎵 Spotify Integration
+
+Music industry features:
+- Artist profiles and popularity
+- Album and track information
+- Genre categorization
+- Trending artists
+
+## 🔒 Admin Features
+
+- User management
+- Content moderation
+- Analytics dashboard
+- System settings
+- Activity logging
+
+## 🎯 Browser Support
+
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+## 📱 Mobile Optimization
+
+- Responsive design for all screen sizes
+- Touch-optimized interactions
+- Progressive Web App features
+- Mobile-specific navigation
+
+## 🎪 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License.
+This project is proprietary software. All rights reserved.
+
+## 🎭 Contact
+
+For questions and support, please contact the development team.
+
+---
+
+**Built with ❤️ for the entertainment industry**

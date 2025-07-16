@@ -1,110 +1,99 @@
 import { useState, useEffect } from 'react';
 import { tmdbService, TMDBMovieDetails, TMDBActor } from '../services/tmdbApi';
+import { debug } from '../utils/debug';
 
-export interface TMDBProjectData {
-  movieDetails: TMDBMovieDetails | null;
+export interface TMDBProjectData extends TMDBMovieDetails {
   cast: TMDBActor[];
-  crew: TMDBActor[];
-  loading: boolean;
-  error: string | null;
+  crew: any[];
 }
 
 export const useTMDBProjectData = (projectTitle: string, tmdbId?: number) => {
-  const [data, setData] = useState<TMDBProjectData>({
-    movieDetails: null,
-    cast: [],
-    crew: [],
-    loading: false,
-    error: null
-  });
+  const [projectData, setProjectData] = useState<TMDBProjectData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchTMDBData = async () => {
-      if (!projectTitle) return;
+    if (!projectTitle && !tmdbId) return;
 
-      console.log('🔍 Fetching TMDB data for:', projectTitle, 'TMDB ID:', tmdbId);
-      setData(prev => ({ ...prev, loading: true, error: null }));
+    const fetchProjectData = async () => {
+      setLoading(true);
+      setError(null);
 
       try {
-        let movieDetails: TMDBMovieDetails | null = null;
-        let cast: TMDBActor[] = [];
-        let crew: TMDBActor[] = [];
-
-        // If we have a valid TMDB ID, fetch directly
-        if (tmdbId && tmdbId > 0 && tmdbId < 1000000) {
-          console.log('🎬 Fetching by TMDB ID:', tmdbId);
-          movieDetails = await tmdbService.getMovieDetails(tmdbId);
-          if (movieDetails.credits) {
-            cast = movieDetails.credits.cast || [];
-            crew = movieDetails.credits.crew || [];
-          }
-        } else {
-          // Search for the movie by title
-          console.log('🔍 Searching by title:', projectTitle);
-          const searchResults = await tmdbService.searchMovies(projectTitle, 1);
-          console.log('📋 Search results:', searchResults.results.length, 'movies found');
-          
-          if (searchResults.results.length > 0) {
-            const bestMatch = searchResults.results[0];
-            console.log('✅ Best match:', bestMatch.title, 'ID:', bestMatch.id);
-            movieDetails = await tmdbService.getMovieDetails(bestMatch.id);
-            if (movieDetails.credits) {
-              cast = movieDetails.credits.cast || [];
-              crew = movieDetails.credits.crew || [];
-            }
-          } else {
-            console.log('❌ No movies found for:', projectTitle);
-          }
+        if (import.meta.env.DEV) {
+          debug.info('🔍 Fetching TMDB data for:', projectTitle, 'TMDB ID:', tmdbId);
         }
 
-        console.log('🎭 Cast members found:', cast.length);
-        console.log('🎬 Crew members found:', crew.length);
+        let movieData: TMDBMovieDetails;
 
-        setData({
-          movieDetails,
-          cast: cast.slice(0, 20), // Limit to top 20 cast members
-          crew: crew.slice(0, 15), // Limit to top 15 crew members
-          loading: false,
-          error: null
-        });
+        if (tmdbId) {
+          // Fetch by TMDB ID if available
+          if (import.meta.env.DEV) {
+            debug.info('🎬 Fetching by TMDB ID:', tmdbId);
+          }
+          movieData = await tmdbService.getMovieDetails(tmdbId);
+        } else {
+          // Search by title
+          if (import.meta.env.DEV) {
+            debug.info('🔍 Searching by title:', projectTitle);
+          }
+          const searchResults = await tmdbService.searchMovies(projectTitle);
+          if (import.meta.env.DEV) {
+            debug.info('📋 Search results:', searchResults.results.length, 'movies found');
+          }
 
+            const bestMatch = searchResults.results[0];
+          if (bestMatch && import.meta.env.DEV) {
+            debug.info('✅ Best match:', bestMatch.title, 'ID:', bestMatch.id);
+          }
+
+          if (!bestMatch) {
+            if (import.meta.env.DEV) {
+              debug.warn('❌ No movies found for:', projectTitle);
+            }
+            throw new Error(`No TMDB data found for "${projectTitle}"`);
+          }
+          movieData = await tmdbService.getMovieDetails(bestMatch.id);
+        }
+
+        // Extract credits from movie data (already included in append_to_response)
+        const cast = movieData.credits?.cast || [];
+        const crew = movieData.credits?.crew || [];
+        
+        if (import.meta.env.DEV) {
+          debug.info('🎭 Cast members found:', cast.length);
+          debug.info('🎬 Crew members found:', crew.length);
+        }
+
+        const enhancedData: TMDBProjectData = {
+          ...movieData,
+          cast,
+          crew,
+        };
+
+        setProjectData(enhancedData);
       } catch (error) {
-        console.error('❌ Error fetching TMDB data:', error);
-        setData(prev => ({
-          ...prev,
-          loading: false,
-          error: `Failed to load movie data: ${error instanceof Error ? error.message : 'Unknown error'}`
-        }));
+        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch TMDB data';
+        setError(errorMessage);
+        if (import.meta.env.DEV) {
+          debug.error('❌ Error fetching TMDB data:', error);
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchTMDBData();
+    fetchProjectData();
   }, [projectTitle, tmdbId]);
 
-  return data;
+  return { projectData, loading, error };
 };
 
-// Helper function to get crew by department
-export const getCrewByDepartment = (crew: TMDBActor[], department: string) => {
-  return crew.filter(member => member.known_for_department === department);
+// Helper functions to extract main cast and crew
+export const getMainCast = (cast: TMDBActor[], limit: number = 5): TMDBActor[] => {
+  return cast.slice(0, limit);
 };
 
-// Helper function to get main cast (top 10)
-export const getMainCast = (cast: TMDBActor[]) => {
-  return cast.slice(0, 10);
-};
-
-// Helper function to get supporting cast (11-20)
-export const getSupportingCast = (cast: TMDBActor[]) => {
-  return cast.slice(10, 20);
-};
-
-// Helper function to get key crew positions
-export const getKeyCrew = (crew: TMDBActor[]) => {
-  const keyPositions = ['Director', 'Producer', 'Writer', 'Cinematography', 'Editing', 'Music'];
-  return crew.filter(member => 
-    keyPositions.some(position => 
-      member.known_for_department?.toLowerCase().includes(position.toLowerCase())
-    )
-  ).slice(0, 8);
+export const getKeyCrew = (crew: any[], roles: string[] = ['Director', 'Producer', 'Writer']): any[] => {
+  return crew.filter(member => roles.includes(member.job));
 }; 

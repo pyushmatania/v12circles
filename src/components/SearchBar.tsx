@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
@@ -17,12 +17,25 @@ import { projects } from '../data/projects';
 import { Project } from '../types';
 import { useDebounce } from '../hooks/useDebounce';
 
+// 🛡️ Type definitions for better type safety
 interface SearchBarProps {
   onSelectProject?: (project: Project) => void;
   onViewAllResults?: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults }) => {
+type ProjectType = 'film' | 'music' | 'webseries';
+
+interface SearchResult {
+  project: Project;
+  relevance: number;
+  matchType: 'title' | 'description' | 'tag' | 'person' | 'other';
+}
+
+/**
+ * 🎯 SearchBar - Optimized search component with enhanced performance
+ * @description Provides advanced search functionality with real-time results and keyboard navigation
+ */
+const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllResults }) => {
   const { theme } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -33,22 +46,30 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Debounce search term to avoid excessive API calls
+  // 🚀 Debounce search term to avoid excessive API calls
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  // Load recent searches from localStorage
+  // 🚀 Load recent searches from localStorage
   useEffect(() => {
-    const savedSearches = localStorage.getItem('circles_recent_searches');
-    if (savedSearches) {
-      setRecentSearches(JSON.parse(savedSearches));
+    try {
+      const savedSearches = localStorage.getItem('circles_recent_searches');
+      if (savedSearches) {
+        const parsed = JSON.parse(savedSearches);
+        if (Array.isArray(parsed)) {
+          setRecentSearches(parsed);
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to load recent searches:', error);
     }
   }, []);
 
-  // Handle click outside to close dropdown
+  // 🚀 Handle click outside to close dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        setSelectedIndex(-1);
       }
     };
 
@@ -58,7 +79,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
     };
   }, []);
 
-  // Memoized search function
+  // 🚀 Memoized search function with enhanced relevance scoring
   const performSearch = useCallback((term: string) => {
     if (term.length < 2) {
       setSearchResults([]);
@@ -69,68 +90,104 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
 
     // Use setTimeout to prevent blocking the UI
     setTimeout(() => {
-      let results = projects.filter(project => {
-        // Filter out disabled projects only
+      const searchTermLower = term.toLowerCase();
+      const results: SearchResult[] = [];
+
+      projects.forEach(project => {
+        // Filter out disabled projects
         if (project.disabled === true) {
-          return false;
+          return;
         }
-        
-        return project.title.toLowerCase().includes(term.toLowerCase()) ||
-          project.description.toLowerCase().includes(term.toLowerCase()) ||
-          project.tags.some((tag: string) => tag.toLowerCase().includes(term.toLowerCase())) ||
-          (project.director && project.director.toLowerCase().includes(term.toLowerCase())) ||
-          (project.artist && project.artist.toLowerCase().includes(term.toLowerCase())) ||
-          (project.productionHouse && project.productionHouse.toLowerCase().includes(term.toLowerCase())) ||
-          (project.keyPeople && project.keyPeople.some(person => person.name.toLowerCase().includes(term.toLowerCase())));
+
+        let relevance = 0;
+        let matchType: SearchResult['matchType'] = 'other';
+
+        // Title match (highest priority)
+        if (project.title.toLowerCase().includes(searchTermLower)) {
+          relevance += 100;
+          matchType = 'title';
+        }
+
+        // Description match
+        if (project.description.toLowerCase().includes(searchTermLower)) {
+          relevance += 50;
+          if (matchType === 'other') matchType = 'description';
+        }
+
+        // Tag match
+        if (project.tags.some(tag => tag.toLowerCase().includes(searchTermLower))) {
+          relevance += 30;
+          if (matchType === 'other') matchType = 'tag';
+        }
+
+        // Person match (director, artist, key people)
+        if (project.director?.toLowerCase().includes(searchTermLower) ||
+            project.artist?.toLowerCase().includes(searchTermLower) ||
+            project.productionHouse?.toLowerCase().includes(searchTermLower) ||
+            project.keyPeople?.some(person => person.name.toLowerCase().includes(searchTermLower))) {
+          relevance += 20;
+          if (matchType === 'other') matchType = 'person';
+        }
+
+        if (relevance > 0) {
+          results.push({ project, relevance, matchType });
+        }
       });
 
-      // Sort by relevance (title match first)
-      results = results.sort((a, b) => {
-        const aInTitle = a.title.toLowerCase().includes(term.toLowerCase());
-        const bInTitle = b.title.toLowerCase().includes(term.toLowerCase());
+      // Sort by relevance and limit results
+      const sortedResults = results
+        .sort((a, b) => b.relevance - a.relevance)
+        .slice(0, 5)
+        .map(result => result.project);
 
-        if (aInTitle && !bInTitle) return -1;
-        if (!aInTitle && bInTitle) return 1;
-        return 0;
-      });
-
-      setSearchResults(results.slice(0, 5)); // Limit to 5 results
+      setSearchResults(sortedResults);
       setIsLoading(false);
     }, 0);
   }, []);
 
-  // Perform search when debounced term changes
+  // 🚀 Perform search when debounced term changes
   useEffect(() => {
     performSearch(debouncedSearchTerm);
   }, [debouncedSearchTerm, performSearch]);
 
-  // Save recent search
+  // 🚀 Save recent search with enhanced validation
   const saveRecentSearch = useCallback((term: string) => {
-    if (!term.trim()) return;
+    const trimmedTerm = term.trim();
+    if (!trimmedTerm || trimmedTerm.length < 2) return;
     
     const updatedSearches = [
-      term,
-      ...recentSearches.filter(s => s !== term)
+      trimmedTerm,
+      ...recentSearches.filter(s => s !== trimmedTerm)
     ].slice(0, 5);
     
     setRecentSearches(updatedSearches);
-    localStorage.setItem('circles_recent_searches', JSON.stringify(updatedSearches));
+    
+    try {
+      localStorage.setItem('circles_recent_searches', JSON.stringify(updatedSearches));
+    } catch (error) {
+      console.warn('Failed to save recent searches:', error);
+    }
   }, [recentSearches]);
 
-  // Clear recent searches
+  // 🚀 Clear recent searches
   const clearRecentSearches = useCallback(() => {
     setRecentSearches([]);
-    localStorage.removeItem('circles_recent_searches');
+    try {
+      localStorage.removeItem('circles_recent_searches');
+    } catch (error) {
+      console.warn('Failed to clear recent searches:', error);
+    }
   }, []);
 
-  // Handle search input change
+  // 🚀 Handle search input change
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
     setIsOpen(true);
+    setSelectedIndex(-1);
   }, []);
 
-  // Handle search submission
+  // 🚀 Handle search submission
   const handleSearchSubmit = useCallback((e?: React.FormEvent) => {
     if (e) e.preventDefault();
     
@@ -140,7 +197,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
     }
   }, [searchTerm, saveRecentSearch, performSearch]);
 
-  // Clear search
+  // 🚀 Clear search
   const clearSearch = useCallback(() => {
     setSearchTerm('');
     setSearchResults([]);
@@ -150,356 +207,269 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelectProject, onViewAllResults
     }
   }, []);
 
-  // Memoized type icon getter
-  const getTypeIcon = useCallback((type: string) => {
-    switch (type) {
-      case 'film': return <Film className="w-4 h-4" />;
-      case 'music': return <Music className="w-4 h-4" />;
-      case 'webseries': return <Tv className="w-4 h-4" />;
-      default: return <Film className="w-4 h-4" />;
-    }
+  // 🚀 Memoized type icon getter
+  const getTypeIcon = useCallback((type: ProjectType) => {
+    const iconMap = {
+      film: <Film className="w-4 h-4" />,
+      music: <Music className="w-4 h-4" />,
+      webseries: <Tv className="w-4 h-4" />
+    };
+    return iconMap[type] || <Film className="w-4 h-4" />;
   }, []);
 
-  // Memoized type color getter
-  const getTypeColor = useCallback((type: string) => {
-    switch (type) {
-      case 'film': return 'text-purple-400';
-      case 'music': return 'text-blue-400';
-      case 'webseries': return 'text-green-400';
-      default: return 'text-gray-400';
-    }
+  // 🚀 Memoized type color getter
+  const getTypeColor = useCallback((type: ProjectType) => {
+    const colorMap = {
+      film: 'text-purple-400',
+      music: 'text-blue-400',
+      webseries: 'text-green-400'
+    };
+    return colorMap[type] || 'text-gray-400';
   }, []);
 
-  // Memoized text highlighting function
+  // 🚀 Memoized text highlighting function with enhanced performance
   const highlightMatch = useCallback((text: string, query: string) => {
-    if (!query.trim()) return text;
+    if (!query.trim() || !text) return text;
     
-    const regex = new RegExp(`(${query})`, 'gi');
-    const parts = text.split(regex);
-    
-    return parts.map((part, index) => 
-      regex.test(part) ? (
-        <span key={index} className="bg-yellow-400/30 text-yellow-200 font-semibold">
-          {part}
-        </span>
-      ) : part
-    );
+    try {
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      const parts = text.split(regex);
+      
+      return parts.map((part, index) => 
+        regex.test(part) ? (
+          <span key={index} className="bg-yellow-400/30 text-yellow-200 font-semibold">
+            {part}
+          </span>
+        ) : part
+      );
+    } catch (error) {
+      // Fallback to original text if regex fails
+      return text;
+    }
   }, []);
 
-  // Handle keyboard navigation
+  // 🚀 Handle keyboard navigation with enhanced logic
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Arrow down
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (isOpen) {
-        const totalItems = searchResults.length > 0 
-          ? searchResults.length 
-          : recentSearches.length;
-        
-        setSelectedIndex(prev => (prev + 1) % totalItems);
-      } else {
-        setIsOpen(true);
-      }
-    }
-    
-    // Arrow up
-    else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (isOpen) {
-        const totalItems = searchResults.length > 0 
-          ? searchResults.length 
-          : recentSearches.length;
-        
-        setSelectedIndex(prev => (prev - 1 + totalItems) % totalItems);
-      }
-    }
-    
-    // Enter
-    else if (e.key === 'Enter') {
-      if (selectedIndex >= 0) {
-        if (searchResults.length > 0) {
-          // Select the highlighted search result
-          const selectedProject = searchResults[selectedIndex];
-          if (selectedProject && onSelectProject) {
-            onSelectProject(selectedProject);
-            setIsOpen(false);
-            saveRecentSearch(searchTerm);
-          }
-        } else if (recentSearches.length > 0) {
-          // Use the highlighted recent search
-          const selectedTerm = recentSearches[selectedIndex];
-          setSearchTerm(selectedTerm);
-          performSearch(selectedTerm);
+    const totalItems = searchResults.length > 0 
+      ? searchResults.length 
+      : recentSearches.length;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        if (isOpen && totalItems > 0) {
+          setSelectedIndex(prev => (prev + 1) % totalItems);
+        } else {
+          setIsOpen(true);
         }
-      } else {
-        handleSearchSubmit();
-      }
+        break;
+        
+      case 'ArrowUp':
+        e.preventDefault();
+        if (isOpen && totalItems > 0) {
+          setSelectedIndex(prev => prev <= 0 ? totalItems - 1 : prev - 1);
+        }
+        break;
+        
+      case 'Enter':
+        e.preventDefault();
+        if (selectedIndex >= 0 && searchResults.length > 0) {
+          const selectedProject = searchResults[selectedIndex];
+          if (onSelectProject) {
+            onSelectProject(selectedProject);
+          }
+          setIsOpen(false);
+          setSelectedIndex(-1);
+        } else if (searchTerm.trim()) {
+          handleSearchSubmit();
+        }
+        break;
+        
+      case 'Escape':
+        setIsOpen(false);
+        setSelectedIndex(-1);
+        break;
     }
-    
-    // Escape
-    else if (e.key === 'Escape') {
-      setIsOpen(false);
+  }, [isOpen, searchResults, recentSearches, selectedIndex, searchTerm, onSelectProject, handleSearchSubmit]);
+
+  // 🚀 Handle project selection
+  const handleProjectSelect = useCallback((project: Project) => {
+    if (onSelectProject) {
+      onSelectProject(project);
     }
-  }, [isOpen, searchResults, recentSearches, selectedIndex, onSelectProject, searchTerm, saveRecentSearch, performSearch, handleSearchSubmit]);
+    setIsOpen(false);
+    setSelectedIndex(-1);
+  }, [onSelectProject]);
+
+  // 🚀 Handle recent search selection
+  const handleRecentSearchSelect = useCallback((term: string) => {
+    setSearchTerm(term);
+    performSearch(term);
+    setIsOpen(false);
+    setSelectedIndex(-1);
+  }, [performSearch]);
+
+  // 🚀 Memoized search results component
+  const SearchResults = useMemo(() => (
+    <div className="space-y-2">
+      {searchResults.map((project, index) => (
+        <motion.div
+          key={project.id}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.05 }}
+          className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+            selectedIndex === index
+              ? theme === 'light'
+                ? 'bg-purple-100 border-purple-300'
+                : 'bg-purple-900/30 border-purple-500/50'
+              : theme === 'light'
+                ? 'bg-white hover:bg-gray-50 border-gray-200'
+                : 'bg-gray-800 hover:bg-gray-700 border-gray-600'
+          } border`}
+          onClick={() => handleProjectSelect(project)}
+        >
+          <div className="flex items-start gap-3">
+            <div className={`flex-shrink-0 ${getTypeColor(project.type as ProjectType)}`}>
+              {getTypeIcon(project.type as ProjectType)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-semibold text-sm mb-1">
+                {highlightMatch(project.title, searchTerm)}
+              </h4>
+              <p className="text-xs text-gray-500 line-clamp-2">
+                {highlightMatch(project.description, searchTerm)}
+              </p>
+              <div className="flex items-center gap-2 mt-2">
+                <span className={`text-xs px-2 py-1 rounded-full ${getTypeColor(project.type as ProjectType)} bg-opacity-10`}>
+                  {project.type.toUpperCase()}
+                </span>
+                {project.rating && (
+                  <div className="flex items-center gap-1 text-xs text-yellow-500">
+                    <Star className="w-3 h-3 fill-current" />
+                    {project.rating}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  ), [searchResults, selectedIndex, theme, searchTerm, getTypeColor, getTypeIcon, highlightMatch, handleProjectSelect]);
+
+  // 🚀 Memoized recent searches component
+  const RecentSearches = useMemo(() => (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <h4 className="text-sm font-medium text-gray-600">Recent Searches</h4>
+        <button
+          onClick={clearRecentSearches}
+          className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          Clear All
+        </button>
+      </div>
+      {recentSearches.map((term, index) => (
+        <motion.div
+          key={term}
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: index * 0.05 }}
+          className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all duration-200 ${
+            selectedIndex === index
+              ? theme === 'light'
+                ? 'bg-purple-100'
+                : 'bg-purple-900/30'
+              : theme === 'light'
+                ? 'hover:bg-gray-50'
+                : 'hover:bg-gray-700'
+          }`}
+          onClick={() => handleRecentSearchSelect(term)}
+        >
+          <History className="w-4 h-4 text-gray-400" />
+          <span className="text-sm">{term}</span>
+        </motion.div>
+      ))}
+    </div>
+  ), [recentSearches, selectedIndex, theme, clearRecentSearches, handleRecentSearchSelect]);
 
   return (
     <div ref={searchRef} className="relative">
-      {/* Search Icon Button */}
-      <button
-        onClick={() => {
-          setIsOpen(!isOpen);
-          setTimeout(() => {
-            if (inputRef.current) {
-              inputRef.current.focus();
-            }
-          }, 100);
-        }}
-        className={`p-2 rounded-lg transition-colors ${
-          theme === 'light' ? 'text-gray-600 hover:text-gray-900' : 'text-gray-300 hover:text-white'
-        }`}
-      >
-        <Search className="w-5 h-5" />
-      </button>
+      {/* 🚀 Search Input */}
+      <form onSubmit={handleSearchSubmit} className="relative">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <input
+            ref={inputRef}
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
+            onFocus={() => setIsOpen(true)}
+            placeholder="Search projects, directors, artists..."
+            className={`w-full pl-10 pr-10 py-2 rounded-lg border transition-all duration-200 ${
+              theme === 'light'
+                ? 'bg-white border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200'
+                : 'bg-gray-800 border-gray-600 focus:border-purple-400 focus:ring-2 focus:ring-purple-900'
+            } text-sm`}
+          />
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={clearSearch}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </form>
 
-      {/* Search Dropdown */}
+      {/* 🚀 Search Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 10, width: 0 }}
-            animate={{ opacity: 1, y: 0, width: 'auto' }}
-            exit={{ opacity: 0, y: 10, width: 0 }}
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={`absolute top-12 right-0 rounded-xl border shadow-xl overflow-hidden z-[60] ${
+            className={`absolute top-full left-0 right-0 mt-2 p-4 rounded-xl border shadow-lg z-50 ${
               theme === 'light'
                 ? 'bg-white border-gray-200'
-                : 'bg-gray-900 border-gray-700'
+                : 'bg-gray-900 border-gray-600'
             }`}
-            style={{ width: '300px' }}
           >
-            <div className="p-2 flex items-center">
-              <Search className={`w-5 h-5 mr-2 ${
-                theme === 'light' ? 'text-gray-400' : 'text-gray-500'
-              }`} />
-              <form onSubmit={handleSearchSubmit} className="flex-1">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Search projects, directors, actors, production houses..."
-                  className={`w-full py-2 focus:outline-none ${
-                    theme === 'light'
-                      ? 'bg-transparent text-gray-900 placeholder-gray-500'
-                      : 'bg-transparent text-white placeholder-gray-400'
-                  }`}
-                  autoFocus
-                />
-              </form>
-              {isLoading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-2 border-t-transparent border-purple-500"></div>
-              ) : searchTerm ? (
-                <button
-                  onClick={clearSearch}
-                  className={`p-1 rounded-full ${
-                    theme === 'light' ? 'text-gray-500 hover:bg-gray-100' : 'text-gray-400 hover:bg-gray-700'
-                  }`}
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              ) : (
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className={`p-1 rounded-full ${
-                    theme === 'light' ? 'text-gray-500 hover:bg-gray-100' : 'text-gray-400 hover:bg-gray-700'
-                  }`}
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              )}
-            </div>
-
-            {/* Recent Searches */}
-            {searchTerm.length < 2 && recentSearches.length > 0 && (
-              <div className="p-3 border-t border-gray-200 dark:border-gray-700">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className={`text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
-                    Recent Searches
-                  </h3>
-                  <button
-                    onClick={clearRecentSearches}
-                    className={`text-xs ${theme === 'light' ? 'text-gray-500 hover:text-gray-700' : 'text-gray-500 hover:text-gray-300'}`}
-                  >
-                    Clear
-                  </button>
-                </div>
-                <div className="space-y-1">
-                  {recentSearches.map((term, index) => (
-                    <div
-                      key={index}
-                      onClick={() => {
-                        setSearchTerm(term);
-                        performSearch(term);
-                      }}
-                      className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer ${
-                        selectedIndex === index
-                          ? theme === 'light' 
-                            ? 'bg-purple-50' 
-                            : 'bg-purple-900/10'
-                          : theme === 'light'
-                            ? 'hover:bg-gray-100'
-                            : 'hover:bg-gray-800'
-                      }`}
-                    >
-                      <History className={`w-4 h-4 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`} />
-                      <span className={theme === 'light' ? 'text-gray-700' : 'text-gray-300'}>
-                        {term}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
               </div>
-            )}
-
-            {/* Search Results */}
-            {!isLoading && searchTerm.length >= 2 && (
+            ) : searchResults.length > 0 ? (
               <>
-                {searchResults.length > 0 ? (
-                  <div className="max-h-[60vh] overflow-y-auto">
-                    {searchResults.map((result, index) => (
-                      <div
-                        key={result.id}
-                        onClick={() => {
-                          if (onSelectProject) {
-                            onSelectProject(result);
-                            setIsOpen(false);
-                            saveRecentSearch(searchTerm);
-                          }
-                        }}
-                        className={`flex items-start gap-3 p-3 cursor-pointer transition-colors ${
-                          selectedIndex === index
-                            ? theme === 'light' 
-                              ? 'bg-purple-50' 
-                              : 'bg-purple-900/10'
-                            : theme === 'light'
-                              ? 'hover:bg-gray-100'
-                              : 'hover:bg-gray-800'
-                        }`}
-                      >
-                        <div className="w-12 h-16 rounded overflow-hidden flex-shrink-0">
-                          <img 
-                            src={result.poster} 
-                            alt={result.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                            {highlightMatch(result.title, searchTerm)}
-                          </div>
-                          <div className="flex items-center gap-2 mt-1">
-                            <div className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs ${getTypeColor(result.type)}`}>
-                              {getTypeIcon(result.type)}
-                              <span>{result.type}</span>
-                            </div>
-                            {result.rating && (
-                              <div className="flex items-center gap-1 text-xs">
-                                <Star className="w-3 h-3 text-yellow-400" />
-                                <span className={theme === 'light' ? 'text-gray-700' : 'text-gray-300'}>
-                                  {result.rating}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-3 mt-1">
-                            {result.fundedPercentage && (
-                              <div className="flex items-center gap-1 text-xs">
-                                <TrendingUp className={`w-3 h-3 ${
-                                  result.fundedPercentage > 75 ? 'text-green-400' :
-                                  result.fundedPercentage > 50 ? 'text-yellow-400' : 'text-gray-400'
-                                }`} />
-                                <span className={theme === 'light' ? 'text-gray-700' : 'text-gray-300'}>
-                                  {result.fundedPercentage}%
-                                </span>
-                              </div>
-                            )}
-                            {result.status === 'active' && (
-                              <div className="flex items-center gap-1 text-xs">
-                                <Clock className="w-3 h-3 text-orange-400" />
-                                <span className={theme === 'light' ? 'text-gray-700' : 'text-gray-300'}>
-                                  Active
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-
-                    {/* View All Results Button */}
-                    <div className="p-3 border-t border-gray-200 dark:border-gray-700">
-                      <button
-                        onClick={() => {
-                          if (onViewAllResults) {
-                            onViewAllResults();
-                            setIsOpen(false);
-                            saveRecentSearch(searchTerm);
-                          }
-                        }}
-                        className={`flex items-center justify-center gap-2 w-full py-2 rounded-lg transition-colors ${
-                          theme === 'light'
-                            ? 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-                            : 'bg-purple-900/20 text-purple-400 hover:bg-purple-900/30'
-                        }`}
-                      >
-                        <span>View all results</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="p-6 text-center">
-                    <p className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                      No results found for "{searchTerm}"
-                    </p>
-                    <p className={`text-xs mt-2 ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'}`}>
-                      Try different keywords or check your spelling
-                    </p>
-                  </div>
+                {SearchResults}
+                {onViewAllResults && (
+                  <button
+                    onClick={onViewAllResults}
+                    className="w-full mt-3 p-2 text-sm text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                  >
+                    View all results
+                  </button>
                 )}
               </>
-            )}
-
-            {/* Keyboard Navigation Help */}
-            <div className={`p-2 text-xs border-t ${
-              theme === 'light' ? 'border-gray-200 text-gray-500' : 'border-gray-700 text-gray-500'
-            }`}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1">
-                  <span className={`px-1 py-0.5 rounded border ${
-                    theme === 'light' ? 'border-gray-300 bg-gray-100' : 'border-gray-600 bg-gray-800'
-                  }`}>↑↓</span>
-                  <span>navigate</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className={`px-1 py-0.5 rounded border ${
-                    theme === 'light' ? 'border-gray-300 bg-gray-100' : 'border-gray-600 bg-gray-800'
-                  }`}>Enter</span>
-                  <span>select</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className={`px-1 py-0.5 rounded border ${
-                    theme === 'light' ? 'border-gray-300 bg-gray-100' : 'border-gray-600 bg-gray-800'
-                  }`}>Esc</span>
-                  <span>close</span>
-                </div>
+            ) : searchTerm.length >= 2 ? (
+              <div className="text-center py-4 text-gray-500">
+                No results found for "{searchTerm}"
               </div>
-            </div>
+            ) : (
+              RecentSearches
+            )}
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
-};
+});
+
+SearchBar.displayName = 'SearchBar';
 
 export default SearchBar;

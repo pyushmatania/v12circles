@@ -4,7 +4,6 @@ import { Film, Music, Clock, Users, TrendingUp, ArrowRight } from 'lucide-react'
 import confetti from 'canvas-confetti';
 import AnimatedNumber from './AnimatedNumber';
 import { projects } from '../data/projects';
-import ProjectDetailModal from './ProjectDetailModal';
 import { Project } from '../types';
 import { useTheme } from './ThemeContext';
 import Typewriter from './Typewriter';

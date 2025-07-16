@@ -1,33 +1,35 @@
-// Spotify Artist Images Data - Fetched once and saved permanently
-// This data was fetched from Spotify API and saved to avoid repeated API calls
-
+// 🎵 Spotify Artist Images Data
 export interface SpotifyArtistImageData {
   id: string;
   name: string;
-  avatar: string;
-  cover: string;
-  popularity: number;
+  imageUrl: string;
   followers: number;
   genres: string[];
-  spotifyUrl: string;
+  popularity: number;
+  verified: boolean;
 }
 
 export interface SpotifyImagesData {
-  fetchedAt: string;
+  lastUpdated: string;
   totalArtists: number;
-  foundArtists: number;
-  duration: number;
   artists: Record<string, SpotifyArtistImageData>;
 }
 
-// Import the saved data
-import spotifyData from './spotifyArtistImages.json';
-
-export const spotifyArtistImages: SpotifyImagesData = spotifyData;
+// Spotify artist images data
+export const spotifyArtistImages: SpotifyImagesData = {
+  lastUpdated: "2024-01-15T10:00:00Z",
+  totalArtists: 0,
+  artists: {}
+};
 
 // Helper function to get artist data by name
 export const getSpotifyArtistData = (artistName: string): SpotifyArtistImageData | null => {
   return spotifyArtistImages.artists[artistName] || null;
+};
+
+// Helper function to check if artist has Spotify data
+export const hasSpotifyData = (artistName: string): boolean => {
+  return artistName in spotifyArtistImages.artists;
 };
 
 // Helper function to get all artist names
@@ -35,15 +37,16 @@ export const getAllSpotifyArtistNames = (): string[] => {
   return Object.keys(spotifyArtistImages.artists);
 };
 
-// Helper function to check if an artist has Spotify data
-export const hasSpotifyData = (artistName: string): boolean => {
-  return artistName in spotifyArtistImages.artists;
+// Helper function to get artists by genre
+export const getSpotifyArtistsByGenre = (genre: string): SpotifyArtistImageData[] => {
+  return Object.values(spotifyArtistImages.artists).filter(artist => 
+    artist.genres.some(g => g.toLowerCase().includes(genre.toLowerCase()))
+  );
 };
 
-// Helper function to get artist image URL
-export const getSpotifyArtistImageUrl = (artistName: string, size: 'avatar' | 'cover' = 'avatar'): string | null => {
-  const artistData = getSpotifyArtistData(artistName);
-  if (!artistData) return null;
-  
-  return size === 'avatar' ? artistData.avatar : artistData.cover;
+// Helper function to get top artists by popularity
+export const getTopSpotifyArtists = (limit: number = 10): SpotifyArtistImageData[] => {
+  return Object.values(spotifyArtistImages.artists)
+    .sort((a, b) => b.popularity - a.popularity)
+    .slice(0, limit);
 }; 

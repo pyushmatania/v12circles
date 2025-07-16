@@ -1,302 +1,361 @@
 import { useState, useEffect, useCallback } from 'react';
 import spotifyApi, { type SpotifyArtist, type SpotifyAlbum, type SpotifyTrack } from '../services/spotifyApi';
+import { debug } from '../utils/debug';
 
-interface SpotifyArtistDetails {
-  artist: SpotifyArtist | null;
+// 🛡️ Type definitions for better type safety
+interface SpotifyArtistSearchResult {
+  artists: SpotifyArtist[];
+  total: number;
+  loading: boolean;
+  error: string | null;
+}
+
+interface SpotifyArtistDetails extends SpotifyArtist {
   albums: SpotifyAlbum[];
   topTracks: SpotifyTrack[];
   relatedArtists: SpotifyArtist[];
+  loading: boolean;
+  error: string | null;
 }
 
-interface UseSpotifyDataReturn {
-  // Artist search
-  searchArtists: (query: string) => Promise<SpotifyArtist[]>;
-  searchResults: SpotifyArtist[];
-  isSearching: boolean;
-  searchError: string | null;
-  
-  // Artist details
-  getArtistDetails: (artistId: string) => Promise<SpotifyArtistDetails | null>;
-  artistDetails: SpotifyArtistDetails | null;
-  isLoadingDetails: boolean;
-  detailsError: string | null;
-  
-  // Trending artists
-  getTrendingArtists: () => Promise<SpotifyArtist[]>;
-  trendingArtists: SpotifyArtist[];
-  isLoadingTrending: boolean;
-  trendingError: string | null;
-  
-  // Multiple artists
-  getMultipleArtists: (artistNames: string[]) => Promise<Array<{ name: string; data: SpotifyArtistDetails | null }>>;
-  multipleArtists: Array<{ name: string; data: SpotifyArtistDetails | null }>;
-  isLoadingMultiple: boolean;
-  multipleError: string | null;
-  
-  // Utility functions
-  formatArtistForCommunity: (artist: SpotifyArtist) => any;
-  getArtistImageUrl: (artist: SpotifyArtist, size?: 'small' | 'medium' | 'large') => string;
+interface SpotifyTrendingData {
+  artists: SpotifyArtist[];
+  loading: boolean;
+  error: string | null;
 }
 
-export const useSpotifyData = (): UseSpotifyDataReturn => {
-  // Search state
-  const [searchResults, setSearchResults] = useState<SpotifyArtist[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchError, setSearchError] = useState<string | null>(null);
+interface SpotifyMultipleArtistsData {
+  artists: SpotifyArtist[];
+  loading: boolean;
+  error: string | null;
+}
 
-  // Artist details state
-  const [artistDetails, setArtistDetails] = useState<SpotifyArtistDetails | null>(null);
-  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
-  const [detailsError, setDetailsError] = useState<string | null>(null);
+// 🚀 Search for artists
+export const useSpotifySearch = (query: string, enabled: boolean = true) => {
+  const [result, setResult] = useState<SpotifyArtistSearchResult>({
+    artists: [],
+    total: 0,
+    loading: false,
+    error: null
+  });
 
-  // Trending artists state
-  const [trendingArtists, setTrendingArtists] = useState<SpotifyArtist[]>([]);
-  const [isLoadingTrending, setIsLoadingTrending] = useState(false);
-  const [trendingError, setTrendingError] = useState<string | null>(null);
-
-  // Multiple artists state
-  const [multipleArtists, setMultipleArtists] = useState<Array<{ name: string; data: SpotifyArtistDetails | null }>>([]);
-  const [isLoadingMultiple, setIsLoadingMultiple] = useState(false);
-  const [multipleError, setMultipleError] = useState<string | null>(null);
-
-  // Search artists
-  const searchArtists = useCallback(async (query: string): Promise<SpotifyArtist[]> => {
-    if (!query.trim()) {
-      setSearchResults([]);
-      return [];
-    }
-
-    setIsSearching(true);
-    setSearchError(null);
-
-    try {
-      const results = await spotifyApi.searchArtists(query, 10);
-      setSearchResults(results);
-      return results;
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to search artists';
-      setSearchError(errorMessage);
-      console.error('Error searching artists:', error);
-      return [];
-    } finally {
-      setIsSearching(false);
-    }
-  }, []);
-
-  // Get artist details
-  const getArtistDetails = useCallback(async (artistId: string): Promise<SpotifyArtistDetails | null> => {
-    if (!artistId) {
-      setArtistDetails(null);
-      return null;
-    }
-
-    setIsLoadingDetails(true);
-    setDetailsError(null);
-
-    try {
-      const details = await spotifyApi.getArtistFullDetails(artistId);
-      setArtistDetails(details);
-      return details;
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to get artist details';
-      setDetailsError(errorMessage);
-      console.error('Error getting artist details:', error);
-      return null;
-    } finally {
-      setIsLoadingDetails(false);
-    }
-  }, []);
-
-  // Get trending artists
-  const getTrendingArtists = useCallback(async (): Promise<SpotifyArtist[]> => {
-    setIsLoadingTrending(true);
-    setTrendingError(null);
-
-    try {
-      const trending = await spotifyApi.getTrendingArtists(20);
-      setTrendingArtists(trending);
-      return trending;
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to get trending artists';
-      setTrendingError(errorMessage);
-      console.error('Error getting trending artists:', error);
-      return [];
-    } finally {
-      setIsLoadingTrending(false);
-    }
-  }, []);
-
-  // Get multiple artists
-  const getMultipleArtists = useCallback(async (artistNames: string[]): Promise<Array<{ name: string; data: SpotifyArtistDetails | null }>> => {
-    if (!artistNames.length) {
-      setMultipleArtists([]);
-      return [];
-    }
-
-    setIsLoadingMultiple(true);
-    setMultipleError(null);
-
-    try {
-      const artists = await spotifyApi.getMultipleArtists(artistNames);
-      setMultipleArtists(artists);
-      return artists;
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to get multiple artists';
-      setMultipleError(errorMessage);
-      console.error('Error getting multiple artists:', error);
-      return [];
-    } finally {
-      setIsLoadingMultiple(false);
-    }
-  }, []);
-
-  // Utility functions
-  const formatArtistForCommunity = useCallback((artist: SpotifyArtist) => {
-    return spotifyApi.formatArtistForCommunity(artist);
-  }, []);
-
-  const getArtistImageUrl = useCallback((artist: SpotifyArtist, size: 'small' | 'medium' | 'large' = 'large') => {
-    return spotifyApi.getArtistImageUrl(artist, size);
-  }, []);
-
-  return {
-    // Artist search
-    searchArtists,
-    searchResults,
-    isSearching,
-    searchError,
-    
-    // Artist details
-    getArtistDetails,
-    artistDetails,
-    isLoadingDetails,
-    detailsError,
-    
-    // Trending artists
-    getTrendingArtists,
-    trendingArtists,
-    isLoadingTrending,
-    trendingError,
-    
-    // Multiple artists
-    getMultipleArtists,
-    multipleArtists,
-    isLoadingMultiple,
-    multipleError,
-    
-    // Utility functions
-    formatArtistForCommunity,
-    getArtistImageUrl
-  };
-};
-
-// Hook for a specific artist
-export const useSpotifyArtist = (artistName: string) => {
-  const [artistData, setArtistData] = useState<SpotifyArtistDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!artistName.trim()) {
-      setArtistData(null);
+  const searchArtists = useCallback(async (searchQuery: string) => {
+    if (!searchQuery.trim()) {
+      setResult({ artists: [], total: 0, loading: false, error: null });
       return;
     }
 
+    setResult(prev => ({ ...prev, loading: true, error: null }));
+
+    try {
+      const artists = await spotifyApi.searchArtists(searchQuery);
+      setResult({
+        artists,
+        total: artists.length,
+        loading: false,
+        error: null
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to search artists';
+      setResult({
+        artists: [],
+        total: 0,
+        loading: false,
+        error: errorMessage
+      });
+      if (import.meta.env.DEV) {
+        debug.error('Error searching artists:', error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (enabled && query) {
+      searchArtists(query);
+    }
+  }, [query, enabled, searchArtists]);
+
+  return { ...result, searchArtists };
+};
+
+// 🚀 Get artist details with enhanced data
+export const useSpotifyArtist = (artistId: string) => {
+  const [artistData, setArtistData] = useState<SpotifyArtistDetails>({
+    id: '',
+    name: '',
+    popularity: 0,
+    followers: { total: 0 },
+    genres: [],
+    images: [],
+    external_urls: { spotify: '' },
+    albums: [],
+    topTracks: [],
+    relatedArtists: [],
+    loading: false,
+    error: null
+  });
+
+  useEffect(() => {
+    if (!artistId) return;
+
     const fetchArtistData = async () => {
-      setIsLoading(true);
-      setError(null);
+      setArtistData(prev => ({ ...prev, loading: true, error: null }));
+
+    try {
+        const fullDetails = await spotifyApi.getArtistFullDetails(artistId);
+        setArtistData({
+          ...fullDetails,
+          loading: false,
+          error: null
+        });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch artist data';
+        setArtistData(prev => ({
+          ...prev,
+          loading: false,
+          error: errorMessage
+        }));
+        if (import.meta.env.DEV) {
+          debug.error('Error getting artist details:', error);
+        }
+      }
+    };
+
+    fetchArtistData();
+  }, [artistId]);
+
+  return artistData;
+};
+
+// 🚀 Get trending artists
+export const useSpotifyTrending = () => {
+  const [trendingData, setTrendingData] = useState<SpotifyTrendingData>({
+    artists: [],
+    loading: false,
+    error: null
+  });
+
+  const fetchTrendingArtists = useCallback(async () => {
+    setTrendingData(prev => ({ ...prev, loading: true, error: null }));
+
+    try {
+      const artists = await spotifyApi.getTrendingArtists();
+      setTrendingData({
+        artists,
+        loading: false,
+        error: null
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch trending artists';
+      setTrendingData({
+        artists: [],
+        loading: false,
+        error: errorMessage
+      });
+      if (import.meta.env.DEV) {
+        debug.error('Error getting trending artists:', error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchTrendingArtists();
+  }, [fetchTrendingArtists]);
+
+  return { ...trendingData, refresh: fetchTrendingArtists };
+};
+
+// 🚀 Get multiple artists by names
+export const useSpotifyMultipleArtists = (artistNames: string[]) => {
+  const [artistsData, setArtistsData] = useState<SpotifyMultipleArtistsData>({
+    artists: [],
+    loading: false,
+    error: null
+  });
+
+  useEffect(() => {
+    if (!artistNames.length) return;
+
+    const fetchMultipleArtists = async () => {
+      setArtistsData(prev => ({ ...prev, loading: true, error: null }));
+
+    try {
+      const artists = await spotifyApi.getMultipleArtists(artistNames);
+        setArtistsData({
+          artists,
+          loading: false,
+          error: null
+        });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to fetch multiple artists';
+        setArtistsData({
+          artists: [],
+          loading: false,
+          error: errorMessage
+        });
+        if (import.meta.env.DEV) {
+          debug.error('Error getting multiple artists:', error);
+        }
+    }
+    };
+
+    fetchMultipleArtists();
+  }, [artistNames]);
+
+  return artistsData;
+};
+
+// 🚀 Enhanced hook for community artist data with caching
+export const useSpotifyArtistForCommunity = (artistName: string) => {
+  const [artistData, setArtistData] = useState<{
+    artist: SpotifyArtist | null;
+    loading: boolean;
+    error: string | null;
+  }>({
+    artist: null,
+    loading: false,
+    error: null
+  });
+
+  useEffect(() => {
+    if (!artistName) return;
+
+    const fetchArtistData = async () => {
+      setArtistData(prev => ({ ...prev, loading: true, error: null }));
 
       try {
-        const data = await spotifyApi.searchAndGetArtistDetails(artistName);
-        setArtistData(data);
+        // Use search to find the artist, then get details
+        const searchResults = await spotifyApi.searchArtists(artistName, 1);
+        
+        if (searchResults.length > 0) {
+          const artist = searchResults[0];
+          setArtistData({
+            artist,
+            loading: false,
+            error: null
+          });
+        } else {
+          setArtistData({
+            artist: null,
+            loading: false,
+            error: 'Artist not found'
+          });
+        }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to fetch artist data';
-        setError(errorMessage);
-        console.error('Error fetching artist data:', err);
-      } finally {
-        setIsLoading(false);
+        setArtistData({
+          artist: null,
+          loading: false,
+          error: errorMessage
+        });
+        if (import.meta.env.DEV) {
+          debug.error('Error fetching artist data:', err);
+        }
       }
     };
 
     fetchArtistData();
   }, [artistName]);
 
-  return { artistData, isLoading, error };
+  return artistData;
 };
 
-// Hook for trending artists with auto-refresh
-export const useTrendingArtists = (autoRefresh: boolean = true, refreshInterval: number = 300000) => { // 5 minutes
-  const [trendingArtists, setTrendingArtists] = useState<SpotifyArtist[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+// 🚀 Hook for fetching trending artists with enhanced error handling
+export const useSpotifyTrendingArtists = () => {
+  const [data, setData] = useState<{
+    artists: SpotifyArtist[];
+    loading: boolean;
+    error: string | null;
+  }>({
+    artists: [],
+    loading: true,
+    error: null
+  });
 
-  const fetchTrending = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
+  useEffect(() => {
+    const fetchTrendingArtists = async () => {
+      setData(prev => ({ ...prev, loading: true, error: null }));
 
     try {
-      const artists = await spotifyApi.getTrendingArtists(20);
-      setTrendingArtists(artists);
+        const artists = await spotifyApi.getTrendingArtists();
+        setData({
+          artists,
+          loading: false,
+          error: null
+        });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch trending artists';
-      setError(errorMessage);
-      console.error('Error fetching trending artists:', err);
-    } finally {
-      setIsLoading(false);
-    }
+        setData({
+          artists: [],
+          loading: false,
+          error: errorMessage
+        });
+        if (import.meta.env.DEV) {
+          debug.error('Error fetching trending artists:', err);
+        }
+      }
+    };
+
+    fetchTrendingArtists();
   }, []);
 
-  useEffect(() => {
-    fetchTrending();
-    
-    if (autoRefresh) {
-      const interval = setInterval(fetchTrending, refreshInterval);
-      return () => clearInterval(interval);
-    }
-  }, [fetchTrending, autoRefresh, refreshInterval]);
-
-  return { trendingArtists, isLoading, error, refetch: fetchTrending };
+  return data;
 };
 
+// 🚀 Hook for searching artists with debounced queries
+export const useSpotifyArtistSearch = (query: string, delay: number = 300) => {
+  const [searchData, setSearchData] = useState<{
+    artists: SpotifyArtist[];
+    loading: boolean;
+    error: string | null;
+  }>({
+    artists: [],
+    loading: false,
+    error: null
+  });
 
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
 
-// Hook for artist search with debouncing
-export const useArtistSearch = (debounceMs: number = 500) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<SpotifyArtist[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // Debounce the query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [query, delay]);
 
   useEffect(() => {
-    if (!searchQuery.trim()) {
-      setSearchResults([]);
+    if (!debouncedQuery.trim()) {
+      setSearchData({ artists: [], loading: false, error: null });
       return;
     }
 
-    const timeoutId = setTimeout(async () => {
-      setIsSearching(true);
-      setError(null);
+    const searchArtists = async () => {
+      setSearchData(prev => ({ ...prev, loading: true, error: null }));
 
       try {
-        const results = await spotifyApi.searchArtists(searchQuery, 10);
-        setSearchResults(results);
+        const artists = await spotifyApi.searchArtists(debouncedQuery);
+        setSearchData({
+          artists,
+          loading: false,
+          error: null
+        });
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to search artists';
-        setError(errorMessage);
-        console.error('Error searching artists:', err);
-      } finally {
-        setIsSearching(false);
+        setSearchData({
+          artists: [],
+          loading: false,
+          error: errorMessage
+        });
+        if (import.meta.env.DEV) {
+          debug.error('Error searching artists:', err);
+        }
       }
-    }, debounceMs);
+    };
 
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery, debounceMs]);
+    searchArtists();
+  }, [debouncedQuery]);
 
-  return {
-    searchQuery,
-    setSearchQuery,
-    searchResults,
-    isSearching,
-    error
-  };
+  return searchData;
 }; 

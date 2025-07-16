@@ -1,4 +1,5 @@
-import React, { useState, useEffect, ReactNode } from 'react';
+import * as React from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { User, MOCK_USER, AuthContextType } from './authConstants';
 import { AuthContext } from './AuthContext';
 

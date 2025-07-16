@@ -1,200 +1,96 @@
 import { useState, useEffect } from 'react';
-import { 
-  tmdbService, 
-  convertTMDBMovieToCommunityItem, 
-  convertTMDBActorToCommunityItem, 
-  convertTMDBCompanyToCommunityItem,
-  TMDBMovie,
-  TMDBActor,
-  TMDBProductionCompany
-} from '../services/tmdbApi';
+import { debug } from '../utils/debug';
 
-export interface CommunityItem {
-  id: string;
-  name: string;
-  avatar: string;
-  cover: string;
-  description: string;
-  type: 'movie' | 'productionHouse' | 'director' | 'actor' | 'actress';
-  followers: number;
-  verified: boolean;
-  isActive: boolean;
-  projects: any[];
-  tmdbId?: number;
-  rating?: number;
-  releaseDate?: string;
-  knownFor?: string[];
-  country?: string;
-}
-
-interface UseTMDBDataReturn {
-  movies: CommunityItem[];
-  actors: CommunityItem[];
-  actresses: CommunityItem[];
-  directors: CommunityItem[];
-  productionHouses: CommunityItem[];
-  loading: boolean;
-  error: string | null;
-  refreshData: () => void;
-}
-
-export const useTMDBData = (): UseTMDBDataReturn => {
-  const [movies, setMovies] = useState<CommunityItem[]>([]);
-  const [actors, setActors] = useState<CommunityItem[]>([]);
-  const [actresses, setActresses] = useState<CommunityItem[]>([]);
-  const [directors, setDirectors] = useState<CommunityItem[]>([]);
-  const [productionHouses, setProductionHouses] = useState<CommunityItem[]>([]);
+export const useTMDBData = () => {
+  const [movies, setMovies] = useState<any[]>([]);
+  const [actors, setActors] = useState<any[]>([]);
+  const [actresses, setActresses] = useState<any[]>([]);
+  const [directors, setDirectors] = useState<any[]>([]);
+  const [productionHouses, setProductionHouses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchMovies = async () => {
-    try {
-      const [popularMovies, topRatedMovies, nowPlayingMovies] = await Promise.all([
-        tmdbService.getPopularMovies(1),
-        tmdbService.getTopRatedMovies(1),
-        tmdbService.getNowPlayingMovies(1)
-      ]);
-
-      const allMovies = [
-        ...popularMovies.results,
-        ...topRatedMovies.results,
-        ...nowPlayingMovies.results
-      ];
-
-      // Remove duplicates based on movie ID
-      const uniqueMovies = allMovies.filter((movie, index, self) => 
-        index === self.findIndex(m => m.id === movie.id)
-      );
-
-      const convertedMovies = uniqueMovies
-        .slice(0, 20) // Limit to 20 movies
-        .map(convertTMDBMovieToCommunityItem);
-
-      setMovies(convertedMovies);
-    } catch (err) {
-      console.error('Error fetching movies:', err);
-      setError('Failed to fetch movies');
-    }
-  };
-
-  const fetchActors = async () => {
-    try {
-      const popularActors = await tmdbService.getPopularActors(1);
-      
-      // Filter actors by gender (this is a simplified approach)
-      // In a real app, you'd need to fetch individual actor details to get gender
-      const convertedActors = popularActors.results
-        .slice(0, 15)
-        .map(actor => convertTMDBActorToCommunityItem(actor, 'actor'));
-
-      setActors(convertedActors);
-    } catch (err) {
-      console.error('Error fetching actors:', err);
-      setError('Failed to fetch actors');
-    }
-  };
-
-  const fetchActresses = async () => {
-    try {
-      const popularActors = await tmdbService.getPopularActors(2); // Get second page for variety
-      
-      // For demo purposes, we'll use the same data but mark as actresses
-      // In a real app, you'd need to fetch individual actor details to get gender
-      const convertedActresses = popularActors.results
-        .slice(0, 15)
-        .map(actor => convertTMDBActorToCommunityItem(actor, 'actress'));
-
-      setActresses(convertedActresses);
-    } catch (err) {
-      console.error('Error fetching actresses:', err);
-      setError('Failed to fetch actresses');
-    }
-  };
-
-  const fetchDirectors = async () => {
-    try {
-      const popularActors = await tmdbService.getPopularActors(3); // Get third page for variety
-      
-      // Filter for directors (known_for_department === 'Directing')
-      const directors = popularActors.results
-        .filter(actor => actor.known_for_department === 'Directing')
-        .slice(0, 10);
-
-      const convertedDirectors = directors.map(director => 
-        convertTMDBActorToCommunityItem(director, 'director')
-      );
-
-      setDirectors(convertedDirectors);
-    } catch (err) {
-      console.error('Error fetching directors:', err);
-      setError('Failed to fetch directors');
-    }
-  };
-
-  const fetchProductionHouses = async () => {
-    try {
-      // Search for major production companies
-      const companies = [
-        'Marvel Studios',
-        'Warner Bros. Pictures',
-        'Universal Pictures',
-        'Paramount Pictures',
-        '20th Century Studios',
-        'Sony Pictures',
-        'Lionsgate',
-        'A24',
-        'Netflix',
-        'Disney'
-      ];
-
-      const companyPromises = companies.map(name => 
-        tmdbService.searchCompanies(name, 1)
-      );
-
-      const companyResults = await Promise.all(companyPromises);
-      
-      const allCompanies = companyResults
-        .flatMap(result => result.results)
-        .filter((company, index, self) => 
-          index === self.findIndex(c => c.id === company.id)
-        );
-
-      const convertedCompanies = allCompanies
-        .slice(0, 10)
-        .map(convertTMDBCompanyToCommunityItem);
-
-      setProductionHouses(convertedCompanies);
-    } catch (err) {
-      console.error('Error fetching production houses:', err);
-      setError('Failed to fetch production houses');
-    }
-  };
-
-  const fetchAllData = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      await Promise.all([
-        fetchMovies(),
-        fetchActors(),
-        fetchActresses(),
-        fetchDirectors(),
-        fetchProductionHouses()
-      ]);
-    } catch (err) {
-      console.error('Error fetching data:', err);
-      setError('Failed to fetch data');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const refreshData = () => {
-    fetchAllData();
-  };
+  const TMDB_API_KEY = '00c8935eeb21058413bf54ae11048768';
+  const BASE_URL = 'https://api.themoviedb.org/3';
 
   useEffect(() => {
+    const fetchAllData = async () => {
+      setLoading(true);
+      try {
+        // Fetch trending movies
+        const moviesResponse = await fetch(
+          `${BASE_URL}/trending/movie/week?api_key=${TMDB_API_KEY}&page=1`
+        );
+        if (!moviesResponse.ok) throw new Error('Failed to fetch movies');
+        const moviesData = await moviesResponse.json();
+        setMovies(moviesData.results?.slice(0, 20) || []);
+
+        // Fetch popular actors
+        const actorsResponse = await fetch(
+          `${BASE_URL}/person/popular?api_key=${TMDB_API_KEY}&page=1`
+        );
+        if (!actorsResponse.ok) throw new Error('Failed to fetch actors');
+        const actorsData = await actorsResponse.json();
+        const allActors = actorsData.results?.slice(0, 50) || [];
+        
+        // Filter actors and actresses by gender (1 = female, 2 = male)
+        const maleActors = allActors.filter((person: any) => person.gender === 2).slice(0, 25);
+        const femaleActors = allActors.filter((person: any) => person.gender === 1).slice(0, 25);
+        
+        setActors(maleActors);
+        setActresses(femaleActors);
+
+        // Fetch directors (using crew data from popular movies)
+        const directorsResponse = await fetch(
+          `${BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&sort_by=popularity.desc&page=1&with_crew=1`
+        );
+        if (!directorsResponse.ok) throw new Error('Failed to fetch directors');
+        const directorsData = await directorsResponse.json();
+        
+        // Get credits for first few movies to find directors
+        const directorPromises = directorsData.results?.slice(0, 10).map(async (movie: any) => {
+          try {
+            const creditsResponse = await fetch(
+              `${BASE_URL}/movie/${movie.id}/credits?api_key=${TMDB_API_KEY}`
+            );
+            if (creditsResponse.ok) {
+              const creditsData = await creditsResponse.json();
+              return creditsData.crew?.filter((member: any) => member.job === 'Director').slice(0, 2) || [];
+            }
+            return [];
+          } catch {
+            return [];
+          }
+        }) || [];
+
+        const allDirectors = await Promise.all(directorPromises);
+        const uniqueDirectors = Array.from(
+          new Map(
+            allDirectors.flat().map((director: any) => [director.id, director])
+          ).values()
+        ).slice(0, 20);
+        
+        setDirectors(uniqueDirectors);
+
+        // Fetch production companies
+        const companiesResponse = await fetch(
+          `${BASE_URL}/company/popular?api_key=${TMDB_API_KEY}&page=1`
+        );
+        if (!companiesResponse.ok) throw new Error('Failed to fetch production companies');
+        const companiesData = await companiesResponse.json();
+        setProductionHouses(companiesData.results?.slice(0, 30) || []);
+
+      } catch (err: any) {
+        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch TMDB data';
+        setError(errorMessage);
+        if (import.meta.env.DEV) {
+          debug.error('Error fetching data:', err);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchAllData();
   }, []);
 
@@ -205,7 +101,6 @@ export const useTMDBData = (): UseTMDBDataReturn => {
     directors,
     productionHouses,
     loading,
-    error,
-    refreshData
+    error
   };
 }; 

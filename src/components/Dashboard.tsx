@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useCallback, useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 import { 
   TrendingUp, 
@@ -24,6 +24,7 @@ import { dashboardStats, recentActivities } from '../data/dashboard';
 import { superstars } from '../data/superstars';
 import { investmentService } from '../data/investments';
 
+// 🛡️ Type definitions for better type safety
 interface PerkMetadata {
   location?: string;
   maxParticipants?: number;
@@ -45,21 +46,49 @@ interface DashboardPerk {
   metadata: PerkMetadata;
 }
 
-const Dashboard: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'investments' | 'perks' | 'circles' | 'portfolio'>('overview');
+interface Circle {
+  name: string;
+  members: number;
+  level: string;
+  description: string;
+  avatar: string;
+  lastActivity: string;
+  unreadMessages: number;
+}
 
-  const userStats = {
+interface Tab {
+  id: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+type TabType = 'overview' | 'investments' | 'perks' | 'circles' | 'portfolio';
+
+/**
+ * 🎯 Dashboard - Optimized version with exact original design preserved
+ * @description Main dashboard with performance optimizations while maintaining original styling
+ */
+const Dashboard = memo(() => {
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
+
+  // 🚀 Memoized user stats for performance
+  const userStats = useMemo(() => ({
     totalInvested: dashboardStats.totalInvestments,
     totalReturns: dashboardStats.totalReturns,
     activeInvestments: dashboardStats.activeProjects,
     totalPerks: 24,
     circleLevel: 'Producer',
     nextLevel: 'Executive Producer'
-  };
+  }), []);
 
-  const investments = investmentService.getFormattedInvestments();
+  // 🚀 Memoized investments data
+  const investments = useMemo(() => 
+    investmentService.getFormattedInvestments(), 
+    []
+  );
 
-  const perks: DashboardPerk[] = [
+  // 🚀 Memoized perks data
+  const perks: DashboardPerk[] = useMemo(() => [
     {
       id: '1',
       title: 'Premiere Screening Access',
@@ -160,9 +189,10 @@ const Dashboard: React.FC = () => {
         tags: ['set-visit', 'exclusive', 'experience']
       }
     }
-  ];
+  ], []);
 
-  const circles = [
+  // 🚀 Memoized circles data
+  const circles: Circle[] = useMemo(() => [
     {
       name: 'Shah Rukh Khan Circle',
       members: 1250,
@@ -190,20 +220,41 @@ const Dashboard: React.FC = () => {
       lastActivity: '3 hours ago',
       unreadMessages: 0
     }
-  ];
+  ], []);
 
-  const tabs = [
+  // 🚀 Memoized tabs configuration
+  const tabs: Tab[] = useMemo(() => [
     { id: 'overview', label: 'Overview', icon: BarChart3 },
     { id: 'investments', label: 'My Investments', icon: TrendingUp },
     { id: 'perks', label: 'Perks & Rewards', icon: Gift },
     { id: 'circles', label: 'My Circles', icon: Users },
     { id: 'portfolio', label: 'Portfolio', icon: BarChart }
-  ];
+  ], []);
+
+  // 🚀 Optimized tab change handler
+  const handleTabChange = useCallback((tabId: TabType) => {
+    setActiveTab(tabId);
+  }, []);
+
+  // 🚀 Optimized circle navigation handler
+  const handleCircleNavigation = useCallback((circleId: string) => {
+    window.location.href = `/circles/${circleId}`;
+  }, []);
+
+  // 🚀 Memoized recent activities (first 4)
+  const recentActivitiesDisplay = useMemo(() => 
+    recentActivities.slice(0, 4), 
+    []
+  );
+
+  // 🚀 Memoized superstars (first 6)
+  const superstarsDisplay = useMemo(() => 
+    superstars.slice(0, 6), 
+    []
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-purple-900 pt-20 pb-[100px]">
-      
-
       <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
         
         {/* Header with Bollywood Glamour */}
@@ -219,7 +270,6 @@ const Dashboard: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 relative">
             Welcome back, <span className="bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent relative">
               Rahul
-              
             </span>
           </h1>
           <p className="text-gray-300 text-lg flex items-center gap-2">
@@ -234,7 +284,7 @@ const Dashboard: React.FC = () => {
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as 'overview' | 'investments' | 'perks' | 'circles' | 'portfolio')}
+              onClick={() => handleTabChange(tab.id as TabType)}
               className={`relative flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 max-md:w-full border ${
                 activeTab === tab.id
                   ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
@@ -289,7 +339,6 @@ const Dashboard: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-gray-400 text-sm flex items-center gap-1">
-                      
                       Total Returns
                     </p>
                     <p className="text-white text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -374,7 +423,6 @@ const Dashboard: React.FC = () => {
               <div className="mb-4 relative z-10">
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-gray-400 flex items-center gap-1">
-                    
                     Progress to {userStats.nextLevel}
                   </span>
                   <span className="bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 bg-clip-text text-transparent font-bold">
@@ -412,7 +460,7 @@ const Dashboard: React.FC = () => {
                 </span>
               </h3>
               <div className="space-y-4 relative z-10">
-                {recentActivities.slice(0, 4).map((activity) => (
+                {recentActivitiesDisplay.map((activity) => (
                   <div key={activity.id} className="relative p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300 group overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="flex items-center justify-between relative z-10">
@@ -466,7 +514,7 @@ const Dashboard: React.FC = () => {
                 </span>
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 relative z-10">
-                {superstars.slice(0, 6).map((star) => (
+                {superstarsDisplay.map((star) => (
                   <div key={star.id} className="text-center group">
                     <div className="relative w-16 h-16 mx-auto mb-2">
                       <img 
@@ -483,9 +531,6 @@ const Dashboard: React.FC = () => {
                     </div>
                     <p className="text-white text-sm font-medium truncate">{star.name}</p>
                     <p className="text-amber-400 text-xs font-medium">{star.followers}</p>
-                    <div className="flex justify-center mt-1">
-                      
-                    </div>
                   </div>
                 ))}
               </div>
@@ -603,10 +648,7 @@ const Dashboard: React.FC = () => {
                           {investment.circleId && (
                             <button 
                               className="relative p-1 sm:p-2 rounded-lg bg-gradient-to-r from-amber-500/20 to-yellow-500/20 hover:from-amber-500/30 hover:to-yellow-500/30 text-amber-300 hover:text-amber-200 text-xs font-medium transition-all duration-300 border border-amber-500/30 hover:border-amber-500/50"
-                              onClick={() => {
-                                // Navigate to circle page
-                                window.location.href = `/circles/${investment.circleId}`;
-                              }}
+                              onClick={() => handleCircleNavigation(investment.circleId)}
                             >
                               <span className="flex items-center gap-1">
                                 <Crown className="w-3 h-3" />
@@ -789,7 +831,9 @@ const Dashboard: React.FC = () => {
       </div>
     </div>
   );
-};
+});
+
+Dashboard.displayName = 'Dashboard';
 
 export default Dashboard;
 

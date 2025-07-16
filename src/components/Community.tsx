@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, 
@@ -36,11 +36,9 @@ import useIsMobile from '../hooks/useIsMobile';
 import Merchandise from './Merchandise';
 import { comprehensiveCommunityData, type RealCommunityItem } from '../data/comprehensiveCommunityData';
 import OptimizedImage from './OptimizedImage';
-
-
 import { getSpotifyArtistData, hasSpotifyData } from '../data/spotifyArtistImages';
 
-// Enhanced interfaces for hierarchical community structure
+// 🛡️ Type definitions for better type safety
 interface FeedPost {
   id: string;
   user: {
@@ -57,7 +55,28 @@ interface FeedPost {
   shares: number;
 }
 
-const Community: React.FC = () => {
+interface Message {
+  user: string;
+  message: string;
+  time: string;
+  avatar?: string;
+}
+
+interface Friend {
+  id: string;
+  name: string;
+  avatar: string;
+  online: boolean;
+}
+
+type CategoryType = 'productionHouse' | 'movie' | 'director' | 'actor' | 'actress' | 'musicArtist';
+type TabType = 'feed' | 'channels' | 'friends' | 'media' | 'perks' | 'merch';
+
+/**
+ * 🎯 Community - Optimized community component with enhanced performance
+ * @description Comprehensive community platform with hierarchical structure and real-time interactions
+ */
+const Community: React.FC = memo(() => {
   // Comprehensive Community Data
   const movies = comprehensiveCommunityData.movies;
   const actors = comprehensiveCommunityData.actors;
@@ -2169,6 +2188,8 @@ const Community: React.FC = () => {
       
     </div>
   );
-};
+});
+
+Community.displayName = 'Community';
 
 export default Community;

@@ -1,12 +1,5 @@
-import { createContext, useContext } from 'react';
-
-export interface ThemeContextType {
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-  currentGradient: number;
-}
-
-export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+import { useContext } from 'react';
+import { ThemeContext } from './ThemeProvider';
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);

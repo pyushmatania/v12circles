@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { 
@@ -44,13 +44,7 @@ import { useTMDBProjectData, getMainCast, getKeyCrew } from '../hooks/useTMDBPro
 // Import logo image
 import circlesLogo from '../images/circles-logo-main.png';
 
-// Create aliases for the icons used in the component
-const ShieldIcon = Shield;
-const AwardIcon = Award;
-const GlobeIcon = Globe;
-const FileTextIcon = FileText;
-const FileCheckIcon = FileCheck;
-
+// 🛡️ Type definitions for better type safety
 interface ProjectDetailPageProps {
   project: Project;
   onClose: () => void;
@@ -58,7 +52,43 @@ interface ProjectDetailPageProps {
   initialTab?: 'overview' | 'invest' | 'perks' | 'milestones' | 'team' | 'story' | 'gallery' | 'updates' | 'community' | 'reviews' | 'faqs' | 'legal';
 }
 
-const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose, onInvest, initialTab = 'overview' }) => {
+interface FundingStats {
+  totalInvestors: number;
+  averageInvestment: number;
+  remainingAmount: number;
+  daysSinceCreated: number;
+  fundingVelocity: number;
+}
+
+interface FundingMilestone {
+  percentage: number;
+  label: string;
+  achieved: boolean;
+  icon: string;
+}
+
+interface NavigationTab {
+  id: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+}
+
+interface TimeRemaining {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
+type TabType = 'overview' | 'invest' | 'perks' | 'milestones' | 'team' | 'story' | 'gallery' | 'updates' | 'community' | 'reviews' | 'faqs' | 'legal';
+type PaymentMethod = 'upi' | 'card' | 'netbanking';
+
+/**
+ * 🎯 ProjectDetailPage - Optimized project detail component with enhanced performance
+ * @description Comprehensive project detail page with investment functionality and rich media content
+ */
+const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onClose, onInvest, initialTab = 'overview' }) => {
 
   const [activeTab, setActiveTab] = useState(initialTab);
   const [isLiked, setIsLiked] = useState(false);
@@ -3742,17 +3772,17 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
                           {/* Compliance Status */}
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                             <div className="bg-green-500/10 rounded-2xl p-6 border border-green-500/30 text-center">
-                              <ShieldIcon className="w-8 h-8 text-green-400 mx-auto mb-3" />
+                                                              <Shield className="w-8 h-8 text-green-400 mx-auto mb-3" />
                               <h4 className="text-white font-bold mb-2">SEBI Compliant</h4>
                               <p className="text-green-300 text-sm">Fully regulated investment platform</p>
                             </div>
                             <div className="bg-blue-500/10 rounded-2xl p-6 border border-blue-500/30 text-center">
-                              <AwardIcon className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+                                                              <Award className="w-8 h-8 text-blue-400 mx-auto mb-3" />
                               <h4 className="text-white font-bold mb-2">ISO Certified</h4>
                               <p className="text-blue-300 text-sm">Quality management certified</p>
                             </div>
                             <div className="bg-purple-500/10 rounded-2xl p-6 border border-purple-500/30 text-center">
-                              <GlobeIcon className="w-8 h-8 text-purple-400 mx-auto mb-3" />
+                                                              <Globe className="w-8 h-8 text-purple-400 mx-auto mb-3" />
                               <h4 className="text-white font-bold mb-2">GDPR Compliant</h4>
                               <p className="text-purple-300 text-sm">Data protection standards met</p>
                             </div>
@@ -4102,6 +4132,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, onClose,
       </div>
     </motion.div>
   );
-};
+});
+
+ProjectDetailPage.displayName = 'ProjectDetailPage';
 
 export default ProjectDetailPage; 

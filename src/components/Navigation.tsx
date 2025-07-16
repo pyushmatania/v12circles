@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import * as React from 'react';
+import { useState, useCallback, useEffect, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Home, 
@@ -36,14 +37,35 @@ import NotificationDropdown from './NotificationDropdown';
 import { Project } from '../types';
 import MobileBottomBar from './MobileBottomBar';
 
+// 🛡️ Type definitions for better type safety
+type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail';
+type ProjectDetailTab = 'overview' | 'invest';
+type AuthMode = 'login' | 'register';
+
 interface NavigationProps {
-  currentView: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail';
-  setCurrentView: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail') => void;
-  onAuthRequired: (mode?: 'login' | 'register') => boolean;
-  onProjectSelect?: (project: any, tab?: 'overview' | 'invest') => void;
+  currentView: ViewType;
+  setCurrentView: (view: ViewType) => void;
+  onAuthRequired: (mode?: AuthMode) => boolean;
+  onProjectSelect?: (project: Project, tab?: ProjectDetailTab) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, onAuthRequired, onProjectSelect }) => {
+interface NavItem {
+  id: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  requiresAuth?: boolean;
+}
+
+/**
+ * 🎯 Navigation - Main navigation component with optimized performance
+ * @description Handles desktop and mobile navigation with animations and responsive design
+ */
+const Navigation: React.FC<NavigationProps> = memo(({ 
+  currentView, 
+  setCurrentView, 
+  onAuthRequired, 
+  onProjectSelect 
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [logoAnimation, setLogoAnimation] = useState(false);
@@ -52,14 +74,15 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
   const { isAuthenticated, user } = useAuth();
   const isMobile = useIsMobile();
 
-  const mainNavItems = useMemo(() => [
+  // 🚀 Memoized navigation items for better performance
+  const mainNavItems = useMemo<NavItem[]>(() => [
     { id: 'home', label: 'Home', icon: Home, requiresAuth: false },
     { id: 'projects', label: 'Browse', icon: Film, requiresAuth: false },
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3, requiresAuth: false },
     { id: 'community', label: 'Community', icon: Users, requiresAuth: false }
   ], []);
 
-  const moreNavItems = useMemo(() => [
+  const moreNavItems = useMemo<NavItem[]>(() => [
     { id: 'merch', label: 'Merch', icon: ShoppingBag },
     { id: 'portfolio', label: 'Portfolio', icon: BarChart, requiresAuth: true },
     { id: 'compare', label: 'Compare', icon: ArrowsCompare },
@@ -67,11 +90,13 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
     { id: 'admin', label: 'Admin', icon: LayoutDashboard }
   ], []);
 
+  // 🚀 Optimized scroll handler with useCallback
   const handleScroll = useCallback(() => {
     const currentScrollY = window.scrollY;
     setIsScrolled(currentScrollY > 50);
   }, []);
 
+  // 🚀 Optimized scroll event listener
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
@@ -79,7 +104,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  // Logo animation every 15 seconds
+  // 🚀 Logo animation effect
   useEffect(() => {
     const interval = setInterval(() => {
       setLogoAnimation(true);
@@ -89,6 +114,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
     return () => clearInterval(interval);
   }, []);
 
+  // 🚀 Optimized item click handler
   const handleItemClick = useCallback((itemId: string) => {
     if (itemId === 'theme') {
       toggleTheme();
@@ -98,31 +124,93 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
         onAuthRequired('login');
         return;
       }
-      setCurrentView(itemId as 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search');
+      setCurrentView(itemId as ViewType);
       setShowMoreMenu(false);
     }
   }, [toggleTheme, mainNavItems, moreNavItems, isAuthenticated, onAuthRequired, setCurrentView]);
 
-  const handleProjectSelect = useCallback((project: Project, tab: 'overview' | 'invest' = 'overview') => {
+  // 🚀 Optimized project selection handler
+  const handleProjectSelect = useCallback((project: Project, tab: ProjectDetailTab = 'overview') => {
     if (onProjectSelect) {
       onProjectSelect(project, tab);
     }
   }, [onProjectSelect]);
 
-  return (
-    <>
-      {/* Top Navigation Bar - Only shown when not scrolled */}
-      <AnimatePresence>
-        {!isScrolled && (
-          <motion.nav
-            initial={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-0 left-0 right-0 z-50"
-          >
-            <div className="max-w-7xl mx-auto px-8 py-6">
-              <div className="relative flex items-center justify-between">
-                {/* Logo */}
+  // 🚀 Optimized profile click handler
+  const handleProfileClick = useCallback(() => {
+    if (!isAuthenticated) {
+      onAuthRequired('login');
+    } else {
+      setCurrentView('profile');
+    }
+  }, [isAuthenticated, onAuthRequired, setCurrentView]);
+
+  // 🚀 Optimized search view handler
+  const handleSearchViewAll = useCallback(() => {
+    setCurrentView('search');
+  }, [setCurrentView]);
+
+  // 🚀 Optimized notification view handler
+  const handleNotificationViewAll = useCallback(() => {
+    setCurrentView('notifications');
+  }, [setCurrentView]);
+
+  // 🚀 Memoized theme toggle button
+  const ThemeToggleButton = useMemo(() => (
+    <motion.button
+      onClick={toggleTheme}
+      className={`p-2 rounded-lg transition-all duration-300 ${theme === 'light' ? 'text-gray-600 hover:text-gray-900' : 'text-gray-300 hover:text-white'}`}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4, duration: 0.3 }}
+    >
+      {theme === 'light' ? (
+        <Moon className="w-5 h-5 drop-shadow-lg" />
+      ) : (
+        <Sun className="w-5 h-5 drop-shadow-lg" />
+      )}
+    </motion.button>
+  ), [theme, toggleTheme]);
+
+  // 🚀 Memoized profile button
+  const ProfileButton = useMemo(() => (
+    <motion.button
+      onClick={handleProfileClick}
+      className={`flex items-center justify-center transition-all duration-300 ${
+        theme === 'light'
+          ? 'text-gray-600 hover:text-purple-600'
+          : 'text-gray-300 hover:text-cyan-400'
+      }`}
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.95 }}
+      aria-label={isAuthenticated ? "Profile" : "Sign In"}
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.35, duration: 0.3 }}
+    >
+      {isAuthenticated && user?.avatar ? (
+        <img 
+          src={user.avatar} 
+          alt={user.name}
+          className="w-6 h-6 rounded-full object-cover"
+          onError={(e) => {
+            const target = e.currentTarget as HTMLImageElement;
+            target.style.display = 'none';
+            const fallback = target.nextElementSibling as HTMLElement;
+            if (fallback) fallback.style.display = 'block';
+          }}
+        />
+      ) : (
+        <User className="w-6 h-6 drop-shadow-lg" />
+      )}
+    </motion.button>
+  ), [isAuthenticated, user?.avatar, user?.name, theme, handleProfileClick]);
+
+  // 🚀 Memoized logo component
+  const LogoComponent = useMemo(() => (
                 <motion.button 
                   onClick={() => setCurrentView('home')}
                   className="hidden md:flex items-center gap-0 cursor-pointer relative"
@@ -224,8 +312,71 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                     Circles
                   </span>
                 </motion.button>
+  ), [logoAnimation, theme, setCurrentView]);
 
-                {/* Navigation Items */}
+  // 🚀 Memoized mobile logo component
+  const MobileLogoComponent = useMemo(() => (
+    <motion.button 
+      onClick={() => setCurrentView('home')}
+      className="flex items-center justify-center cursor-pointer flex-shrink-0 relative"
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0, duration: 0.3 }}
+    >
+      {/* Mobile logo animation */}
+      <motion.div 
+        className="w-12 h-12 flex items-center justify-center overflow-hidden"
+        animate={logoAnimation ? {
+          rotate: [0, 360],
+          scale: [1, 1.1, 1],
+          filter: [
+            'brightness(1) drop-shadow(0 0 8px rgba(147,51,234,0.3))',
+            'brightness(1.3) drop-shadow(0 0 20px rgba(59,130,246,0.6))',
+            'brightness(1) drop-shadow(0 0 8px rgba(147,51,234,0.3))'
+          ]
+        } : {}}
+        transition={{ 
+          duration: 5, 
+          ease: [0.4, 0, 0.2, 1]
+        }}
+      >
+        <img 
+          src={circlesLogo} 
+          alt="Circles Logo" 
+          className="w-12 h-12 object-contain drop-shadow-lg"
+          onError={(e) => {
+            const target = e.currentTarget as HTMLImageElement;
+            target.style.display = 'none';
+            const fallback = target.nextElementSibling as HTMLElement;
+            if (fallback) fallback.style.display = 'block';
+          }}
+        />
+        <span className={`font-bold text-2xl hidden drop-shadow-lg bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+          C
+        </span>
+      </motion.div>
+    </motion.button>
+  ), [logoAnimation, theme, setCurrentView]);
+
+  return (
+    <>
+      {/* 🚀 Top Navigation Bar - Only shown when not scrolled */}
+      <AnimatePresence>
+        {!isScrolled && (
+          <motion.nav
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 right-0 z-50"
+          >
+            <div className="max-w-7xl mx-auto px-8 py-6">
+              <div className="relative flex items-center justify-between">
+                {/* Logo */}
+                {LogoComponent}
+
+                {/* 🚀 Navigation Items */}
                 <div className="hidden md:flex items-center gap-12">
                   {mainNavItems.map((item, index) => (
                     <motion.button
@@ -255,7 +406,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                     </motion.button>
                   ))}
                   
-                  {/* More Menu Dropdown */}
+                  {/* 🚀 More Menu Dropdown */}
                   <div className="relative hidden md:block">
                     <motion.button
                       onClick={() => setShowMoreMenu(!showMoreMenu)}
@@ -325,7 +476,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                   </div>
                 </div>
 
-                {/* Right Side Actions */}
+                {/* 🚀 Right Side Actions */}
                 <div className="hidden md:flex items-center gap-4">
                   {/* Search Button */}
                   <motion.div 
@@ -336,9 +487,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                   >
                     <SearchBar
                       onSelectProject={handleProjectSelect}
-                      onViewAllResults={() => {
-                        setCurrentView('search');
-                      }}
+                      onViewAllResults={handleSearchViewAll}
                     />
                   </motion.div>
                   
@@ -348,113 +497,23 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                     transition={{ delay: 0.3, duration: 0.3 }}
                   >
                     <NotificationDropdown
-                      onViewAll={() => setCurrentView('notifications')}
+                      onViewAll={handleNotificationViewAll}
                     />
                   </motion.div>
 
                   {/* Profile Icon */}
                   <div className="relative">
-                    <motion.button
-                      onClick={() => {
-                        if (!isAuthenticated) {
-                          onAuthRequired('login');
-                        } else {
-                          setCurrentView('profile');
-                        }
-                      }}
-                      className={`flex items-center justify-center transition-all duration-300 ${
-                        theme === 'light'
-                          ? 'text-gray-600 hover:text-purple-600'
-                          : 'text-gray-300 hover:text-cyan-400'
-                      }`}
-                      whileHover={{ scale: 1.08 }}
-                      whileTap={{ scale: 0.95 }}
-                      aria-label={isAuthenticated ? "Profile" : "Sign In"}
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.35, duration: 0.3 }}
-                    >
-                      {isAuthenticated && user?.avatar ? (
-                        <img 
-                          src={user.avatar} 
-                          alt={user.name}
-                          className="w-6 h-6 rounded-full object-cover"
-                          onError={(e) => {
-                            const target = e.currentTarget as HTMLImageElement;
-                            target.style.display = 'none';
-                            const fallback = target.nextElementSibling as HTMLElement;
-                            if (fallback) fallback.style.display = 'block';
-                          }}
-                        />
-                      ) : (
-                        <User className="w-6 h-6 drop-shadow-lg" />
-                      )}
-                    </motion.button>
+                    {ProfileButton}
                   </div>
 
                   {/* Theme Toggle Button */}
-                  <motion.button
-                    onClick={toggleTheme}
-                    className={`p-2 rounded-lg transition-all duration-300 ${theme === 'light' ? 'text-gray-600 hover:text-gray-900' : 'text-gray-300 hover:text-white'}`}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.3 }}
-                  >
-                    {theme === 'light' ? (
-                      <Moon className="w-5 h-5 drop-shadow-lg" />
-                    ) : (
-                      <Sun className="w-5 h-5 drop-shadow-lg" />
-                    )}
-                  </motion.button>
+                  {ThemeToggleButton}
                 </div>
 
-                {/* Mobile Navigation */}
+                {/* 🚀 Mobile Navigation */}
                 <div className="md:hidden flex items-center justify-between w-full px-4 min-w-0">
                   {/* Left: Logo Only */}
-                  <motion.button 
-                    onClick={() => setCurrentView('home')}
-                    className="flex items-center justify-center cursor-pointer flex-shrink-0 relative"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0, duration: 0.3 }}
-                  >
-                    {/* Mobile logo animation */}
-                    <motion.div 
-                      className="w-12 h-12 flex items-center justify-center overflow-hidden"
-                      animate={logoAnimation ? {
-                        rotate: [0, 360],
-                        scale: [1, 1.1, 1],
-                        filter: [
-                          'brightness(1) drop-shadow(0 0 8px rgba(147,51,234,0.3))',
-                          'brightness(1.3) drop-shadow(0 0 20px rgba(59,130,246,0.6))',
-                          'brightness(1) drop-shadow(0 0 8px rgba(147,51,234,0.3))'
-                        ]
-                      } : {}}
-                      transition={{ 
-                        duration: 5, 
-                        ease: [0.4, 0, 0.2, 1]
-                      }}
-                    >
-                      <img 
-                        src={circlesLogo} 
-                        alt="Circles Logo" 
-                        className="w-12 h-12 object-contain drop-shadow-lg"
-                        onError={(e) => {
-                          const target = e.currentTarget as HTMLImageElement;
-                          target.style.display = 'none';
-                          const fallback = target.nextElementSibling as HTMLElement;
-                          if (fallback) fallback.style.display = 'block';
-                        }}
-                      />
-                      <span className={`font-bold text-2xl hidden drop-shadow-lg bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                        C
-                      </span>
-                    </motion.div>
-                  </motion.button>
+                  {MobileLogoComponent}
                   
                   {/* Center: Main Nav Items */}
                   <div className="flex items-center gap-2 flex-shrink-0">
@@ -505,17 +564,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                       transition={{ delay: 0.25, duration: 0.3 }}
                     >
                       <NotificationDropdown
-                        onViewAll={() => setCurrentView('notifications')}
+                        onViewAll={handleNotificationViewAll}
                       />
                     </motion.div>
                     <motion.button
-                      onClick={() => {
-                        if (!isAuthenticated) {
-                          onAuthRequired('login');
-                        } else {
-                          setCurrentView('profile');
-                        }
-                      }}
+                      onClick={handleProfileClick}
                       className={`p-2 rounded-lg transition-all duration-300 relative ${
                         currentView === 'profile'
                           ? 'text-cyan-400'
@@ -555,7 +608,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
         )}
       </AnimatePresence>
 
-      {/* Scroll-Triggered Sidebar - Only shown when scrolled */}
+      {/* 🚀 Scroll-Triggered Sidebar - Only shown when scrolled */}
       <AnimatePresence>
         {isScrolled && (
           <motion.div
@@ -737,7 +790,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
                 {/* Profile Icon */}
                 <div className="relative">
                   <motion.button
-                    onClick={() => handleItemClick('profile')}
+                    onClick={handleProfileClick}
                     className={`relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 ${
                       currentView === 'profile'
                         ? `${theme === 'light' 
@@ -806,6 +859,8 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setCurrentView, on
       )}
     </>
   );
-};
+});
+
+Navigation.displayName = 'Navigation';
 
 export default Navigation;
