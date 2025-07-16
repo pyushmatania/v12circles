@@ -47,6 +47,7 @@ interface NavigationProps {
   setCurrentView: (view: ViewType) => void;
   onAuthRequired: (mode?: AuthMode) => boolean;
   onProjectSelect?: (project: Project, tab?: ProjectDetailTab) => void;
+  onSearchViewAll?: (term: string) => void;
 }
 
 interface NavItem {
@@ -64,7 +65,8 @@ const Navigation: React.FC<NavigationProps> = memo(({
   currentView, 
   setCurrentView, 
   onAuthRequired, 
-  onProjectSelect 
+  onProjectSelect,
+  onSearchViewAll
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
@@ -146,9 +148,13 @@ const Navigation: React.FC<NavigationProps> = memo(({
   }, [isAuthenticated, onAuthRequired, setCurrentView]);
 
   // 🚀 Optimized search view handler
-  const handleSearchViewAll = useCallback(() => {
-    setCurrentView('search');
-  }, [setCurrentView]);
+  const handleSearchViewAll = useCallback((term: string) => {
+    if (onSearchViewAll) {
+      onSearchViewAll(term);
+    } else {
+      setCurrentView('search');
+    }
+  }, [setCurrentView, onSearchViewAll]);
 
   // 🚀 Optimized notification view handler
   const handleNotificationViewAll = useCallback(() => {

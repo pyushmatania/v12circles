@@ -960,6 +960,19 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
               }}
               className="w-full pl-14 pr-12 py-5 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border border-gray-700 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-800 focus:via-gray-700 focus:to-gray-800 transition-all duration-500 text-lg shadow-2xl shadow-purple-500/10 focus:shadow-purple-500/30"
             />
+            {/* Search Button */}
+            <button
+              type="button"
+              className="absolute right-12 top-1/2 transform -translate-y-1/2 bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-lg transition-colors duration-200 focus:outline-none"
+              onClick={() => {
+                // Trigger search by updating the search term (which will trigger the search effect)
+                setSearchTerm(searchTerm);
+                setShowAllProjects(null);
+              }}
+              title="Search"
+            >
+              <Search className="w-4 h-4" />
+            </button>
             {searchTerm && (
             <button
                 type="button"

@@ -50,13 +50,19 @@ export const useAdminAuth = () => {
     
     try {
       // In a real app, this would be an API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 500)); // Reduced delay
       
       if (username === 'admin' && password === 'admin') {
         const token = 'mock_admin_token_' + Date.now();
         localStorage.setItem('admin_token', token);
         setUser(mockAdminUser);
         setIsAuthenticated(true);
+        
+        // Force a re-render to trigger the redirect
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+        
         return true;
       } else {
         throw new Error('Invalid credentials');

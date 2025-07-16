@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   BarChart, 
   PieChart, 
@@ -19,17 +19,13 @@ import {
   Target,
   Gem,
   Coins,
-  Banknote,
   Calculator,
-  BarChart3,
   Wallet,
-  Landmark,
   Briefcase,
   PiggyBank,
   Activity,
   Trophy,
   AlertTriangle,
-  Brain,
   Lightbulb,
   Clock,
   CheckCircle,
@@ -37,21 +33,27 @@ import {
   FileText
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
-import { userInvestments } from '../data/investments';
+import { portfolioData as userInvestments } from '../data/portfolio';
 import { projects } from '../data/projects';
 import { CSVLink } from 'react-csv';
 
-// Calculate portfolio data from real investments
-const calculatePortfolioData = () => {
-  const totalInvested = userInvestments.reduce((sum, inv) => sum + inv.investmentAmount, 0);
-  const totalReturns = userInvestments.reduce((sum, inv) => sum + inv.returnAmount, 0);
+// Calculate portfolio data from real investments with enhanced filtering
+const calculatePortfolioData = (filterType: string = 'all') => {
+  // Filter investments based on type
+  const filteredInvestments = filterType === 'all' 
+    ? userInvestments 
+    : userInvestments.filter(inv => inv.projectType === filterType);
+
+  const totalInvested = filteredInvestments.reduce((sum, inv) => sum + inv.investmentAmount, 0);
+  const totalReturns = filteredInvestments.reduce((sum, inv) => sum + inv.returnAmount, 0);
   const totalProfit = totalReturns;
-  const roi = totalInvested> 0 ? (totalProfit / totalInvested) * 100 : 0;
+  const roi = totalInvested > 0 ? (totalProfit / totalInvested) * 100 : 0;
 
   // Calculate investments by category
   const categoryMap = new Map<string, number>();
-  userInvestments.forEach(inv => {
-    const category = inv.projectType === 'film' ? 'Film' : 'Music';
+  filteredInvestments.forEach(inv => {
+    const category = inv.projectType === 'film' ? 'Film' : 
+                    inv.projectType === 'music' ? 'Music' : 'Web Series';
     categoryMap.set(category, (categoryMap.get(category) || 0) + inv.investmentAmount);
   });
 
@@ -63,7 +65,7 @@ const calculatePortfolioData = () => {
 
   // Calculate investments by genre (from projects data)
   const genreMap = new Map<string, number>();
-  userInvestments.forEach(inv => {
+  filteredInvestments.forEach(inv => {
     const project = projects.find(p => p.title === inv.projectName);
     if (project && project.genre) {
       const genres = project.genre.split(', ');
@@ -99,8 +101,8 @@ const calculatePortfolioData = () => {
   ];
 
   // Top performing projects from real data
-  const topPerformingProjects = userInvestments
-    .filter(inv => inv.returnPercentage> 0)
+  const topPerformingProjects = filteredInvestments
+    .filter(inv => inv.returnPercentage > 0)
     .sort((a, b) => b.returnPercentage - a.returnPercentage)
     .slice(0, 5)
     .map(inv => ({
@@ -110,11 +112,11 @@ const calculatePortfolioData = () => {
       returns: inv.currentValue,
       roi: inv.returnPercentage,
       trend: 'up' as const,
-      riskLevel: (inv.returnPercentage> 30 ? 'high' : inv.returnPercentage> 20 ? 'medium' : 'low') as 'high' | 'medium' | 'low'
+      riskLevel: (inv.returnPercentage > 30 ? 'high' : inv.returnPercentage > 20 ? 'medium' : 'low') as 'high' | 'medium' | 'low'
     }));
 
   // Underperforming projects (if any)
-  const underperformingProjects = userInvestments
+  const underperformingProjects = filteredInvestments
     .filter(inv => inv.returnPercentage < 10)
     .map(inv => ({
       id: inv.id,
@@ -147,8 +149,6 @@ const calculatePortfolioData = () => {
   };
 };
 
-const portfolioData = calculatePortfolioData();
-
 type PortfolioAnalyticsProps = object;
 
 const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
@@ -165,6 +165,8 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
   const [filterRegion, setFilterRegion] = useState<string>('all');
   const [filterRisk, setFilterRisk] = useState<string>('all');
 
+  // Calculate portfolio data based on current filter
+  const portfolioData = useMemo(() => calculatePortfolioData(filterProjectType), [filterProjectType]);
 
   // Sort and filter investments
   const filteredInvestments = userInvestments.filter(inv => {
@@ -213,9 +215,21 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                          portfolioData.roi> 5 ? 'Average' : 'Needs Attention';
 
   // Recommendation based on portfolio analysis
-  const recommendation = portfolioData.investmentsByCategory.length> 1 
+  const recommendation = portfolioData.investmentsByCategory.length > 1 
     ? "Your portfolio shows good diversification across films and music. Consider adding more thriller and comedy genres to balance your investments."
     : "Consider diversifying your portfolio with different project types and genres to reduce risk and increase potential returns.";
+
+  // Handle timeline changes
+  const handleTimeframeChange = (newTimeframe: '1m' | '3m' | '6m' | '1y' | 'all') => {
+    setTimeframe(newTimeframe);
+    // Update data based on timeframe
+    // This would typically filter data by date range
+  };
+
+  // Handle filter changes
+  const handleFilterChange = (newFilter: string) => {
+    setFilterProjectType(newFilter);
+  };
 
 
 
@@ -230,13 +244,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8 relative z-10">
         {/* Header with Wall Street Theme */}
         <div className="mb-8 relative">
-          {/* Financial Emblems */}
-          <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-amber-400/10 to-yellow-500/10 rounded-full border border-amber-500/20">
-            <Landmark className="w-8 h-8 text-amber-600/40 m-2" />
-          </div>
-          <div className="absolute -top-2 -right-2 w-10 h-10 bg-gradient-to-br from-emerald-400/10 to-green-500/10 rounded-full border border-emerald-500/20">
-            <Briefcase className="w-6 h-6 text-emerald-600/40 m-2" />
-          </div>
+
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 relative">
             <span className="bg-gradient-to-r from-amber-400 via-yellow-500 to-emerald-500 bg-clip-text text-transparent flex items-center gap-3">
@@ -252,11 +260,83 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
           </p>
         </div>
 
+        {/* Portfolio Summary Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="relative p-4 rounded-xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-yellow-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-gray-400">Total Projects</span>
+                <Film className="w-4 h-4 text-amber-400" />
+              </div>
+              <div className="text-2xl font-bold text-white">{filteredInvestments.length}</div>
+              <div className="text-xs text-amber-400">Active investments</div>
+            </div>
+          </div>
+
+          <div className="relative p-4 rounded-xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-emerald-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-green-500/5 to-emerald-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-gray-400">Avg ROI</span>
+                <TrendingUp className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div className="text-2xl font-bold text-white">+{portfolioData.roi.toFixed(1)}%</div>
+              <div className="text-xs text-emerald-400">Portfolio performance</div>
+            </div>
+          </div>
+
+          <div className="relative p-4 rounded-xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-blue-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-gray-400">Top Performer</span>
+                <Trophy className="w-4 h-4 text-blue-400" />
+              </div>
+              <div className="text-lg font-bold text-white truncate">
+                {portfolioData.topPerformingProjects[0]?.title || 'N/A'}
+              </div>
+              <div className="text-xs text-blue-400">
+                +{portfolioData.topPerformingProjects[0]?.roi.toFixed(1)}% ROI
+              </div>
+            </div>
+          </div>
+
+          <div className="relative p-4 rounded-xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-purple-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-gray-400">Portfolio Health</span>
+                <Target className="w-4 h-4 text-purple-400" />
+              </div>
+              <div className="text-2xl font-bold text-white">{portfolioHealth}</div>
+              <div className="text-xs text-purple-400">Risk assessment</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Simple Filter Buttons */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {(['all', 'film', 'music', 'web-series'] as const).map((filter) => (
+            <button
+              key={filter}
+              onClick={() => handleFilterChange(filter)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 border ${
+                filterProjectType === filter
+                  ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/30 shadow-lg shadow-amber-500/20'
+                  : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/20'
+              }`}
+            >
+              {filter === 'web-series' ? 'Web Series' : filter.charAt(0).toUpperCase() + filter.slice(1)}
+            </button>
+          ))}
+        </div>
+
         {/* Filter Bar with Trading Theme */}
         <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
           <div className="flex gap-3">
             <button 
-              onClick={() => setTimeframe('1m')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
+              onClick={() => handleTimeframeChange('1m')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === '1m'
                   ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
                   : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
@@ -267,7 +347,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </span>
             </button>
             <button 
-              onClick={() => setTimeframe('3m')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
+              onClick={() => handleTimeframeChange('3m')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === '3m'
                   ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
                   : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
@@ -278,7 +358,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </span>
             </button>
             <button 
-              onClick={() => setTimeframe('6m')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
+              onClick={() => handleTimeframeChange('6m')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === '6m'
                   ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
                   : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
@@ -289,7 +369,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </span>
             </button>
             <button 
-              onClick={() => setTimeframe('1y')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
+              onClick={() => handleTimeframeChange('1y')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === '1y'
                   ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
                   : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
@@ -300,7 +380,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </span>
             </button>
             <button 
-              onClick={() => setTimeframe('all')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
+              onClick={() => handleTimeframeChange('all')} className={`relative px-4 py-2 rounded-xl transition-all duration-300 border font-medium ${
                 timeframe === 'all'
                   ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/40 shadow-lg shadow-amber-500/20'
                   : 'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border-white/10 hover:border-white/20'
@@ -332,10 +412,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
           <div className="relative mb-8 p-6 rounded-2xl border bg-white/5 border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Trading Floor Emblem */}
-            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-amber-400/10 to-emerald-500/10 rounded-full border border-amber-500/20">
-              <BarChart3 className="w-6 h-6 text-amber-400/40 m-2" />
-            </div>
+
             
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
               <div>
@@ -346,10 +423,10 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-amber-500/20 border-amber-500/30 focus:border-amber-500 bg-white/5 text-white">
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="completed">Completed</option>
-                  <option value="pending">Pending</option>
+                  <option value="all" className="bg-gray-800 text-white">All Status</option>
+                  <option value="active" className="bg-gray-800 text-white">Active</option>
+                  <option value="completed" className="bg-gray-800 text-white">Completed</option>
+                  <option value="pending" className="bg-gray-800 text-white">Pending</option>
                 </select>
               </div>
 
@@ -361,9 +438,10 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 <select
                   value={filterProjectType}
                   onChange={(e) => setFilterProjectType(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border-emerald-500/30 focus:border-emerald-500 bg-white/5 text-white">
-                  <option value="all">All Types</option>
-                  <option value="film">Film</option>
-                  <option value="music">Music</option>
+                  <option value="all" className="bg-gray-800 text-white">All Types</option>
+                  <option value="film" className="bg-gray-800 text-white">Film</option>
+                  <option value="music" className="bg-gray-800 text-white">Music</option>
+                  <option value="web-series" className="bg-gray-800 text-white">Web Series</option>
                 </select>
               </div>
 
@@ -375,9 +453,9 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 <select
                   value={filterGenre}
                   onChange={(e) => setFilterGenre(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-500/30 focus:border-blue-500 bg-white/5 text-white">
-                  <option value="all">All Genres</option>
+                  <option value="all" className="bg-gray-800 text-white">All Genres</option>
                   {portfolioData.investmentsByGenre.map(genre => (
-                    <option key={genre.genre} value={genre.genre}>{genre.genre}</option>
+                    <option key={genre.genre} value={genre.genre} className="bg-gray-800 text-white">{genre.genre}</option>
                   ))}
                 </select>
               </div>
@@ -390,11 +468,11 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 <select
                   value={filterRegion}
                   onChange={(e) => setFilterRegion(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-500/20 border-purple-500/30 focus:border-purple-500 bg-white/5 text-white">
-                  <option value="all">All Regions</option>
-                  <option value="Bollywood">Bollywood</option>
-                  <option value="Hollywood">Hollywood</option>
-                  <option value="South Indian">South Indian</option>
-                  <option value="International">International</option>
+                  <option value="all" className="bg-gray-800 text-white">All Regions</option>
+                  <option value="Bollywood" className="bg-gray-800 text-white">Bollywood</option>
+                  <option value="Hollywood" className="bg-gray-800 text-white">Hollywood</option>
+                  <option value="South Indian" className="bg-gray-800 text-white">South Indian</option>
+                  <option value="International" className="bg-gray-800 text-white">International</option>
                 </select>
               </div>
 
@@ -406,10 +484,10 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 <select
                   value={filterRisk}
                   onChange={(e) => setFilterRisk(e.target.value)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-amber-500/20 border-amber-500/30 focus:border-amber-500 bg-white/5 text-white">
-                  <option value="all">All Risk Levels</option>
-                  <option value="low">Low Risk</option>
-                  <option value="medium">Medium Risk</option>
-                  <option value="high">High Risk</option>
+                  <option value="all" className="bg-gray-800 text-white">All Risk Levels</option>
+                  <option value="low" className="bg-gray-800 text-white">Low Risk</option>
+                  <option value="medium" className="bg-gray-800 text-white">Medium Risk</option>
+                  <option value="high" className="bg-gray-800 text-white">High Risk</option>
                 </select>
               </div>
 
@@ -421,12 +499,12 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 <select
                   value={sortKey}
                   onChange={(e) => setSortKey(e.target.value as any)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border-emerald-500/30 focus:border-emerald-500 bg-white/5 text-white">
-                  <option value="investmentDate">Investment Date</option>
-                  <option value="projectName">Project Name</option>
-                  <option value="investmentAmount">Investment Amount</option>
-                  <option value="currentValue">Current Value</option>
-                  <option value="returnPercentage">ROI %</option>
-                  <option value="status">Status</option>
+                  <option value="investmentDate" className="bg-gray-800 text-white">Investment Date</option>
+                  <option value="projectName" className="bg-gray-800 text-white">Project Name</option>
+                  <option value="investmentAmount" className="bg-gray-800 text-white">Investment Amount</option>
+                  <option value="currentValue" className="bg-gray-800 text-white">Current Value</option>
+                  <option value="returnPercentage" className="bg-gray-800 text-white">ROI %</option>
+                  <option value="status" className="bg-gray-800 text-white">Status</option>
                 </select>
               </div>
 
@@ -438,8 +516,8 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 <select
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500/20 border-blue-500/30 focus:border-blue-500 bg-white/5 text-white">
-                  <option value="desc">Descending</option>
-                  <option value="asc">Ascending</option>
+                  <option value="desc" className="bg-gray-800 text-white">Descending</option>
+                  <option value="asc" className="bg-gray-800 text-white">Ascending</option>
                 </select>
               </div>
 
@@ -471,45 +549,80 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
 
         {/* Analytics Charts with Trading Floor Theme */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          {/* Returns Over Time */}
+          {/* Portfolio Performance Timeline */}
           <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-yellow-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Chart Emblem */}
-            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-amber-400/10 to-yellow-500/10 rounded-full border border-amber-500/20">
-              <LineChart className="w-6 h-6 text-amber-400/40 m-2" />
-            </div>
+
             
             <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="p-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border border-amber-500/30">
-                  <LineChart className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
                 </div>
-                <h3 className="font-bold text-base sm:text-lg text-white">Returns Over Time</h3>
+                <h3 className="font-bold text-base sm:text-lg text-white">Performance Timeline</h3>
               </div>
               <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border border-amber-500/30">
                 +{portfolioData.roi}% YTD
               </div>
             </div>
             
-            {/* Chart visualization */}
+            {/* Timeline visualization */}
             <div className="w-full h-48 sm:h-64 relative z-10">
-              <div className="absolute bottom-0 left-0 right-0 flex items-end h-36 sm:h-48 justify-between">
-                {portfolioData.monthlyReturns.map((item, index) => (
-                  <div key={index} className="flex flex-col items-center">
-                    <div className="w-4 sm:w-6 rounded-t-md bg-gradient-to-t from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:via-yellow-400 hover:to-amber-500 transition-all cursor-pointer shadow-lg shadow-amber-500/25"
-                      style={{ 
-                        height: `${(item.returns / 72000) * 100}%`,
-                      }}>
-                      <div className="relative group">
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-20 sm:w-24 text-center p-1 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-amber-500 to-yellow-500 text-white">
-                          ₹{item.returns.toLocaleString()}
-                        </div>
+              <div className="absolute bottom-0 left-0 right-0 h-36 sm:h-48 px-4">
+                {/* Timeline line */}
+                <div className="absolute bottom-8 left-4 right-4 h-0.5 bg-gradient-to-r from-amber-500/30 via-yellow-500/30 to-emerald-500/30"></div>
+                
+                {/* Performance milestones */}
+                <div className="relative h-full flex items-end justify-between">
+                  {[
+                    { month: 'Jan', value: 15, milestone: 'First Investment', color: 'amber' },
+                    { month: 'Mar', value: 28, milestone: 'Breakthrough', color: 'yellow' },
+                    { month: 'Jun', value: 42, milestone: 'Peak Performance', color: 'emerald' },
+                    { month: 'Sep', value: 52, milestone: 'Consolidation', color: 'blue' },
+                    { month: 'Dec', value: 72, milestone: 'Year End', color: 'purple' }
+                  ].map((item, index) => (
+                    <div key={index} className="flex flex-col items-center relative group">
+                      {/* Performance dot */}
+                      <div className={`w-3 h-3 rounded-full bg-gradient-to-r from-${item.color}-400 to-${item.color}-600 shadow-lg shadow-${item.color}-500/50 border-2 border-white/20 transition-all duration-300 group-hover:scale-125 group-hover:shadow-${item.color}-500/75 z-10`}></div>
+                      
+                      {/* Connection line */}
+                      {index < 4 && (
+                        <div className={`absolute top-1.5 left-1.5 w-full h-0.5 bg-gradient-to-r from-${item.color}-400/50 to-${item.color === 'yellow' ? 'emerald' : item.color === 'emerald' ? 'blue' : item.color === 'blue' ? 'purple' : 'amber'}-400/50`}></div>
+                      )}
+                      
+                      {/* Value indicator */}
+                      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-amber-500 to-yellow-500 text-white z-20 whitespace-nowrap">
+                        ₹{item.value}k
+                      </div>
+                      
+                      {/* Milestone label */}
+                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 mt-2 text-center">
+                        <div className="text-xs text-gray-400 font-medium">{item.month}</div>
+                        <div className="text-xs text-gray-500 mt-1 max-w-16 leading-tight">{item.milestone}</div>
                       </div>
                     </div>
-                    <span className="text-xs mt-2 text-gray-400">{item.month}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                
+                {/* Performance trend line */}
+                <svg className="absolute bottom-8 left-4 right-4 h-36 sm:h-48 pointer-events-none">
+                  <path
+                    d="M 0 120 Q 60 100 120 80 T 240 60 T 360 40 T 480 20"
+                    stroke="url(#gradient)"
+                    strokeWidth="2"
+                    fill="none"
+                    strokeDasharray="5,5"
+                    className="animate-pulse"
+                  />
+                  <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#f59e0b" />
+                      <stop offset="50%" stopColor="#eab308" />
+                      <stop offset="100%" stopColor="#10b981" />
+                    </linearGradient>
+                  </defs>
+                </svg>
               </div>
             </div>
           </div>
@@ -518,10 +631,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
           <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-emerald-500/20 transition-all duration-300 group overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-green-500/5 to-emerald-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Pie Chart Emblem */}
-            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-emerald-400/10 to-green-500/10 rounded-full border border-emerald-500/20">
-              <PieChart className="w-6 h-6 text-emerald-400/40 m-2" />
-            </div>
+
             
             <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
@@ -613,16 +723,13 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
           <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/30 transition-all duration-300 group overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-yellow-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Inscribed Coin Emblem */}
-            <div className="absolute top-2 right-2 w-8 h-8 bg-gradient-to-br from-amber-400/10 to-yellow-500/10 rounded-full border border-amber-500/20">
-              <Coins className="w-4 h-4 text-amber-400/40 m-2" />
-            </div>
+
             
             <div className="flex items-center justify-between mb-3 sm:mb-4 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="relative p-2 sm:p-3 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 border border-amber-500/30">
                   <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-400/60 rounded-full border border-amber-500/40"></div>
+
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
@@ -645,16 +752,13 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
           <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-all duration-300 group overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-green-500/5 to-emerald-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Diamond Emblem */}
-            <div className="absolute top-2 right-2 w-8 h-8 bg-gradient-to-br from-emerald-400/10 to-green-500/10 rounded border border-emerald-500/20 rotate-45">
-              <Gem className="w-4 h-4 text-emerald-400/40 m-2 -rotate-45" />
-            </div>
+
             
             <div className="flex items-center justify-between mb-3 sm:mb-4 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="relative p-2 sm:p-3 rounded-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 border border-emerald-500/30">
                   <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400" />
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-400/60 rounded-full border border-emerald-500/40"></div>
+
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
@@ -678,16 +782,13 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
           <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-blue-500/30 transition-all duration-300 group overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Banknote Emblem */}
-            <div className="absolute top-2 right-2 w-10 h-6 bg-gradient-to-br from-blue-400/10 to-cyan-500/10 rounded border border-blue-500/20">
-              <Banknote className="w-6 h-4 text-blue-400/40 m-1" />
-            </div>
+
             
             <div className="flex items-center justify-between mb-3 sm:mb-4 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="relative p-2 sm:p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
                   <BarChart className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-400/60 rounded-full border border-blue-500/40"></div>
+
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
@@ -712,15 +813,13 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
             {/* Purple Diamond Emblem */}
-            <div className="absolute top-2 right-2 w-8 h-8 bg-gradient-to-br from-purple-400/10 to-pink-500/10 rounded border border-purple-500/20 rotate-45">
-              <Gem className="w-4 h-4 text-purple-400/40 m-2 -rotate-45" />
-            </div>
+
             
             <div className="flex items-center justify-between mb-3 sm:mb-4 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="relative p-2 sm:p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30">
                   <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400" />
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-purple-400/60 rounded-full border border-purple-500/40"></div>
+
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm text-gray-400 flex items-center gap-1">
@@ -757,10 +856,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
           <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Sector Emblem */}
-            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-amber-400/10 to-emerald-500/10 rounded-full border border-amber-500/20">
-              <BarChart className="w-6 h-6 text-amber-400/40 m-2" />
-            </div>
+
             
             <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
@@ -818,10 +914,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
           <div className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-emerald-500/20 transition-all duration-300 group overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
-            {/* Region Emblem */}
-            <div className="absolute top-4 right-4 w-10 h-10 bg-gradient-to-br from-emerald-400/10 to-blue-500/10 rounded-full border border-emerald-500/20">
-              <PieChart className="w-6 h-6 text-emerald-400/40 m-2" />
-            </div>
+
             
             <div className="flex items-center justify-between mb-4 sm:mb-6 relative z-10">
               <div className="flex items-center gap-2 sm:gap-3">
@@ -880,10 +973,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
         <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden mb-8">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           
-          {/* Trophy Emblem */}
-          <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-amber-400/10 to-yellow-500/10 rounded-full border border-amber-500/20">
-            <Trophy className="w-8 h-8 text-amber-400/40 m-2" />
-          </div>
+
           
           <div className="flex items-center justify-between mb-6 relative z-10">
             <div className="flex items-center gap-3">
@@ -963,9 +1053,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-orange-500/5 to-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
             {/* Warning Emblem */}
-            <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-red-400/10 to-orange-500/10 rounded-full border border-red-500/20">
-              <AlertTriangle className="w-8 h-8 text-red-400/40 m-2" />
-            </div>
+
             
             <div className="flex items-center justify-between mb-6 relative z-10">
               <div className="flex items-center gap-3">
@@ -1044,10 +1132,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
         <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-purple-500/20 transition-all duration-300 group overflow-hidden mb-8">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           
-          {/* AI Emblem */}
-          <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-purple-400/10 to-blue-500/10 rounded-full border border-purple-500/20">
-            <Brain className="w-8 h-8 text-purple-400/40 m-2" />
-          </div>
+
           
           <div className="flex items-center gap-3 mb-6 relative z-10">
             <div className="p-2 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-500/30">
@@ -1137,7 +1222,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
           
           <div className="overflow-x-auto">
             <div className="flex gap-6">
-              {userInvestments
+              {filteredInvestments
                 .sort((a, b) => new Date(a.investmentDate).getTime() - new Date(b.investmentDate).getTime())
                 .map(inv => (
                   <div key={inv.id} className="min-w-[220px] p-4 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group">
@@ -1195,7 +1280,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
               </div>
               <h2 className="text-2xl font-bold text-white">All Investments</h2>
               <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-blue-500/20 text-emerald-300 border border-emerald-500/30">
-                Complete Portfolio
+                Complete Portfolio ({sortedInvestments.length} projects)
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -1206,6 +1291,115 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 <Download className="w-4 h-4" />
                 Export CSV
               </CSVLink>
+            </div>
+          </div>
+
+          {/* Investment Table */}
+          <div className="relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-emerald-500/20 transition-all duration-300 group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-blue-500/5 to-emerald-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            <div className="overflow-x-auto relative z-10">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-emerald-500/20">
+                    <th className="pb-3 text-left font-medium text-gray-400">Project</th>
+                    <th className="pb-3 text-center font-medium text-gray-400">Type</th>
+                    <th className="pb-3 text-right font-medium text-gray-400">Invested</th>
+                    <th className="pb-3 text-right font-medium text-gray-400">Current Value</th>
+                    <th className="pb-3 text-right font-medium text-gray-400">Returns</th>
+                    <th className="pb-3 text-right font-medium text-gray-400">ROI %</th>
+                    <th className="pb-3 text-center font-medium text-gray-400">Status</th>
+                    <th className="pb-3 text-center font-medium text-gray-400">Risk</th>
+                    <th className="pb-3 text-center font-medium text-gray-400">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedInvestments.map((investment, index) => (
+                    <tr key={investment.id} className={`border-b border-emerald-500/10 hover:bg-emerald-500/5 transition-all duration-300 ${index === sortedInvestments.length - 1 ? 'border-b-0' : ''}`}>
+                      <td className="py-4">
+                        <div className="flex items-center gap-3">
+                          <img 
+                            src={investment.projectPoster} 
+                            alt={investment.projectName}
+                            className="w-12 h-16 object-cover rounded-lg border border-emerald-500/20"
+                          />
+                          <div>
+                            <div className="font-medium text-white">{investment.projectName}</div>
+                            <div className="text-xs text-gray-400">{investment.genre}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-4 text-center">
+                        <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                          investment.projectType === 'film' 
+                            ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border border-amber-500/30'
+                            : investment.projectType === 'music'
+                            ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/30'
+                            : 'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 border border-blue-500/30'
+                        }`}>
+                          {investment.projectType === 'film' ? <Film className="w-3 h-3" /> : 
+                           investment.projectType === 'music' ? <Music className="w-3 h-3" /> : 
+                           <Play className="w-3 h-3" />}
+                          {investment.projectType.toUpperCase()}
+                        </div>
+                      </td>
+                      <td className="py-4 text-right">
+                        <div className="text-white font-medium">
+                          ₹{investment.investmentAmount.toLocaleString()}
+                        </div>
+                      </td>
+                      <td className="py-4 text-right">
+                        <div className="text-white font-medium">
+                          ₹{investment.currentValue.toLocaleString()}
+                        </div>
+                      </td>
+                      <td className="py-4 text-right">
+                        <div className={`font-medium ${investment.returnAmount >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                          {investment.returnAmount >= 0 ? '+' : ''}₹{investment.returnAmount.toLocaleString()}
+                        </div>
+                      </td>
+                      <td className="py-4 text-right">
+                        <div className={`flex items-center justify-end gap-1 font-medium ${investment.returnPercentage >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                          {investment.returnPercentage >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                          <span>{investment.returnPercentage >= 0 ? '+' : ''}{investment.returnPercentage.toFixed(1)}%</span>
+                        </div>
+                      </td>
+                      <td className="py-4 text-center">
+                        <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                          investment.status === 'completed' 
+                            ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 text-emerald-300 border border-emerald-500/30'
+                            : investment.status === 'active' 
+                            ? 'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 border border-blue-500/30'
+                            : 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border border-amber-500/30'
+                        }`}>
+                          {investment.status.toUpperCase()}
+                        </div>
+                      </td>
+                      <td className="py-4 text-center">
+                        <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                          investment.risk === 'low' 
+                            ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 text-emerald-300 border border-emerald-500/30'
+                            : investment.risk === 'medium'
+                            ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border border-amber-500/30'
+                            : 'bg-gradient-to-r from-red-500/20 to-pink-500/20 text-red-300 border border-red-500/30'
+                        }`}>
+                          {investment.risk.toUpperCase()}
+                        </div>
+                      </td>
+                      <td className="py-4 text-center">
+                        <div className="flex items-center justify-center gap-2">
+                          <button className="px-3 py-1 rounded-xl text-sm transition-all duration-300 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 text-emerald-300 border border-emerald-500/30 hover:border-emerald-500/50">
+                            Details
+                          </button>
+                          <button className="px-3 py-1 rounded-xl text-sm transition-all duration-300 bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10 hover:border-white/20">
+                            <Download className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

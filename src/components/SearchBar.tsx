@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
@@ -6,11 +6,8 @@ import {
   Film, 
   Music, 
   Tv, 
-  Clock, 
   History, 
-  ArrowRight, 
-  Star, 
-  TrendingUp
+  Star
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { projects } from '../data/projects';
@@ -20,7 +17,7 @@ import { useDebounce } from '../hooks/useDebounce';
 // 🛡️ Type definitions for better type safety
 interface SearchBarProps {
   onSelectProject?: (project: Project) => void;
-  onViewAllResults?: () => void;
+  onViewAllResults?: (term: string) => void;
 }
 
 type ProjectType = 'film' | 'music' | 'webseries';
@@ -39,6 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
   const { theme } = useTheme();
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<Project[]>([]);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -64,12 +62,15 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
     }
   }, []);
 
-  // 🚀 Handle click outside to close dropdown
+  // 🚀 Handle click outside to close dropdown and collapse search
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setIsOpen(false);
         setSelectedIndex(-1);
+        if (!searchTerm) {
+          setIsExpanded(false);
+        }
       }
     };
 
@@ -77,7 +78,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [searchTerm]);
 
   // 🚀 Memoized search function with enhanced relevance scoring
   const performSearch = useCallback((term: string) => {
@@ -179,6 +180,16 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
     }
   }, []);
 
+  // 🚀 Handle search icon click
+  const handleSearchIconClick = useCallback(() => {
+    setIsExpanded(true);
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 100);
+  }, []);
+
   // 🚀 Handle search input change
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -202,9 +213,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
     setSearchTerm('');
     setSearchResults([]);
     setSelectedIndex(-1);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    setIsExpanded(false);
   }, []);
 
   // 🚀 Memoized type icon getter
@@ -288,6 +297,9 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
       case 'Escape':
         setIsOpen(false);
         setSelectedIndex(-1);
+        if (!searchTerm) {
+          setIsExpanded(false);
+        }
         break;
     }
   }, [isOpen, searchResults, recentSearches, selectedIndex, searchTerm, onSelectProject, handleSearchSubmit]);
@@ -309,8 +321,150 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
     setSelectedIndex(-1);
   }, [performSearch]);
 
-  // 🚀 Memoized search results component
-  const SearchResults = useMemo(() => (
+
+
+  return (
+    <div ref={searchRef} className="relative">
+      {/* 🚀 Search Icon and Input */}
+      <div className="flex items-center gap-1">
+        {!isExpanded ? (
+          <button
+            onClick={handleSearchIconClick}
+            className="p-2 text-gray-400 hover:text-purple-500 transition-colors duration-200"
+            title="Search"
+          >
+            <Search className="w-5 h-5" />
+          </button>
+        ) : (
+          <motion.div
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 'auto', opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            className="flex items-center gap-2"
+          >
+            <form onSubmit={handleSearchSubmit} className="relative">
+              <input
+                ref={inputRef}
+                type="text"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onKeyDown={handleKeyDown}
+                onFocus={() => setIsOpen(true)}
+                placeholder="Search projects, directors, artists..."
+                className={`w-64 pl-3 pr-8 py-1 rounded-lg border transition-all duration-200 text-sm ${
+                  theme === 'light'
+                    ? 'bg-white border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200'
+                    : 'bg-gray-800 border-gray-600 focus:border-purple-400 focus:ring-2 focus:ring-purple-900'
+                }`}
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={clearSearch}
+                  className="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+              <button
+                type="submit"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-500 transition-colors"
+                title="Search"
+              >
+                <Search className="w-4 h-4" />
+              </button>
+            </form>
+          </motion.div>
+        )}
+      </div>
+
+      {/* 🚀 Search Dropdown */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className={`absolute top-full right-0 mt-2 rounded-xl border shadow-lg z-50 w-96 max-h-96 flex flex-col ${
+              theme === 'light'
+                ? 'bg-white border-gray-200'
+                : 'bg-gray-900 border-gray-600'
+            }`}
+          >
+            {/* Header with action buttons - always visible */}
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+              {searchResults.length > 0 ? (
+                <div className="flex items-center justify-between">
+                  <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Search Results ({searchResults.length})
+                  </h4>
+                  <div className="flex items-center gap-2">
+                    {onViewAllResults && (
+                      <>
+                        <button
+                          onClick={() => onViewAllResults('')}
+                          className="text-xs text-purple-600 hover:text-purple-700 transition-colors"
+                        >
+                          Advanced Search
+                        </button>
+                        <button
+                          onClick={() => onViewAllResults(searchTerm)}
+                          className="text-xs text-purple-600 hover:text-purple-700 transition-colors"
+                        >
+                          View all results
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ) : searchTerm.length >= 2 ? (
+                <div className="flex items-center justify-between">
+                  <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    No Results
+                  </h4>
+                  {onViewAllResults && (
+                    <button
+                      onClick={() => onViewAllResults(searchTerm)}
+                      className="text-xs text-purple-600 hover:text-purple-700 transition-colors"
+                    >
+                      Advanced Search
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center justify-between">
+                  <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                    Recent Searches
+                  </h4>
+                  <div className="flex items-center gap-2">
+                    {onViewAllResults && (
+                      <button
+                        onClick={() => onViewAllResults('')}
+                        className="text-xs text-purple-600 hover:text-purple-700 transition-colors"
+                      >
+                        Advanced Search
+                      </button>
+                    )}
+                    <button
+                      onClick={clearRecentSearches}
+                      className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Scrollable content area */}
+            <div className="flex-1 overflow-y-auto max-h-80">
+              <div className="p-4">
+                {isLoading ? (
+                  <div className="flex items-center justify-center py-4">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
+                  </div>
+                ) : searchResults.length > 0 ? (
     <div className="space-y-2">
       {searchResults.map((project, index) => (
         <motion.div
@@ -330,9 +484,27 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
           onClick={() => handleProjectSelect(project)}
         >
           <div className="flex items-start gap-3">
-            <div className={`flex-shrink-0 ${getTypeColor(project.type as ProjectType)}`}>
+                          {/* Project Poster/Image */}
+                          <div className="flex-shrink-0">
+                            {project.poster ? (
+                              <img
+                                src={project.poster}
+                                alt={project.title}
+                                className="w-12 h-16 object-cover rounded-md shadow-sm"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = 'none';
+                                  target.nextElementSibling?.classList.remove('hidden');
+                                }}
+                              />
+                            ) : null}
+                            {(!project.poster || project.poster === '') && (
+                              <div className={`w-12 h-16 rounded-md flex items-center justify-center ${getTypeColor(project.type as ProjectType)} bg-opacity-10`}>
               {getTypeIcon(project.type as ProjectType)}
             </div>
+                            )}
+                          </div>
+                          
             <div className="flex-1 min-w-0">
               <h4 className="font-semibold text-sm mb-1">
                 {highlightMatch(project.title, searchTerm)}
@@ -350,26 +522,23 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
                     {project.rating}
                   </div>
                 )}
+                              {project.releaseYear && (
+                                <span className="text-xs text-gray-400">
+                                  {project.releaseYear}
+                                </span>
+                )}
               </div>
             </div>
           </div>
         </motion.div>
       ))}
     </div>
-  ), [searchResults, selectedIndex, theme, searchTerm, getTypeColor, getTypeIcon, highlightMatch, handleProjectSelect]);
-
-  // 🚀 Memoized recent searches component
-  const RecentSearches = useMemo(() => (
+                ) : searchTerm.length >= 2 ? (
+                  <div className="text-center py-4 text-gray-500">
+                    No results found for "{searchTerm}"
+                  </div>
+                ) : (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <h4 className="text-sm font-medium text-gray-600">Recent Searches</h4>
-        <button
-          onClick={clearRecentSearches}
-          className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          Clear All
-        </button>
-      </div>
       {recentSearches.map((term, index) => (
         <motion.div
           key={term}
@@ -392,77 +561,9 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
         </motion.div>
       ))}
     </div>
-  ), [recentSearches, selectedIndex, theme, clearRecentSearches, handleRecentSearchSelect]);
-
-  return (
-    <div ref={searchRef} className="relative">
-      {/* 🚀 Search Input */}
-      <form onSubmit={handleSearchSubmit} className="relative">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            ref={inputRef}
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            onKeyDown={handleKeyDown}
-            onFocus={() => setIsOpen(true)}
-            placeholder="Search projects, directors, artists..."
-            className={`w-full pl-10 pr-10 py-2 rounded-lg border transition-all duration-200 ${
-              theme === 'light'
-                ? 'bg-white border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200'
-                : 'bg-gray-800 border-gray-600 focus:border-purple-400 focus:ring-2 focus:ring-purple-900'
-            } text-sm`}
-          />
-          {searchTerm && (
-      <button
-              type="button"
-              onClick={clearSearch}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <X className="w-4 h-4" />
-      </button>
-          )}
-        </div>
-      </form>
-
-      {/* 🚀 Search Dropdown */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className={`absolute top-full left-0 right-0 mt-2 p-4 rounded-xl border shadow-lg z-50 ${
-              theme === 'light'
-                ? 'bg-white border-gray-200'
-                : 'bg-gray-900 border-gray-600'
-            }`}
-          >
-              {isLoading ? (
-              <div className="flex items-center justify-center py-4">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
-            </div>
-            ) : searchResults.length > 0 ? (
-              <>
-                {SearchResults}
-                {onViewAllResults && (
-                  <button
-                    onClick={onViewAllResults}
-                    className="w-full mt-3 p-2 text-sm text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                  >
-                    View all results
-                  </button>
                 )}
-              </>
-            ) : searchTerm.length >= 2 ? (
-              <div className="text-center py-4 text-gray-500">
-                No results found for "{searchTerm}"
               </div>
-            ) : (
-              RecentSearches
-            )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

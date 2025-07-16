@@ -96,10 +96,15 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
   
   // TMDB data integration
-  const { movieDetails, cast, crew, loading: tmdbLoading, error: tmdbError } = useTMDBProjectData(
+  const { projectData, loading: tmdbLoading, error: tmdbError } = useTMDBProjectData(
     project.title, 
     (project as any).tmdbId ? parseInt((project as any).tmdbId.toString()) : undefined
   );
+  
+  // Extract cast and crew with safe defaults
+  const cast = projectData?.cast || [];
+  const crew = projectData?.crew || [];
+  const movieDetails = projectData;
   
   // Animation states for invest flow
   const [showCirclesAnimation, setShowCirclesAnimation] = useState(false);
@@ -2718,7 +2723,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                                 <h5 className="text-white font-bold mb-3">🎬 Production Companies</h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
-                                  {movieDetails?.production_companies?.length > 0 
+                                  {movieDetails?.production_companies && movieDetails.production_companies.length > 0 
                                     ? movieDetails.production_companies.map(company => company.name).join(', ')
                                     : project.productionHouse || 'Not specified'
                                   }
@@ -3798,42 +3803,42 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   description: 'Comprehensive contract outlining investor rights and obligations',
                                   size: '2.4 MB',
                                   type: 'PDF',
-                                  icon: FileTextIcon
+                                  icon: FileText
                                 },
                                 {
                                   title: 'Prospectus',
                                   description: 'Detailed project information and financial projections',
                                   size: '1.8 MB',
                                   type: 'PDF',
-                                  icon: FileTextIcon
+                                  icon: FileText
                                 },
                                 {
                                   title: 'Risk Disclosure',
                                   description: 'Complete risk assessment and disclosure statement',
                                   size: '1.2 MB',
                                   type: 'PDF',
-                                  icon: ShieldIcon
+                                  icon: Shield
                                 },
                                 {
                                   title: 'Terms of Service',
                                   description: 'Platform terms and conditions for investors',
                                   size: '0.9 MB',
                                   type: 'PDF',
-                                  icon: FileCheckIcon
+                                  icon: FileCheck
                                 },
                                 {
                                   title: 'Privacy Policy',
                                   description: 'How we protect and handle your personal data',
                                   size: '0.7 MB',
                                   type: 'PDF',
-                                  icon: ShieldIcon
+                                  icon: Shield
                                 },
                                 {
                                   title: 'Compliance Certificate',
                                   description: 'SEBI and regulatory compliance certificates',
                                   size: '1.5 MB',
                                   type: 'PDF',
-                                  icon: AwardIcon
+                                  icon: Award
                                 }
                               ].map((document, index) => (
                                 <motion.div
@@ -3873,7 +3878,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                                 <h5 className="text-white font-bold mb-3 flex items-center gap-2">
-                                  <ShieldIcon className="w-5 h-5 text-green-400" />
+                                  <Shield className="w-5 h-5 text-green-400" />
                                   Escrow Protection
                                 </h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
@@ -3882,7 +3887,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               </div>
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                                 <h5 className="text-white font-bold mb-3 flex items-center gap-2">
-                                  <AwardIcon className="w-5 h-5 text-blue-400" />
+                                  <Award className="w-5 h-5 text-blue-400" />
                                   Insurance Coverage
                                 </h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
@@ -3891,7 +3896,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               </div>
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                                 <h5 className="text-white font-bold mb-3 flex items-center gap-2">
-                                  <FileCheckIcon className="w-5 h-5 text-purple-400" />
+                                  <FileCheck className="w-5 h-5 text-purple-400" />
                                   Legal Recourse
                                 </h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">
@@ -3900,7 +3905,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               </div>
                               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
                                 <h5 className="text-white font-bold mb-3 flex items-center gap-2">
-                                  <GlobeIcon className="w-5 h-5 text-cyan-400" />
+                                  <Globe className="w-5 h-5 text-cyan-400" />
                                   Transparency
                                 </h5>
                                 <p className="text-gray-400 text-sm leading-relaxed">

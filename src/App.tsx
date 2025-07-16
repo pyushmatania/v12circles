@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense, useCallback, memo, useEffect, useMemo } from 'react';
+import { useState, useCallback, memo, useEffect, useMemo } from 'react';
 import Hero from './components/Hero';
 import ProblemSolution from './components/ProblemSolution';
 import HowItWorks from './components/HowItWorks';
@@ -19,28 +19,21 @@ import DebugPanel from './components/DebugPanel';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Project } from './types';
 
-// 🚀 Lazy load heavy components for optimal performance
-const Dashboard = lazy(() => import('./components/Dashboard'));
-const ProjectCatalog = lazy(() => import('./components/ProjectCatalog'));
-const Community = lazy(() => import('./components/Community'));
-const Merchandise = lazy(() => import('./components/Merchandise'));
-const ProfilePage = lazy(() => import('./components/profile/ProfilePage'));
-const AdminDashboard = lazy(() => import('./components/admin/AdminDashboard'));
-const PortfolioAnalytics = lazy(() => import('./components/PortfolioAnalytics'));
-const ProjectComparison = lazy(() => import('./components/ProjectComparison'));
-const ProjectDetailPage = lazy(() => import('./components/ProjectDetailPage'));
-const NewsAndUpdates = lazy(() => import('./components/NewsAndUpdates'));
-const NotificationCenter = lazy(() => import('./components/NotificationCenter'));
-const EnhancedSearch = lazy(() => import('./components/EnhancedSearch'));
+// 🚀 Import components directly for instant loading
+import Dashboard from './components/Dashboard';
+import ProjectCatalog from './components/ProjectCatalog';
+import Community from './components/Community';
+import Merchandise from './components/Merchandise';
+import ProfilePage from './components/profile/ProfilePage';
+import AdminDashboard from './components/admin/AdminDashboard';
+import PortfolioAnalytics from './components/PortfolioAnalytics';
+import ProjectComparison from './components/ProjectComparison';
+import ProjectDetailPage from './components/ProjectDetailPage';
+import NewsAndUpdates from './components/NewsAndUpdates';
+import NotificationCenter from './components/NotificationCenter';
+import EnhancedSearch from './components/EnhancedSearch';
 
-// 🎯 Optimized loading component with memoization
-const LoadingSpinner = memo(() => (
-  <div className="min-h-screen flex items-center justify-center bg-black">
-    <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
-  </div>
-));
 
-LoadingSpinner.displayName = 'LoadingSpinner';
 
 // 🛡️ Type definitions for better type safety
 type ViewType = 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail';
@@ -62,6 +55,7 @@ function AppContent() {
   const [authModalMode, setAuthModalMode] = useState<AuthModalMode>('login');
   const [previousView, setPreviousView] = useState<ViewType>('home');
   const [viewScrollPositions, setViewScrollPositions] = useState<Record<string, number>>({});
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   // 🎯 Hooks
   const { isAuthenticated } = useAuth();
@@ -191,15 +185,17 @@ function AppContent() {
     setCurrentView('project-detail');
   }, [currentView, saveCurrentViewState]);
 
+  // 🚀 Optimized search view handler
+  const handleSearchViewAll = useCallback((term: string) => {
+    setSearchTerm(term);
+    handleViewChange('search');
+  }, [handleViewChange]);
+
   // 🚀 Memoized admin view renderer
   const adminView = useMemo(() => {
-  if (currentView === 'admin') {
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <AdminDashboard />
-      </Suspense>
-    );
-  }
+    if (currentView === 'admin') {
+      return <AdminDashboard />;
+    }
     return null;
   }, [currentView]);
 
@@ -208,82 +204,44 @@ function AppContent() {
     switch (currentView) {
       case 'projects':
         return (
-          <Suspense fallback={<LoadingSpinner />}>
-            <ProjectCatalog 
-              onTrackInvestment={() => handleViewChange('dashboard')}
-              onProjectSelect={handleProjectSelect}
-            />
-          </Suspense>
+          <ProjectCatalog 
+            onTrackInvestment={() => handleViewChange('dashboard')}
+            onProjectSelect={handleProjectSelect}
+          />
         );
       case 'dashboard':
         // Dashboard is now accessible without login
-        return (
-          <Suspense fallback={<LoadingSpinner />}>
-            <Dashboard />
-          </Suspense>
-        );
+        return <Dashboard />;
       case 'community':
-        return (
-          <Suspense fallback={<LoadingSpinner />}>
-            <Community />
-          </Suspense>
-        );
+        return <Community />;
       case 'merch':
-        return (
-          <Suspense fallback={<LoadingSpinner />}>
-            <Merchandise />
-          </Suspense>
-        );
+        return <Merchandise />;
       case 'profile':
-        return isAuthenticated ? (
-          <Suspense fallback={<LoadingSpinner />}>
-            <ProfilePage />
-          </Suspense>
-        ) : null;
+        return isAuthenticated ? <ProfilePage /> : null;
       case 'portfolio':
-        return isAuthenticated ? (
-          <Suspense fallback={<LoadingSpinner />}>
-            <PortfolioAnalytics />
-          </Suspense>
-        ) : null;
+        return isAuthenticated ? <PortfolioAnalytics /> : null;
       case 'compare':
         return (
-          <Suspense fallback={<LoadingSpinner />}>
-            <ProjectComparison 
-              onTrackInvestment={() => handleViewChange('dashboard')} 
-              setCurrentView={handleViewChange}
-              onProjectSelect={handleComparisonProjectSelect}
-            />
-          </Suspense>
+          <ProjectComparison 
+            onTrackInvestment={() => handleViewChange('dashboard')} 
+            setCurrentView={handleViewChange}
+            onProjectSelect={handleComparisonProjectSelect}
+          />
         );
       case 'news':
-        return (
-          <Suspense fallback={<LoadingSpinner />}>
-            <NewsAndUpdates />
-          </Suspense>
-        );
+        return <NewsAndUpdates />;
       case 'notifications':
-        return (
-          <Suspense fallback={<LoadingSpinner />}>
-            <NotificationCenter setCurrentView={handleViewChange} />
-          </Suspense>
-        );
+        return <NotificationCenter setCurrentView={handleViewChange} />;
       case 'search':
-        return (
-          <Suspense fallback={<LoadingSpinner />}>
-            <EnhancedSearch />
-          </Suspense>
-        );
+        return <EnhancedSearch initialSearchTerm={searchTerm} onBack={() => handleViewChange(previousView)} />;
       case 'project-detail':
         return selectedProject ? (
-          <Suspense fallback={<LoadingSpinner />}>
-            <ProjectDetailPage 
-              project={selectedProject} 
-              onClose={handleProjectDetailClose}
-              onInvest={() => handleViewChange('community')}
-              initialTab={projectDetailTab}
-            />
-          </Suspense>
+          <ProjectDetailPage 
+            project={selectedProject} 
+            onClose={handleProjectDetailClose}
+            onInvest={() => handleViewChange('community')}
+            initialTab={projectDetailTab}
+          />
         ) : null;
       default:
         return (
@@ -322,8 +280,9 @@ function AppContent() {
     currentView,
     setCurrentView: handleViewChange,
     onAuthRequired: handleAuthRequired,
-    onProjectSelect: handleNavigationProjectSelect
-  }), [currentView, handleViewChange, handleAuthRequired, handleNavigationProjectSelect]);
+    onProjectSelect: handleNavigationProjectSelect,
+    onSearchViewAll: handleSearchViewAll
+  }), [currentView, handleViewChange, handleAuthRequired, handleNavigationProjectSelect, handleSearchViewAll]);
 
   // 🚀 Memoized auth modal props
   const authModalProps = useMemo(() => ({

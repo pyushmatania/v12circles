@@ -22,7 +22,7 @@ import {
 import PortfolioAnalytics from './PortfolioAnalytics';
 import { dashboardStats, recentActivities } from '../data/dashboard';
 import { superstars } from '../data/superstars';
-import { investmentService } from '../data/investments';
+import { portfolioService } from '../data/portfolio';
 
 // 🛡️ Type definitions for better type safety
 interface PerkMetadata {
@@ -70,6 +70,7 @@ type TabType = 'overview' | 'investments' | 'perks' | 'circles' | 'portfolio';
  */
 const Dashboard = memo(() => {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [investmentFilter, setInvestmentFilter] = useState<'all' | 'film' | 'music' | 'web-series'>('all');
 
   // 🚀 Memoized user stats for performance
   const userStats = useMemo(() => ({
@@ -81,11 +82,25 @@ const Dashboard = memo(() => {
     nextLevel: 'Executive Producer'
   }), []);
 
-  // 🚀 Memoized investments data
-  const investments = useMemo(() => 
-    investmentService.getFormattedInvestments(), 
-    []
-  );
+  // 🚀 Memoized investments data with proper mapping and filtering
+  const investments = useMemo(() => {
+    const rawInvestments = portfolioService.getFormattedInvestments();
+    const mappedInvestments = rawInvestments.map(inv => ({
+      ...inv,
+      type: inv.projectType,
+      poster: inv.projectPoster,
+      title: inv.projectName,
+      category: inv.sector || inv.projectType,
+      releaseDate: inv.investmentDate,
+      returns: inv.returnAmount,
+      invested: inv.investmentAmount,
+      returnPercentage: inv.returnPercentage
+    }));
+    
+    // Apply filter
+    if (investmentFilter === 'all') return mappedInvestments;
+    return mappedInvestments.filter(inv => inv.type === investmentFilter);
+  }, [investmentFilter]);
 
   // 🚀 Memoized perks data
   const perks: DashboardPerk[] = useMemo(() => [
@@ -546,6 +561,22 @@ const Dashboard = memo(() => {
             transition={{ duration: 0.6 }}
             className="space-y-4 sm:space-y-6"
           >
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {(['all', 'film', 'music', 'web-series'] as const).map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setInvestmentFilter(filter)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 border ${
+                    investmentFilter === filter
+                      ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 border-amber-500/30 shadow-lg shadow-amber-500/20'
+                      : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/20'
+                  }`}
+                >
+                  {filter === 'web-series' ? 'Web Series' : filter.charAt(0).toUpperCase() + filter.slice(1)}
+                </button>
+              ))}
+            </div>
             {investments.map((investment) => (
               <div key={investment.id} className="relative p-4 sm:p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-yellow-500/5 to-amber-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

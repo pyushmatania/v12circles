@@ -1,7 +1,6 @@
-import { StrictMode, Suspense } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
-import LoadingFallback from './components/LoadingFallback';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { initSentry } from './services/sentry';
 import { debug } from './utils/debug';
@@ -39,9 +38,7 @@ const root = createRoot(container);
 root.render(
   <StrictMode>
     <ErrorBoundary>
-      <Suspense fallback={<LoadingFallback />}>
-        <App />
-      </Suspense>
+      <App />
     </ErrorBoundary>
   </StrictMode>
 );

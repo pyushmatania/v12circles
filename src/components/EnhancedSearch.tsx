@@ -17,7 +17,8 @@ import {
   Tags, 
   TrendingUp,
   Tv, 
-  X 
+  X,
+  ArrowLeft
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { projects } from '../data/projects';
@@ -25,11 +26,13 @@ import { Project } from '../types';
 
 interface EnhancedSearchProps {
   onSelectProject?: (project: Project) => void;
+  initialSearchTerm?: string;
+  onBack?: () => void;
 }
 
-const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
+const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject, initialSearchTerm = '', onBack }) => {
   const { theme } = useTheme();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [activeType, setActiveType] = useState<string>('all');
   const [activeLanguage, setActiveLanguage] = useState<string>('all');
@@ -60,6 +63,18 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
     }
   }, []);
 
+  // Trigger search when initialSearchTerm is provided or on mount
+  useEffect(() => {
+    if (initialSearchTerm) {
+      setSearchTerm(initialSearchTerm);
+      // Trigger search after a short delay to ensure component is mounted
+      setTimeout(() => {
+        handleSearch();
+      }, 100);
+    }
+    // Don't show any projects on initial load if no search term
+  }, [initialSearchTerm]);
+
   // Save recent searches to localStorage
   const saveRecentSearch = useCallback((term: string) => {
     if (!term.trim()) return;
@@ -79,19 +94,115 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
     localStorage.removeItem('circles_recent_searches');
   };
 
+  // Calculate string similarity (Levenshtein distance)
+  const calculateSimilarity = (str1: string, str2: string): number => {
+    const matrix = [];
+    const len1 = str1.length;
+    const len2 = str2.length;
+
+    for (let i = 0; i <= len2; i++) {
+      matrix[i] = [i];
+    }
+
+    for (let j = 0; j <= len1; j++) {
+      matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= len2; i++) {
+      for (let j = 1; j <= len1; j++) {
+        if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j] + 1
+          );
+        }
+      }
+    }
+
+    const maxLen = Math.max(len1, len2);
+    return maxLen === 0 ? 1 : (maxLen - matrix[len2][len1]) / maxLen;
+  };
+
+  // Enhanced search matching with fuzzy search
+  const matchesSearchTerm = (project: Project, term: string): boolean => {
+    if (!term.trim()) return true;
+    
+    const searchTermLower = term.toLowerCase();
+    const searchWords = searchTermLower.split(' ').filter(word => word.length > 0);
+    
+    // Direct matches (highest priority)
+    const directMatches = [
+      project.title.toLowerCase(),
+      project.description.toLowerCase(),
+      ...project.tags.map(tag => tag.toLowerCase()),
+      project.director?.toLowerCase() || '',
+      project.artist?.toLowerCase() || '',
+      project.actor?.toLowerCase() || '',
+      project.actress?.toLowerCase() || '',
+      project.productionHouse?.toLowerCase() || '',
+      project.cast?.toLowerCase() || '',
+      ...(project.keyPeople?.map(person => person.name.toLowerCase()) || [])
+    ].filter(text => text.length > 0);
+
+    // Check for direct matches first
+    for (const text of directMatches) {
+      if (text.includes(searchTermLower)) {
+        return true;
+      }
+    }
+
+    // Check for partial word matches
+    for (const word of searchWords) {
+      if (word.length < 2) continue;
+      
+      for (const text of directMatches) {
+        if (text.includes(word)) {
+          return true;
+        }
+      }
+    }
+
+    // Fuzzy matching for typos and similar words
+    for (const word of searchWords) {
+      if (word.length < 3) continue;
+      
+      for (const text of directMatches) {
+        const textWords = text.split(' ');
+        for (const textWord of textWords) {
+          if (textWord.length < 3) continue;
+          
+          const similarity = calculateSimilarity(word, textWord);
+          if (similarity > 0.7) { // 70% similarity threshold
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  };
+
   // Handle search
   const handleSearch = useCallback(() => {
-    if (!searchTerm.trim() && activeCategory === 'all' && activeType === 'all' && 
-        activeLanguage === 'all' && activeGenre === 'all' && 
-        fundingRange[0] === 0 && fundingRange[1] === 100) {
+    // Only show results if there's a search term or filters are applied
+    const hasSearchTerm = searchTerm.trim().length > 0;
+    const hasActiveFilters = activeCategory !== 'all' || activeType !== 'all' || 
+                           activeLanguage !== 'all' || activeGenre !== 'all' || 
+                           fundingRange[0] > 0 || fundingRange[1] < 100;
+    
+    if (!hasSearchTerm && !hasActiveFilters) {
       setIsSearching(false);
       setSearchResults([]);
       return;
     }
-
+    
+    // Set searching state to true to show results
     setIsSearching(true);
     
-    // Add search term to recent searches
+    // Add search term to recent searches if it's not empty
     if (searchTerm.trim()) {
       saveRecentSearch(searchTerm.trim());
     }
@@ -103,15 +214,8 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
         return false;
       }
 
-      // Search term filter
-      const matchesTerm = !searchTerm.trim() || 
-        project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (project.director && project.director.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (project.artist && project.artist.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (project.productionHouse && project.productionHouse.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (project.keyPeople && project.keyPeople.some(person => person.name.toLowerCase().includes(searchTerm.toLowerCase())));
+      // Enhanced search term filter - require search term if no filters
+      const matchesTerm = !searchTerm.trim() || matchesSearchTerm(project, searchTerm);
       
       // Category filter
       const matchesCategory = activeCategory === 'all' || 
@@ -142,6 +246,15 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
     
     setSearchResults(results);
   }, [searchTerm, activeCategory, activeType, activeLanguage, activeGenre, fundingRange, sortBy, sortOrder, saveRecentSearch]);
+
+  // Real-time search effect
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      handleSearch();
+    }, 300); // Debounce search by 300ms
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, activeCategory, activeType, activeLanguage, activeGenre, fundingRange, sortBy, sortOrder, handleSearch]);
 
   // Sort results based on criteria
   const sortResults = (results: Project[], sortField: string, order: 'asc' | 'desc') => {
@@ -186,8 +299,8 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
     setFundingRange([0, 100]);
     setSortBy('relevance');
     setSortOrder('desc');
-    setIsSearching(false);
     setSearchResults([]);
+    setIsSearching(false);
   };
 
   // Toggle sort order
@@ -205,12 +318,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
     }
   };
 
-  // Apply search when filters or sort changes
-  useEffect(() => {
-    if (isSearching) {
-      handleSearch();
-    }
-  }, [activeCategory, activeType, activeLanguage, activeGenre, fundingRange, sortBy, sortOrder, isSearching, handleSearch]);
+
 
   return (
     <div className={`min-h-screen pt-20 pb-[100px] transition-all duration-[3000ms] ${
@@ -226,9 +334,24 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
           transition={{ duration: 0.8 }}
           className="mb-8"
         >
-          <h1 className={`text-4xl md:text-5xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'} mb-4`}>
-            Project Search
-          </h1>
+          <div className="flex items-center gap-4 mb-4">
+            {onBack && (
+              <button
+                onClick={onBack}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                  theme === 'light'
+                    ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                }`}
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span>Back</span>
+              </button>
+            )}
+            <h1 className={`text-4xl md:text-5xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+              Project Search
+            </h1>
+          </div>
           <p className={`text-lg ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
             Find the perfect entertainment projects to invest in
           </p>
@@ -256,7 +379,9 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
                     : 'border-gray-600 focus:border-purple-500 bg-gray-800/50 text-white'
                 } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSearch();
+                  if (e.key === 'Enter') {
+                    handleSearch();
+                  }
                 }}
               />
               {searchTerm && (
@@ -297,7 +422,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
           </div>
           
           {/* Recent Searches */}
-          {!isSearching && recentSearches.length > 0 && (
+          {recentSearches.length > 0 && (
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <span className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'}`}>
                 Recent:
@@ -305,10 +430,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject }) => {
               {recentSearches.map((term, index) => (
                 <button
                   key={index}
-                  onClick={() => {
-                    setSearchTerm(term);
-                    handleSearch();
-                  }}
+                  onClick={() => setSearchTerm(term)}
                   className={`px-3 py-1 rounded-full text-sm ${
                     theme === 'light'
                       ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'

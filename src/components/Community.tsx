@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, 
@@ -29,14 +29,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Music,
-  Star
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import useIsMobile from '../hooks/useIsMobile';
 import Merchandise from './Merchandise';
 import { comprehensiveCommunityData, type RealCommunityItem } from '../data/comprehensiveCommunityData';
 import OptimizedImage from './OptimizedImage';
-import { getSpotifyArtistData, hasSpotifyData } from '../data/spotifyArtistImages';
+import { getSpotifyArtistData } from '../data/spotifyArtistImages';
 
 // 🛡️ Type definitions for better type safety
 interface FeedPost {
@@ -55,22 +54,7 @@ interface FeedPost {
   shares: number;
 }
 
-interface Message {
-  user: string;
-  message: string;
-  time: string;
-  avatar?: string;
-}
 
-interface Friend {
-  id: string;
-  name: string;
-  avatar: string;
-  online: boolean;
-}
-
-type CategoryType = 'productionHouse' | 'movie' | 'director' | 'actor' | 'actress' | 'musicArtist';
-type TabType = 'feed' | 'channels' | 'friends' | 'media' | 'perks' | 'merch';
 
 /**
  * 🎯 Community - Optimized community component with enhanced performance
@@ -492,14 +476,13 @@ const Community: React.FC = memo(() => {
             // Use saved Spotify data if available
             return {
               ...artist,
-              avatar: spotifyData.avatar,
-              cover: spotifyData.cover,
+              avatar: spotifyData.imageUrl,
+              cover: spotifyData.imageUrl,
               description: spotifyData.genres?.slice(0, 3).join(', ') || artist.description,
               followers: spotifyData.followers || artist.followers,
-              verified: spotifyData.popularity > 70,
+              verified: spotifyData.verified,
               rating: (spotifyData.popularity || 50) / 10,
-              knownFor: spotifyData.genres?.slice(0, 3) || artist.knownFor,
-              spotifyUrl: spotifyData.spotifyUrl
+              knownFor: spotifyData.genres?.slice(0, 3) || artist.knownFor
             };
           } else {
             // Use high-quality placeholder images for artists not found in Spotify
@@ -789,7 +772,7 @@ const Community: React.FC = memo(() => {
               { id: 'actor', label: 'Actors', icon: '👨‍🎭', color: 'from-pink-500 to-rose-500', shape: 'round' },
               { id: 'actress', label: 'Actresses', icon: '👩‍🎭', color: 'from-rose-600 to-red-600', shape: 'round' },
               { id: 'musicArtist', label: 'Music Artists', icon: '🎤', color: 'from-blue-500 to-teal-500', shape: 'round' }
-            ].map((category, index) => {
+            ].map((category) => {
               const isSelected = selectedCategory === category.id;
               const isPerson = category.shape === 'round';
               
@@ -997,8 +980,8 @@ const Community: React.FC = memo(() => {
                 >
                   {/* Loading state - only show if no items available */}
                   {selectedCategory === 'musicArtist' && isLoadingSpotifyArtists && paginatedItems.length === 0 && (
-                    Array.from({ length: 10 }).map((_, index) => (
-                      <div key={`loading-${index}`} className="flex flex-col items-center gap-3">
+                    Array.from({ length: 10 }).map((_, _index) => (
+                                              <div key={`loading-${_index}`} className="flex flex-col items-center gap-3">
                         <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 animate-pulse" />
                         <div className="w-20 h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
                         <div className="w-16 h-3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
@@ -1009,7 +992,7 @@ const Community: React.FC = memo(() => {
 
                   
                   {/* Regular items - always show if available */}
-                  {paginatedItems.map((item, index) => {
+                  {paginatedItems.map((item) => {
                     const isPerson = selectedCategory === 'director' || selectedCategory === 'actor' || selectedCategory === 'actress' || selectedCategory === 'musicArtist';
                     return (
                       <div

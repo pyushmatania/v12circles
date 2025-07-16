@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../auth/useAuth';
 import { useTheme } from '../ThemeContext';
-import { investmentService } from '../../data/investments';
+import { portfolioService } from '../../data/portfolio';
 
 
 // If User type is not exported, define it here based on AuthProvider
@@ -102,13 +102,22 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  // Get investment data from shared service
-  const investments = investmentService.getFormattedInvestments();
-  const investmentStats = investmentService.getInvestmentStats();
+  // Get investment data from shared service with proper mapping
+  const rawInvestments = portfolioService.getFormattedInvestments();
+  const investments = rawInvestments.map(inv => ({
+    ...inv,
+    type: inv.projectType,
+    poster: inv.projectPoster,
+    title: inv.projectName,
+    returns: inv.returnAmount,
+    invested: inv.investmentAmount,
+    returnPercentage: inv.returnPercentage
+  }));
+  const investmentStats = portfolioService.getInvestmentStats();
   
   const totalInvested = investmentStats.totalInvested;
   const totalReturns = investmentStats.totalReturns;
-  const avgReturn = investmentStats.averageReturnPercentage;
+  const avgReturn = investmentStats.averageReturn;
 
   return (
     <div className={`min-h-screen pt-20 pb-[100px] transition-all duration-[3000ms] ${
