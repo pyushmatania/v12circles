@@ -44,7 +44,7 @@ import { useTMDBProjectData, getMainCast, getKeyCrew } from '../hooks/useTMDBPro
 import { getTextColor, getBorderColor, getMainBgColor } from '../utils/themeUtils';
 
 // Import logo image
-import circlesLogo from '../images/circles-logo-main.png';
+import { circlesLogo, getUserAvatar } from '../utils/imageUtils';
 
 // 🛡️ Type definitions for better type safety
 interface ProjectDetailPageProps {
@@ -767,7 +767,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               ease: [0.4, 0, 0.2, 1]
             }}
           >
-            <img src={circlesLogo} alt="Circles Logo" className="h-12 w-12 md:h-20 md:w-20 object-contain drop-shadow-lg blur-[0.3px]" />
+            <img src={getUserAvatar('Community Bot')} alt="Circles Logo" className="h-12 w-12 md:h-20 md:w-20 object-contain drop-shadow-lg blur-[0.3px]" />
           </motion.div>
           <span className="text-lg md:text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent drop-shadow-lg tracking-wide blur-[0.2px] -ml-2 md:-ml-3">Circles</span>
         </div>
@@ -1579,7 +1579,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               {/* Rotating circles logo */}
                               <div className="relative w-6 h-6 md:w-8 md:h-8 flex items-center justify-center">
                                 <img 
-                                  src={circlesLogo} 
+                                  src={getUserAvatar('Community Bot')} 
                                   alt="Circles Logo" 
                                   className="w-full h-full object-contain filter brightness-0 invert group-hover:animate-spin transition-all duration-300"
                                   style={{ 
@@ -1630,13 +1630,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               className="mb-8"
                             >
                               <img 
-                                src={circlesLogo} 
+                                src={getUserAvatar('Community Bot')} 
                                 alt="Circles Logo" 
                                 className="w-32 h-32 mx-auto drop-shadow-2xl animate-spin object-contain"
                                 style={{ animationDuration: '3s' }}
                                 onError={(e) => {
                                   const target = e.currentTarget as HTMLImageElement;
-                                  target.src = '/src/images/circles-logo-main.png';
+                                  target.src = getUserAvatar('Community Bot');
                                 }}
                               />
                             </motion.div>
@@ -1737,13 +1737,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               className="mb-8"
                             >
                               <img 
-                                src={circlesLogo} 
+                                src={getUserAvatar('Community Bot')} 
                                 alt="Circles Logo" 
                                 className="w-32 h-32 mx-auto drop-shadow-2xl animate-spin object-contain"
                                 style={{ animationDuration: '3s' }}
                                 onError={(e) => {
                                   const target = e.currentTarget as HTMLImageElement;
-                                  target.src = '/src/images/circles-logo-main.png';
+                                  target.src = getUserAvatar('Community Bot');
                                 }}
                               />
                             </motion.div>

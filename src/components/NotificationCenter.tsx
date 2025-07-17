@@ -32,32 +32,16 @@ import {
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import generateRealNotifications from '../utils/notificationsAggregator';
+import { getUserAvatar } from '../utils/imageUtils';
 
 // Add image mapping function
 const getLocalAvatar = (name: string) => {
-  const map: Record<string, string> = {
-    'Alok Tripathy': '/src/images/alok.jpg',
-    'Ankit Singh': '/src/images/ankit.jpg',
-    'Biren Dora': '/src/images/biren.jpg',
-    'Adya Rath': '/src/images/adya.JPG',
-    'Soham Bardhan': '/src/images/soham.jpg',
-    'Praveen Dehury': '/src/images/praveen.jpg',
-    'Ipsit Tripathy': '/src/images/ipsit.jpg',
-    'Kamlesh Biswal': '/src/images/kamlesh.jpg',
-    'You': '/src/images/akash-matania.JPG',
-    'Community Bot': '/src/images/circles-logo-main.png',
-  };
-  return map[name] || '/src/images/akash-matania.JPG';
+  return getUserAvatar(name);
 };
 
 // Add channel avatar mapping function
 const getChannelAvatar = (name: string) => {
-  const map: Record<string, string> = {
-    'EnterCircles': '/src/images/circles-logo-main.png',
-    'Community Bot': '/src/images/circles-logo-main.png',
-    'System': '/src/images/circles-logo-main.png',
-  };
-  return map[name] || '/src/images/circles-logo-main.png';
+  return getUserAvatar(name);
 };
 
 // Notification types interface
@@ -540,12 +524,12 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose, setCur
                             {notification.user && (
                               <div className="flex items-center gap-2">
                                 <img
-                                  src={notification.user.avatar || getLocalAvatar(notification.user.name)}
+                                  src={notification.user.avatar || getUserAvatar(notification.user.name)}
                                   alt={notification.user.name}
                                   className="w-6 h-6 rounded-full object-cover"
                                   onError={(e) => {
                                     const target = e.currentTarget as HTMLImageElement;
-                                    target.src = getLocalAvatar(notification.user?.name || 'You');
+                                    target.src = getUserAvatar(notification.user?.name || 'You');
                                   }}
                                 />
                                 <span className={`text-sm font-medium ${

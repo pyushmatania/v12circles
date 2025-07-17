@@ -25,6 +25,7 @@ import {
 import { useAuth } from '../auth/useAuth';
 import { useTheme } from '../ThemeContext';
 import { portfolioService } from '../../data/portfolio';
+import { getUserAvatar } from '../../utils/imageUtils';
 
 
 // If User type is not exported, define it here based on AuthProvider
@@ -151,12 +152,12 @@ const ProfilePage: React.FC = () => {
             <div className="relative">
               <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-purple-500/30">
                 <img 
-                  src={user.avatar || '/src/images/akash-matania.JPG'} 
+                  src={user.avatar || getUserAvatar('You')} 
                   alt={user.name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     const target = e.currentTarget as HTMLImageElement;
-                    target.src = '/src/images/akash-matania.JPG';
+                    target.src = getUserAvatar('You');
                   }}
                 />
                 {isUploading && (

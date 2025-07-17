@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { Star, Users, Gift, Film, Plane, ShoppingBag } from 'lucide-react';
 
 // Import logo image
-import circlesLogo from '../images/circles-logo-main.png';
+import { circlesLogo } from '../utils/imageUtils';
 
 interface Illustration {
   image: string;

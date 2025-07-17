@@ -23,7 +23,7 @@ import { useAuth } from './auth/useAuth';
 import useIsMobile from '../hooks/useIsMobile';
 
 // Import logo image
-import circlesLogo from '../images/circles-logo-main.png';
+import { circlesLogo, getUserAvatar } from '../utils/imageUtils';
 import SearchBar from './SearchBar';
 import NotificationDropdown from './NotificationDropdown';
 
@@ -199,12 +199,12 @@ const Navigation: React.FC<NavigationProps> = memo(({
     >
       {isAuthenticated ? (
         <img 
-          src={user?.avatar || '/src/images/akash-matania.JPG'} 
+          src={user?.avatar || getUserAvatar('You')} 
           alt={user?.name || 'Profile'}
           className="w-6 h-6 rounded-full object-cover"
           onError={(e) => {
             const target = e.currentTarget as HTMLImageElement;
-            target.src = '/src/images/akash-matania.JPG';
+            target.src = getUserAvatar('You');
           }}
         />
       ) : (
@@ -598,12 +598,12 @@ const Navigation: React.FC<NavigationProps> = memo(({
                     >
                       {isAuthenticated ? (
                         <img 
-                          src={user?.avatar || '/src/images/akash-matania.JPG'} 
+                          src={user?.avatar || getUserAvatar('You')} 
                           alt={user?.name || 'Profile'}
                           className="w-5 h-5 rounded-full object-cover"
                           onError={(e) => {
                             const target = e.currentTarget as HTMLImageElement;
-                            target.src = '/src/images/akash-matania.JPG';
+                            target.src = getUserAvatar('You');
                           }}
                         />
                       ) : (

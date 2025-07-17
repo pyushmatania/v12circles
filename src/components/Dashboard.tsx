@@ -32,6 +32,7 @@ import { projects } from '../data/projects';
 import { comprehensiveCommunityData } from '../data/comprehensiveCommunityData';
 import ProfilePage from './profile/ProfilePage';
 import PortfolioAnalytics from './PortfolioAnalytics';
+import { getUserAvatar } from '../utils/imageUtils';
 
 // 🛡️ Type definitions for better type safety
 interface PerkMetadata {
@@ -1239,7 +1240,7 @@ const Dashboard: React.FC<DashboardProps> = memo(({ setCurrentView }) => {
                     className="w-16 h-16 rounded-full object-cover border-2 border-purple-500/30 hover:border-purple-500/60 transition-all duration-300"
                     onError={(e) => {
                       const target = e.currentTarget as HTMLImageElement;
-                      target.src = '/src/images/circles-logo-main.png';
+                      target.src = getUserAvatar('Community Bot');
                     }}
                   />
                   <div className="flex-1 break-words">

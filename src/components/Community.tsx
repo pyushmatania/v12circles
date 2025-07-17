@@ -40,6 +40,7 @@ import Merchandise from './Merchandise';
 import { comprehensiveCommunityData, type RealCommunityItem } from '../data/comprehensiveCommunityData';
 import OptimizedImage from './OptimizedImage';
 import { getSpotifyArtistData } from '../data/spotifyArtistImages';
+import { getUserAvatar } from '../utils/imageUtils';
 
 // 🛡️ Type definitions for better type safety
 interface FeedPost {
@@ -72,19 +73,7 @@ interface Channel {
 
 // Add at the top, after imports
 const getLocalAvatar = (name: string) => {
-  const map: Record<string, string> = {
-    'Alok Tripathy': '/src/images/alok.jpg',
-    'Ankit Singh': '/src/images/ankit.jpg',
-    'Biren Dora': '/src/images/biren.jpg',
-    'Adya Rath': '/src/images/adya.JPG',
-    'Soham Bardhan': '/src/images/soham.jpg',
-    'Praveen Dehury': '/src/images/praveen.jpg',
-    'Ipsit Tripathy': '/src/images/ipsit.jpg',
-    'Kamlesh Biswal': '/src/images/kamlesh.jpg',
-    'You': '/src/images/akash-matania.JPG',
-    'Community Bot': '/src/images/circles-logo-main.png',
-  };
-  return map[name] || '/src/images/akash-matania.JPG';
+  return getUserAvatar(name);
 };
 
 /**
@@ -141,58 +130,58 @@ const Community: React.FC = memo(() => {
   const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState<Record<string, {user:string; message:string; time:string; avatar:string}[]>>({
     announcements: [
-      { user: 'Alok Tripathy', message: 'Bhai, latest behind-the-scenes footage dekh liya! 🔥 Kya mast hai yaar!', time: '2:30 PM', avatar: '/src/images/alok.jpg' },
-      { user: 'Ankit Singh', message: 'Action sequences toh bilkul zabardast hai! VFX team ne kaam kar diya!', time: '2:32 PM', avatar: '/src/images/ankit.jpg' },
-      { user: 'Biren Dora', message: '🚨 BREAKING: New trailer kal 12 PM IST pe aa raha hai! 🚨 Sab ready ho jao!', time: '3:15 PM', avatar: '/src/images/biren.jpg' },
-      { user: 'Adya Rath', message: 'Finally! Main toh bas yahi wait kar rahi thi 😭 Ab toh excitement control nahi ho raha!', time: '3:16 PM', avatar: '/src/images/adya.JPG' }
+      { user: 'Alok Tripathy', message: 'Bhai, latest behind-the-scenes footage dekh liya! 🔥 Kya mast hai yaar!', time: '2:30 PM', avatar: getUserAvatar('Alok Tripathy') },
+      { user: 'Ankit Singh', message: 'Action sequences toh bilkul zabardast hai! VFX team ne kaam kar diya!', time: '2:32 PM', avatar: getUserAvatar('Ankit Singh') },
+      { user: 'Biren Dora', message: '🚨 BREAKING: New trailer kal 12 PM IST pe aa raha hai! 🚨 Sab ready ho jao!', time: '3:15 PM', avatar: getUserAvatar('Biren Dora') },
+      { user: 'Adya Rath', message: 'Finally! Main toh bas yahi wait kar rahi thi 😭 Ab toh excitement control nahi ho raha!', time: '3:16 PM', avatar: getUserAvatar('Adya Rath') }
     ],
     'investor-hall': [
-      { user: 'Soham Bardhan', message: 'Q3 numbers are looking exceptionally strong! 📈 The market response has been phenomenal across all segments.', time: '1:45 PM', avatar: '/src/images/soham.jpg' },
-      { user: 'Praveen Dehury', message: 'The international market response has been absolutely phenomenal 🌍 We\'ve achieved remarkable global reach.', time: '1:47 PM', avatar: '/src/images/praveen.jpg' },
-      { user: 'Kamlesh Biswal', message: 'Streaming platforms mein diversify karna chahiye kya? 🤔 Netflix, Amazon sab mein ja sakte hain!', time: '2:10 PM', avatar: '/src/images/kamlesh.jpg' },
-      { user: 'Alok Tripathy', message: 'Netflix deal almost final ho gaya hai! 🎬 Ab toh international audience bhi milegi!', time: '2:12 PM', avatar: '/src/images/alok.jpg' }
+      { user: 'Soham Bardhan', message: 'Q3 numbers are looking exceptionally strong! 📈 The market response has been phenomenal across all segments.', time: '1:45 PM', avatar: getUserAvatar('Soham Bardhan') },
+      { user: 'Praveen Dehury', message: 'The international market response has been absolutely phenomenal 🌍 We\'ve achieved remarkable global reach.', time: '1:47 PM', avatar: getUserAvatar('Praveen Dehury') },
+      { user: 'Kamlesh Biswal', message: 'Streaming platforms mein diversify karna chahiye kya? 🤔 Netflix, Amazon sab mein ja sakte hain!', time: '2:10 PM', avatar: getUserAvatar('Kamlesh Biswal') },
+      { user: 'Alok Tripathy', message: 'Netflix deal almost final ho gaya hai! 🎬 Ab toh international audience bhi milegi!', time: '2:12 PM', avatar: getUserAvatar('Alok Tripathy') }
     ],
     'creator-talks': [
-      { user: 'Ankit Singh', message: 'Bhai log, low light scenes mein color grading mein problem aa rahi hai kya? 🎨 Koi solution batao!', time: '11:30 AM', avatar: '/src/images/ankit.jpg' },
-      { user: 'Biren Dora', message: 'I recommend using a warmer LUT and slightly increasing the shadows. This should provide the perfect balance for low light scenarios.', time: '11:32 AM', avatar: '/src/images/biren.jpg' },
-      { user: 'Adya Rath', message: 'New RED camera footage toh bilkul insane hai! 📹 Quality dekh ke hi pata chalta hai!', time: '12:15 PM', avatar: '/src/images/adya.JPG' },
-              { user: 'Soham Bardhan', message: 'I still prefer film grain over digital noise 🎞️ It provides a more authentic cinematic feel.', time: '12:17 PM', avatar: '/src/images/soham.jpg' }
+      { user: 'Ankit Singh', message: 'Bhai log, low light scenes mein color grading mein problem aa rahi hai kya? 🎨 Koi solution batao!', time: '11:30 AM', avatar: getUserAvatar('Ankit Singh') },
+      { user: 'Biren Dora', message: 'I recommend using a warmer LUT and slightly increasing the shadows. This should provide the perfect balance for low light scenarios.', time: '11:32 AM', avatar: getUserAvatar('Biren Dora') },
+      { user: 'Adya Rath', message: 'New RED camera footage toh bilkul insane hai! 📹 Quality dekh ke hi pata chalta hai!', time: '12:15 PM', avatar: getUserAvatar('Adya Rath') },
+              { user: 'Soham Bardhan', message: 'I still prefer film grain over digital noise 🎞️ It provides a more authentic cinematic feel.', time: '12:17 PM', avatar: getUserAvatar('Soham Bardhan') }
     ],
     'fan-zone': [
-      { user: 'Praveen Dehury', message: 'IS ANYONE ELSE COMPLETELY SHOCKED BY THAT ENDING?! 😭😭😭 I\'m still processing what just happened!', time: '10:45 AM', avatar: '/src/images/praveen.jpg' },
-      { user: 'Kamlesh Biswal', message: 'Plot twist ne toh mujhe bilkul SHOOK kar diya! 🤯 Kya direction thi yaar!', time: '10:47 AM', avatar: '/src/images/kamlesh.jpg' },
-      { user: 'Alok Tripathy', message: 'Cinematography ke baare mein baat karein? 🤌✨ Kya shots the yaar!', time: '11:00 AM', avatar: '/src/images/alok.jpg' },
-              { user: 'Ankit Singh', message: 'Main toh second watch plan kar raha hun! 🍿 Pehli baar miss ho gaya kuch!', time: '11:02 AM', avatar: '/src/images/ankit.jpg' },
-      { user: 'Biren Dora', message: 'The VFX team deserves all the awards! 🏆 Their work was absolutely outstanding.', time: '11:30 AM', avatar: '/src/images/biren.jpg' },
-      { user: 'Ipsit Tripathy', message: 'Action sequences mein hero ka body transformation dekh ke motivation mil gaya! 💪 Gym jana padega!', time: '11:45 AM', avatar: '/src/images/ipsit.jpg' }
+      { user: 'Praveen Dehury', message: 'IS ANYONE ELSE COMPLETELY SHOCKED BY THAT ENDING?! 😭😭😭 I\'m still processing what just happened!', time: '10:45 AM', avatar: getUserAvatar('Praveen Dehury') },
+      { user: 'Kamlesh Biswal', message: 'Plot twist ne toh mujhe bilkul SHOOK kar diya! 🤯 Kya direction thi yaar!', time: '10:47 AM', avatar: getUserAvatar('Kamlesh Biswal') },
+      { user: 'Alok Tripathy', message: 'Cinematography ke baare mein baat karein? 🤌✨ Kya shots the yaar!', time: '11:00 AM', avatar: getUserAvatar('Alok Tripathy') },
+              { user: 'Ankit Singh', message: 'Main toh second watch plan kar raha hun! 🍿 Pehli baar miss ho gaya kuch!', time: '11:02 AM', avatar: getUserAvatar('Ankit Singh') },
+      { user: 'Biren Dora', message: 'The VFX team deserves all the awards! 🏆 Their work was absolutely outstanding.', time: '11:30 AM', avatar: getUserAvatar('Biren Dora') },
+      { user: 'Ipsit Tripathy', message: 'Action sequences mein hero ka body transformation dekh ke motivation mil gaya! 💪 Gym jana padega!', time: '11:45 AM', avatar: getUserAvatar('Ipsit Tripathy') }
     ],
     polls: [
-      { user: 'Community Bot', message: '📊 POLL: Agle genre mein kya explore karein?\nA) Sci-Fi Thriller 🚀\nB) Romantic Comedy 💕\nC) Historical Drama 🏛️\nD) Horror Mystery 👻\n\nReact karke vote karo!', time: '9:00 AM', avatar: '/src/images/circles-logo-main.png' },
-      { user: 'Adya Rath', message: 'Definitely Sci-Fi! 🚀 Space mein kuch different karna chahiye!', time: '9:15 AM', avatar: '/src/images/adya.JPG' },
-      { user: 'Soham Bardhan', message: 'Horror Mystery sounds quite intriguing 👻 The suspense element would be excellent.', time: '9:20 AM', avatar: '/src/images/soham.jpg' },
-      { user: 'Community Bot', message: '📊 POLL RESULTS: Best Movie Snack?\n🍿 Popcorn - 67%\n🍫 Chocolate - 18%\n🥤 Soda - 10%\n🍕 Pizza - 5%\n\nPopcorn jeet gaya! 🎉', time: '2:00 PM', avatar: '/src/images/circles-logo-main.png' },
-      { user: 'Praveen Dehury', message: 'Pizza gang is absolutely devastated 😂🍕 Popcorn supremacy reigns supreme!', time: '2:05 PM', avatar: '/src/images/praveen.jpg' }
+      { user: 'Community Bot', message: '📊 POLL: Agle genre mein kya explore karein?\nA) Sci-Fi Thriller 🚀\nB) Romantic Comedy 💕\nC) Historical Drama 🏛️\nD) Horror Mystery 👻\n\nReact karke vote karo!', time: '9:00 AM', avatar: getUserAvatar('Community Bot') },
+      { user: 'Adya Rath', message: 'Definitely Sci-Fi! 🚀 Space mein kuch different karna chahiye!', time: '9:15 AM', avatar: getUserAvatar('Adya Rath') },
+      { user: 'Soham Bardhan', message: 'Horror Mystery sounds quite intriguing 👻 The suspense element would be excellent.', time: '9:20 AM', avatar: getUserAvatar('Soham Bardhan') },
+      { user: 'Community Bot', message: '📊 POLL RESULTS: Best Movie Snack?\n🍿 Popcorn - 67%\n🍫 Chocolate - 18%\n🥤 Soda - 10%\n🍕 Pizza - 5%\n\nPopcorn jeet gaya! 🎉', time: '2:00 PM', avatar: getUserAvatar('Community Bot') },
+      { user: 'Praveen Dehury', message: 'Pizza gang is absolutely devastated 😂🍕 Popcorn supremacy reigns supreme!', time: '2:05 PM', avatar: getUserAvatar('Praveen Dehury') }
     ],
     'behind-scenes': [
-      { user: 'Kamlesh Biswal', message: 'Set pe 4 AM ka scene kaisa hota hai, yeh dekho ☕😴 Coffee toh zaroori hai!', time: '4:00 AM', avatar: '/src/images/kamlesh.jpg' },
-      { user: 'Alok Tripathy', message: 'Makeup team abhi magic kar rahi hai ✨💄 Transformation dekh ke hi pata chalta hai!', time: '5:30 AM', avatar: '/src/images/alok.jpg' },
-              { user: 'Ankit Singh', message: 'Stunt sequence perfect ho gaya! 🎬🔥 Kya coordination thi!', time: '6:45 AM', avatar: '/src/images/ankit.jpg' },
-      { user: 'Biren Dora', message: 'The catering truck has arrived! 🚚🍕 This should provide much-needed energy for the crew.', time: '7:00 AM', avatar: '/src/images/biren.jpg' },
-      { user: 'Adya Rath', message: 'Golden hour shots bilkul incredible lag rahe hain 🌅 Natural lighting best hai!', time: '7:15 AM', avatar: '/src/images/adya.JPG' },
-      { user: 'Ipsit Tripathy', message: 'Stunt doubles ko proper warm-up karwana chahiye! 💪 Flexibility aur strength dono important hai!', time: '7:30 AM', avatar: '/src/images/ipsit.jpg' }
+      { user: 'Kamlesh Biswal', message: 'Set pe 4 AM ka scene kaisa hota hai, yeh dekho ☕😴 Coffee toh zaroori hai!', time: '4:00 AM', avatar: getUserAvatar('Kamlesh Biswal') },
+      { user: 'Alok Tripathy', message: 'Makeup team abhi magic kar rahi hai ✨💄 Transformation dekh ke hi pata chalta hai!', time: '5:30 AM', avatar: getUserAvatar('Alok Tripathy') },
+              { user: 'Ankit Singh', message: 'Stunt sequence perfect ho gaya! 🎬🔥 Kya coordination thi!', time: '6:45 AM', avatar: getUserAvatar('Ankit Singh') },
+      { user: 'Biren Dora', message: 'The catering truck has arrived! 🚚🍕 This should provide much-needed energy for the crew.', time: '7:00 AM', avatar: getUserAvatar('Biren Dora') },
+      { user: 'Adya Rath', message: 'Golden hour shots bilkul incredible lag rahe hain 🌅 Natural lighting best hai!', time: '7:15 AM', avatar: getUserAvatar('Adya Rath') },
+      { user: 'Ipsit Tripathy', message: 'Stunt doubles ko proper warm-up karwana chahiye! 💪 Flexibility aur strength dono important hai!', time: '7:30 AM', avatar: getUserAvatar('Ipsit Tripathy') }
     ]
   });
 
 
   const friendsList = [
-    { id: 'alok', name: 'Alok Tripathy', avatar: '/src/images/alok.jpg', online: true },
-    { id: 'ankit', name: 'Ankit Singh', avatar: '/src/images/ankit.jpg', online: true },
-    { id: 'biren', name: 'Biren Dora', avatar: '/src/images/biren.jpg', online: false },
-    { id: 'adya', name: 'Adya Rath', avatar: '/src/images/adya.JPG', online: true },
-    { id: 'soham', name: 'Soham Bardhan', avatar: '/src/images/soham.jpg', online: false },
-    { id: 'praveen', name: 'Praveen Dehury', avatar: '/src/images/praveen.jpg', online: true },
-    { id: 'ipsit', name: 'Ipsit Tripathy', avatar: '/src/images/ipsit.jpg', online: true },
-    { id: 'kamlesh', name: 'Kamlesh Biswal', avatar: '/src/images/kamlesh.jpg', online: true }
+    { id: 'alok', name: 'Alok Tripathy', avatar: getUserAvatar('Alok Tripathy'), online: true },
+    { id: 'ankit', name: 'Ankit Singh', avatar: getUserAvatar('Ankit Singh'), online: true },
+    { id: 'biren', name: 'Biren Dora', avatar: getUserAvatar('Biren Dora'), online: false },
+    { id: 'adya', name: 'Adya Rath', avatar: getUserAvatar('Adya Rath'), online: true },
+    { id: 'soham', name: 'Soham Bardhan', avatar: getUserAvatar('Soham Bardhan'), online: false },
+    { id: 'praveen', name: 'Praveen Dehury', avatar: getUserAvatar('Praveen Dehury'), online: true },
+    { id: 'ipsit', name: 'Ipsit Tripathy', avatar: getUserAvatar('Ipsit Tripathy'), online: true },
+    { id: 'kamlesh', name: 'Kamlesh Biswal', avatar: getUserAvatar('Kamlesh Biswal'), online: true }
   ];
   const [selectedFriend, setSelectedFriend] = useState<string>(friendsList[0].id);
   const [previewChannel, setPreviewChannel] = useState<string | null>(null);
@@ -212,62 +201,62 @@ const Community: React.FC = memo(() => {
   
   const [friendChats, setFriendChats] = useState<Record<string, {user:string; message:string; time:string; avatar?:string}[]>>({
     alok: [
-      { user: 'Alok Tripathy', message: 'Bhai, new Marvel trailer dekha kya?! 🤯 Kya mast hai yaar!', time: '10:30 AM', avatar: '/src/images/alok.jpg' },
-      { user: 'You', message: 'Haan bhai! Multiverse toh bilkul crazy ho gaya hai 😱 Kya direction hai!', time: '10:32 AM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Alok Tripathy', message: 'Spider-Man ko dekh ke main toh chillaya tha! 🕷️ Neighbors ko laga kya hua hai!', time: '10:33 AM', avatar: '/src/images/alok.jpg' },
-      { user: 'You', message: 'Same yaar! Main bhi excited ho gaya tha 😂 Premiere mein saath chalenge?', time: '10:35 AM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Alok Tripathy', message: 'Bilkul bhai! Tickets book kar deta hun 🎬 First day first show!', time: '10:36 AM', avatar: '/src/images/alok.jpg' },
-      { user: 'You', message: 'Perfect! Popcorn aur excitement dono ready rahenge 🎫', time: '10:37 AM', avatar: '/src/images/akash-matania.JPG' }
+      { user: 'Alok Tripathy', message: 'Bhai, new Marvel trailer dekha kya?! 🤯 Kya mast hai yaar!', time: '10:30 AM', avatar: getUserAvatar('Alok Tripathy') },
+      { user: 'You', message: 'Haan bhai! Multiverse toh bilkul crazy ho gaya hai 😱 Kya direction hai!', time: '10:32 AM', avatar: getUserAvatar('You') },
+      { user: 'Alok Tripathy', message: 'Spider-Man ko dekh ke main toh chillaya tha! 🕷️ Neighbors ko laga kya hua hai!', time: '10:33 AM', avatar: getUserAvatar('Alok Tripathy') },
+      { user: 'You', message: 'Same yaar! Main bhi excited ho gaya tha 😂 Premiere mein saath chalenge?', time: '10:35 AM', avatar: getUserAvatar('You') },
+      { user: 'Alok Tripathy', message: 'Bilkul bhai! Tickets book kar deta hun 🎬 First day first show!', time: '10:36 AM', avatar: getUserAvatar('Alok Tripathy') },
+      { user: 'You', message: 'Perfect! Popcorn aur excitement dono ready rahenge 🎫', time: '10:37 AM', avatar: getUserAvatar('You') }
     ],
           ankit: [
-        { user: 'Ankit Singh', message: 'Yaar, new camera setup dekh liya?! 📸 Bilkul professional level ka hai!', time: '2:15 PM', avatar: '/src/images/ankit.jpg' },
-        { user: 'You', message: 'Dikha dikha! 👀 Kya mast equipment hai!', time: '2:16 PM', avatar: '/src/images/akash-matania.JPG' },
-        { user: 'Ankit Singh', message: 'DM mein pics bhej deta hun 📱 Quality dekh ke hi pata chalega!', time: '2:17 PM', avatar: '/src/images/ankit.jpg' },
-        { user: 'You', message: 'Bhai, yeh toh Hollywood level ka setup hai! 🔥 Kya investment hai!', time: '2:20 PM', avatar: '/src/images/akash-matania.JPG' },
-        { user: 'Ankit Singh', message: 'Haan na! Ab YouTube channel start karna padega 📹 Content toh ready hai!', time: '2:21 PM', avatar: '/src/images/ankit.jpg' },
-        { user: 'You', message: 'Main toh subscribe kar raha hun! 😂 Success guaranteed hai!', time: '2:22 PM', avatar: '/src/images/akash-matania.JPG' }
+        { user: 'Ankit Singh', message: 'Yaar, new camera setup dekh liya?! 📸 Bilkul professional level ka hai!', time: '2:15 PM', avatar: getUserAvatar('Ankit Singh') },
+        { user: 'You', message: 'Dikha dikha! 👀 Kya mast equipment hai!', time: '2:16 PM', avatar: getUserAvatar('You') },
+        { user: 'Ankit Singh', message: 'DM mein pics bhej deta hun 📱 Quality dekh ke hi pata chalega!', time: '2:17 PM', avatar: getUserAvatar('Ankit Singh') },
+        { user: 'You', message: 'Bhai, yeh toh Hollywood level ka setup hai! 🔥 Kya investment hai!', time: '2:20 PM', avatar: getUserAvatar('You') },
+        { user: 'Ankit Singh', message: 'Haan na! Ab YouTube channel start karna padega 📹 Content toh ready hai!', time: '2:21 PM', avatar: getUserAvatar('Ankit Singh') },
+        { user: 'You', message: 'Main toh subscribe kar raha hun! 😂 Success guaranteed hai!', time: '2:22 PM', avatar: getUserAvatar('You') }
       ],
     biren: [
-      { user: 'Biren Dora', message: 'Hello! It\'s been quite a while since we last spoke 👋 How have you been?', time: '9:45 AM', avatar: '/src/images/biren.jpg' },
-      { user: 'You', message: 'Biren! New job kaisa chal raha hai? Sab badhiya?', time: '9:50 AM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Biren Dora', message: 'It\'s been excellent! Working on some fascinating projects 💼 The learning curve has been quite steep.', time: '9:52 AM', avatar: '/src/images/biren.jpg' },
-      { user: 'You', message: 'That\'s awesome! Jaldi milte hain ☕ Coffee toh banti hai!', time: '9:55 AM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Biren Dora', message: 'Absolutely! How about this weekend? We can discuss everything in detail.', time: '9:56 AM', avatar: '/src/images/biren.jpg' }
+      { user: 'Biren Dora', message: 'Hello! It\'s been quite a while since we last spoke 👋 How have you been?', time: '9:45 AM', avatar: getUserAvatar('Biren Dora') },
+      { user: 'You', message: 'Biren! New job kaisa chal raha hai? Sab badhiya?', time: '9:50 AM', avatar: getUserAvatar('You') },
+      { user: 'Biren Dora', message: 'It\'s been excellent! Working on some fascinating projects 💼 The learning curve has been quite steep.', time: '9:52 AM', avatar: getUserAvatar('Biren Dora') },
+      { user: 'You', message: 'That\'s awesome! Jaldi milte hain ☕ Coffee toh banti hai!', time: '9:55 AM', avatar: getUserAvatar('You') },
+      { user: 'Biren Dora', message: 'Absolutely! How about this weekend? We can discuss everything in detail.', time: '9:56 AM', avatar: getUserAvatar('Biren Dora') }
     ],
     adya: [
-      { user: 'Adya Rath', message: 'GIRL! Show mein kya hua tha, dekh liya kya?! 😱 Kya drama tha!', time: '8:30 PM', avatar: '/src/images/adya.JPG' },
-      { user: 'You', message: 'NOOO! Spoiler mat de! Main episode 3 pe hun 😭', time: '8:32 PM', avatar: '/src/images/akash-matania.JPG' },
-              { user: 'Adya Rath', message: 'Oops sorry! But OMG, tum toh ride pe ho! 🎢 Kya twist hai!', time: '8:33 PM', avatar: '/src/images/adya.JPG' },
-      { user: 'You', message: 'Ab toh scared aur excited dono ho gaya hun 😅', time: '8:35 PM', avatar: '/src/images/akash-matania.JPG' },
-              { user: 'Adya Rath', message: 'Trust me, aaj raat ke liye schedule clear kar lo 📺 Worth it hai!', time: '8:36 PM', avatar: '/src/images/adya.JPG' }
+      { user: 'Adya Rath', message: 'GIRL! Show mein kya hua tha, dekh liya kya?! 😱 Kya drama tha!', time: '8:30 PM', avatar: getUserAvatar('Adya Rath') },
+      { user: 'You', message: 'NOOO! Spoiler mat de! Main episode 3 pe hun 😭', time: '8:32 PM', avatar: getUserAvatar('You') },
+              { user: 'Adya Rath', message: 'Oops sorry! But OMG, tum toh ride pe ho! 🎢 Kya twist hai!', time: '8:33 PM', avatar: getUserAvatar('Adya Rath') },
+      { user: 'You', message: 'Ab toh scared aur excited dono ho gaya hun 😅', time: '8:35 PM', avatar: getUserAvatar('You') },
+              { user: 'Adya Rath', message: 'Trust me, aaj raat ke liye schedule clear kar lo 📺 Worth it hai!', time: '8:36 PM', avatar: getUserAvatar('Adya Rath') }
     ],
     soham: [
-      { user: 'Soham Bardhan', message: 'Remember that stunt sequence from yesterday? 🤸‍♂️ The one where we almost fell off the building?', time: '6:00 PM', avatar: '/src/images/soham.jpg' },
-              { user: 'You', message: 'Kaise bhool sakta hun! Mummy abhi bhi gusse mein hai 😅', time: '6:02 PM', avatar: '/src/images/akash-matania.JPG' },
-              { user: 'Soham Bardhan', message: 'It was calculated! Well, mostly... 😅 Sometimes you have to take risks for the perfect shot.', time: '6:03 PM', avatar: '/src/images/soham.jpg' },
-        { user: 'You', message: 'Calculated my foot! 😂 Tu toh pagal hai!', time: '6:05 PM', avatar: '/src/images/akash-matania.JPG' },
-        { user: 'Soham Bardhan', message: 'What they don\'t know won\'t hurt them 🤫 Your mother doesn\'t need to know everything.', time: '6:06 PM', avatar: '/src/images/soham.jpg' }
+      { user: 'Soham Bardhan', message: 'Remember that stunt sequence from yesterday? 🤸‍♂️ The one where we almost fell off the building?', time: '6:00 PM', avatar: getUserAvatar('Soham Bardhan') },
+              { user: 'You', message: 'Kaise bhool sakta hun! Mummy abhi bhi gusse mein hai 😅', time: '6:02 PM', avatar: getUserAvatar('You') },
+              { user: 'Soham Bardhan', message: 'It was calculated! Well, mostly... 😅 Sometimes you have to take risks for the perfect shot.', time: '6:03 PM', avatar: getUserAvatar('Soham Bardhan') },
+        { user: 'You', message: 'Calculated my foot! 😂 Tu toh pagal hai!', time: '6:05 PM', avatar: getUserAvatar('You') },
+        { user: 'Soham Bardhan', message: 'What they don\'t know won\'t hurt them 🤫 Your mother doesn\'t need to know everything.', time: '6:06 PM', avatar: getUserAvatar('Soham Bardhan') }
     ],
           praveen: [
-        { user: 'Praveen Dehury', message: 'Portfolio returns dekh ke toh khushi ka thikana nahi raha! 🚀', time: '7:00 AM', avatar: '/src/images/praveen.jpg' },
-        { user: 'You', message: 'Bhai, ab toh treat banta hai! 🥳', time: '7:02 AM', avatar: '/src/images/akash-matania.JPG' },
-        { user: 'Praveen Dehury', message: 'Jaldi milte hain! Coffee on me ☕', time: '7:03 AM', avatar: '/src/images/praveen.jpg' }
+        { user: 'Praveen Dehury', message: 'Portfolio returns dekh ke toh khushi ka thikana nahi raha! 🚀', time: '7:00 AM', avatar: getUserAvatar('Praveen Dehury') },
+        { user: 'You', message: 'Bhai, ab toh treat banta hai! 🥳', time: '7:02 AM', avatar: getUserAvatar('You') },
+        { user: 'Praveen Dehury', message: 'Jaldi milte hain! Coffee on me ☕', time: '7:03 AM', avatar: getUserAvatar('Praveen Dehury') }
       ],
     ipsit: [
-              { user: 'Ipsit Tripathy', message: 'Bhai! Gym mein new PR banaya! 💪 Deadlift 200kg touch kar liya! Feeling absolutely pumped!', time: '6:30 AM', avatar: '/src/images/ipsit.jpg' },
-              { user: 'You', message: 'Wah bhai! Kya beast ban gaya hai! 🔥 Protein shake zaroor piya hoga!', time: '6:32 AM', avatar: '/src/images/akash-matania.JPG' },
-              { user: 'Ipsit Tripathy', message: 'Haan yaar! Whey protein + banana smoothie! 🥛🍌 Abhi bhi energy level peak pe hai!', time: '6:33 AM', avatar: '/src/images/ipsit.jpg' },
-        { user: 'You', message: 'Mujhe bhi gym join karna chahiye! Motivation de do! 💪', time: '6:35 AM', avatar: '/src/images/akash-matania.JPG' },
-        { user: 'Ipsit Tripathy', message: 'Bilkul bhai! Kal saath chalenge! 🏋️‍♂️ Chest day hai! Bench press karenge!', time: '6:36 AM', avatar: '/src/images/ipsit.jpg' },
-        { user: 'You', message: 'Deal! But pehle proper form sikhana padega! 😅', time: '6:38 AM', avatar: '/src/images/akash-matania.JPG' },
-        { user: 'Ipsit Tripathy', message: 'No worries! Main proper trainer hun! 🎯 Form over weight, always! Safety first!', time: '6:40 AM', avatar: '/src/images/ipsit.jpg' }
+              { user: 'Ipsit Tripathy', message: 'Bhai! Gym mein new PR banaya! 💪 Deadlift 200kg touch kar liya! Feeling absolutely pumped!', time: '6:30 AM', avatar: getUserAvatar('Ipsit Tripathy') },
+              { user: 'You', message: 'Wah bhai! Kya beast ban gaya hai! 🔥 Protein shake zaroor piya hoga!', time: '6:32 AM', avatar: getUserAvatar('You') },
+              { user: 'Ipsit Tripathy', message: 'Haan yaar! Whey protein + banana smoothie! 🥛🍌 Abhi bhi energy level peak pe hai!', time: '6:33 AM', avatar: getUserAvatar('Ipsit Tripathy') },
+        { user: 'You', message: 'Mujhe bhi gym join karna chahiye! Motivation de do! 💪', time: '6:35 AM', avatar: getUserAvatar('You') },
+        { user: 'Ipsit Tripathy', message: 'Bilkul bhai! Kal saath chalenge! 🏋️‍♂️ Chest day hai! Bench press karenge!', time: '6:36 AM', avatar: getUserAvatar('Ipsit Tripathy') },
+        { user: 'You', message: 'Deal! But pehle proper form sikhana padega! 😅', time: '6:38 AM', avatar: getUserAvatar('You') },
+        { user: 'Ipsit Tripathy', message: 'No worries! Main proper trainer hun! 🎯 Form over weight, always! Safety first!', time: '6:40 AM', avatar: getUserAvatar('Ipsit Tripathy') }
     ],
           kamlesh: [
-        { user: 'Kamlesh Biswal', message: 'Bhai! New project mil gaya! 🎬 Production house ne contact kiya hai!', time: '5:30 PM', avatar: '/src/images/kamlesh.jpg' },
-        { user: 'You', message: 'Wah! Kya project hai? Details bata! 🎉', time: '5:32 PM', avatar: '/src/images/akash-matania.JPG' },
-        { user: 'Kamlesh Biswal', message: 'Web series hai! 10 episodes! Budget bhi decent hai! 💰', time: '5:33 PM', avatar: '/src/images/kamlesh.jpg' },
-        { user: 'You', message: 'Congratulations! 🎊 Party toh banti hai!', time: '5:35 PM', avatar: '/src/images/akash-matania.JPG' },
-        { user: 'Kamlesh Biswal', message: 'Bilkul! Weekend pe sab milenge! 🍕 Pizza aur success celebration!', time: '5:36 PM', avatar: '/src/images/kamlesh.jpg' }
+        { user: 'Kamlesh Biswal', message: 'Bhai! New project mil gaya! 🎬 Production house ne contact kiya hai!', time: '5:30 PM', avatar: getUserAvatar('Kamlesh Biswal') },
+        { user: 'You', message: 'Wah! Kya project hai? Details bata! 🎉', time: '5:32 PM', avatar: getUserAvatar('You') },
+        { user: 'Kamlesh Biswal', message: 'Web series hai! 10 episodes! Budget bhi decent hai! 💰', time: '5:33 PM', avatar: getUserAvatar('Kamlesh Biswal') },
+        { user: 'You', message: 'Congratulations! 🎊 Party toh banti hai!', time: '5:35 PM', avatar: getUserAvatar('You') },
+        { user: 'Kamlesh Biswal', message: 'Bilkul! Weekend pe sab milenge! 🍕 Pizza aur success celebration!', time: '5:36 PM', avatar: getUserAvatar('Kamlesh Biswal') }
       ]
   });
   
@@ -277,7 +266,7 @@ const Community: React.FC = memo(() => {
         id: '1',
         user: {
           name: 'Alok Tripathy',
-          avatar: '/src/images/alok.jpg',
+          avatar: getUserAvatar('Alok Tripathy'),
           verified: true,
           role: 'Investor'
         },
@@ -291,7 +280,7 @@ const Community: React.FC = memo(() => {
         id: '2',
         user: {
           name: 'Ankit Singh',
-          avatar: '/src/images/ankit.jpg',
+          avatar: getUserAvatar('Ankit Singh'),
           verified: false,
           role: 'Fan'
         },
@@ -305,7 +294,7 @@ const Community: React.FC = memo(() => {
         id: '3',
         user: {
           name: 'Biren Dora',
-          avatar: '/src/images/biren.jpg',
+          avatar: getUserAvatar('Biren Dora'),
           verified: true,
           role: 'Director'
         },
@@ -319,7 +308,7 @@ const Community: React.FC = memo(() => {
         id: '4',
               user: {
         name: 'Adya Rath',
-        avatar: '/src/images/adya.JPG',
+        avatar: getUserAvatar('Adya Rath'),
         verified: false,
         role: 'Film Critic'
       },
@@ -333,7 +322,7 @@ const Community: React.FC = memo(() => {
         id: '5',
         user: {
           name: 'Soham Bardhan',
-          avatar: '/src/images/soham.jpg',
+          avatar: getUserAvatar('Soham Bardhan'),
           verified: true,
           role: 'Actor'
         },
@@ -347,7 +336,7 @@ const Community: React.FC = memo(() => {
         id: '6',
         user: {
           name: 'Praveen Dehury',
-          avatar: '/src/images/praveen.jpg',
+          avatar: getUserAvatar('Praveen Dehury'),
           verified: false,
           role: 'Screenwriter'
         },
@@ -361,7 +350,7 @@ const Community: React.FC = memo(() => {
       id: '7',
       user: {
         name: 'Kamlesh Biswal',
-        avatar: '/src/images/kamlesh.jpg',
+        avatar: getUserAvatar('Kamlesh Biswal'),
         verified: true,
         role: 'Producer'
       },
@@ -375,7 +364,7 @@ const Community: React.FC = memo(() => {
       id: '8',
       user: {
         name: 'Alok Tripathy',
-        avatar: '/src/images/alok.jpg',
+        avatar: getUserAvatar('Alok Tripathy'),
         verified: false,
         role: 'Cinematographer'
       },
@@ -389,7 +378,7 @@ const Community: React.FC = memo(() => {
       id: '9',
       user: {
         name: 'Ankit Singh',
-        avatar: '/src/images/ankit.jpg',
+        avatar: getUserAvatar('Ankit Singh'),
         verified: true,
         role: 'VFX Artist'
       },
@@ -403,12 +392,12 @@ const Community: React.FC = memo(() => {
       id: '10',
       user: {
         name: 'Biren Dora',
-        avatar: '/src/images/biren.jpg',
+        avatar: getUserAvatar('Biren Dora'),
         verified: false,
         role: 'Sound Engineer'
       },
       timestamp: '20 hours ago',
-      content: 'Recording the background score today! The orchestra is absolutely perfect! 🎵🎼 The composition is truly exceptional.',
+      content: 'Recording the background score today! The orchestra is absolutely perfect! 🎵�� The composition is truly exceptional.',
       reactions: [{ emoji: '🎵', count: 167 }, { emoji: '🎼', count: 89 }, { emoji: '🎶', count: 56 }],
       comments: 45,
       shares: 23
@@ -417,7 +406,7 @@ const Community: React.FC = memo(() => {
       id: '11',
       user: {
         name: 'Adya Rath',
-        avatar: '/src/images/adya.JPG',
+        avatar: getUserAvatar('Adya Rath'),
         verified: true,
         role: 'Costume Designer'
       },
@@ -431,12 +420,12 @@ const Community: React.FC = memo(() => {
       id: '12',
       user: {
         name: 'Soham Bardhan',
-        avatar: '/src/images/soham.jpg',
+        avatar: getUserAvatar('Soham Bardhan'),
         verified: false,
         role: 'Stunt Coordinator'
       },
       timestamp: '24 hours ago',
-      content: 'Stunt sequence practice mein hero ko injury ho gaya! Ab 2 din rest! Safety first! 🤸‍♂️🛡️',
+      content: 'Stunt sequence practice mein hero ko injury ho gaya! Ab 2 din rest! Safety first! 🤸‍♂️��️',
       reactions: [{ emoji: '🤸‍♂️', count: 123 }, { emoji: '🛡️', count: 67 }, { emoji: '💪', count: 45 }],
       comments: 78,
       shares: 34
@@ -445,7 +434,7 @@ const Community: React.FC = memo(() => {
       id: '13',
       user: {
         name: 'Praveen Dehury',
-        avatar: '/src/images/praveen.jpg',
+        avatar: getUserAvatar('Praveen Dehury'),
         verified: true,
         role: 'Makeup Artist'
       },
@@ -459,7 +448,7 @@ const Community: React.FC = memo(() => {
         id: '14',
         user: {
           name: 'Kamlesh Biswal',
-          avatar: '/src/images/kamlesh.jpg',
+          avatar: getUserAvatar('Kamlesh Biswal'),
           verified: false,
           role: 'Location Manager'
         },
@@ -473,7 +462,7 @@ const Community: React.FC = memo(() => {
       id: '15',
       user: {
         name: 'Alok Tripathy',
-        avatar: '/src/images/alok.jpg',
+        avatar: getUserAvatar('Alok Tripathy'),
         verified: true,
         role: 'Editor'
       },
@@ -487,7 +476,7 @@ const Community: React.FC = memo(() => {
       id: '16',
       user: {
         name: 'Ipsit Tripathy',
-        avatar: '/src/images/ipsit.jpg',
+        avatar: getUserAvatar('Ipsit Tripathy'),
         verified: true,
         role: 'Fitness Trainer'
       },
@@ -598,7 +587,7 @@ const Community: React.FC = memo(() => {
       user: 'You',
       message: newMessage,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      avatar: '/src/images/akash-matania.JPG'
+      avatar: getUserAvatar('You')
     };
     setMessages(prev => ({
       ...prev,
@@ -610,7 +599,7 @@ const Community: React.FC = memo(() => {
         user: 'Friend',
         message: 'Got it!',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        avatar: '/src/images/praveen.jpg'
+        avatar: getUserAvatar('Praveen Dehury')
       };
       setMessages(prev => ({
         ...prev,
@@ -631,7 +620,7 @@ const Community: React.FC = memo(() => {
       user: 'You',
       message: friendInput,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      avatar: '/src/images/akash-matania.JPG'
+      avatar: getUserAvatar('You')
     };
     setFriendChats(prev => ({
       ...prev,
@@ -1234,7 +1223,7 @@ const Community: React.FC = memo(() => {
                           
                           {/* Background Image */}
                           <OptimizedImage 
-                            src={item.avatar || '/src/images/circles-logo-main.png'}
+                            src={item.avatar || getUserAvatar('Community Bot')}
                             alt={item.name}
                             width={120}
                             height={120}
@@ -1367,7 +1356,7 @@ const Community: React.FC = memo(() => {
             {/* Cover Image with Parallax Effect */}
             <div className="relative h-64 overflow-hidden">
               <OptimizedImage 
-                src={selectedItem.cover || selectedItem.avatar || '/src/images/circles-logo-main.png'}
+                src={selectedItem.cover || selectedItem.avatar || getUserAvatar('Community Bot')}
                 alt={selectedItem.name}
                 width={400}
                 height={256}
@@ -1412,7 +1401,7 @@ const Community: React.FC = memo(() => {
                 >
                       <div className="relative">
                     <OptimizedImage 
-                      src={selectedItem.avatar || '/src/images/circles-logo-main.png'}
+                      src={selectedItem.avatar || getUserAvatar('Community Bot')}
                       alt={selectedItem.name}
                       width={80}
                       height={80}
@@ -1642,7 +1631,7 @@ const Community: React.FC = memo(() => {
               }`}>
                 <div className="flex items-center gap-4 mb-4">
                   <img 
-                    src={getLocalAvatar('You')}
+                    src={getUserAvatar('You')}
                     alt="Your avatar"
                     className="w-12 h-12 rounded-full object-cover border-2 border-blue-500/30"
                   />
@@ -1719,7 +1708,7 @@ const Community: React.FC = memo(() => {
                           id: Date.now().toString(),
                           user: {
                             name: 'You',
-                            avatar: getLocalAvatar('You'),
+                            avatar: getUserAvatar('You'),
                             verified: false,
                             role: 'Investor'
                           },
@@ -1764,7 +1753,7 @@ const Community: React.FC = memo(() => {
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
                         <img 
-                          src={post.user.avatar || getLocalAvatar(post.user.name)}
+                          src={post.user.avatar || getUserAvatar(post.user.name)}
                           alt={post.user.name}
                           className="w-12 h-12 rounded-full object-cover border-2 border-blue-500/30"
                         />
@@ -1972,7 +1961,7 @@ const Community: React.FC = memo(() => {
                     {(messages[selectedChannel] || []).map((msg, index) => (
                       <div key={index} className="flex gap-3">
                         <img
-                          src={msg.avatar || getLocalAvatar(msg.user)}
+                          src={msg.avatar || getUserAvatar(msg.user)}
                           alt={msg.user}
                           className="w-10 h-10 rounded-full object-cover"
                         />
@@ -2098,12 +2087,12 @@ const Community: React.FC = memo(() => {
                     >
                       <div className="relative">
                         <img 
-                  src={friend.avatar || getLocalAvatar(friend.name || '')} 
+                  src={friend.avatar || getUserAvatar(friend.name || '')} 
                   alt={friend.name} 
                   className="w-8 h-8 rounded-full object-cover"
                   onError={(e) => {
                     const target = e.currentTarget as HTMLImageElement;
-                    target.src = getLocalAvatar(friend.name || '');
+                    target.src = getUserAvatar(friend.name || '');
                   }}
                 />
                         {friend.online && (
@@ -2156,12 +2145,12 @@ const Community: React.FC = memo(() => {
                         }`}
                       >
                         <img 
-                  src={friend.avatar || getLocalAvatar(friend.name || '')} 
+                  src={friend.avatar || getUserAvatar(friend.name || '')} 
                   alt={friend.name} 
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     const target = e.currentTarget as HTMLImageElement;
-                    target.src = getLocalAvatar(friend.name || '');
+                    target.src = getUserAvatar(friend.name || '');
                   }}
                 />
                         {previewFriend === friend.id && (
@@ -2182,7 +2171,7 @@ const Community: React.FC = memo(() => {
                   <div className="flex items-center gap-3">
                     <div className="relative">
                       <img 
-                        src={friendsList.find(f => f.id === selectedFriend)?.avatar || getLocalAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '')} 
+                        src={friendsList.find(f => f.id === selectedFriend)?.avatar || getUserAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '')} 
                         alt={friendsList.find(f => f.id === selectedFriend)?.name}
                         className="w-10 h-10 rounded-full object-cover" 
                       />
@@ -2232,12 +2221,12 @@ const Community: React.FC = memo(() => {
                     {(friendChats[selectedFriend] || []).map((msg, index) => (
                       <div key={index} className="flex gap-3">
                         <img 
-                  src={msg.avatar || getLocalAvatar(msg.user || '')} 
+                  src={msg.avatar || getUserAvatar(msg.user || '')} 
                   alt={msg.user} 
                   className="w-10 h-10 rounded-full object-cover"
                   onError={(e) => {
                     const target = e.currentTarget as HTMLImageElement;
-                    target.src = getLocalAvatar(msg.user || '');
+                    target.src = getUserAvatar(msg.user || '');
                   }}
                 />
                         <div className="flex-1">
@@ -2252,11 +2241,11 @@ const Community: React.FC = memo(() => {
                     {friendTyping && (
                       <div className="flex gap-3">
                         <img 
-                  src={friendsList.find(f => f.id === selectedFriend)?.avatar || getLocalAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '')} 
+                  src={friendsList.find(f => f.id === selectedFriend)?.avatar || getUserAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '')} 
                   className="w-10 h-10 rounded-full object-cover"
                   onError={(e) => {
                     const target = e.currentTarget as HTMLImageElement;
-                    target.src = getLocalAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '');
+                    target.src = getUserAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '');
                   }}
                 />
                         <div className="flex items-center text-sm italic text-gray-500">Typing...</div>
