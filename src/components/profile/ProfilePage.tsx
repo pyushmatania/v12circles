@@ -151,9 +151,13 @@ const ProfilePage: React.FC = () => {
             <div className="relative">
               <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-purple-500/30">
                 <img 
-                  src={user.avatar} 
+                  src={user.avatar || '/src/images/akash-matania.JPG'} 
                   alt={user.name}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    target.src = '/src/images/akash-matania.JPG';
+                  }}
                 />
                 {isUploading && (
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center">

@@ -15,6 +15,7 @@ interface ProjectCardProps {
   compact?: boolean;
   urgent?: boolean;
   layout?: 'netflix' | 'grid' | 'list';
+  small?: boolean;
 }
 
 type ProjectType = 'film' | 'music' | 'series';
@@ -29,16 +30,25 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({
   onInvestClick,
   featured, 
   compact,
-  urgent
+  urgent,
+  small
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showDetailPage, setShowDetailPage] = useState(false);
 
   // 🚀 Memoized card dimensions for better performance
-  const cardDimensions = useMemo(() => ({
-    width: featured ? 'w-96' : compact ? 'w-48' : 'w-72',
-    aspectRatio: featured ? 'aspect-[16/10]' : 'aspect-[2/3]'
-  }), [featured, compact]);
+  const cardDimensions = useMemo(() => {
+    if (small) {
+      return {
+        width: 'w-full',
+        aspectRatio: 'aspect-[2/3]'
+      };
+    }
+    return {
+      width: featured ? 'w-96' : compact ? 'w-48' : 'w-72',
+      aspectRatio: featured ? 'aspect-[16/10]' : 'aspect-[2/3]'
+    };
+  }, [featured, compact, small]);
 
   // 🚀 Memoized project type configuration
   const projectTypeConfig = useMemo(() => {
@@ -121,59 +131,59 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({
 
   // 🚀 Memoized type badge component
   const TypeBadge = useMemo(() => (
-    <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold backdrop-blur-md border ${projectTypeConfig.bgColor} ${projectTypeConfig.borderColor} text-white shadow-lg ${projectTypeConfig.shadowColor}`}>
-      <projectTypeConfig.icon className="w-3 h-3" />
-      {!featured && project.type.toUpperCase()}
+    <div className={`flex items-center gap-1 px-1 py-0.5 ${small ? 'rounded text-[10px]' : 'px-2 py-1 rounded-full text-xs'} font-bold backdrop-blur-md border ${projectTypeConfig.bgColor} ${projectTypeConfig.borderColor} text-white shadow-lg ${projectTypeConfig.shadowColor}`}>
+      <projectTypeConfig.icon className={small ? "w-2 h-2" : "w-3 h-3"} />
+      {!featured && !small && project.type.toUpperCase()}
     </div>
-  ), [projectTypeConfig, featured, project.type]);
+  ), [projectTypeConfig, featured, project.type, small]);
 
   // 🚀 Memoized trending badge
   const TrendingBadge = useMemo(() => (
-    featured && (
+    featured && !small && (
       <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-orange-500/90 to-red-500/90 backdrop-blur-md border border-orange-400/30 text-white shadow-lg shadow-orange-500/25">
         <TrendingUp className="w-3 h-3" />
         TRENDING
       </div>
     )
-  ), [featured]);
+  ), [featured, small]);
 
   // 🚀 Memoized urgent badge
   const UrgentBadge = useMemo(() => (
-    urgent && (
+    urgent && !small && (
       <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-red-500/90 to-pink-500/90 backdrop-blur-md border border-red-400/30 text-white shadow-lg shadow-red-500/25 animate-pulse">
         <AlertTriangle className="w-3 h-3" />
         URGENT
       </div>
     )
-  ), [urgent]);
+  ), [urgent, small]);
 
   // 🚀 Memoized funding badge
   const FundingBadge = useMemo(() => (
-    <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-green-500/90 backdrop-blur-md border border-green-400/30 text-white shadow-lg shadow-green-500/25">
-      <TrendingUp className="w-3 h-3" />
+    <div className={`flex items-center gap-1 ${small ? 'px-1 py-0.5 rounded text-[10px]' : 'px-2 py-1 rounded-full text-xs'} font-bold bg-green-500/90 backdrop-blur-md border border-green-400/30 text-white shadow-lg shadow-green-500/25`}>
+      <TrendingUp className={small ? "w-2 h-2" : "w-3 h-3"} />
       {fundingPercentage}%
     </div>
-  ), [fundingPercentage]);
+  ), [fundingPercentage, small]);
 
   // 🚀 Memoized rating badge
   const RatingBadge = useMemo(() => (
-    project.rating && (
+    project.rating && !small && (
       <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-black/70 backdrop-blur-md border border-white/20 text-white shadow-lg">
         <Star className="w-3 h-3 text-yellow-400 fill-current" />
         {project.rating}
       </div>
     )
-  ), [project.rating]);
+  ), [project.rating, small]);
 
   // 🚀 Memoized date badge
   const DateBadge = useMemo(() => (
-    formattedDate && (
+    formattedDate && !small && (
       <div className="flex items-center gap-1 text-orange-400 font-medium text-xs bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full w-fit">
         <Calendar className="w-3 h-3" />
         {formattedDate}
       </div>
     )
-  ), [formattedDate]);
+  ), [formattedDate, small]);
 
   // 🚀 Memoized progress bar
   const ProgressBar = useMemo(() => (
@@ -267,33 +277,37 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({
       </div>
           
           {/* 🚀 Top Badges */}
-          <div className="absolute top-3 left-3 flex flex-col gap-2 z-20">
-            <div className="flex flex-col gap-2">
-              {TypeBadge}
-              {TrendingBadge}
-              {UrgentBadge}
+          {!small && (
+            <div className={`absolute ${small ? 'top-2 left-2' : 'top-3 left-3'} flex flex-col gap-2 z-20`}>
+              <div className="flex flex-col gap-2">
+                {TypeBadge}
+                {TrendingBadge}
+                {UrgentBadge}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* 🚀 Top Right - Rating and Funding */}
-          <div className="absolute top-3 right-3 z-20 flex flex-col gap-2">
-            <div className="flex flex-col gap-2">
-              {FundingBadge}
-              {RatingBadge}
+          {!small && (
+            <div className={`absolute ${small ? 'top-2 right-2' : 'top-3 right-3'} z-20 flex flex-col gap-2`}>
+              <div className="flex flex-col gap-2">
+                {FundingBadge}
+                {RatingBadge}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* 🚀 Bottom Content - Always Visible */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 z-20" style={{ bottom: '12px' }}>
+          <div className={`absolute bottom-0 left-0 right-0 z-20 ${small ? 'p-1' : 'p-4'}`} style={{ bottom: small ? '4px' : '12px' }}>
             <div className="relative space-y-3 z-10">
               {/* Title and Basic Info */}
               <div>
-                <h3 className={`!text-white font-bold leading-tight drop-shadow-2xl ${
-                  featured ? 'text-xl' : 'text-lg'
+                <h3 className={`!text-white leading-tight drop-shadow-lg ${
+                  small ? 'text-[10px] font-medium' : featured ? 'text-xl font-bold' : 'text-lg font-bold'
                 }`}>
                   {project.title}
                 </h3>
-                {!featured && (
+                {!featured && !small && (
                   <p className="!text-white font-semibold text-sm mt-1 line-clamp-2 drop-shadow-2xl">
                     {project.description}
                   </p>
@@ -301,7 +315,7 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({
               </div>
 
               {/* Created Date */}
-              {DateBadge}
+              {!small && DateBadge}
             </div>
           </div>
 

@@ -21,19 +21,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const mockUser: User = MOCK_USER;
 
   useEffect(() => {
-    // Simulate checking for existing session
+    // Keep user logged in by default
     const checkAuth = async () => {
       setIsLoading(true);
       try {
-        const token = localStorage.getItem('circles_token');
+        // Always set user as logged in by default
+        await new Promise(resolve => setTimeout(resolve, 500)); // Reduced delay
+        setUser(mockUser);
         
-        if (token) {
-          // In a real app, validate token with backend
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          setUser(mockUser);
+        // Ensure token is set in localStorage
+        if (!localStorage.getItem('circles_token')) {
+          const token = 'mock_jwt_token_' + Date.now();
+          localStorage.setItem('circles_token', token);
+          localStorage.setItem('circles_remember', 'true');
         }
       } catch (error) {
         console.error('Auth check failed:', error);
+        // Even if there's an error, still keep user logged in
+        setUser(mockUser);
       } finally {
         setIsLoading(false);
       }
@@ -46,21 +51,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(true);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Mock validation
-      if (_email === 'demo@circles.com' && _password === 'password123') {
-        const token = 'mock_jwt_token_' + Date.now();
-        localStorage.setItem('circles_token', token);
-        
-        if (rememberMe) {
-          localStorage.setItem('circles_remember', 'true');
-        }
-        
-        setUser(mockUser);
-      } else {
-        throw new Error('Invalid credentials');
+      // Always succeed for demo purposes
+      const token = 'mock_jwt_token_' + Date.now();
+      localStorage.setItem('circles_token', token);
+      
+      if (rememberMe) {
+        localStorage.setItem('circles_remember', 'true');
       }
+      
+      setUser(mockUser);
     } finally {
       setIsLoading(false);
     }
@@ -70,7 +71,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(true);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       const newUser: User = {
         ...mockUser,

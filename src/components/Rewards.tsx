@@ -291,6 +291,17 @@ const Rewards: React.FC = () => {
                 flipped={flippedCards.has(index)}
                 onHoverStart={() => setFlippedCards(prev => new Set(prev).add(index))}
                 onHoverEnd={() => setFlippedCards(prev => { const newSet = new Set(prev); newSet.delete(index); return newSet; })}
+                onToggleFlip={() => {
+                  setFlippedCards(prev => {
+                    const newSet = new Set(prev);
+                    if (newSet.has(index)) {
+                      newSet.delete(index);
+                    } else {
+                      newSet.add(index);
+                    }
+                    return newSet;
+                  });
+                }}
               />
             ))}
           </div>

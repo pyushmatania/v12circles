@@ -16,9 +16,7 @@ import {
   Moon,
   ChevronDown,
   ChevronUp,
-  MoreHorizontal,
-  Search,
-  Bell
+  MoreHorizontal
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './auth/useAuth';
@@ -199,16 +197,14 @@ const Navigation: React.FC<NavigationProps> = memo(({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.35, duration: 0.3 }}
     >
-      {isAuthenticated && user?.avatar ? (
+      {isAuthenticated ? (
         <img 
-          src={user.avatar} 
-          alt={user.name}
+          src={user?.avatar || '/src/images/akash-matania.JPG'} 
+          alt={user?.name || 'Profile'}
           className="w-6 h-6 rounded-full object-cover"
           onError={(e) => {
             const target = e.currentTarget as HTMLImageElement;
-            target.style.display = 'none';
-            const fallback = target.nextElementSibling as HTMLElement;
-            if (fallback) fallback.style.display = 'block';
+            target.src = '/src/images/akash-matania.JPG';
           }}
         />
       ) : (
@@ -389,7 +385,6 @@ const Navigation: React.FC<NavigationProps> = memo(({
                 {/* 🚀 Navigation Items */}
                 <div className="hidden md:flex items-center gap-12 flex-shrink-0">
                   {mainNavItems.map((item, index) => {
-                    const isEnterCircles = item.id === 'community';
                     return (
                       <motion.button
                         key={item.id}
@@ -535,7 +530,6 @@ const Navigation: React.FC<NavigationProps> = memo(({
                   {/* Center: Main Nav Items */}
                   <div className="flex items-center gap-2 flex-shrink-0">
                     {mainNavItems.map((item, index) => {
-                      const isEnterCircles = item.id === 'community';
                       return (
                         <motion.button
                           key={item.id}
@@ -602,16 +596,14 @@ const Navigation: React.FC<NavigationProps> = memo(({
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3, duration: 0.3 }}
                     >
-                      {isAuthenticated && user?.avatar ? (
+                      {isAuthenticated ? (
                         <img 
-                          src={user.avatar} 
-                          alt={user.name}
+                          src={user?.avatar || '/src/images/akash-matania.JPG'} 
+                          alt={user?.name || 'Profile'}
                           className="w-5 h-5 rounded-full object-cover"
                           onError={(e) => {
                             const target = e.currentTarget as HTMLImageElement;
-                            target.style.display = 'none';
-                            const fallback = target.nextElementSibling as HTMLElement;
-                            if (fallback) fallback.style.display = 'block';
+                            target.src = '/src/images/akash-matania.JPG';
                           }}
                         />
                       ) : (
@@ -642,10 +634,9 @@ const Navigation: React.FC<NavigationProps> = memo(({
             {/* Sidebar Container - Clean icon column only */}
             <div className="flex flex-col items-center space-y-6 w-16 py-8 group">
               {/* Main Navigation Icons */}
-              <div className="flex flex-col items-center space-y-3">
-                {mainNavItems.map((item, index) => {
-                  const isEnterCircles = item.id === 'community';
-                  return (
+                              <div className="flex flex-col items-center space-y-3">
+                  {mainNavItems.map((item, index) => {
+                    return (
                     <div key={item.id} className="relative">
                       <motion.button
                         onClick={() => handleItemClick(item.id)}
@@ -832,16 +823,14 @@ const Navigation: React.FC<NavigationProps> = memo(({
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3, duration: 0.3 }}
                   >
-                    {isAuthenticated && user?.avatar ? (
+                    {isAuthenticated ? (
                       <img 
-                        src={user.avatar} 
-                        alt={user.name}
+                        src={user?.avatar || '/src/images/akash-matania.JPG'} 
+                        alt={user?.name || 'Profile'}
                         className="w-6 h-6 rounded-full object-cover"
                         onError={(e) => {
                           const target = e.currentTarget as HTMLImageElement;
-                          target.style.display = 'none';
-                          const fallback = target.nextElementSibling as HTMLElement;
-                          if (fallback) fallback.style.display = 'block';
+                          target.src = '/src/images/akash-matania.JPG';
                         }}
                       />
                     ) : (

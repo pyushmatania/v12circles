@@ -25,14 +25,14 @@ import { musicAlbums } from '../data/musicAlbums';
 
 // Real friends data from Community component
 const realFriends = [
-  { id: 'alok', name: 'Alok Tripathy', avatar: '/src/images/alok.jpg', online: true },
-  { id: 'ankit', name: 'Ankit Singh', avatar: '/src/images/ankit.jpg', online: true },
-  { id: 'biren', name: 'Biren Dora', avatar: '/src/images/biren.jpg', online: false },
-  { id: 'adya', name: 'Adya Rath', avatar: '/src/images/adya.PNG', online: true },
-  { id: 'soham', name: 'Soham Bardhan', avatar: '/src/images/soham.jpg', online: false },
-  { id: 'praveen', name: 'Praveen Dehury', avatar: '/src/images/praveen.jpg', online: true },
-  { id: 'ipsit', name: 'Ipsit Tripathy', avatar: '/src/images/ipsit.jpg', online: true },
-  { id: 'kamlesh', name: 'Kamlesh Biswal', avatar: '/src/images/kamlesh.jpg', online: true }
+  { id: 'alok', name: 'Alok Tripathy', avatar: '/images/alok.jpg', online: true },
+  { id: 'ankit', name: 'Ankit Singh', avatar: '/images/ankit.jpg', online: true },
+  { id: 'biren', name: 'Biren Dora', avatar: '/images/biren.jpg', online: false },
+  { id: 'adya', name: 'Adya Rath', avatar: '/images/adya.PNG', online: true },
+  { id: 'soham', name: 'Soham Bardhan', avatar: '/images/soham.jpg', online: false },
+  { id: 'praveen', name: 'Praveen Dehury', avatar: '/images/praveen.jpg', online: true },
+  { id: 'ipsit', name: 'Ipsit Tripathy', avatar: '/images/ipsit.jpg', online: true },
+  { id: 'kamlesh', name: 'Kamlesh Biswal', avatar: '/images/kamlesh.jpg', online: true }
 ];
 
 // Real projects from data

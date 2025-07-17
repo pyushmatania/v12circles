@@ -70,7 +70,22 @@ interface Channel {
   category: 'announcements' | 'discussion' | 'creative' | 'fan' | 'behind-scenes';
 }
 
-
+// Add at the top, after imports
+const getLocalAvatar = (name: string) => {
+  const map: Record<string, string> = {
+    'Alok Tripathy': '/src/images/alok.jpg',
+    'Ankit Singh': '/src/images/ankit.jpg',
+    'Biren Dora': '/src/images/biren.jpg',
+    'Adya Rath': '/src/images/adya.JPG',
+    'Soham Bardhan': '/src/images/soham.jpg',
+    'Praveen Dehury': '/src/images/praveen.jpg',
+    'Ipsit Tripathy': '/src/images/ipsit.jpg',
+    'Kamlesh Biswal': '/src/images/kamlesh.jpg',
+    'You': '/src/images/akash-matania.JPG',
+    'Community Bot': '/src/images/circles-logo-main.png',
+  };
+  return map[name] || '/src/images/akash-matania.JPG';
+};
 
 /**
  * 🎯 Enter Circles - The Ultimate Community Experience
@@ -129,7 +144,7 @@ const Community: React.FC = memo(() => {
       { user: 'Alok Tripathy', message: 'Bhai, latest behind-the-scenes footage dekh liya! 🔥 Kya mast hai yaar!', time: '2:30 PM', avatar: '/src/images/alok.jpg' },
       { user: 'Ankit Singh', message: 'Action sequences toh bilkul zabardast hai! VFX team ne kaam kar diya!', time: '2:32 PM', avatar: '/src/images/ankit.jpg' },
       { user: 'Biren Dora', message: '🚨 BREAKING: New trailer kal 12 PM IST pe aa raha hai! 🚨 Sab ready ho jao!', time: '3:15 PM', avatar: '/src/images/biren.jpg' },
-      { user: 'Adya Rath', message: 'Finally! Main toh bas yahi wait kar rahi thi 😭 Ab toh excitement control nahi ho raha!', time: '3:16 PM', avatar: '/src/images/adya.PNG' }
+      { user: 'Adya Rath', message: 'Finally! Main toh bas yahi wait kar rahi thi 😭 Ab toh excitement control nahi ho raha!', time: '3:16 PM', avatar: '/src/images/adya.JPG' }
     ],
     'investor-hall': [
       { user: 'Soham Bardhan', message: 'Q3 numbers are looking exceptionally strong! 📈 The market response has been phenomenal across all segments.', time: '1:45 PM', avatar: '/src/images/soham.jpg' },
@@ -140,7 +155,7 @@ const Community: React.FC = memo(() => {
     'creator-talks': [
       { user: 'Ankit Singh', message: 'Bhai log, low light scenes mein color grading mein problem aa rahi hai kya? 🎨 Koi solution batao!', time: '11:30 AM', avatar: '/src/images/ankit.jpg' },
       { user: 'Biren Dora', message: 'I recommend using a warmer LUT and slightly increasing the shadows. This should provide the perfect balance for low light scenarios.', time: '11:32 AM', avatar: '/src/images/biren.jpg' },
-      { user: 'Adya Rath', message: 'New RED camera footage toh bilkul insane hai! 📹 Quality dekh ke hi pata chalta hai!', time: '12:15 PM', avatar: '/src/images/adya.PNG' },
+      { user: 'Adya Rath', message: 'New RED camera footage toh bilkul insane hai! 📹 Quality dekh ke hi pata chalta hai!', time: '12:15 PM', avatar: '/src/images/adya.JPG' },
               { user: 'Soham Bardhan', message: 'I still prefer film grain over digital noise 🎞️ It provides a more authentic cinematic feel.', time: '12:17 PM', avatar: '/src/images/soham.jpg' }
     ],
     'fan-zone': [
@@ -152,10 +167,10 @@ const Community: React.FC = memo(() => {
       { user: 'Ipsit Tripathy', message: 'Action sequences mein hero ka body transformation dekh ke motivation mil gaya! 💪 Gym jana padega!', time: '11:45 AM', avatar: '/src/images/ipsit.jpg' }
     ],
     polls: [
-      { user: 'Community Bot', message: '📊 POLL: Agle genre mein kya explore karein?\nA) Sci-Fi Thriller 🚀\nB) Romantic Comedy 💕\nC) Historical Drama 🏛️\nD) Horror Mystery 👻\n\nReact karke vote karo!', time: '9:00 AM', avatar: '/src/images/praveen.jpg' },
-      { user: 'Adya Rath', message: 'Definitely Sci-Fi! 🚀 Space mein kuch different karna chahiye!', time: '9:15 AM', avatar: '/src/images/adya.PNG' },
+      { user: 'Community Bot', message: '📊 POLL: Agle genre mein kya explore karein?\nA) Sci-Fi Thriller 🚀\nB) Romantic Comedy 💕\nC) Historical Drama 🏛️\nD) Horror Mystery 👻\n\nReact karke vote karo!', time: '9:00 AM', avatar: '/src/images/circles-logo-main.png' },
+      { user: 'Adya Rath', message: 'Definitely Sci-Fi! 🚀 Space mein kuch different karna chahiye!', time: '9:15 AM', avatar: '/src/images/adya.JPG' },
       { user: 'Soham Bardhan', message: 'Horror Mystery sounds quite intriguing 👻 The suspense element would be excellent.', time: '9:20 AM', avatar: '/src/images/soham.jpg' },
-      { user: 'Community Bot', message: '📊 POLL RESULTS: Best Movie Snack?\n🍿 Popcorn - 67%\n🍫 Chocolate - 18%\n🥤 Soda - 10%\n🍕 Pizza - 5%\n\nPopcorn jeet gaya! 🎉', time: '2:00 PM', avatar: '/src/images/praveen.jpg' },
+      { user: 'Community Bot', message: '📊 POLL RESULTS: Best Movie Snack?\n🍿 Popcorn - 67%\n🍫 Chocolate - 18%\n🥤 Soda - 10%\n🍕 Pizza - 5%\n\nPopcorn jeet gaya! 🎉', time: '2:00 PM', avatar: '/src/images/circles-logo-main.png' },
       { user: 'Praveen Dehury', message: 'Pizza gang is absolutely devastated 😂🍕 Popcorn supremacy reigns supreme!', time: '2:05 PM', avatar: '/src/images/praveen.jpg' }
     ],
     'behind-scenes': [
@@ -163,7 +178,7 @@ const Community: React.FC = memo(() => {
       { user: 'Alok Tripathy', message: 'Makeup team abhi magic kar rahi hai ✨💄 Transformation dekh ke hi pata chalta hai!', time: '5:30 AM', avatar: '/src/images/alok.jpg' },
               { user: 'Ankit Singh', message: 'Stunt sequence perfect ho gaya! 🎬🔥 Kya coordination thi!', time: '6:45 AM', avatar: '/src/images/ankit.jpg' },
       { user: 'Biren Dora', message: 'The catering truck has arrived! 🚚🍕 This should provide much-needed energy for the crew.', time: '7:00 AM', avatar: '/src/images/biren.jpg' },
-      { user: 'Adya Rath', message: 'Golden hour shots bilkul incredible lag rahe hain 🌅 Natural lighting best hai!', time: '7:15 AM', avatar: '/src/images/adya.PNG' },
+      { user: 'Adya Rath', message: 'Golden hour shots bilkul incredible lag rahe hain 🌅 Natural lighting best hai!', time: '7:15 AM', avatar: '/src/images/adya.JPG' },
       { user: 'Ipsit Tripathy', message: 'Stunt doubles ko proper warm-up karwana chahiye! 💪 Flexibility aur strength dono important hai!', time: '7:30 AM', avatar: '/src/images/ipsit.jpg' }
     ]
   });
@@ -173,7 +188,7 @@ const Community: React.FC = memo(() => {
     { id: 'alok', name: 'Alok Tripathy', avatar: '/src/images/alok.jpg', online: true },
     { id: 'ankit', name: 'Ankit Singh', avatar: '/src/images/ankit.jpg', online: true },
     { id: 'biren', name: 'Biren Dora', avatar: '/src/images/biren.jpg', online: false },
-    { id: 'adya', name: 'Adya Rath', avatar: '/src/images/adya.PNG', online: true },
+    { id: 'adya', name: 'Adya Rath', avatar: '/src/images/adya.JPG', online: true },
     { id: 'soham', name: 'Soham Bardhan', avatar: '/src/images/soham.jpg', online: false },
     { id: 'praveen', name: 'Praveen Dehury', avatar: '/src/images/praveen.jpg', online: true },
     { id: 'ipsit', name: 'Ipsit Tripathy', avatar: '/src/images/ipsit.jpg', online: true },
@@ -189,6 +204,12 @@ const Community: React.FC = memo(() => {
   const [selectedPostForEmoji, setSelectedPostForEmoji] = useState<string | null>(null);
   const [userReactions, setUserReactions] = useState<Record<string, string[]>>({});
   const [showChannelInfo, setShowChannelInfo] = useState(false);
+  
+  // Swipe functionality state
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isSwiping, setIsSwiping] = useState(false);
+  
   const [friendChats, setFriendChats] = useState<Record<string, {user:string; message:string; time:string; avatar?:string}[]>>({
     alok: [
       { user: 'Alok Tripathy', message: 'Bhai, new Marvel trailer dekha kya?! 🤯 Kya mast hai yaar!', time: '10:30 AM', avatar: '/src/images/alok.jpg' },
@@ -198,14 +219,14 @@ const Community: React.FC = memo(() => {
       { user: 'Alok Tripathy', message: 'Bilkul bhai! Tickets book kar deta hun 🎬 First day first show!', time: '10:36 AM', avatar: '/src/images/alok.jpg' },
       { user: 'You', message: 'Perfect! Popcorn aur excitement dono ready rahenge 🎫', time: '10:37 AM', avatar: '/src/images/akash-matania.JPG' }
     ],
-    ankit: [
-      { user: 'Ankit Singh', message: 'Yaar, new camera setup dekh liya?! 📸 Bilkul professional level ka hai!', time: '2:15 PM', avatar: '/src/images/ankit.jpg' },
-      { user: 'You', message: 'Dikha dikha! 👀 Kya mast equipment hai!', time: '2:16 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Ankit Singh', message: 'DM mein pics bhej deta hun 📱 Quality dekh ke hi pata chalega!', time: '2:17 PM', avatar: '/src/images/ankit.jpg' },
-      { user: 'You', message: 'Bhai, yeh toh Hollywood level ka setup hai! 🔥 Kya investment hai!', time: '2:20 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Ankit Singh', message: 'Haan na! Ab YouTube channel start karna padega 📹 Content toh ready hai!', time: '2:21 PM', avatar: '/src/images/ankit.jpg' },
-      { user: 'You', message: 'Main toh subscribe kar raha hun! 😂 Success guaranteed hai!', time: '2:22 PM', avatar: '/src/images/akash-matania.JPG' }
-    ],
+          ankit: [
+        { user: 'Ankit Singh', message: 'Yaar, new camera setup dekh liya?! 📸 Bilkul professional level ka hai!', time: '2:15 PM', avatar: '/src/images/ankit.jpg' },
+        { user: 'You', message: 'Dikha dikha! 👀 Kya mast equipment hai!', time: '2:16 PM', avatar: '/src/images/akash-matania.JPG' },
+        { user: 'Ankit Singh', message: 'DM mein pics bhej deta hun 📱 Quality dekh ke hi pata chalega!', time: '2:17 PM', avatar: '/src/images/ankit.jpg' },
+        { user: 'You', message: 'Bhai, yeh toh Hollywood level ka setup hai! 🔥 Kya investment hai!', time: '2:20 PM', avatar: '/src/images/akash-matania.JPG' },
+        { user: 'Ankit Singh', message: 'Haan na! Ab YouTube channel start karna padega 📹 Content toh ready hai!', time: '2:21 PM', avatar: '/src/images/ankit.jpg' },
+        { user: 'You', message: 'Main toh subscribe kar raha hun! 😂 Success guaranteed hai!', time: '2:22 PM', avatar: '/src/images/akash-matania.JPG' }
+      ],
     biren: [
       { user: 'Biren Dora', message: 'Hello! It\'s been quite a while since we last spoke 👋 How have you been?', time: '9:45 AM', avatar: '/src/images/biren.jpg' },
       { user: 'You', message: 'Biren! New job kaisa chal raha hai? Sab badhiya?', time: '9:50 AM', avatar: '/src/images/akash-matania.JPG' },
@@ -214,93 +235,91 @@ const Community: React.FC = memo(() => {
       { user: 'Biren Dora', message: 'Absolutely! How about this weekend? We can discuss everything in detail.', time: '9:56 AM', avatar: '/src/images/biren.jpg' }
     ],
     adya: [
-      { user: 'Adya Rath', message: 'GIRL! Show mein kya hua tha, dekh liya kya?! 😱 Kya drama tha!', time: '8:30 PM', avatar: '/src/images/adya.PNG' },
+      { user: 'Adya Rath', message: 'GIRL! Show mein kya hua tha, dekh liya kya?! 😱 Kya drama tha!', time: '8:30 PM', avatar: '/src/images/adya.JPG' },
       { user: 'You', message: 'NOOO! Spoiler mat de! Main episode 3 pe hun 😭', time: '8:32 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Adya Rath', message: 'Oops sorry! But OMG, tum toh ride pe ho! 🎢 Kya twist hai!', time: '8:33 PM', avatar: '/src/images/adya.PNG' },
+              { user: 'Adya Rath', message: 'Oops sorry! But OMG, tum toh ride pe ho! 🎢 Kya twist hai!', time: '8:33 PM', avatar: '/src/images/adya.JPG' },
       { user: 'You', message: 'Ab toh scared aur excited dono ho gaya hun 😅', time: '8:35 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Adya Rath', message: 'Trust me, aaj raat ke liye schedule clear kar lo 📺 Worth it hai!', time: '8:36 PM', avatar: '/src/images/adya.PNG' }
+              { user: 'Adya Rath', message: 'Trust me, aaj raat ke liye schedule clear kar lo 📺 Worth it hai!', time: '8:36 PM', avatar: '/src/images/adya.JPG' }
     ],
     soham: [
       { user: 'Soham Bardhan', message: 'Remember that stunt sequence from yesterday? 🤸‍♂️ The one where we almost fell off the building?', time: '6:00 PM', avatar: '/src/images/soham.jpg' },
-      { user: 'You', message: 'Kaise bhool sakta hun! Mummy abhi bhi gusse mein hai 😅', time: '6:02 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Soham Bardhan', message: 'It was calculated! Well, mostly... 😅 Sometimes you have to take risks for the perfect shot.', time: '6:03 PM', avatar: '/src/images/soham.jpg' },
-      { user: 'You', message: 'Calculated my foot! 😂 Tu toh pagal hai!', time: '6:05 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Soham Bardhan', message: 'What they don\'t know won\'t hurt them 🤫 Your mother doesn\'t need to know everything.', time: '6:06 PM', avatar: '/src/images/soham.jpg' }
+              { user: 'You', message: 'Kaise bhool sakta hun! Mummy abhi bhi gusse mein hai 😅', time: '6:02 PM', avatar: '/src/images/akash-matania.JPG' },
+              { user: 'Soham Bardhan', message: 'It was calculated! Well, mostly... 😅 Sometimes you have to take risks for the perfect shot.', time: '6:03 PM', avatar: '/src/images/soham.jpg' },
+        { user: 'You', message: 'Calculated my foot! 😂 Tu toh pagal hai!', time: '6:05 PM', avatar: '/src/images/akash-matania.JPG' },
+        { user: 'Soham Bardhan', message: 'What they don\'t know won\'t hurt them 🤫 Your mother doesn\'t need to know everything.', time: '6:06 PM', avatar: '/src/images/soham.jpg' }
     ],
-    praveen: [
-      { user: 'Praveen Dehury', message: 'Hey! New job opportunity mil gaya! 🎉 Tech startup mein senior developer position!', time: '7:15 PM', avatar: '/src/images/praveen.jpg' },
-      { user: 'You', message: 'Wow! That\'s amazing! 🚀 Kya package offer kiya?', time: '7:17 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Praveen Dehury', message: 'Salary toh bilkul zabardast hai! 💰 But work-life balance ka tension hai 😅', time: '7:18 PM', avatar: '/src/images/praveen.jpg' },
-      { user: 'You', message: 'Startup hai na, toh thoda hectic toh hoga hi! But experience worth it hoga! 💪', time: '7:20 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Praveen Dehury', message: 'Haan yaar! Risk lene ka time hai! 🎯 Kal interview hai, wish me luck!', time: '7:21 PM', avatar: '/src/images/praveen.jpg' }
-    ],
+          praveen: [
+        { user: 'Praveen Dehury', message: 'Portfolio returns dekh ke toh khushi ka thikana nahi raha! 🚀', time: '7:00 AM', avatar: '/src/images/praveen.jpg' },
+        { user: 'You', message: 'Bhai, ab toh treat banta hai! 🥳', time: '7:02 AM', avatar: '/src/images/akash-matania.JPG' },
+        { user: 'Praveen Dehury', message: 'Jaldi milte hain! Coffee on me ☕', time: '7:03 AM', avatar: '/src/images/praveen.jpg' }
+      ],
     ipsit: [
-      { user: 'Ipsit Tripathy', message: 'Bhai! Gym mein new PR banaya! 💪 Deadlift 200kg touch kar liya! Feeling absolutely pumped!', time: '6:30 AM', avatar: '/src/images/ipsit.jpg' },
-      { user: 'You', message: 'Wah bhai! Kya beast ban gaya hai! 🔥 Protein shake zaroor piya hoga!', time: '6:32 AM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Ipsit Tripathy', message: 'Haan yaar! Whey protein + banana smoothie! 🥛🍌 Abhi bhi energy level peak pe hai!', time: '6:33 AM', avatar: '/src/images/ipsit.jpg' },
-      { user: 'You', message: 'Mujhe bhi gym join karna chahiye! Motivation de do! 💪', time: '6:35 AM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Ipsit Tripathy', message: 'Bilkul bhai! Kal saath chalenge! 🏋️‍♂️ Chest day hai! Bench press karenge!', time: '6:36 AM', avatar: '/src/images/ipsit.jpg' },
-      { user: 'You', message: 'Deal! But pehle proper form sikhana padega! 😅', time: '6:38 AM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Ipsit Tripathy', message: 'No worries! Main proper trainer hun! 🎯 Form over weight, always! Safety first!', time: '6:40 AM', avatar: '/src/images/ipsit.jpg' }
+              { user: 'Ipsit Tripathy', message: 'Bhai! Gym mein new PR banaya! 💪 Deadlift 200kg touch kar liya! Feeling absolutely pumped!', time: '6:30 AM', avatar: '/src/images/ipsit.jpg' },
+              { user: 'You', message: 'Wah bhai! Kya beast ban gaya hai! 🔥 Protein shake zaroor piya hoga!', time: '6:32 AM', avatar: '/src/images/akash-matania.JPG' },
+              { user: 'Ipsit Tripathy', message: 'Haan yaar! Whey protein + banana smoothie! 🥛🍌 Abhi bhi energy level peak pe hai!', time: '6:33 AM', avatar: '/src/images/ipsit.jpg' },
+        { user: 'You', message: 'Mujhe bhi gym join karna chahiye! Motivation de do! 💪', time: '6:35 AM', avatar: '/src/images/akash-matania.JPG' },
+        { user: 'Ipsit Tripathy', message: 'Bilkul bhai! Kal saath chalenge! 🏋️‍♂️ Chest day hai! Bench press karenge!', time: '6:36 AM', avatar: '/src/images/ipsit.jpg' },
+        { user: 'You', message: 'Deal! But pehle proper form sikhana padega! 😅', time: '6:38 AM', avatar: '/src/images/akash-matania.JPG' },
+        { user: 'Ipsit Tripathy', message: 'No worries! Main proper trainer hun! 🎯 Form over weight, always! Safety first!', time: '6:40 AM', avatar: '/src/images/ipsit.jpg' }
     ],
-    kamlesh: [
-      { user: 'Kamlesh Biswal', message: 'Bhai! New project mil gaya! 🎬 Production house ne contact kiya hai!', time: '5:30 PM', avatar: '/src/images/kamlesh.jpg' },
-      { user: 'You', message: 'Wah! Kya project hai? Details bata! 🎉', time: '5:32 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Kamlesh Biswal', message: 'Web series hai! 10 episodes! Budget bhi decent hai! 💰', time: '5:33 PM', avatar: '/src/images/kamlesh.jpg' },
-      { user: 'You', message: 'Congratulations! 🎊 Party toh banti hai!', time: '5:35 PM', avatar: '/src/images/akash-matania.JPG' },
-      { user: 'Kamlesh Biswal', message: 'Bilkul! Weekend pe sab milenge! 🍕 Pizza aur success celebration!', time: '5:36 PM', avatar: '/src/images/kamlesh.jpg' }
-    ]
+          kamlesh: [
+        { user: 'Kamlesh Biswal', message: 'Bhai! New project mil gaya! 🎬 Production house ne contact kiya hai!', time: '5:30 PM', avatar: '/src/images/kamlesh.jpg' },
+        { user: 'You', message: 'Wah! Kya project hai? Details bata! 🎉', time: '5:32 PM', avatar: '/src/images/akash-matania.JPG' },
+        { user: 'Kamlesh Biswal', message: 'Web series hai! 10 episodes! Budget bhi decent hai! 💰', time: '5:33 PM', avatar: '/src/images/kamlesh.jpg' },
+        { user: 'You', message: 'Congratulations! 🎊 Party toh banti hai!', time: '5:35 PM', avatar: '/src/images/akash-matania.JPG' },
+        { user: 'Kamlesh Biswal', message: 'Bilkul! Weekend pe sab milenge! 🍕 Pizza aur success celebration!', time: '5:36 PM', avatar: '/src/images/kamlesh.jpg' }
+      ]
   });
   
   // Enhanced mock feed data with 15+ funny and realistic posts
   const [feedPosts, setFeedPosts] = useState<FeedPost[]>([
-    {
-      id: '1',
-      user: {
-        name: 'Alok Tripathy',
-        avatar: '/src/images/alok.jpg',
-        verified: true,
-        role: 'Investor'
-      },
+          {
+        id: '1',
+        user: {
+          name: 'Alok Tripathy',
+          avatar: '/src/images/alok.jpg',
+          verified: true,
+          role: 'Investor'
+        },
       timestamp: '2 hours ago',
       content: 'Latest trailer dekh liya! Cinematography toh bilkul stunning hai! Release ka wait nahi ho raha! 🎬✨',
       reactions: [{ emoji: '❤️', count: 24 }, { emoji: '🔥', count: 12 }],
       comments: 8,
       shares: 3
     },
-    {
-      id: '2',
-      user: {
-        name: 'Ankit Singh',
-        avatar: '/src/images/ankit.jpg',
-        verified: false,
-        role: 'Fan'
-      },
+          {
+        id: '2',
+        user: {
+          name: 'Ankit Singh',
+          avatar: '/src/images/ankit.jpg',
+          verified: false,
+          role: 'Fan'
+        },
       timestamp: '4 hours ago',
       content: 'Behind-the-scenes footage dekh ke pata chalta hai kitna effort lagta hai movies banane mein! Respect to entire team! 👏',
       reactions: [{ emoji: '👏', count: 18 }, { emoji: '💯', count: 7 }],
       comments: 5,
       shares: 2
     },
-    {
-      id: '3',
-      user: {
-        name: 'Biren Dora',
-        avatar: '/src/images/biren.jpg',
-        verified: true,
-        role: 'Director'
-      },
+          {
+        id: '3',
+        user: {
+          name: 'Biren Dora',
+          avatar: '/src/images/biren.jpg',
+          verified: true,
+          role: 'Director'
+        },
       timestamp: '6 hours ago',
       content: 'CGI budget meri pure life savings se zyada hai, phir bhi dragon 2005 ka lag raha hai 😂🐉 Kya ho gaya hai!',
       reactions: [{ emoji: '😂', count: 156 }, { emoji: '💀', count: 89 }, { emoji: '🐉', count: 23 }],
       comments: 42,
       shares: 18
     },
-    {
-      id: '4',
-      user: {
+          {
+        id: '4',
+              user: {
         name: 'Adya Rath',
-        avatar: '/src/images/adya.PNG',
+        avatar: '/src/images/adya.JPG',
         verified: false,
         role: 'Film Critic'
       },
@@ -310,28 +329,28 @@ const Community: React.FC = memo(() => {
       comments: 78,
       shares: 34
     },
-    {
-      id: '5',
-      user: {
-        name: 'Soham Bardhan',
-        avatar: '/src/images/soham.jpg',
-        verified: true,
-        role: 'Actor'
-      },
+          {
+        id: '5',
+        user: {
+          name: 'Soham Bardhan',
+          avatar: '/src/images/soham.jpg',
+          verified: true,
+          role: 'Actor'
+        },
       timestamp: '10 hours ago',
       content: 'POV: Trying to explain the Marvel multiverse to your parents 🕷️🦸‍♂️\nThem: "So there are multiple Spider-Mans?"\nMe: "It\'s quite complicated..." 😅',
       reactions: [{ emoji: '😅', count: 189 }, { emoji: '🕷️', count: 134 }, { emoji: '🤯', count: 56 }],
       comments: 91,
       shares: 27
     },
-    {
-      id: '6',
-      user: {
-        name: 'Praveen Dehury',
-        avatar: '/src/images/praveen.jpg',
-        verified: false,
-        role: 'Screenwriter'
-      },
+          {
+        id: '6',
+        user: {
+          name: 'Praveen Dehury',
+          avatar: '/src/images/praveen.jpg',
+          verified: false,
+          role: 'Screenwriter'
+        },
       timestamp: '12 hours ago',
       content: 'That moment when you realize the movie\'s plot twist was spoiled in the trailer 🤦‍♀️ Marketing team, we need to have a serious discussion!',
       reactions: [{ emoji: '🤦‍♀️', count: 298 }, { emoji: '😤', count: 87 }, { emoji: '🎬', count: 45 }],
@@ -398,7 +417,7 @@ const Community: React.FC = memo(() => {
       id: '11',
       user: {
         name: 'Adya Rath',
-        avatar: '/src/images/adya.PNG',
+        avatar: '/src/images/adya.JPG',
         verified: true,
         role: 'Costume Designer'
       },
@@ -436,14 +455,14 @@ const Community: React.FC = memo(() => {
       comments: 89,
       shares: 45
     },
-    {
-      id: '14',
-      user: {
-        name: 'Kamlesh Biswal',
-        avatar: '/src/images/kamlesh.jpg',
-        verified: false,
-        role: 'Location Manager'
-      },
+          {
+        id: '14',
+        user: {
+          name: 'Kamlesh Biswal',
+          avatar: '/src/images/kamlesh.jpg',
+          verified: false,
+          role: 'Location Manager'
+        },
       timestamp: '28 hours ago',
       content: 'Shooting location final ho gaya! Beach scene ke liye perfect spot mil gaya! 🏖️🌊 Permission bhi mil gayi!',
       reactions: [{ emoji: '🏖️', count: 156 }, { emoji: '🌊', count: 89 }, { emoji: '📸', count: 45 }],
@@ -689,6 +708,36 @@ const Community: React.FC = memo(() => {
   const toggleEmojiPicker = (postId: string) => {
     setSelectedPostForEmoji(selectedPostForEmoji === postId ? null : postId);
     setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  // Swipe functionality handlers
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsSwiping(false);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+    if (touchStart && Math.abs(e.targetTouches[0].clientX - touchStart) > 10) {
+      setIsSwiping(true);
+    }
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    } else if (isRightSwipe && currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+    
+    setIsSwiping(false);
   };
 
   const channels = [
@@ -1036,13 +1085,13 @@ const Community: React.FC = memo(() => {
             </div>
                         {/* Carousel-style Arrow Navigation + Data Grid Wrapper */}
             <div className="relative">
-              {/* Left Arrow */}
+              {/* Left Arrow - Hidden on mobile */}
               <motion.button
                 onClick={() => setCurrentPage((p) => p === 0 ? totalPages - 1 : p - 1)}
                 disabled={totalPages === 1}
                 whileHover={{ scale: 1.1, x: -5 }}
                 whileTap={{ scale: 0.9 }}
-                className={`absolute -left-6 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-sm border transition-all duration-300 shadow-lg ${
+                className={`hidden md:block absolute -left-6 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-sm border transition-all duration-300 shadow-lg ${
                   totalPages === 1
                     ? 'opacity-50 cursor-not-allowed bg-gray-200/50 dark:bg-gray-700/50 border-gray-300/50 dark:border-gray-600/50'
                     : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 border-purple-300/30 dark:border-purple-600/30 hover:shadow-xl hover:shadow-purple-500/25'
@@ -1067,13 +1116,13 @@ const Community: React.FC = memo(() => {
                 )}
               </motion.button>
 
-              {/* Right Arrow */}
+              {/* Right Arrow - Hidden on mobile */}
               <motion.button
                 onClick={() => setCurrentPage((p) => p === totalPages - 1 ? 0 : p + 1)}
                 disabled={totalPages === 1}
                 whileHover={{ scale: 1.1, x: 5 }}
                 whileTap={{ scale: 0.9 }}
-                className={`absolute -right-6 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-sm border transition-all duration-300 shadow-lg ${
+                className={`hidden md:block absolute -right-6 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-sm border transition-all duration-300 shadow-lg ${
                   totalPages === 1
                     ? 'opacity-50 cursor-not-allowed bg-gray-200/50 dark:bg-gray-700/50 border-gray-300/50 dark:border-gray-600/50'
                     : 'bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 border-pink-300/30 dark:border-pink-600/30 hover:shadow-xl hover:shadow-pink-500/25'
@@ -1106,17 +1155,39 @@ const Community: React.FC = memo(() => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 min-h-[400px]"
+                  className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 min-h-[400px] ${isSwiping ? 'select-none' : ''}`}
+                  onTouchStart={onTouchStart}
+                  onTouchMove={onTouchMove}
+                  onTouchEnd={onTouchEnd}
+                  style={{
+                    transform: isSwiping ? 'scale(0.98)' : 'scale(1)',
+                    transition: 'transform 0.1s ease-out'
+                  }}
                 >
                   {/* Loading state - only show if no items available */}
                   {selectedCategory === 'musicArtist' && isLoadingSpotifyArtists && paginatedItems.length === 0 && (
                     Array.from({ length: 10 }).map((_, _index) => (
-                                              <div key={`loading-${_index}`} className="flex flex-col items-center gap-3">
+                      <div key={`loading-${_index}`} className="flex flex-col items-center justify-center gap-3 min-h-[200px] md:min-h-[300px]">
                         <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 animate-pulse" />
                         <div className="w-20 h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
                         <div className="w-16 h-3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
                       </div>
                     ))
+                  )}
+
+                  {/* General loading state for empty categories */}
+                  {paginatedItems.length === 0 && !isLoadingSpotifyArtists && (
+                    <div className="col-span-full flex flex-col items-center justify-center gap-4 min-h-[300px] md:min-h-[400px]">
+                      <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                      <div className="text-center">
+                        <p className={`text-lg font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                          Loading {selectedCategory}...
+                        </p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                          Please wait while we fetch the data
+                        </p>
+                      </div>
+                    </div>
                   )}
                   
 
@@ -1148,7 +1219,7 @@ const Community: React.FC = memo(() => {
                 theme === 'light'
                               ? 'bg-white shadow-lg hover:shadow-xl border border-red-200 hover:border-rose-400'
                               : 'bg-slate-800 shadow-lg hover:shadow-xl border border-red-700 hover:border-rose-500'
-                          } ${selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') ? 'cursor-pointer hover:scale-105' : ''}`}
+                          } ${selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') ? 'cursor-pointer hover:scale-105' : ''} ${isMobile ? 'touch-manipulation' : ''}`}
                         >
                           {/* Instagram-style gradient border for active users */}
                           {item.isActive && (
@@ -1163,7 +1234,7 @@ const Community: React.FC = memo(() => {
                           
                           {/* Background Image */}
                           <OptimizedImage 
-                            src={item.avatar}
+                            src={item.avatar || '/src/images/circles-logo-main.png'}
                             alt={item.name}
                             width={120}
                             height={120}
@@ -1258,11 +1329,21 @@ const Community: React.FC = memo(() => {
                   })}
         </motion.div>
               </AnimatePresence>
-              {/* Subtle Page Counter */}
-              <div className="w-full flex justify-center mt-2">
+              {/* Page Counter with Mobile Swipe Indicator */}
+              <div className="w-full flex flex-col items-center mt-2 gap-1">
                 <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
                   {currentPage + 1} / {totalPages}
                 </span>
+                {isMobile && totalPages > 1 && (
+                  <div className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
+                    <span>Swipe to navigate</span>
+                    <div className="flex gap-1">
+                      <div className="w-1 h-1 bg-gray-400 dark:bg-gray-500 rounded-full animate-pulse" />
+                      <div className="w-1 h-1 bg-gray-400 dark:bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
+                      <div className="w-1 h-1 bg-gray-400 dark:bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }} />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1286,7 +1367,7 @@ const Community: React.FC = memo(() => {
             {/* Cover Image with Parallax Effect */}
             <div className="relative h-64 overflow-hidden">
               <OptimizedImage 
-                src={selectedItem.cover || selectedItem.avatar}
+                src={selectedItem.cover || selectedItem.avatar || '/src/images/circles-logo-main.png'}
                 alt={selectedItem.name}
                 width={400}
                 height={256}
@@ -1331,7 +1412,7 @@ const Community: React.FC = memo(() => {
                 >
                       <div className="relative">
                     <OptimizedImage 
-                      src={selectedItem.avatar}
+                      src={selectedItem.avatar || '/src/images/circles-logo-main.png'}
                       alt={selectedItem.name}
                       width={80}
                       height={80}
@@ -1561,7 +1642,7 @@ const Community: React.FC = memo(() => {
               }`}>
                 <div className="flex items-center gap-4 mb-4">
                   <img 
-                    src="/src/images/akash-matania.JPG"
+                    src={getLocalAvatar('You')}
                     alt="Your avatar"
                     className="w-12 h-12 rounded-full object-cover border-2 border-blue-500/30"
                   />
@@ -1638,7 +1719,7 @@ const Community: React.FC = memo(() => {
                           id: Date.now().toString(),
                           user: {
                             name: 'You',
-                            avatar: '/src/images/akash-matania.JPG',
+                            avatar: getLocalAvatar('You'),
                             verified: false,
                             role: 'Investor'
                           },
@@ -1683,7 +1764,7 @@ const Community: React.FC = memo(() => {
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
                         <img 
-                          src={post.user.avatar}
+                          src={post.user.avatar || getLocalAvatar(post.user.name)}
                           alt={post.user.name}
                           className="w-12 h-12 rounded-full object-cover border-2 border-blue-500/30"
                         />
@@ -1891,7 +1972,7 @@ const Community: React.FC = memo(() => {
                     {(messages[selectedChannel] || []).map((msg, index) => (
                       <div key={index} className="flex gap-3">
                         <img
-                          src={msg.avatar}
+                          src={msg.avatar || getLocalAvatar(msg.user)}
                           alt={msg.user}
                           className="w-10 h-10 rounded-full object-cover"
                         />
@@ -2016,7 +2097,15 @@ const Community: React.FC = memo(() => {
                       }`}
                     >
                       <div className="relative">
-                        <img src={friend.avatar} alt={friend.name} className="w-8 h-8 rounded-full object-cover" />
+                        <img 
+                  src={friend.avatar || getLocalAvatar(friend.name || '')} 
+                  alt={friend.name} 
+                  className="w-8 h-8 rounded-full object-cover"
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    target.src = getLocalAvatar(friend.name || '');
+                  }}
+                />
                         {friend.online && (
                           <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white" />
                         )}
@@ -2066,7 +2155,15 @@ const Community: React.FC = memo(() => {
                           selectedFriend === friend.id ? 'ring-2 ring-blue-500' : ''
                         }`}
                       >
-                        <img src={friend.avatar} alt={friend.name} className="w-full h-full object-cover" />
+                        <img 
+                  src={friend.avatar || getLocalAvatar(friend.name || '')} 
+                  alt={friend.name} 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    target.src = getLocalAvatar(friend.name || '');
+                  }}
+                />
                         {previewFriend === friend.id && (
                           <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs px-2 py-1 rounded bg-black text-white whitespace-nowrap">
                             {friend.name}
@@ -2085,7 +2182,7 @@ const Community: React.FC = memo(() => {
                   <div className="flex items-center gap-3">
                     <div className="relative">
                       <img 
-                        src={friendsList.find(f => f.id === selectedFriend)?.avatar} 
+                        src={friendsList.find(f => f.id === selectedFriend)?.avatar || getLocalAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '')} 
                         alt={friendsList.find(f => f.id === selectedFriend)?.name}
                         className="w-10 h-10 rounded-full object-cover" 
                       />
@@ -2134,7 +2231,15 @@ const Community: React.FC = memo(() => {
                   >
                     {(friendChats[selectedFriend] || []).map((msg, index) => (
                       <div key={index} className="flex gap-3">
-                        <img src={msg.avatar} alt={msg.user} className="w-10 h-10 rounded-full object-cover" />
+                        <img 
+                  src={msg.avatar || getLocalAvatar(msg.user || '')} 
+                  alt={msg.user} 
+                  className="w-10 h-10 rounded-full object-cover"
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    target.src = getLocalAvatar(msg.user || '');
+                  }}
+                />
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <span className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{msg.user}</span>
@@ -2146,7 +2251,14 @@ const Community: React.FC = memo(() => {
                     ))}
                     {friendTyping && (
                       <div className="flex gap-3">
-                        <img src={friendsList.find(f => f.id === selectedFriend)?.avatar} className="w-10 h-10 rounded-full object-cover" />
+                        <img 
+                  src={friendsList.find(f => f.id === selectedFriend)?.avatar || getLocalAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '')} 
+                  className="w-10 h-10 rounded-full object-cover"
+                  onError={(e) => {
+                    const target = e.currentTarget as HTMLImageElement;
+                    target.src = getLocalAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '');
+                  }}
+                />
                         <div className="flex items-center text-sm italic text-gray-500">Typing...</div>
                       </div>
                     )}
@@ -2219,9 +2331,9 @@ const Community: React.FC = memo(() => {
               <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
                 {[
                   // People - Real images
-                  { url: '/src/images/praveen.jpg', height: 'h-64', category: 'People' },
-                  { url: '/src/images/ankit.jpg', height: 'h-80', category: 'People' },
-                  { url: '/src/images/soham.jpg', height: 'h-72', category: 'People' },
+                  { url: '/images/praveen.jpg', height: 'h-64', category: 'People' },
+                  { url: '/images/ankit.jpg', height: 'h-80', category: 'People' },
+                  { url: '/images/soham.jpg', height: 'h-72', category: 'People' },
                   
                   // Pets
                   { url: 'https://images.pexels.com/photos/1904105/pexels-photo-1904105.jpeg?auto=compress&cs=tinysrgb&w=800', height: 'h-96', category: 'Pets' },
@@ -2234,9 +2346,9 @@ const Community: React.FC = memo(() => {
                   { url: 'https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=800', height: 'h-72', category: 'Nature' },
                   
                   // More People - Real images
-                  { url: '/src/images/kamlesh.jpg', height: 'h-96', category: 'People' },
-                  { url: '/src/images/alok.jpg', height: 'h-56', category: 'People' },
-                  { url: '/src/images/biren.jpg', height: 'h-88', category: 'People' },
+                  { url: '/images/kamlesh.jpg', height: 'h-96', category: 'People' },
+                  { url: '/images/alok.jpg', height: 'h-56', category: 'People' },
+                  { url: '/images/biren.jpg', height: 'h-88', category: 'People' },
                   
                   // More Pets
                   { url: 'https://images.pexels.com/photos/1904105/pexels-photo-1904105.jpeg?auto=compress&cs=tinysrgb&w=800', height: 'h-64', category: 'Pets' },

@@ -58,7 +58,7 @@ const Testimonials: React.FC = () => {
     } relative overflow-hidden`}>
 
       {/* Custom Cubes Animation Background */}
-      <div ref={containerRef} className="absolute inset-0 z-0 overflow-hidden">
+      <div ref={containerRef} className="absolute inset-0 z-0 overflow-hidden hidden md:block">
         <div className="absolute inset-0 w-full h-full">
           <div className="relative w-full h-full">
             {/* Grid of animated cubes covering entire section */}

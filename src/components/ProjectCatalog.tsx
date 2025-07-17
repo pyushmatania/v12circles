@@ -691,7 +691,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
 
             {/* Subtle dark overlay over entire mobile poster */}
             <div className="absolute inset-0 bg-black/30" />
-            <div className="absolute bottom-12 left-0 w-full p-3 text-center flex flex-col items-center">
+            <div className="absolute bottom-16 left-0 w-full p-3 text-center flex flex-col items-center">
               <div>
                 <h3 className="!text-white text-base font-bold drop-shadow-2xl">
                   {ultimateFallback[wrappedSlide]?.title}
@@ -701,17 +701,49 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 </span>
               </div>
             </div>
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-              {ultimateFallback.map((_, index) => (
-                <button
-                  key={`md-${index}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSlideChange(index);
-                  }}
-                  className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${index === currentSlide ? 'bg-white' : 'bg-white/40'}`}
-                />
-              ))}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
+              {/* Dots Row */}
+              <div className="flex gap-2">
+                {(() => {
+                  const totalProjects = ultimateFallback.length;
+                  const dotsPerBatch = 6;
+                  const currentBatch = Math.floor(currentSlide / dotsPerBatch);
+                  const startIndex = currentBatch * dotsPerBatch;
+                  return Array.from({ length: Math.min(dotsPerBatch, totalProjects) }, (_, i) => {
+                    const projectIndex = startIndex + i;
+                    const isActive = projectIndex === currentSlide;
+                    return (
+                      <button
+                        key={`md-${projectIndex}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSlideChange(projectIndex);
+                        }}
+                        className={`w-2.5 h-2.5 rounded-full transition-colors duration-300 ${isActive ? 'bg-white' : 'bg-white/40'}`}
+                      />
+                    );
+                  });
+                })()}
+              </div>
+              
+              {/* Slider */}
+              <ElasticSlider
+                startingValue={0}
+                defaultValue={Math.floor(currentSlide / 6)}
+                maxValue={Math.ceil(ultimateFallback.length / 6) - 1}
+                isStepped
+                stepSize={1}
+                className="w-16"
+                onValueChange={(value) => {
+                  const targetSlide = Math.floor(value) * 6;
+                  handleSlideChange(Math.min(targetSlide, ultimateFallback.length - 1));
+                }}
+              />
+              
+              {/* Batch Counter */}
+              <span className="text-white/80 text-xs font-mono">
+                {String.fromCharCode(65 + Math.floor(currentSlide / 6))}
+              </span>
             </div>
           </div>
         ) : (
@@ -949,39 +981,26 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
       )}
 
       {/* Search and Filter Section */}
-      <div className="max-w-7xl mx-auto px-6 py-8 mt-20">
-        <div className="flex flex-col lg:flex-row gap-4 mb-8">
+      <div className="max-w-7xl mx-auto px-4 py-4 mt-2">
+        <div className="flex flex-row gap-3 mb-4">
           {/* Search Bar */}
-          <div className="relative flex-1 block">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               ref={searchInputRef}
               type="text"
-                                  placeholder="Search for films, music, web series, directors, artists, production houses, actors..."
+                                  placeholder="Search for films, music, web series..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
                 setShowAllProjects(null);
               }}
-              className="w-full pl-14 pr-12 py-5 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border border-gray-700 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-800 focus:via-gray-700 focus:to-gray-800 transition-all duration-500 text-lg shadow-2xl shadow-purple-500/10 focus:shadow-purple-500/30"
+              className="w-full pl-10 pr-4 py-3 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-gradient-to-r focus:from-gray-800 focus:via-gray-700 focus:to-gray-800 transition-all duration-500 text-sm shadow-lg shadow-purple-500/10 focus:shadow-purple-500/30"
             />
-            {/* Search Button */}
-            <button
-              type="button"
-              className="absolute right-12 top-1/2 transform -translate-y-1/2 bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-lg transition-colors duration-200 focus:outline-none"
-              onClick={() => {
-                // Trigger search by updating the search term (which will trigger the search effect)
-                setSearchTerm(searchTerm);
-                setShowAllProjects(null);
-              }}
-              title="Search"
-            >
-              <Search className="w-4 h-4" />
-            </button>
             {searchTerm && (
             <button
                 type="button"
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none"
                 onClick={() => {
                   setSearchTerm('');
                   setShowAllProjects(null);
@@ -989,7 +1008,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 }}
                 aria-label="Clear search"
             >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
             </button>
             )}
           </div>
@@ -1000,16 +1019,16 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
               setShowFilters(!showFilters);
               setShowAllProjects(null);
             }}
-            className={`group relative flex items-center gap-3 px-8 py-5 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white rounded-2xl font-bold hover:from-orange-600 hover:via-amber-600 hover:to-yellow-600 transition-all duration-500 hover:scale-105 shadow-2xl shadow-orange-500/30 hover:shadow-orange-500/50 border border-orange-400/20 overflow-hidden ${showFilters ? 'hidden' : ''}`}
+            className={`group relative flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white rounded-xl font-medium hover:from-orange-600 hover:via-amber-600 hover:to-yellow-600 transition-all duration-500 hover:scale-105 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 border border-orange-400/20 overflow-hidden ${showFilters ? 'hidden' : ''}`}
           >
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-400/20 via-amber-400/20 to-yellow-400/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-400/20 via-amber-400/20 to-yellow-400/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             {/* White highlight */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <Filter className="relative w-5 h-5" />
-            <span className="relative">Filters</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <Filter className="relative w-4 h-4" />
+            <span className="relative text-sm">Filters</span>
             {(selectedCategory !== 'all' || selectedType !== 'all' || selectedLanguage !== 'all' || selectedGenre !== 'all') && (
-              <span className="relative w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+              <span className="relative w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
             )}
           </button>
         </div>
@@ -1289,32 +1308,29 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
         {/* Search Results or Netflix-style Sections */}
         {searchTerm || showFilters || showAllProjects ? (
           <div>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">
-                {showAllProjects ? `${showAllProjects.charAt(0).toUpperCase() + showAllProjects.slice(1).replace('-', ' ')} Projects` :
-                 searchTerm ? `Search Results for "${searchTerm}"` : 'Filtered Results'}
-                <span className="text-gray-400 text-lg ml-2">({filteredProjects.length})</span>
-              </h2>
+            <div className="relative mb-6">
+              {/* Back Button - Positioned absolutely for better design */}
               {showAllProjects && (
                 <button
                   onClick={() => setShowAllProjects(null)}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  className="absolute top-0 left-0 z-10 flex items-center gap-1 px-2 py-1 bg-black/60 backdrop-blur-md text-white rounded-full hover:bg-black/80 transition-all duration-300 border border-white/20 hover:border-white/40 shadow-lg"
                 >
-                  <ArrowRight className="w-4 h-4 rotate-180" />
-                  Back to Browse
+                  <ArrowRight className="w-3 h-3 rotate-180" />
+                  <span className="text-xs font-medium">Back</span>
                 </button>
               )}
             </div>
 
             {filteredProjects.length > 0 ? (
               <div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="grid grid-cols-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 md:gap-6">
                 {filteredProjects.map((project) => (
           <ProjectCard 
             key={project.id} 
             project={project} 
             onClick={() => handleProjectClick(project)}
             onInvestClick={handleInvestClick}
+            small={true}
           />
         ))}
                 </div>
@@ -1352,42 +1368,42 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
   </div>
 ) : (
           <div className="space-y-12">
-                         <div className="flex gap-3 mb-6">
+                         <div className="flex gap-2 mb-6 overflow-x-auto">
                <button
-                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium shadow-sm
+                 className={`flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 rounded-lg border transition-colors text-xs md:text-sm font-medium shadow-sm whitespace-nowrap
                    ${sectionFilter === 'all' ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-transparent' : 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'}
                  `}
                  onClick={() => setSectionFilter('all')}
                  aria-label="Show All Projects"
                >
-                 <Grid className="w-4 h-4" /> All
+                 <Grid className="w-3 h-3 md:w-4 md:h-4" /> All
                </button>
                <button
-                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium shadow-sm
+                 className={`flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 rounded-lg border transition-colors text-xs md:text-sm font-medium shadow-sm whitespace-nowrap
                    ${sectionFilter === 'movies' ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-transparent' : 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'}
                  `}
                  onClick={() => setSectionFilter('movies')}
                  aria-label="Show Movies Only"
                >
-                 <Film className="w-4 h-4" /> Movies
+                 <Film className="w-3 h-3 md:w-4 md:h-4" /> Movies
                </button>
                <button
-                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium shadow-sm
+                 className={`flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 rounded-lg border transition-colors text-xs md:text-sm font-medium shadow-sm whitespace-nowrap
                    ${sectionFilter === 'webseries' ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-transparent' : 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'}
                  `}
                  onClick={() => setSectionFilter('webseries')}
                  aria-label="Show Web Series Only"
                >
-                 <Tv className="w-4 h-4" /> Web Series
+                 <Tv className="w-3 h-3 md:w-4 md:h-4" /> Web Series
                </button>
                <button
-                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium shadow-sm
+                 className={`flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 rounded-lg border transition-colors text-xs md:text-sm font-medium shadow-sm whitespace-nowrap
                    ${sectionFilter === 'music' ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white border-transparent' : 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700'}
                  `}
                  onClick={() => setSectionFilter('music')}
                  aria-label="Show Music Projects"
                >
-                 <Music className="w-4 h-4" /> Music
+                 <Music className="w-3 h-3 md:w-4 md:h-4" /> Music
                </button>
              </div>
             {sectionFilter === 'all' && trendingProjects.length > 0 && (

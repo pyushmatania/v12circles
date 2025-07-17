@@ -1237,6 +1237,10 @@ const Dashboard: React.FC<DashboardProps> = memo(({ setCurrentView }) => {
                     src={circle.avatar}
                     alt={circle.name}
                     className="w-16 h-16 rounded-full object-cover border-2 border-purple-500/30 hover:border-purple-500/60 transition-all duration-300"
+                    onError={(e) => {
+                      const target = e.currentTarget as HTMLImageElement;
+                      target.src = '/src/images/circles-logo-main.png';
+                    }}
                   />
                   <div className="flex-1 break-words">
                     <h3 className={`text-xl font-bold mb-2 ${getTextColor(theme, 'primary')}`}>{circle.name}</h3>

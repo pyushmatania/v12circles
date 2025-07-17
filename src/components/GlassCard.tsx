@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect } from 'react';
 import { Star, Users, Gift, Film, Plane, ShoppingBag } from 'lucide-react';
 
 // Import logo image
@@ -22,6 +21,7 @@ interface GlassCardProps {
   flipped: boolean;
   onHoverStart: () => void;
   onHoverEnd: () => void;
+  onToggleFlip?: () => void; // New prop for toggle functionality
 }
 
 const iconMap: Record<string, JSX.Element> = {
@@ -33,14 +33,18 @@ const iconMap: Record<string, JSX.Element> = {
   'Exclusive Merch': <ShoppingBag className="w-7 h-7 text-orange-400 mr-2" />,
 };
 
-const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onHoverStart, onHoverEnd }) => {
-  const [isTouching, setIsTouching] = useState(false);
-  const touchTimeoutRef = React.useRef<number | null>(null);
+const GlassCard: React.FC<GlassCardProps> = ({ 
+  illustration, 
+  theme, 
+  flipped, 
+  onHoverStart, 
+  onHoverEnd, 
+  onToggleFlip 
+}) => {
+  const touchTimeoutRef = useRef<number | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     e.preventDefault();
-    setIsTouching(true);
-    onHoverStart();
     
     // Clear any existing timeout
     if (touchTimeoutRef.current) {
@@ -50,12 +54,11 @@ const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onH
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     e.preventDefault();
-    setIsTouching(false);
     
-    // Add a small delay to ensure smooth transition back
-    touchTimeoutRef.current = setTimeout(() => {
-      onHoverEnd();
-    }, 100);
+    // Toggle flip state on mobile touch
+    if (onToggleFlip) {
+      onToggleFlip();
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -63,7 +66,7 @@ const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onH
   };
 
   // Cleanup timeout on unmount
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       if (touchTimeoutRef.current) {
         clearTimeout(touchTimeoutRef.current);
@@ -87,13 +90,19 @@ const GlassCard: React.FC<GlassCardProps> = ({ illustration, theme, flipped, onH
       onKeyDown={e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onHoverStart();
+          if (onToggleFlip) {
+            onToggleFlip();
+          } else {
+            onHoverStart();
+          }
         }
       }}
       onKeyUp={e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onHoverEnd();
+          if (!onToggleFlip) {
+            onHoverEnd();
+          }
         }
       }}
     >
