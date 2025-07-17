@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react';
+import React, { useState, useRef, useMemo, useCallback, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { Film, Music, Tv, Search, Star, Clock, ChevronLeft, ChevronRight, Play, Info, Siren as Fire, Filter, Heart, Share2, X, ArrowRight, Grid, RotateCcw, Globe, MessageSquare, DollarSign, TrendingUp } from 'lucide-react';
@@ -11,6 +11,8 @@ import {
 import { Project } from '../types';
 import ProjectCard from './ProjectCard';
 import ElasticSlider from './ElasticSlider';
+import { ThemeContext } from './ThemeProvider';
+import { getTextColor } from '../utils/themeUtils';
 
 interface ProjectCatalogProps {
   onTrackInvestment?: () => void;
@@ -77,6 +79,8 @@ const FILTER_OPTIONS = {
 const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
+  const themeContext = useContext(ThemeContext);
+  const theme = themeContext.theme;
   
   // Auto-sliding hero carousel state
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -614,7 +618,9 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
   }, [ultimateFallback.length, currentSlide]);
 
   return (
-    <div className="min-h-screen bg-black pb-[100px]">
+    <div className={`min-h-screen pb-[100px] ${
+    theme === 'light' ? 'bg-pink-100' : 'bg-black'
+  }`}>
       <style>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
@@ -671,29 +677,29 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 key={`m-${currentSlide}`}
                 src={ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080')}
                 srcSet={ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
-                sizes="(min-width: 1024px) 900px, 100vw"
+                sizes="100vw"
                 alt={ultimateFallback[wrappedSlide]?.title}
                 initial={{ x: 150, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -150, opacity: 0 }}
                 transition={{ duration: 0.6, ease: 'easeInOut' }}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ minWidth: '100%', minHeight: '100%' }}
                 onLoad={() => setImageLoaded(true)}
               />
             </AnimatePresence>
-            {!imageLoaded && (
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 animate-pulse flex items-center justify-center">
-                <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
+
+            {/* Subtle dark overlay over entire mobile poster */}
+            <div className="absolute inset-0 bg-black/30" />
+            <div className="absolute bottom-12 left-0 w-full p-3 text-center flex flex-col items-center">
+              <div>
+                <h3 className="!text-white text-base font-bold drop-shadow-2xl">
+                  {ultimateFallback[wrappedSlide]?.title}
+                </h3>
+                <span className="text-xs !text-white font-medium drop-shadow-2xl">
+                  {ultimateFallback[wrappedSlide]?.genre}
+                </span>
               </div>
-            )}
-            <div className="absolute bottom-12 left-0 w-full p-3 text-center flex flex-col items-center bg-gradient-to-t from-black/70 via-black/40 to-transparent">
-              <h3 className="text-white text-base font-semibold">
-                {ultimateFallback[wrappedSlide]?.title}
-              </h3>
-              <span className="text-xs text-gray-300">
-                {ultimateFallback[wrappedSlide]?.genre}
-              </span>
             </div>
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
               {ultimateFallback.map((_, index) => (
@@ -735,19 +741,16 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 <img 
                   src={ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080')}
                   srcSet={ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 1x, ' + ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 2x, ' + ultimateFallback[wrappedSlide]?.poster?.replace('SX300', 'SX1080') + ' 3x'}
-                  sizes="(min-width: 1024px) 900px, 100vw"
+                  sizes="100vw"
                   alt={ultimateFallback[wrappedSlide]?.title}
-                  className={`w-full h-full object-cover transition-opacity duration-700 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                  style={{ objectPosition: 'center' }}
-                  loading="lazy"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: 'center', minWidth: '100%', minHeight: '100%' }}
                   onLoad={() => setImageLoaded(true)}
                 />
-                {!imageLoaded && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 animate-pulse flex items-center justify-center">
-                    <div className="w-16 h-16 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin"></div>
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+
+                {/* Subtle dark overlay over entire poster for better text readability */}
+                <div className="absolute inset-0 bg-black/30" />
+                {/* No dark overlays - keeping posters clean */}
               </motion.div>
             </AnimatePresence>
             
@@ -768,7 +771,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
 
             {/* Content Overlay */}
             <div className="absolute inset-0 flex items-center z-10 pt-16">
-              <div className="max-w-7xl mx-auto px-6 w-full">
+              <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
                 <div className="max-w-2xl">
                   <motion.div
                     key={`content-${currentSlide}`}
@@ -777,45 +780,47 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                     transition={{ duration: 0.8, delay: 0.3 }}
                   >
                     <div className="flex items-center gap-3 mb-4">
-                      <div className={`flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-md ${
-                        ultimateFallback[wrappedSlide]?.type === 'film' ? 'bg-purple-500/20 border border-purple-500/30 text-purple-300' :
-                        ultimateFallback[wrappedSlide]?.type === 'music' ? 'bg-blue-500/20 border border-blue-500/30 text-blue-300' :
-                        'bg-green-500/20 border border-green-500/30 text-green-300'
-                      }`}>
-                        {ultimateFallback[wrappedSlide]?.type === 'film' ? <Film className="w-4 h-4" /> :
-                         ultimateFallback[wrappedSlide]?.type === 'music' ? <Music className="w-4 h-4" /> :
-                         <Tv className="w-4 h-4" />}
-                        <span className="text-sm font-medium uppercase">{ultimateFallback[wrappedSlide]?.type}</span>
-                      </div>
-                      <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/20 border border-red-500/30">
-                        <Fire className="w-4 h-4 text-red-400" />
-                        <span className="text-red-300 text-sm font-medium">Trending #{wrappedSlide + 1}</span>
+                      <div className="flex items-center gap-3">
+                        <div className={`flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-md ${
+                          ultimateFallback[wrappedSlide]?.type === 'film' ? 'bg-purple-500/80 border border-purple-400/30 text-white' :
+                          ultimateFallback[wrappedSlide]?.type === 'music' ? 'bg-blue-500/80 border border-blue-400/30 text-white' :
+                          'bg-green-500/80 border border-green-400/30 text-white'
+                        }`}>
+                          {ultimateFallback[wrappedSlide]?.type === 'film' ? <Film className="w-4 h-4" /> :
+                           ultimateFallback[wrappedSlide]?.type === 'music' ? <Music className="w-4 h-4" /> :
+                           <Tv className="w-4 h-4" />}
+                          <span className="text-sm font-medium uppercase">{ultimateFallback[wrappedSlide]?.type}</span>
+                        </div>
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-red-500/80 border border-red-400/30 text-white">
+                          <Fire className="w-4 h-4" />
+                          <span className="text-sm font-medium">Trending #{wrappedSlide + 1}</span>
+                        </div>
                       </div>
                     </div>
 
-                    <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white mb-4">
+                    <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold !text-white mb-4 drop-shadow-2xl">
                       {ultimateFallback[wrappedSlide]?.title}
                     </h1>
                     
-                    <p className="text-base sm:text-xl text-gray-300 mb-6 leading-relaxed">
+                    <p className="text-base sm:text-xl !text-white font-semibold mb-6 leading-relaxed drop-shadow-2xl">
                       {ultimateFallback[wrappedSlide]?.description}
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
                       <div className="flex items-center gap-2">
                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                        <span className="text-white font-semibold">
+                        <span className="!text-white font-bold drop-shadow-2xl">
                           {ultimateFallback[wrappedSlide]?.rating && !isNaN(ultimateFallback[wrappedSlide]?.rating) 
                             ? ultimateFallback[wrappedSlide]?.rating 
                             : '4.8'}
                         </span>
                       </div>
-                      <span className="text-gray-400">•</span>
-                      <span className="text-gray-300">{ultimateFallback[wrappedSlide]?.language}</span>
-                      <span className="text-gray-400">•</span>
-                      <span className="text-gray-300">{ultimateFallback[wrappedSlide]?.genre}</span>
-                      <span className="text-gray-400">•</span>
-                      <span className="text-green-400 font-semibold">{ultimateFallback[wrappedSlide]?.fundedPercentage}% Funded</span>
+                      <span className="!text-white font-bold drop-shadow-2xl">•</span>
+                      <span className="!text-white font-bold drop-shadow-2xl">{ultimateFallback[wrappedSlide]?.language}</span>
+                      <span className="!text-white font-bold drop-shadow-2xl">•</span>
+                      <span className="!text-white font-bold drop-shadow-2xl">{ultimateFallback[wrappedSlide]?.genre}</span>
+                      <span className="!text-white font-bold drop-shadow-2xl">•</span>
+                      <span className="!text-green-400 font-bold drop-shadow-2xl">{ultimateFallback[wrappedSlide]?.fundedPercentage}% Funded</span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -1554,6 +1559,8 @@ interface ProjectRowProps {
 const ProjectRow = React.memo<ProjectRowProps>(({ title, projects, onProjectClick, onInvestClick, onHeaderClick, featured, urgent }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showViewAll, setShowViewAll] = useState(false);
+  const themeContext = useContext(ThemeContext);
+  const theme = themeContext.theme;
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -1596,9 +1603,9 @@ const ProjectRow = React.memo<ProjectRowProps>(({ title, projects, onProjectClic
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={onHeaderClick}
-          className={`font-bold text-white hover:text-gray-300 transition-colors duration-300 flex items-center gap-3 group/header ${
+          className={`font-bold hover:text-gray-300 transition-colors duration-300 flex items-center gap-3 group/header ${
             featured ? 'text-3xl' : 'text-2xl'
-          } ${urgent ? 'text-red-400 hover:text-red-300' : ''}`}
+          } ${urgent ? 'text-red-400 hover:text-red-300' : getTextColor(theme, 'primary')}`}
         >
           {title}
           <ArrowRight className="w-6 h-6 opacity-0 group-hover/header:opacity-100 transition-opacity duration-300" />

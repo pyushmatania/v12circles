@@ -14,16 +14,11 @@ import {
   User,
   Sun,
   Moon,
-  Menu,
-  X,
-  Search,
-  Bell,
-  Settings,
-  LogOut,
   ChevronDown,
   ChevronUp,
   MoreHorizontal,
-  TrendingUp
+  Search,
+  Bell
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { useAuth } from './auth/useAuth';
@@ -48,6 +43,7 @@ interface NavigationProps {
   onAuthRequired: (mode?: AuthMode) => boolean;
   onProjectSelect?: (project: Project, tab?: ProjectDetailTab) => void;
   onSearchViewAll?: (term: string) => void;
+  previousView?: ViewType;
 }
 
 interface NavItem {
@@ -66,7 +62,8 @@ const Navigation: React.FC<NavigationProps> = memo(({
   setCurrentView, 
   onAuthRequired, 
   onProjectSelect,
-  onSearchViewAll
+  onSearchViewAll,
+  previousView
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMoreMenu, setShowMoreMenu] = useState(false);
@@ -81,7 +78,7 @@ const Navigation: React.FC<NavigationProps> = memo(({
     { id: 'home', label: 'Home', icon: Home, requiresAuth: false },
     { id: 'projects', label: 'Browse', icon: Film, requiresAuth: false },
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3, requiresAuth: false },
-    { id: 'community', label: 'Community', icon: Users, requiresAuth: false }
+    { id: 'community', label: 'Enter Circles', icon: Users, requiresAuth: false }
   ], []);
 
   const moreNavItems = useMemo<NavItem[]>(() => [
@@ -156,10 +153,15 @@ const Navigation: React.FC<NavigationProps> = memo(({
     }
   }, [setCurrentView, onSearchViewAll]);
 
-  // 🚀 Optimized notification view handler
+  // 🚀 Optimized notification view handler - Toggle notifications view
   const handleNotificationViewAll = useCallback(() => {
-    setCurrentView('notifications');
-  }, [setCurrentView]);
+    // If already on notifications page, go back to previous view
+    if (currentView === 'notifications') {
+      setCurrentView(previousView || 'home');
+    } else {
+      setCurrentView('notifications');
+    }
+  }, [setCurrentView, currentView, previousView]);
 
   // 🚀 Memoized theme toggle button
   const ThemeToggleButton = useMemo(() => (
@@ -378,42 +380,47 @@ const Navigation: React.FC<NavigationProps> = memo(({
             className="fixed top-0 left-0 right-0 z-50"
           >
             <div className="max-w-7xl mx-auto px-8 py-6">
-              <div className="relative flex items-center justify-between">
+              <div className="relative flex items-center justify-between min-w-0">
                 {/* Logo */}
-                {LogoComponent}
+                <div className="flex-shrink-0">
+                  {LogoComponent}
+                </div>
 
                 {/* 🚀 Navigation Items */}
-                <div className="hidden md:flex items-center gap-12">
-                  {mainNavItems.map((item, index) => (
-                    <motion.button
-                      key={item.id}
-                      onClick={() => handleItemClick(item.id)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 relative ${
-                        currentView === item.id
-                          ? `${theme === 'light' 
-                              ? 'text-purple-600' 
-                              : 'text-cyan-400'
-                            }`
-                          : `${theme === 'light' ? 'text-gray-600 hover:text-gray-900' : 'text-gray-300 hover:text-white'}`
-                      }`}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
-                    >
-                      <item.icon className="w-5 h-5 drop-shadow-lg" />
-                      <span className="font-medium text-base drop-shadow-lg">
-                        {item.label}
-                      </span>
-                      {item.requiresAuth && !isAuthenticated && (
-                        <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
-                      )}
-                    </motion.button>
-                  ))}
+                <div className="hidden md:flex items-center gap-12 flex-shrink-0">
+                  {mainNavItems.map((item, index) => {
+                    const isEnterCircles = item.id === 'community';
+                    return (
+                      <motion.button
+                        key={item.id}
+                        onClick={() => handleItemClick(item.id)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 relative ${
+                          currentView === item.id
+                            ? `${theme === 'light' 
+                                ? 'text-purple-600' 
+                                : 'text-cyan-400'
+                              }`
+                            : `${theme === 'light' ? 'text-gray-600 hover:text-gray-900' : 'text-gray-300 hover:text-white'}`
+                        }`}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05, duration: 0.3 }}
+                      >
+                        <item.icon className="w-5 h-5 drop-shadow-lg" />
+                        <span className="font-medium text-base drop-shadow-lg">
+                          {item.label}
+                        </span>
+                        {item.requiresAuth && !isAuthenticated && (
+                          <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
+                        )}
+                      </motion.button>
+                    );
+                  })}
                   
                   {/* 🚀 More Menu Dropdown */}
-                  <div className="relative hidden md:block">
+                  <div className="relative hidden md:block flex-shrink-0">
                     <motion.button
                       onClick={() => setShowMoreMenu(!showMoreMenu)}
                       className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
@@ -483,10 +490,10 @@ const Navigation: React.FC<NavigationProps> = memo(({
                 </div>
 
                 {/* 🚀 Right Side Actions */}
-                <div className="hidden md:flex items-center gap-4">
+                <div className="hidden md:flex items-center gap-4 min-w-0 flex-shrink-0">
                   {/* Search Button */}
                   <motion.div 
-                    className="relative hidden md:block"
+                    className="relative hidden md:block flex-shrink-0"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.25, duration: 0.3 }}
@@ -498,22 +505,26 @@ const Navigation: React.FC<NavigationProps> = memo(({
                   </motion.div>
                   
                   <motion.div
+                    className="flex-shrink-0"
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.3 }}
                   >
                     <NotificationDropdown
                       onViewAll={handleNotificationViewAll}
+                      disableDropdown={currentView === 'notifications'}
                     />
                   </motion.div>
 
                   {/* Profile Icon */}
-                  <div className="relative">
+                  <div className="relative flex-shrink-0">
                     {ProfileButton}
                   </div>
 
                   {/* Theme Toggle Button */}
-                  {ThemeToggleButton}
+                  <div className="flex-shrink-0">
+                    {ThemeToggleButton}
+                  </div>
                 </div>
 
                 {/* 🚀 Mobile Navigation */}
@@ -523,27 +534,30 @@ const Navigation: React.FC<NavigationProps> = memo(({
                   
                   {/* Center: Main Nav Items */}
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    {mainNavItems.map((item, index) => (
-                      <motion.button
-                        key={item.id}
-                        onClick={() => handleItemClick(item.id)}
-                        className={`p-2 rounded-lg transition-all duration-300 relative ${
-                          currentView === item.id
-                            ? 'text-cyan-400'
-                            : `${theme === 'light' ? 'text-gray-600 hover:text-gray-900' : 'text-gray-300 hover:text-white'}`
-                        }`}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.05, duration: 0.3 }}
-                      >
-                        <item.icon className="w-5 h-5 drop-shadow-lg" />
-                        {item.requiresAuth && !isAuthenticated && (
-                          <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
-                        )}
-                      </motion.button>
-                    ))}
+                    {mainNavItems.map((item, index) => {
+                      const isEnterCircles = item.id === 'community';
+                      return (
+                        <motion.button
+                          key={item.id}
+                          onClick={() => handleItemClick(item.id)}
+                          className={`p-2 rounded-lg transition-all duration-300 relative ${
+                            currentView === item.id
+                              ? 'text-cyan-400'
+                              : `${theme === 'light' ? 'text-gray-600 hover:text-gray-900' : 'text-gray-300 hover:text-white'}`
+                          }`}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: index * 0.05, duration: 0.3 }}
+                                                  >
+                            <item.icon className="w-5 h-5 drop-shadow-lg" />
+                          {item.requiresAuth && !isAuthenticated && (
+                            <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
+                          )}
+                        </motion.button>
+                      );
+                    })}
                   </div>
                   
                   {/* Right: Theme, Notification & Profile Buttons */}
@@ -571,6 +585,7 @@ const Navigation: React.FC<NavigationProps> = memo(({
                     >
                       <NotificationDropdown
                         onViewAll={handleNotificationViewAll}
+                        disableDropdown={currentView === 'notifications'}
                       />
                     </motion.div>
                     <motion.button
@@ -628,59 +643,62 @@ const Navigation: React.FC<NavigationProps> = memo(({
             <div className="flex flex-col items-center space-y-6 w-16 py-8 group">
               {/* Main Navigation Icons */}
               <div className="flex flex-col items-center space-y-3">
-                {mainNavItems.map((item, index) => (
-                  <div key={item.id} className="relative">
-                    <motion.button
-                      onClick={() => handleItemClick(item.id)}
-                      className={`relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 ${
+                {mainNavItems.map((item, index) => {
+                  const isEnterCircles = item.id === 'community';
+                  return (
+                    <div key={item.id} className="relative">
+                      <motion.button
+                        onClick={() => handleItemClick(item.id)}
+                        className={`relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 ${
+                          currentView === item.id
+                            ? `${theme === 'light' 
+                                ? 'text-purple-600 bg-purple-100/50 shadow-lg shadow-purple-400/25' 
+                                : 'text-cyan-400 bg-cyan-400/10 shadow-lg shadow-cyan-400/25'
+                              }`
+                            : `${theme === 'light' 
+                                ? 'text-gray-700 hover:text-gray-900 hover:bg-white/50' 
+                                : 'text-gray-400 hover:text-white hover:bg-white/10'
+                              }`
+                        }`}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05, duration: 0.3 }}
+                                              >
+                          <item.icon className="w-6 h-6" />
+                        {item.requiresAuth && !isAuthenticated && (
+                          <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
+                        )}
+                        {/* Active Indicator */}
+                        {currentView === item.id && (
+                          <motion.div
+                            layoutId="activeIndicator"
+                            className={`absolute -left-2 top-1/2 transform -translate-y-1/2 w-1 h-8 rounded-r-full transition-all duration-300 ${
+                              theme === 'light' 
+                                ? 'bg-gradient-to-b from-purple-400 to-purple-500'
+                                : 'bg-gradient-to-b from-cyan-400 to-blue-500'
+                            }`}
+                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                          />
+                        )}
+                      </motion.button>
+                      
+                      {/* Hover Text */}
+                      <span className={`absolute left-16 top-1/2 transform -translate-y-1/2 whitespace-nowrap px-2 py-1 text-sm font-light opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out pointer-events-none select-none group-hover:translate-x-0 translate-x-[-10px] ${
                         currentView === item.id
-                          ? `${theme === 'light' 
-                              ? 'text-purple-600 bg-purple-100/50 shadow-lg shadow-purple-400/25' 
-                              : 'text-cyan-400 bg-cyan-400/10 shadow-lg shadow-cyan-400/25'
-                            }`
-                          : `${theme === 'light' 
-                              ? 'text-gray-700 hover:text-gray-900 hover:bg-white/50' 
-                              : 'text-gray-400 hover:text-white hover:bg-white/10'
-                            }`
-                      }`}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
-                    >
-                      <item.icon className="w-6 h-6" />
-                      {item.requiresAuth && !isAuthenticated && (
-                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
-                      )}
-                      {/* Active Indicator */}
-                      {currentView === item.id && (
-                        <motion.div
-                          layoutId="activeIndicator"
-                          className={`absolute -left-2 top-1/2 transform -translate-y-1/2 w-1 h-8 rounded-r-full transition-all duration-300 ${
-                            theme === 'light' 
-                              ? 'bg-gradient-to-b from-purple-400 to-purple-500'
-                              : 'bg-gradient-to-b from-cyan-400 to-blue-500'
-                          }`}
-                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                        />
-                      )}
-                    </motion.button>
-                    
-                    {/* Hover Text */}
-                    <span className={`absolute left-16 top-1/2 transform -translate-y-1/2 whitespace-nowrap px-2 py-1 text-sm font-light opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out pointer-events-none select-none group-hover:translate-x-0 translate-x-[-10px] ${
-                      currentView === item.id
-                        ? theme === 'light'
-                          ? 'text-purple-600'
-                          : 'text-cyan-400'
-                        : theme === 'light'
-                          ? 'text-gray-700'
-                          : 'text-gray-400'
-                    }`}>
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
+                          ? theme === 'light'
+                            ? 'text-purple-600'
+                            : 'text-cyan-400'
+                          : theme === 'light'
+                            ? 'text-gray-700'
+                            : 'text-gray-400'
+                      }`}>
+                        {item.label}
+                      </span>
+                    </div>
+                  );
+                })}
 
                 {/* More Menu Button */}
                 <div className="relative">
@@ -848,13 +866,11 @@ const Navigation: React.FC<NavigationProps> = memo(({
                   </span>
                 </div>
 
-
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-
 
       {isMobile && (
         <MobileBottomBar

@@ -1228,9 +1228,11 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                   <div key={inv.id} className="min-w-[220px] p-4 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/20 transition-all duration-300 group">
                     <div className="relative">
                       <img src={inv.projectPoster} alt={inv.projectName} className="w-full h-28 object-cover rounded-lg mb-3" />
+                      {/* Subtle dark overlay over poster for better text readability */}
+                      <div className="absolute inset-0 bg-black/20 rounded-lg" />
                       
                       {/* Status Emblem */}
-                      <div className={`absolute top-2 right-2 w-6 h-6 rounded-full border-2 ${
+                      <div className={`absolute top-2 right-2 w-6 h-6 rounded-full border-2 z-10 ${
                         inv.status === 'completed' 
                           ? 'bg-emerald-500/20 border-emerald-500/40' 
                           : inv.status === 'active' 
@@ -1318,11 +1320,15 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                     <tr key={investment.id} className={`border-b border-emerald-500/10 hover:bg-emerald-500/5 transition-all duration-300 ${index === sortedInvestments.length - 1 ? 'border-b-0' : ''}`}>
                       <td className="py-4">
                         <div className="flex items-center gap-3">
-                          <img 
-                            src={investment.projectPoster} 
-                            alt={investment.projectName}
-                            className="w-12 h-16 object-cover rounded-lg border border-emerald-500/20"
-                          />
+                          <div className="relative">
+                            <img 
+                              src={investment.projectPoster} 
+                              alt={investment.projectName}
+                              className="w-12 h-16 object-cover rounded-lg border border-emerald-500/20"
+                            />
+                            {/* Subtle dark overlay over table poster for better text readability */}
+                            <div className="absolute inset-0 bg-black/20 rounded-lg" />
+                          </div>
                           <div>
                             <div className="font-medium text-white">{investment.projectName}</div>
                             <div className="text-xs text-gray-400">{investment.genre}</div>

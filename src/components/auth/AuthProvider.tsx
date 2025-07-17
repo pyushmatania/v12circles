@@ -8,6 +8,12 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  // Safety check for React availability
+  if (typeof React === 'undefined' || !React.useState) {
+    console.error('React is not properly loaded in AuthProvider');
+    return <div>Loading authentication...</div>;
+  }
+
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 

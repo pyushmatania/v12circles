@@ -23,8 +23,6 @@ export default defineConfig({
       'framer-motion',
       'canvas-confetti',
       'gsap',
-      'lottie-react',
-      'matter-js',
       'react-dropzone',
       'react-table'
     ],
@@ -58,12 +56,12 @@ export default defineConfig({
           }
           
           // UI and icon libraries
-          if (id.includes('lucide-react') || id.includes('lottie-react')) {
+          if (id.includes('lucide-react')) {
             return 'ui-vendor';
           }
           
           // Utility libraries
-          if (id.includes('matter-js') || id.includes('react-dropzone') || id.includes('react-table')) {
+          if (id.includes('react-dropzone') || id.includes('react-table')) {
             return 'utils-vendor';
           }
           

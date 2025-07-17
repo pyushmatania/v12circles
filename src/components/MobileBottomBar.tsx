@@ -18,7 +18,7 @@ const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ currentView, setCurre
     { id: 'home', label: 'Home', icon: Home, requiresAuth: false },
     { id: 'projects', label: 'Browse', icon: Film, requiresAuth: false },
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3, requiresAuth: false },
-    { id: 'community', label: 'Community', icon: Users, requiresAuth: false },
+    { id: 'community', label: 'Enter Circles', icon: Users, requiresAuth: false },
     { id: 'profile', label: 'Profile', icon: User, requiresAuth: true }
   ];
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   User, 
@@ -57,6 +57,13 @@ const ProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState<User>(user || ({} as User));
   const [isUploading, setIsUploading] = useState(false);
+
+  // Update editData when user data changes
+  useEffect(() => {
+    if (user) {
+      setEditData(user);
+    }
+  }, [user]);
 
   // Early return if no user - this prevents any rendering issues
   if (!user) {
@@ -174,7 +181,7 @@ const ProfilePage: React.FC = () => {
                 </h1>
                 <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-gradient-to-r from-purple-500 to-blue-500">
                   <Award className="w-4 h-4 text-white" />
-                  <span className="text-white text-sm font-medium">Producer</span>
+                  <span className="text-white text-sm font-medium">Believer</span>
                 </div>
               </div>
 

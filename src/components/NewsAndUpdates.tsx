@@ -156,23 +156,24 @@ const NewsAndUpdates: React.FC<NewsAndUpdatesProps> = () => {
   };
 
   const getCategoryColor = (category: string) => {
+    // For overlays on images, always use white text with dark backgrounds
     switch (category.toLowerCase()) {
       case 'film': 
-        return theme === 'light' ? 'bg-purple-100 text-purple-700' : 'bg-purple-900/30 text-purple-400';
+        return 'bg-purple-500/80 text-white border border-purple-400/30';
       case 'music': 
-        return theme === 'light' ? 'bg-blue-100 text-blue-700' : 'bg-blue-900/30 text-blue-400';
+        return 'bg-blue-500/80 text-white border border-blue-400/30';
       case 'web series': 
-        return theme === 'light' ? 'bg-green-100 text-green-700' : 'bg-green-900/30 text-green-400';
+        return 'bg-green-500/80 text-white border border-green-400/30';
       case 'market trends': 
-        return theme === 'light' ? 'bg-orange-100 text-orange-700' : 'bg-orange-900/30 text-orange-400';
+        return 'bg-orange-500/80 text-white border border-orange-400/30';
       case 'investors': 
-        return theme === 'light' ? 'bg-indigo-100 text-indigo-700' : 'bg-indigo-900/30 text-indigo-400';
+        return 'bg-indigo-500/80 text-white border border-indigo-400/30';
       case 'regulations': 
-        return theme === 'light' ? 'bg-red-100 text-red-700' : 'bg-red-900/30 text-red-400';
+        return 'bg-red-500/80 text-white border border-red-400/30';
       case 'technology': 
-        return theme === 'light' ? 'bg-teal-100 text-teal-700' : 'bg-teal-900/30 text-teal-400';
+        return 'bg-teal-500/80 text-white border border-teal-400/30';
       default: 
-        return theme === 'light' ? 'bg-gray-100 text-gray-700' : 'bg-gray-800 text-gray-300';
+        return 'bg-gray-500/80 text-white border border-gray-400/30';
     }
   };
 
@@ -284,7 +285,7 @@ const NewsAndUpdates: React.FC<NewsAndUpdatesProps> = () => {
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                         <div className="absolute top-4 left-4 z-10">
-                          <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${
+                          <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-md ${
                             getCategoryColor(filteredNews.filter(news => news.trending)[0].category)
                           }`}>
                             {getCategoryIcon(filteredNews.filter(news => news.trending)[0].category)}
@@ -380,7 +381,7 @@ const NewsAndUpdates: React.FC<NewsAndUpdatesProps> = () => {
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                         <div className="absolute top-4 left-4">
-                          <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(news.category)}`}>
+                          <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-md ${getCategoryColor(news.category)}`}>
                             {getCategoryIcon(news.category)}
                             <span>{news.category}</span>
                           </div>

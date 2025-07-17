@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useCallback, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Film, Music, Tv, Star, Clock, Play, TrendingUp, Calendar } from 'lucide-react';
+import { Film, Music, Tv, Star, Clock, Play, TrendingUp, Calendar, AlertTriangle } from 'lucide-react';
 import PixelCard from './PixelCard';
 import { Project } from '../types';
 import ProjectDetailPage from './ProjectDetailPage';
@@ -130,7 +130,7 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({
   // 🚀 Memoized trending badge
   const TrendingBadge = useMemo(() => (
     featured && (
-      <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs font-bold shadow-lg">
+      <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-orange-500/90 to-red-500/90 backdrop-blur-md border border-orange-400/30 text-white shadow-lg shadow-orange-500/25">
         <TrendingUp className="w-3 h-3" />
         TRENDING
       </div>
@@ -140,26 +140,25 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({
   // 🚀 Memoized urgent badge
   const UrgentBadge = useMemo(() => (
     urgent && (
-      <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold shadow-lg animate-pulse">
-        <Clock className="w-3 h-3" />
-        ENDING SOON
+      <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-red-500/90 to-pink-500/90 backdrop-blur-md border border-red-400/30 text-white shadow-lg shadow-red-500/25 animate-pulse">
+        <AlertTriangle className="w-3 h-3" />
+        URGENT
       </div>
     )
   ), [urgent]);
 
   // 🚀 Memoized funding badge
   const FundingBadge = useMemo(() => (
-    <div className="bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full border border-green-400/20">
-      <span className="text-green-300 font-medium text-xs">
-        {fundingPercentage}% funded
-      </span>
+    <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-green-500/90 backdrop-blur-md border border-green-400/30 text-white shadow-lg shadow-green-500/25">
+      <TrendingUp className="w-3 h-3" />
+      {fundingPercentage}%
     </div>
   ), [fundingPercentage]);
 
   // 🚀 Memoized rating badge
   const RatingBadge = useMemo(() => (
     project.rating && (
-      <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-black/70 backdrop-blur-md text-white text-xs font-semibold border border-yellow-400/30">
+      <div className="flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold bg-black/70 backdrop-blur-md border border-white/20 text-white shadow-lg">
         <Star className="w-3 h-3 text-yellow-400 fill-current" />
         {project.rating}
       </div>
@@ -260,38 +259,42 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({
           loading="lazy"
         />
 
-        {/* Cinematic Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60" />
-        
         {/* Premium Glow Effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        {/* Subtle dark overlay over entire poster for better text readability */}
+        <div className="absolute inset-0 bg-black/25" />
       </div>
           
           {/* 🚀 Top Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-2 z-20">
-            {TypeBadge}
-            {TrendingBadge}
-            {UrgentBadge}
+            <div className="flex flex-col gap-2">
+              {TypeBadge}
+              {TrendingBadge}
+              {UrgentBadge}
+            </div>
           </div>
 
           {/* 🚀 Top Right - Rating and Funding */}
           <div className="absolute top-3 right-3 z-20 flex flex-col gap-2">
-            {FundingBadge}
-            {RatingBadge}
+            <div className="flex flex-col gap-2">
+              {FundingBadge}
+              {RatingBadge}
+            </div>
           </div>
 
           {/* 🚀 Bottom Content - Always Visible */}
           <div className="absolute bottom-0 left-0 right-0 p-4 z-20" style={{ bottom: '12px' }}>
-            <div className="space-y-3">
+            <div className="relative space-y-3 z-10">
               {/* Title and Basic Info */}
               <div>
-                <h3 className={`text-white font-bold leading-tight ${
+                <h3 className={`!text-white font-bold leading-tight drop-shadow-2xl ${
                   featured ? 'text-xl' : 'text-lg'
                 }`}>
                   {project.title}
                 </h3>
                 {!featured && (
-                  <p className="text-gray-300 text-sm mt-1 line-clamp-2">
+                  <p className="!text-white font-semibold text-sm mt-1 line-clamp-2 drop-shadow-2xl">
                     {project.description}
                   </p>
                 )}

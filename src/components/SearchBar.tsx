@@ -340,9 +340,9 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: 'auto', opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 min-w-0"
           >
-            <form onSubmit={handleSearchSubmit} className="relative">
+            <form onSubmit={handleSearchSubmit} className="relative min-w-0">
               <input
                 ref={inputRef}
                 type="text"
@@ -351,7 +351,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
                 onKeyDown={handleKeyDown}
                 onFocus={() => setIsOpen(true)}
                 placeholder="Search projects, directors, artists..."
-                className={`w-64 pl-3 pr-8 py-1 rounded-lg border transition-all duration-200 text-sm ${
+                className={`w-48 sm:w-56 md:w-64 lg:w-72 pl-3 pr-8 py-1 rounded-lg border transition-all duration-200 text-sm min-w-0 ${
                   theme === 'light'
                     ? 'bg-white border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200'
                     : 'bg-gray-800 border-gray-600 focus:border-purple-400 focus:ring-2 focus:ring-purple-900'
@@ -386,7 +386,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={`absolute top-full right-0 mt-2 rounded-xl border shadow-lg z-50 w-96 max-h-96 flex flex-col ${
+            className={`absolute top-full right-0 mt-2 rounded-xl border shadow-lg z-50 w-80 sm:w-96 max-h-96 flex flex-col ${
               theme === 'light'
                 ? 'bg-white border-gray-200'
                 : 'bg-gray-900 border-gray-600'
@@ -485,18 +485,22 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
         >
           <div className="flex items-start gap-3">
                           {/* Project Poster/Image */}
-                          <div className="flex-shrink-0">
+                          <div className="flex-shrink-0 relative">
                             {project.poster ? (
-                              <img
-                                src={project.poster}
-                                alt={project.title}
-                                className="w-12 h-16 object-cover rounded-md shadow-sm"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.style.display = 'none';
-                                  target.nextElementSibling?.classList.remove('hidden');
-                                }}
-                              />
+                              <>
+                                <img
+                                  src={project.poster}
+                                  alt={project.title}
+                                  className="w-12 h-16 object-cover rounded-md shadow-sm"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.style.display = 'none';
+                                    target.nextElementSibling?.classList.remove('hidden');
+                                  }}
+                                />
+                                {/* Subtle dark overlay over poster for better text readability */}
+                                <div className="absolute inset-0 bg-black/20 rounded-md" />
+                              </>
                             ) : null}
                             {(!project.poster || project.poster === '') && (
                               <div className={`w-12 h-16 rounded-md flex items-center justify-center ${getTypeColor(project.type as ProjectType)} bg-opacity-10`}>

@@ -1,4 +1,4 @@
-import { useState, useCallback, memo, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, memo, useEffect, useMemo } from 'react';
 import Hero from './components/Hero';
 import ProblemSolution from './components/ProblemSolution';
 import HowItWorks from './components/HowItWorks';
@@ -17,6 +17,7 @@ import { useAuth } from './components/auth/useAuth';
 import { useToast } from './hooks/useToast';
 import DebugPanel from './components/DebugPanel';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { checkReactAvailability } from './utils/reactCheck';
 import { Project } from './types';
 
 // 🚀 Import components directly for instant loading
@@ -211,7 +212,7 @@ function AppContent() {
         );
       case 'dashboard':
         // Dashboard is now accessible without login
-        return <Dashboard />;
+        return <Dashboard setCurrentView={handleViewChange} />;
       case 'community':
         return <Community />;
       case 'merch':
@@ -231,7 +232,7 @@ function AppContent() {
       case 'news':
         return <NewsAndUpdates />;
       case 'notifications':
-        return <NotificationCenter setCurrentView={handleViewChange} />;
+        return <NotificationCenter setCurrentView={handleViewChange} onClose={() => handleViewChange(previousView)} />;
       case 'search':
         return <EnhancedSearch initialSearchTerm={searchTerm} onBack={() => handleViewChange(previousView)} />;
       case 'project-detail':
@@ -281,8 +282,9 @@ function AppContent() {
     setCurrentView: handleViewChange,
     onAuthRequired: handleAuthRequired,
     onProjectSelect: handleNavigationProjectSelect,
-    onSearchViewAll: handleSearchViewAll
-  }), [currentView, handleViewChange, handleAuthRequired, handleNavigationProjectSelect, handleSearchViewAll]);
+    onSearchViewAll: handleSearchViewAll,
+    previousView
+  }), [currentView, handleViewChange, handleAuthRequired, handleNavigationProjectSelect, handleSearchViewAll, previousView]);
 
   // 🚀 Memoized auth modal props
   const authModalProps = useMemo(() => ({
@@ -318,6 +320,12 @@ function AppContent() {
  * @description Wraps the application with necessary providers and error handling
  */
 function App() {
+  // Safety check for React availability
+  if (!checkReactAvailability()) {
+    console.error('React is not properly loaded');
+    return <div>Loading application...</div>;
+  }
+
   return (
     <ErrorBoundary>
       <ThemeProvider>

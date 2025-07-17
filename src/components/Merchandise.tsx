@@ -413,13 +413,19 @@ const Merchandise: React.FC = () => {
   return (
     <div className={`min-h-screen pt-20 pb-[100px] transition-all duration-[3000ms] ${
       theme === 'light'
-        ? currentGradient === 0 ? 'bg-gradient-to-br from-green-50 to-emerald-50' :
-          currentGradient === 1 ? 'bg-gradient-to-br from-orange-50 to-red-50' :
-          currentGradient === 2 ? 'bg-gradient-to-br from-blue-50 to-cyan-50' :
-          currentGradient === 3 ? 'bg-gradient-to-br from-emerald-50 to-green-50' :
-          'bg-gradient-to-br from-purple-50 to-fuchsia-50'
-        : 'bg-gradient-to-br from-black via-gray-900 to-purple-900'
-    }`}>
+        ? currentGradient === 0 ? 'bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50' :
+          currentGradient === 1 ? 'bg-gradient-to-br from-orange-50 via-red-50 to-pink-50' :
+          currentGradient === 2 ? 'bg-gradient-to-br from-blue-50 via-cyan-50 to-sky-50' :
+          currentGradient === 3 ? 'bg-gradient-to-br from-emerald-50 via-green-50 to-lime-50' :
+          'bg-gradient-to-br from-purple-50 via-fuchsia-50 to-pink-50'
+        : 'bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900'
+    }`}
+    style={{
+      backgroundImage: theme === 'light' 
+        ? 'radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.12) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 70%)'
+        : 'radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.25) 0%, transparent 70%)'
+    }}
+    >
       <div className="max-w-7xl mx-auto px-6 py-8">
         
         {/* Header */}
@@ -509,7 +515,9 @@ const Merchandise: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-4 mb-8">
           {/* Search */}
           <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${
+              theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+            }`} />
             <input
               type="text"
               placeholder="Search merchandise..."
@@ -517,12 +525,12 @@ const Merchandise: React.FC = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className={`w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none transition-all duration-[3000ms] ${
                 theme === 'light'
-                  ? currentGradient === 0 ? 'bg-green-50/50 border-green-200 focus:border-green-500 text-gray-900' :
-                    currentGradient === 1 ? 'bg-orange-50/50 border-orange-200 focus:border-orange-500 text-gray-900' :
-                    currentGradient === 2 ? 'bg-blue-50/50 border-blue-200 focus:border-blue-500 text-gray-900' :
-                    currentGradient === 3 ? 'bg-emerald-50/50 border-emerald-200 focus:border-emerald-500 text-gray-900' :
-                    'bg-purple-50/50 border-purple-200 focus:border-purple-500 text-gray-900'
-                  : 'bg-gray-900 border-gray-700 focus:border-purple-500 text-white placeholder-gray-400'
+                  ? currentGradient === 0 ? 'bg-white/70 border-green-200 focus:border-green-500 text-gray-900 placeholder-gray-500' :
+                    currentGradient === 1 ? 'bg-white/70 border-orange-200 focus:border-orange-500 text-gray-900 placeholder-gray-500' :
+                    currentGradient === 2 ? 'bg-white/70 border-blue-200 focus:border-blue-500 text-gray-900 placeholder-gray-500' :
+                    currentGradient === 3 ? 'bg-white/70 border-emerald-200 focus:border-emerald-500 text-gray-900 placeholder-gray-500' :
+                    'bg-white/70 border-purple-200 focus:border-purple-500 text-gray-900 placeholder-gray-500'
+                  : 'bg-slate-800/70 border-slate-600 focus:border-purple-500 text-white placeholder-gray-400'
               }`}
             />
           </div>
@@ -530,12 +538,12 @@ const Merchandise: React.FC = () => {
           {/* View Mode Toggle */}
           <div className={`flex items-center gap-2 p-2 rounded-xl transition-all duration-[3000ms] ${
             theme === 'light'
-              ? currentGradient === 0 ? 'bg-green-50/50' :
-                currentGradient === 1 ? 'bg-orange-50/50' :
-                currentGradient === 2 ? 'bg-blue-50/50' :
-                currentGradient === 3 ? 'bg-emerald-50/50' :
-                'bg-purple-50/50'
-              : 'bg-gray-900'
+              ? currentGradient === 0 ? 'bg-white/70 border border-green-200' :
+                currentGradient === 1 ? 'bg-white/70 border border-orange-200' :
+                currentGradient === 2 ? 'bg-white/70 border border-blue-200' :
+                currentGradient === 3 ? 'bg-white/70 border border-emerald-200' :
+                'bg-white/70 border border-purple-200'
+              : 'bg-slate-800/70 border border-slate-600'
           }`}>
             <button
               onClick={() => setViewMode('grid')}
@@ -549,7 +557,7 @@ const Merchandise: React.FC = () => {
                         'bg-purple-600 text-white'
                       : 'bg-purple-600 text-white'
                     }`
-                  : `${theme === 'light' ? 'text-gray-700 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`
+                  : `${theme === 'light' ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-100' : 'text-gray-400 hover:text-white hover:bg-slate-700'}`
               }`}
             >
               <Grid3X3 className="w-5 h-5" />
@@ -566,7 +574,7 @@ const Merchandise: React.FC = () => {
                         'bg-purple-600 text-white'
                       : 'bg-purple-600 text-white'
                     }`
-                  : `${theme === 'light' ? 'text-gray-700 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`
+                  : `${theme === 'light' ? 'text-gray-700 hover:text-gray-900 hover:bg-gray-100' : 'text-gray-400 hover:text-white hover:bg-slate-700'}`
               }`}
             >
               <List className="w-5 h-5" />
@@ -578,12 +586,12 @@ const Merchandise: React.FC = () => {
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl transition-all duration-[3000ms] ${
               theme === 'light'
-                ? currentGradient === 0 ? 'bg-green-100/50 text-green-700 hover:bg-green-100/80' :
-                  currentGradient === 1 ? 'bg-orange-100/50 text-orange-700 hover:bg-orange-100/80' :
-                  currentGradient === 2 ? 'bg-blue-100/50 text-blue-700 hover:bg-blue-100/80' :
-                  currentGradient === 3 ? 'bg-emerald-100/50 text-emerald-700 hover:bg-emerald-100/80' :
-                  'bg-purple-100/50 text-purple-700 hover:bg-purple-100/80'
-                : 'bg-gray-900 text-white hover:bg-gray-800'
+                ? currentGradient === 0 ? 'bg-white/70 border border-green-200 text-green-700 hover:bg-green-50/80' :
+                  currentGradient === 1 ? 'bg-white/70 border border-orange-200 text-orange-700 hover:bg-orange-50/80' :
+                  currentGradient === 2 ? 'bg-white/70 border border-blue-200 text-blue-700 hover:bg-blue-50/80' :
+                  currentGradient === 3 ? 'bg-white/70 border border-emerald-200 text-emerald-700 hover:bg-emerald-50/80' :
+                  'bg-white/70 border border-purple-200 text-purple-700 hover:bg-purple-50/80'
+                : 'bg-slate-800/70 border border-slate-600 text-white hover:bg-slate-700/80'
             }`}
           >
             <Filter className="w-5 h-5" />
@@ -604,12 +612,12 @@ const Merchandise: React.FC = () => {
               transition={{ duration: 0.3 }}
               className={`mb-8 p-6 rounded-xl border transition-all duration-[3000ms] ${
                 theme === 'light'
-                  ? currentGradient === 0 ? 'bg-green-50/50 border-green-200' :
-                    currentGradient === 1 ? 'bg-orange-50/50 border-orange-200' :
-                    currentGradient === 2 ? 'bg-blue-50/50 border-blue-200' :
-                    currentGradient === 3 ? 'bg-emerald-50/50 border-emerald-200' :
-                    'bg-purple-50/50 border-purple-200'
-                  : 'bg-gray-900 border-gray-700'
+                  ? currentGradient === 0 ? 'bg-white/70 border-green-200' :
+                    currentGradient === 1 ? 'bg-white/70 border-orange-200' :
+                    currentGradient === 2 ? 'bg-white/70 border-blue-200' :
+                    currentGradient === 3 ? 'bg-white/70 border-emerald-200' :
+                    'bg-white/70 border-purple-200'
+                  : 'bg-slate-800/70 border-slate-600'
               }`}
             >
               <div className="flex items-center justify-between mb-6">
@@ -643,12 +651,12 @@ const Merchandise: React.FC = () => {
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className={`w-full px-4 py-3 rounded-lg border focus:outline-none transition-all duration-[3000ms] ${
                       theme === 'light'
-                        ? currentGradient === 0 ? 'bg-green-50 border-green-200 focus:border-green-500 text-gray-900' :
-                          currentGradient === 1 ? 'bg-orange-50 border-orange-200 focus:border-orange-500 text-gray-900' :
-                          currentGradient === 2 ? 'bg-blue-50 border-blue-200 focus:border-blue-500 text-gray-900' :
-                          currentGradient === 3 ? 'bg-emerald-50 border-emerald-200 focus:border-emerald-500 text-gray-900' :
-                          'bg-purple-50 border-purple-200 focus:border-purple-500 text-gray-900'
-                        : 'bg-gray-800 border-gray-600 focus:border-purple-500 text-white'
+                        ? currentGradient === 0 ? 'bg-white/80 border-green-200 focus:border-green-500 text-gray-900' :
+                          currentGradient === 1 ? 'bg-white/80 border-orange-200 focus:border-orange-500 text-gray-900' :
+                          currentGradient === 2 ? 'bg-white/80 border-blue-200 focus:border-blue-500 text-gray-900' :
+                          currentGradient === 3 ? 'bg-white/80 border-emerald-200 focus:border-emerald-500 text-gray-900' :
+                          'bg-white/80 border-purple-200 focus:border-purple-500 text-gray-900'
+                        : 'bg-slate-700/80 border-slate-600 focus:border-purple-500 text-white'
                     }`}
                   >
                     {categories.map((category) => (
@@ -669,12 +677,12 @@ const Merchandise: React.FC = () => {
                     onChange={(e) => setSelectedAvailability(e.target.value)}
                     className={`w-full px-4 py-3 rounded-lg border focus:outline-none transition-all duration-[3000ms] ${
                       theme === 'light'
-                        ? currentGradient === 0 ? 'bg-green-50 border-green-200 focus:border-green-500 text-gray-900' :
-                          currentGradient === 1 ? 'bg-orange-50 border-orange-200 focus:border-orange-500 text-gray-900' :
-                          currentGradient === 2 ? 'bg-blue-50 border-blue-200 focus:border-blue-500 text-gray-900' :
-                          currentGradient === 3 ? 'bg-emerald-50 border-emerald-200 focus:border-emerald-500 text-gray-900' :
-                          'bg-purple-50 border-purple-200 focus:border-purple-500 text-gray-900'
-                        : 'bg-gray-800 border-gray-600 focus:border-purple-500 text-white'
+                        ? currentGradient === 0 ? 'bg-white/80 border-green-200 focus:border-green-500 text-gray-900' :
+                          currentGradient === 1 ? 'bg-white/80 border-orange-200 focus:border-orange-500 text-gray-900' :
+                          currentGradient === 2 ? 'bg-white/80 border-blue-200 focus:border-blue-500 text-gray-900' :
+                          currentGradient === 3 ? 'bg-white/80 border-emerald-200 focus:border-emerald-500 text-gray-900' :
+                          'bg-white/80 border-purple-200 focus:border-purple-500 text-gray-900'
+                        : 'bg-slate-700/80 border-slate-600 focus:border-purple-500 text-white'
                     }`}
                   >
                     {availabilityOptions.map((option) => (
@@ -695,12 +703,12 @@ const Merchandise: React.FC = () => {
                     onChange={(e) => setSelectedPriceType(e.target.value)}
                     className={`w-full px-4 py-3 rounded-lg border focus:outline-none transition-all duration-[3000ms] ${
                       theme === 'light'
-                        ? currentGradient === 0 ? 'bg-green-50 border-green-200 focus:border-green-500 text-gray-900' :
-                          currentGradient === 1 ? 'bg-orange-50 border-orange-200 focus:border-orange-500 text-gray-900' :
-                          currentGradient === 2 ? 'bg-blue-50 border-blue-200 focus:border-blue-500 text-gray-900' :
-                          currentGradient === 3 ? 'bg-emerald-50 border-emerald-200 focus:border-emerald-500 text-gray-900' :
-                          'bg-purple-50 border-purple-200 focus:border-purple-500 text-gray-900'
-                        : 'bg-gray-800 border-gray-600 focus:border-purple-500 text-white'
+                        ? currentGradient === 0 ? 'bg-white/80 border-green-200 focus:border-green-500 text-gray-900' :
+                          currentGradient === 1 ? 'bg-white/80 border-orange-200 focus:border-orange-500 text-gray-900' :
+                          currentGradient === 2 ? 'bg-white/80 border-blue-200 focus:border-blue-500 text-gray-900' :
+                          currentGradient === 3 ? 'bg-white/80 border-emerald-200 focus:border-emerald-500 text-gray-900' :
+                          'bg-white/80 border-purple-200 focus:border-purple-500 text-gray-900'
+                        : 'bg-slate-700/80 border-slate-600 focus:border-purple-500 text-white'
                     }`}
                   >
                     {priceTypeOptions.map((option) => (
@@ -721,12 +729,12 @@ const Merchandise: React.FC = () => {
                     onChange={(e) => setSortBy(e.target.value)}
                     className={`w-full px-4 py-3 rounded-lg border focus:outline-none transition-all duration-[3000ms] ${
                       theme === 'light'
-                        ? currentGradient === 0 ? 'bg-green-50 border-green-200 focus:border-green-500 text-gray-900' :
-                          currentGradient === 1 ? 'bg-orange-50 border-orange-200 focus:border-orange-500 text-gray-900' :
-                          currentGradient === 2 ? 'bg-blue-50 border-blue-200 focus:border-blue-500 text-gray-900' :
-                          currentGradient === 3 ? 'bg-emerald-50 border-emerald-200 focus:border-emerald-500 text-gray-900' :
-                          'bg-purple-50 border-purple-200 focus:border-purple-500 text-gray-900'
-                        : 'bg-gray-800 border-gray-600 focus:border-purple-500 text-white'
+                        ? currentGradient === 0 ? 'bg-white/80 border-green-200 focus:border-green-500 text-gray-900' :
+                          currentGradient === 1 ? 'bg-white/80 border-orange-200 focus:border-orange-500 text-gray-900' :
+                          currentGradient === 2 ? 'bg-white/80 border-blue-200 focus:border-blue-500 text-gray-900' :
+                          currentGradient === 3 ? 'bg-white/80 border-emerald-200 focus:border-emerald-500 text-gray-900' :
+                          'bg-white/80 border-purple-200 focus:border-purple-500 text-gray-900'
+                        : 'bg-slate-700/80 border-slate-600 focus:border-purple-500 text-white'
                     }`}
                   >
                     {sortOptions.map((option) => (
@@ -783,12 +791,12 @@ const Merchandise: React.FC = () => {
                       : 'bg-purple-600 text-white shadow-lg shadow-purple-500/25'
                     }`
                   : `${theme === 'light' 
-                      ? currentGradient === 0 ? 'bg-green-50/50 text-green-700 hover:bg-green-100/80' :
-                        currentGradient === 1 ? 'bg-orange-50/50 text-orange-700 hover:bg-orange-100/80' :
-                        currentGradient === 2 ? 'bg-blue-50/50 text-blue-700 hover:bg-blue-100/80' :
-                        currentGradient === 3 ? 'bg-emerald-50/50 text-emerald-700 hover:bg-emerald-100/80' :
-                        'bg-purple-50/50 text-purple-700 hover:bg-purple-100/80'
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
+                      ? currentGradient === 0 ? 'bg-white/70 border border-green-200 text-green-700 hover:bg-green-50/80' :
+                        currentGradient === 1 ? 'bg-white/70 border border-orange-200 text-orange-700 hover:bg-orange-50/80' :
+                        currentGradient === 2 ? 'bg-white/70 border border-blue-200 text-blue-700 hover:bg-blue-50/80' :
+                        currentGradient === 3 ? 'bg-white/70 border border-emerald-200 text-emerald-700 hover:bg-emerald-50/80' :
+                        'bg-white/70 border border-purple-200 text-purple-700 hover:bg-purple-50/80'
+                      : 'bg-slate-800/70 border border-slate-600 text-gray-300 hover:bg-slate-700/80 hover:text-white'
                     }`
               }`}
             >
@@ -830,12 +838,12 @@ const Merchandise: React.FC = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className={`group relative rounded-2xl backdrop-blur-xl border overflow-hidden transition-all duration-500 hover:scale-105 ${
                   theme === 'light'
-                    ? currentGradient === 0 ? 'bg-green-50/40 border-green-200/60 hover:shadow-xl hover:shadow-green-200/50' :
-                      currentGradient === 1 ? 'bg-orange-50/40 border-orange-200/60 hover:shadow-xl hover:shadow-orange-200/50' :
-                      currentGradient === 2 ? 'bg-blue-50/40 border-blue-200/60 hover:shadow-xl hover:shadow-blue-200/50' :
-                      currentGradient === 3 ? 'bg-emerald-50/40 border-emerald-200/60 hover:shadow-xl hover:shadow-emerald-200/50' :
-                      'bg-purple-50/40 border-purple-200/60 hover:shadow-xl hover:shadow-purple-200/50'
-                    : 'bg-gradient-to-br from-white/10 to-white/5 border-white/20 hover:border-white/40 hover:shadow-2xl hover:shadow-purple-500/20'
+                    ? currentGradient === 0 ? 'bg-white/70 border-green-200/60 hover:shadow-xl hover:shadow-green-200/50' :
+                      currentGradient === 1 ? 'bg-white/70 border-orange-200/60 hover:shadow-xl hover:shadow-orange-200/50' :
+                      currentGradient === 2 ? 'bg-white/70 border-blue-200/60 hover:shadow-xl hover:shadow-blue-200/50' :
+                      currentGradient === 3 ? 'bg-white/70 border-emerald-200/60 hover:shadow-xl hover:shadow-emerald-200/50' :
+                      'bg-white/70 border-purple-200/60 hover:shadow-xl hover:shadow-purple-200/50'
+                    : 'bg-gradient-to-br from-slate-800/70 to-slate-700/50 border-slate-600/60 hover:border-slate-500/80 hover:shadow-2xl hover:shadow-purple-500/20'
                 } ${viewMode === 'list' ? 'flex gap-6 p-6' : 'flex flex-col'}`}
               >
                 {/* Badges */}

@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Bell,
   Calendar,
-  CheckCircle,
   DollarSign,
   Film,
   Gift,
@@ -13,81 +12,98 @@ import {
   Music,
   Sun,
   Tv,
-  TrendingUp
+  TrendingUp,
+  Users,
+  User,
+  Star,
+  Share2,
+  Award,
+  Hash
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
+import generateRealNotifications from '../utils/notificationsAggregator';
 
-// Mock notification data
-const mockNotifications = [
-  {
-    id: '1',
-    type: 'investment',
-    title: 'Investment Confirmed',
-    message: 'Your investment of ₹25,000 in "Pathaan 2" has been confirmed.',
-    time: '10 minutes ago',
-    read: false,
-    icon: DollarSign,
-    action: 'View Investment',
-    project: { id: '1', title: 'Pathaan 2', type: 'film' }
-  },
-  {
-    id: '2',
-    type: 'return',
-    title: 'Returns Received',
-    message: 'You received ₹4,500 in returns from your "Sacred Games 3" investment.',
-    time: '2 hours ago',
-    read: false,
-    icon: TrendingUp,
-    action: 'View Returns',
-    project: { id: '16', title: 'Sacred Games 3', type: 'webseries' }
-  },
-  {
-    id: '3',
-    type: 'perk',
-    title: 'New Perk Available',
-    message: 'You\'ve unlocked the "Studio Recording Session" perk from "A.R. Rahman: Symphony of India".',
-    time: '1 day ago',
-    read: true,
-    icon: Gift,
-    action: 'Claim Perk',
-    project: { id: '2', title: 'A.R. Rahman: Symphony of India', type: 'music' }
-  },
-  {
-    id: '4',
-    type: 'event',
-    title: 'Upcoming Event',
-    message: 'Virtual Meet & Greet with the cast of "Pathaan 2" is scheduled for tomorrow at 6 PM.',
-    time: '1 day ago',
-    read: true,
-    icon: Calendar,
-    action: 'Add to Calendar',
-    project: { id: '1', title: 'Pathaan 2', type: 'film' }
-  },
-  {
-    id: '5',
-    type: 'system',
-    title: 'Profile Verification Completed',
-    message: 'Your profile has been successfully verified. You now have access to all investor features.',
-    time: '3 days ago',
-    read: true,
-    icon: CheckCircle,
-    action: 'View Profile'
-  }
-];
+// Notification types interface
+interface NotificationUser {
+  id: string;
+  name: string;
+  avatar: string;
+}
+
+interface NotificationProject {
+  id: string;
+  title: string;
+  type: string;
+}
+
+interface NotificationChannel {
+  id: string;
+  name: string;
+  avatar: string;
+}
+
+interface NotificationEvent {
+  id: string;
+  title: string;
+  attendees: number;
+}
+
+interface NotificationAchievement {
+  id: string;
+  name: string;
+  icon: string;
+}
+
+interface Notification {
+  id: string;
+  type: string;
+  category: string;
+  title: string;
+  message: string;
+  time: string;
+  read: boolean;
+  icon: React.ComponentType<{ className?: string }>;
+  action: string;
+  project?: NotificationProject;
+  user?: NotificationUser;
+  channel?: NotificationChannel;
+  event?: NotificationEvent;
+  achievement?: NotificationAchievement;
+}
+
+// Use real notifications generated from actual project and community data
+const mockNotifications: Notification[] = generateRealNotifications();
 
 interface NotificationDropdownProps {
   onViewAll: () => void;
   maxItems?: number;
+  disableDropdown?: boolean;
 }
 
-const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onViewAll, maxItems = 5 }) => {
+const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onViewAll, maxItems = 5, disableDropdown = false }) => {
   const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState(mockNotifications);
+  const [activeFilter, setActiveFilter] = useState<string>('all');
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Enhanced filter types with categories - Awesome colors
+  const filters = [
+    { id: 'all', label: 'All', icon: Bell, color: 'bg-gradient-to-r from-gray-500 to-gray-600' },
+    { id: 'community', label: 'Enter Circles', icon: Users, color: 'bg-gradient-to-r from-purple-500 to-purple-600' },
+    { id: 'friends', label: 'Friends', icon: User, color: 'bg-gradient-to-r from-blue-500 to-blue-600' },
+    { id: 'project', label: 'Project', icon: Film, color: 'bg-gradient-to-r from-green-500 to-green-600' },
+    { id: 'system', label: 'System', icon: Info, color: 'bg-gradient-to-r from-orange-500 to-orange-600' }
+  ];
 
   // Get unread count for badge
   const unreadCount = notifications.filter(n => !n.read).length;
+
+  // Get filtered notifications
+  const filteredNotifications = notifications.filter(notification => {
+    if (activeFilter === 'all') return true;
+    return notification.category === activeFilter;
+  });
 
   // Handle click outside to close dropdown
   useEffect(() => {
@@ -138,39 +154,86 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onViewAll, 
       case 'funding': return <TrendingUp className="w-5 h-5" />;
       case 'message': return <MessageCircle className="w-5 h-5" />;
       case 'system': return <Info className="w-5 h-5" />;
+      case 'friend_joined': return <User className="w-5 h-5" />;
+      case 'friend_request': return <User className="w-5 h-5" />;
+      case 'friend_message': return <MessageCircle className="w-5 h-5" />;
+      case 'friend_investment': return <DollarSign className="w-5 h-5" />;
+      case 'friend_recommendation': return <Star className="w-5 h-5" />;
+      case 'friend_activity': return <Share2 className="w-5 h-5" />;
+      case 'channel_update': return <Hash className="w-5 h-5" />;
+      case 'community_event': return <Users className="w-5 h-5" />;
+      case 'achievement': return <Award className="w-5 h-5" />;
       default: return <Bell className="w-5 h-5" />;
     }
   };
 
-  // Get background color for notification type
-  const getNotificationColor = (type: string) => {
-    switch (type) {
-      case 'investment': 
-        return theme === 'light' ? 'bg-blue-100 text-blue-600' : 'bg-blue-900/30 text-blue-400';
-      case 'return': 
-        return theme === 'light' ? 'bg-green-100 text-green-600' : 'bg-green-900/30 text-green-400';
-      case 'perk': 
-        return theme === 'light' ? 'bg-yellow-100 text-yellow-600' : 'bg-yellow-900/30 text-yellow-400';
-      case 'event': 
-        return theme === 'light' ? 'bg-purple-100 text-purple-600' : 'bg-purple-900/30 text-purple-400';
-      case 'system': 
-        return theme === 'light' ? 'bg-gray-100 text-gray-600' : 'bg-gray-900/30 text-gray-400';
-      case 'funding': 
-        return theme === 'light' ? 'bg-indigo-100 text-indigo-600' : 'bg-indigo-900/30 text-indigo-400';
-      case 'message': 
-        return theme === 'light' ? 'bg-pink-100 text-pink-600' : 'bg-pink-900/30 text-pink-400';
-      default: 
-        return theme === 'light' ? 'bg-gray-100 text-gray-600' : 'bg-gray-900/30 text-gray-400';
+  // Enhanced color system for different notification types
+  const getNotificationColor = (type: string, category: string) => {
+    // Category-based colors
+    if (category === 'community') {
+      switch (type) {
+        case 'friend_joined': 
+          return theme === 'light' ? 'bg-purple-100 text-purple-600' : 'bg-purple-900/30 text-purple-400';
+        case 'channel_update': 
+          return theme === 'light' ? 'bg-indigo-100 text-indigo-600' : 'bg-indigo-900/30 text-indigo-400';
+        case 'friend_investment': 
+          return theme === 'light' ? 'bg-cyan-100 text-cyan-600' : 'bg-cyan-900/30 text-cyan-400';
+        case 'community_event': 
+          return theme === 'light' ? 'bg-orange-100 text-orange-600' : 'bg-orange-900/30 text-orange-400';
+        case 'achievement': 
+          return theme === 'light' ? 'bg-yellow-100 text-yellow-600' : 'bg-yellow-900/30 text-yellow-400';
+        default: 
+          return theme === 'light' ? 'bg-purple-100 text-purple-600' : 'bg-purple-900/30 text-purple-400';
+      }
     }
+    
+    if (category === 'friends') {
+      switch (type) {
+        case 'friend_request': 
+          return theme === 'light' ? 'bg-blue-100 text-blue-600' : 'bg-blue-900/30 text-blue-400';
+        case 'friend_message': 
+          return theme === 'light' ? 'bg-pink-100 text-pink-600' : 'bg-pink-900/30 text-pink-400';
+        case 'friend_recommendation': 
+          return theme === 'light' ? 'bg-emerald-100 text-emerald-600' : 'bg-emerald-900/30 text-emerald-400';
+        case 'friend_activity': 
+          return theme === 'light' ? 'bg-teal-100 text-teal-600' : 'bg-teal-900/30 text-teal-400';
+        default: 
+          return theme === 'light' ? 'bg-blue-100 text-blue-600' : 'bg-blue-900/30 text-blue-400';
+      }
+    }
+    
+    if (category === 'project') {
+      switch (type) {
+        case 'investment': 
+          return theme === 'light' ? 'bg-green-100 text-green-600' : 'bg-green-900/30 text-green-400';
+        case 'return': 
+          return theme === 'light' ? 'bg-emerald-100 text-emerald-600' : 'bg-emerald-900/30 text-emerald-400';
+        case 'perk': 
+          return theme === 'light' ? 'bg-amber-100 text-amber-600' : 'bg-amber-900/30 text-amber-400';
+        case 'event': 
+          return theme === 'light' ? 'bg-violet-100 text-violet-600' : 'bg-violet-900/30 text-violet-400';
+        case 'system': 
+          return theme === 'light' ? 'bg-gray-100 text-gray-600' : 'bg-gray-900/30 text-gray-400';
+        case 'funding': 
+          return theme === 'light' ? 'bg-indigo-100 text-indigo-600' : 'bg-indigo-900/30 text-indigo-400';
+        case 'message': 
+          return theme === 'light' ? 'bg-rose-100 text-rose-600' : 'bg-rose-900/30 text-rose-400';
+        default: 
+          return theme === 'light' ? 'bg-green-100 text-green-600' : 'bg-green-900/30 text-green-400';
+      }
+    }
+    
+    return theme === 'light' ? 'bg-gray-100 text-gray-600' : 'bg-gray-900/30 text-gray-400';
   };
 
   // Get project icon based on project type
   const getProjectIcon = (type: string) => {
+    const iconColor = theme === 'light' ? 'text-gray-600' : 'text-gray-300';
     switch (type) {
-      case 'film': return <Film className="w-4 h-4" />;
-      case 'music': return <Music className="w-4 h-4" />;
-      case 'webseries': return <Tv className="w-4 h-4" />;
-      default: return <Film className="w-4 h-4" />;
+      case 'film': return <Film className={`w-4 h-4 ${iconColor}`} />;
+      case 'music': return <Music className={`w-4 h-4 ${iconColor}`} />;
+      case 'webseries': return <Tv className={`w-4 h-4 ${iconColor}`} />;
+      default: return <Film className={`w-4 h-4 ${iconColor}`} />;
     }
   };
 
@@ -178,7 +241,13 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onViewAll, 
     <div ref={dropdownRef} className="relative">
       {/* Notification Bell Button */}
       <button 
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (disableDropdown) {
+            onViewAll();
+          } else {
+            setIsOpen(!isOpen);
+          }
+        }}
         className={`p-2 rounded-lg transition-all duration-[3000ms] relative ${theme === 'light' ? 'text-gray-600 hover:text-gray-900' : 'text-gray-300 hover:text-white'}`}
       >
         <Bell className="w-5 h-5 drop-shadow-lg" />
@@ -199,7 +268,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onViewAll, 
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={`fixed md:absolute top-16 md:top-auto right-2 md:right-0 mt-0 md:mt-2 w-72 md:w-80 rounded-xl border shadow-xl z-[55] overflow-hidden ${
+            className={`fixed md:absolute top-16 md:top-auto right-2 md:right-0 mt-0 md:mt-2 w-80 md:w-96 rounded-xl border shadow-xl z-[55] overflow-hidden ${
               theme === 'light'
                 ? 'bg-white border-gray-200'
                 : 'bg-gray-900 border-gray-700'
@@ -207,7 +276,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onViewAll, 
           >
             {/* Header */}
             <div className={`p-3 md:p-4 border-b ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-3">
                 <h3 className={`font-semibold text-sm md:text-base ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                   Notifications
                 </h3>
@@ -232,12 +301,56 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onViewAll, 
                   </button>
                 </div>
               </div>
+              
+              {/* Filter Tabs - Icons Only with Hover/Active Text */}
+              <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-hide">
+                {filters.map((filter) => {
+                  const IconComponent = filter.icon;
+                  const isActive = activeFilter === filter.id;
+                  const count = filter.id === 'all' 
+                    ? notifications.length 
+                    : notifications.filter(n => n.category === filter.id).length;
+                  
+                  return (
+                    <button
+                      key={filter.id}
+                      onClick={() => setActiveFilter(filter.id)}
+                      className={`group flex-shrink-0 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg text-xs transition-all duration-200 ${
+                        isActive
+                          ? `${filter.color} text-white`
+                          : theme === 'light'
+                            ? 'text-gray-600 hover:bg-gray-100'
+                            : 'text-gray-400 hover:bg-gray-800'
+                      }`}
+                      title={filter.label}
+                    >
+                      <IconComponent className="w-3 h-3" />
+                      <span className={`whitespace-nowrap transition-all duration-200 ${
+                        isActive 
+                          ? 'opacity-100 max-w-20' 
+                          : 'opacity-0 max-w-0 group-hover:opacity-100 group-hover:max-w-20'
+                      } overflow-hidden`}>
+                        {filter.label}
+                      </span>
+                      <span className={`px-1 py-0.5 rounded text-xs font-bold min-w-[16px] text-center transition-all duration-200 ${
+                        isActive
+                          ? 'bg-white/20 text-white'
+                          : theme === 'light'
+                            ? 'bg-gray-100 text-gray-600'
+                            : 'bg-gray-700 text-gray-300'
+                      }`}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Notification List */}
             <div className="max-h-96 overflow-y-auto">
-              {notifications.length > 0 ? (
-                notifications.slice(0, maxItems).map((notification) => (
+              {filteredNotifications.length > 0 ? (
+                filteredNotifications.slice(0, maxItems).map((notification) => (
                   <div 
                     key={notification.id}
                     onClick={() => markAsRead(notification.id)}
@@ -248,76 +361,107 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({ onViewAll, 
                           : 'bg-gray-900 border-gray-700 hover:bg-gray-800'
                         : theme === 'light'
                           ? 'bg-purple-50 border-purple-100 hover:bg-purple-100/50'
-                          : 'bg-purple-900/10 border-purple-800/20 hover:bg-purple-900/20'
+                          : 'bg-purple-900/20 border-purple-700 hover:bg-purple-900/30'
                     }`}
                   >
+                    {/* Unread indicator */}
+                    {!notification.read && (
+                      <div className="absolute top-3 left-3 w-1.5 h-1.5 bg-red-500 rounded-full" />
+                    )}
+                    
                     <div className="flex items-start gap-3">
-                      {/* Notification Icon */}
-                      <div className={`p-2 rounded-lg ${getNotificationColor(notification.type)}`}>
+                      {/* Icon */}
+                      <div className={`flex-shrink-0 p-2 rounded-lg ${getNotificationColor(notification.type, notification.category)}`}>
                         {getNotificationIcon(notification)}
                       </div>
                       
-                      {/* Notification Content */}
+                      {/* Content */}
                       <div className="flex-1 min-w-0">
-                        <h4 className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                          {notification.title}
-                        </h4>
-                        <p className={`text-sm mt-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <h4 className={`font-semibold text-sm ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                            {notification.title}
+                          </h4>
+                          <span className={`text-xs ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                            {notification.time}
+                          </span>
+                        </div>
+                        
+                        <p className={`text-xs mb-2 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
                           {notification.message}
                         </p>
                         
-                        {/* Project Tag if applicable */}
-                        {notification.project && (
-                          <div className="flex items-center gap-2 mt-2">
-                            <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${
-                              notification.project.type === 'film'
-                                ? theme === 'light' ? 'bg-purple-100 text-purple-700' : 'bg-purple-900/30 text-purple-400'
-                                : notification.project.type === 'music'
-                                ? theme === 'light' ? 'bg-blue-100 text-blue-700' : 'bg-blue-900/30 text-blue-400'
-                                : theme === 'light' ? 'bg-green-100 text-green-700' : 'bg-green-900/30 text-green-400'
-                            }`}>
-                              {getProjectIcon(notification.project.type)}
-                              <span>{notification.project.title}</span>
-                            </div>
+                        {/* Additional Info */}
+                        {(notification.user || notification.project || notification.channel) && (
+                          <div className="flex items-center gap-2 mb-2">
+                            {notification.user && (
+                              <div className="flex items-center gap-1">
+                                <img
+                                  src={notification.user.avatar}
+                                  alt={notification.user.name}
+                                  className="w-4 h-4 rounded-full"
+                                />
+                                <span className={`text-xs font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                                  {notification.user.name}
+                                </span>
+                              </div>
+                            )}
+                            
+                            {notification.project && (
+                              <div className="flex items-center gap-1">
+                                {getProjectIcon(notification.project.type)}
+                                <span className={`text-xs font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                                  {notification.project.title}
+                                </span>
+                              </div>
+                            )}
+                            
+                            {notification.channel && (
+                              <div className="flex items-center gap-1">
+                                <img
+                                  src={notification.channel.avatar}
+                                  alt={notification.channel.name}
+                                  className="w-4 h-4 rounded-full"
+                                />
+                                <span className={`text-xs font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                                  {notification.channel.name}
+                                </span>
+                              </div>
+                            )}
                           </div>
                         )}
                         
-                        <div className={`text-xs mt-2 ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'}`}>
-                          {notification.time}
+                        {/* Action */}
+                        <div className={`text-xs font-medium ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'}`}>
+                          {notification.action}
                         </div>
                       </div>
                     </div>
-                    
-                    {/* Unread Indicator */}
-                    {!notification.read && (
-                      <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-purple-500" />
-                    )}
                   </div>
                 ))
               ) : (
-                <div className="p-6 text-center">
-                  <Bell className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-gray-300' : 'text-gray-700'}`} />
-                  <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                    No notifications yet
+                <div className={`p-6 text-center ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <Bell className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">
+                    {activeFilter === 'all' 
+                      ? 'No notifications'
+                      : `No ${activeFilter} notifications`
+                    }
                   </p>
                 </div>
               )}
             </div>
 
             {/* Footer */}
-            <div className={`p-2 md:p-3 border-t ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}>
+            <div className={`p-3 border-t ${theme === 'light' ? 'border-gray-200' : 'border-gray-700'}`}>
               <button
-                onClick={() => {
-                  setIsOpen(false);
-                  onViewAll();
-                }}
-                className={`w-full py-2 text-center rounded-lg transition-colors text-sm md:text-base ${
+                onClick={onViewAll}
+                className={`w-full text-center text-sm font-medium transition-colors ${
                   theme === 'light'
-                    ? 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-                    : 'bg-purple-900/20 text-purple-400 hover:bg-purple-900/30'
+                    ? 'text-purple-600 hover:text-purple-800'
+                    : 'text-purple-400 hover:text-purple-300'
                 }`}
               >
-                View All Notifications
+                View all notifications
               </button>
             </div>
           </motion.div>

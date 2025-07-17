@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom scrollbar utilities */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -23,8 +34,8 @@
 
   /* Light theme */
   .light {
-    --bg-primary: #f9f9fb;
-    --bg-secondary: #f6f6f9;
+    --bg-primary: #fdf2f8;
+    --bg-secondary: #fce7f3;
     --text-primary: #1f2937;
     --text-secondary: #6b7280;
   }
@@ -319,8 +330,8 @@
 
   /* Light theme overrides */
   .light {
-    .bg-black { @apply bg-white; }
-    .bg-gray-900 { @apply bg-gray-50; }
+    .bg-black { @apply bg-pink-50; }
+    .bg-gray-900 { @apply bg-pink-50; }
     .text-white { @apply text-gray-900; }
     .text-gray-300 { @apply text-gray-600; }
     
@@ -1036,5 +1047,21 @@ html, body {
 
 .light html, .light body {
   background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%) !important;
+}
+
+/* Ensure white text on posters is always pure white */
+.poster-text-white {
+  color: #ffffff !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Override any theme-based text colors for poster overlays */
+[class*="text-white"] {
+  color: #ffffff !important;
+}
+
+/* Stronger drop shadows for better readability */
+.drop-shadow-2xl {
+  filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.8)) !important;
 }
 

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, memo, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import { ThemeContext } from './ThemeProvider';
 import { 
   ArrowLeft, 
   Play, 
@@ -40,6 +41,7 @@ import {
 
 import { Project, KeyPerson } from '../types';
 import { useTMDBProjectData, getMainCast, getKeyCrew } from '../hooks/useTMDBProjectData';
+import { getTextColor, getBorderColor, getMainBgColor } from '../utils/themeUtils';
 
 // Import logo image
 import circlesLogo from '../images/circles-logo-main.png';
@@ -52,45 +54,18 @@ interface ProjectDetailPageProps {
   initialTab?: 'overview' | 'invest' | 'perks' | 'milestones' | 'team' | 'story' | 'gallery' | 'updates' | 'community' | 'reviews' | 'faqs' | 'legal';
 }
 
-interface FundingStats {
-  totalInvestors: number;
-  averageInvestment: number;
-  remainingAmount: number;
-  daysSinceCreated: number;
-  fundingVelocity: number;
-}
 
-interface FundingMilestone {
-  percentage: number;
-  label: string;
-  achieved: boolean;
-  icon: string;
-}
-
-interface NavigationTab {
-  id: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  color: string;
-}
-
-interface TimeRemaining {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
-type TabType = 'overview' | 'invest' | 'perks' | 'milestones' | 'team' | 'story' | 'gallery' | 'updates' | 'community' | 'reviews' | 'faqs' | 'legal';
-type PaymentMethod = 'upi' | 'card' | 'netbanking';
 
 /**
  * 🎯 ProjectDetailPage - Optimized project detail component with enhanced performance
  * @description Comprehensive project detail page with investment functionality and rich media content
  */
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onClose, onInvest, initialTab = 'overview' }) => {
+  const themeContext = useContext(ThemeContext);
+  const theme = themeContext.theme;
 
   const [activeTab, setActiveTab] = useState(initialTab);
+  const [tabChangeKey, setTabChangeKey] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState(10000);
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
@@ -114,37 +89,41 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   // Scroll to appropriate section when component mounts or initialTab changes
   useEffect(() => {
     setActiveTab(initialTab);
+    setTabChangeKey(prev => prev + 1);
     
-    // Scroll to the content area after a short delay to ensure rendering
-    setTimeout(() => {
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
       if (contentAreaRef.current) {
-        contentAreaRef.current.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
+        contentAreaRef.current.scrollTop = 0;
+        contentAreaRef.current.scrollTo(0, 0);
       }
-    }, 100);
+    });
   }, [initialTab]);
 
   // Scroll to top when activeTab changes
   useEffect(() => {
-    if (contentAreaRef.current) {
-      // Immediate scroll
-      contentAreaRef.current.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-      
-      // Additional scroll after content renders
-      setTimeout(() => {
-        if (contentAreaRef.current) {
-          contentAreaRef.current.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        }
-      }, 100);
-    }
+    // Multiple attempts to ensure scroll reset works
+    const scrollToTop = () => {
+      if (contentAreaRef.current) {
+        contentAreaRef.current.scrollTop = 0;
+        contentAreaRef.current.scrollTo(0, 0);
+      }
+    };
+    
+    // Immediate attempt
+    scrollToTop();
+    
+    // Try after a short delay
+    setTimeout(scrollToTop, 0);
+    
+    // Try after animation frame
+    requestAnimationFrame(scrollToTop);
+    
+    // Try after a longer delay to ensure content is rendered
+    setTimeout(scrollToTop, 100);
+    
+    // Final attempt after animation completes
+    setTimeout(scrollToTop, 500);
   }, [activeTab]);
 
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -158,15 +137,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   });
   const [heroOpacity, setHeroOpacity] = useState(1);
   const [heroScale, setHeroScale] = useState(1);
-  const [isTrailerPlaying, setIsTrailerPlaying] = useState(false);
-  const [isTrailerLoading, setIsTrailerLoading] = useState(false);
-  const [trailerError, setTrailerError] = useState<string | null>(null);
-  const [showTrailerControls, setShowTrailerControls] = useState(false);
-  const [trailerVolume, setTrailerVolume] = useState(50);
-  const [isTrailerMuted, setIsTrailerMuted] = useState(false);
-  const [trailerProgress, setTrailerProgress] = useState(0);
-  const [isTrailerFullscreen, setIsTrailerFullscreen] = useState(false);
-  const [isYouTubeTrailer, setIsYouTubeTrailer] = useState(false);
+
   const [posterVisible, setPosterVisible] = useState(true);
   const [searchVideoId, setSearchVideoId] = useState<string | null>(null);
   const [isSearchVideoLoading, setIsSearchVideoLoading] = useState(false);
@@ -174,10 +145,26 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const trailerRef = useRef<HTMLIFrameElement>(null);
-  const trailerContainerRef = useRef<HTMLDivElement>(null);
-  const youtubePlayerRef = useRef<any>(null);
+
   const contentAreaRef = useRef<HTMLDivElement>(null);
+  const mainContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Callback ref to ensure scroll reset when content area is mounted
+  const setContentAreaRef = useCallback((node: HTMLDivElement | null) => {
+    if (node) {
+      // Immediately scroll to top when content area is mounted
+      node.scrollTop = 0;
+      node.scrollTo(0, 0);
+      
+      // Also try after a short delay
+      setTimeout(() => {
+        if (node) {
+          node.scrollTop = 0;
+          node.scrollTo(0, 0);
+        }
+      }, 0);
+    }
+  }, []);
 
   // Calculate funding statistics
   const fundingStats = {
@@ -325,21 +312,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     return num.toString();
   };
 
-  const handleVideoPlay = () => {
-    if (videoRef.current) {
-      if (isVideoPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsVideoPlaying(!isVideoPlaying);
-    }
-  };
+
 
   const handleVideoLoad = () => {
     // Start playing video immediately when it loads
     setIsVideoPlaying(true);
-    setIsYouTubeTrailer(!!embedUrl);
     if (videoRef.current && !embedUrl) {
       videoRef.current.volume = 0.5;
       videoRef.current.muted = false;
@@ -361,68 +338,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     }, 2000);
   };
 
-  const scriptExcerpt = (
-    (project as any).scriptExcerpt || `EXT. VILLAGE SQUARE - DAY\n\nThe sun blazes down on a bustling market. Two outlaws, VEERU and JAI, weave through the crowd, eyes alert.\n\nVEERU (whispering)\nWe need to lose them.\n\nJAI\nJust follow my lead.\n\nSuddenly, a whistle. The POLICE are close. The chase is on...`
-  );
 
-  // Static perks data for demonstration
-  const staticPerks = [
-    {
-      id: '1',
-      title: 'Digital Certificate of Investment',
-      description: 'Official digital certificate recognizing your investment',
-      projectId: project?.id,
-      projectTitle: project?.title,
-      tier: 'supporter' as const,
-      minAmount: 10000,
-      createdAt: '2023-12-15T11:30:00Z',
-      type: 'free' as const,
-      status: 'active' as const,
-      virtual: true,
-      requiresVerification: false,
-      estimatedValue: 2500,
-      tags: ['digital', 'certificate', 'recognition']
-    },
-    {
-      id: '2',
-      title: 'Community Casting Vote',
-      description: 'Vote on cast members for upcoming projects',
-      projectId: project?.id,
-      projectTitle: project?.title,
-      tier: 'backer' as const,
-      minAmount: 25000,
-      createdAt: '2023-12-16T14:45:00Z',
-      type: 'voting' as const,
-      status: 'upcoming' as const,
-      startDate: '2024-02-01T00:00:00Z',
-      endDate: '2024-02-15T23:59:59Z',
-      virtual: true,
-      requiresVerification: true,
-      estimatedValue: 5000,
-      tags: ['voting', 'casting', 'community']
-    },
-    {
-      id: '3',
-      title: 'VIP Set Visit Experience',
-      description: 'Exclusive set visit with crew interaction',
-      projectId: project?.id,
-      projectTitle: project?.title,
-      tier: 'producer' as const,
-      minAmount: 75000,
-      createdAt: '2023-11-12T09:30:00Z',
-      type: 'exclusive' as const,
-      status: 'upcoming' as const,
-      startDate: '2024-03-15T09:00:00Z',
-      endDate: '2024-03-15T17:00:00Z',
-      location: 'Mumbai Film City',
-      maxParticipants: 20,
-      currentParticipants: 8,
-      virtual: false,
-      requiresVerification: true,
-      estimatedValue: 15000,
-      tags: ['exclusive', 'set-visit', 'vip']
-    }
-  ];
+
+
 
   const getTierInfo = (tier: string) => {
     switch (tier) {
@@ -443,15 +361,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     }
   };
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'free': return 'bg-green-100 text-green-700';
-      case 'voting': return 'bg-purple-100 text-purple-700';
-      case 'exclusive': return 'bg-yellow-100 text-yellow-700';
-      case 'limited': return 'bg-yellow-100 text-yellow-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
+
 
   // Extract YouTube video ID from URL
   const getYouTubeVideoId = (url: string): string | null => {
@@ -505,53 +415,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     }
   }, [embedUrl]);
 
-  const handleTrailerPlay = () => {
-    if (isSearchQuery) {
-      // For search queries, open in new tab
-      window.open(project.trailer, '_blank');
-      return;
-    }
-    
-    if (!embedUrl) {
-      setTrailerError('Trailer not available');
-      return;
-    }
-    
-    setIsTrailerLoading(true);
-    setTrailerError(null);
-    
-    // Simulate loading delay for better UX
-    setTimeout(() => {
-      setIsTrailerLoading(false);
-      setIsTrailerPlaying(true);
-    }, 1500);
-  };
 
-  const handleTrailerLoad = () => {
-    setIsTrailerLoading(false);
-    setIsTrailerPlaying(true);
-  };
 
-  const handleTrailerError = () => {
-    setIsTrailerLoading(false);
-    setTrailerError('Failed to load trailer. Please try again.');
-  };
-
-  const handleTrailerClose = () => {
-    setIsTrailerPlaying(false);
-    setTrailerError(null);
-  };
-
-  const handleTrailerFullscreen = () => {
-    if (trailerContainerRef.current) {
-      if (!isTrailerFullscreen) {
-        trailerContainerRef.current.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-      setIsTrailerFullscreen(!isTrailerFullscreen);
-    }
-  };
 
   const toggleMute = () => {
     setIsMuted((prev) => {
@@ -589,45 +454,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     });
   };
 
-  const togglePause = () => {
-    setIsVideoPlaying((prev) => {
-      if (videoRef.current) {
-        if (prev) {
-          videoRef.current.pause();
-        } else {
-          videoRef.current.play();
-        }
-      }
-      // For YouTube videos, use the YouTube Player API if available
-      if (embedUrl && iframeRef.current) {
-        try {
-          // Try to use YouTube Player API for better control
-          const iframe = iframeRef.current;
-          if (iframe.contentWindow && (iframe.contentWindow as any).postMessage) {
-            const command = prev ? 'pauseVideo' : 'playVideo';
-            iframe.contentWindow.postMessage(
-              JSON.stringify({ event: 'command', func: command, args: [] }),
-              '*'
-            );
-          } else {
-            // Fallback: reload iframe with new autoplay parameter
-            const currentSrc = iframe.src;
-            const newAutoplayParam = prev ? '&autoplay=0' : '&autoplay=1';
-            const newSrc = currentSrc.replace(/&autoplay=[01]/, '') + newAutoplayParam;
-            iframe.src = newSrc;
-          }
-        } catch (error) {
-          console.log('YouTube Player API not available, using fallback');
-          // Fallback: reload iframe with new autoplay parameter
-          const currentSrc = iframeRef.current.src;
-          const newAutoplayParam = prev ? '&autoplay=0' : '&autoplay=1';
-          const newSrc = currentSrc.replace(/&autoplay=[01]/, '') + newAutoplayParam;
-          iframeRef.current.src = newSrc;
-        }
-      }
-      return !prev;
-    });
-  };
+
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -754,14 +581,17 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
   return (
     <motion.div
+      ref={mainContainerRef}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 overflow-y-auto bg-black"
+      className={`fixed inset-0 z-50 overflow-y-auto ${getMainBgColor(theme)}`}
     >
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/90 backdrop-blur-sm"
+        className={`absolute inset-0 backdrop-blur-sm ${
+          theme === 'light' ? 'bg-pink-100/90' : 'bg-black/90'
+        }`}
         onClick={onClose}
       />
       
@@ -805,14 +635,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           ) : isSearchVideoLoading ? (
             <>
               {/* Loading state for search video */}
-              <div className="absolute inset-0 w-full h-full bg-gray-900 flex items-center justify-center">
+              <div className={`absolute inset-0 w-full h-full ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-900'} flex items-center justify-center`}>
                 <div className="text-center">
                   <div className="relative mb-4">
                     <Loader2 className="w-16 h-16 text-red-500 animate-spin mx-auto" />
                     <div className="absolute inset-0 rounded-full bg-red-500/20 animate-ping" />
                   </div>
-                  <p className="text-white font-semibold">Loading Video...</p>
-                  <p className="text-gray-400 text-sm mt-2">Searching for related content</p>
+                  <p className={`font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Loading Video...</p>
+                  <p className={`text-sm mt-2 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Searching for related content</p>
                 </div>
               </div>
             </>
@@ -1079,18 +909,18 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         <motion.div
           initial={{ x: -300 }}
           animate={{ x: 0 }}
-          className="w-80 bg-gradient-to-b from-gray-900/95 to-black/95 backdrop-blur-xl border-r border-gray-800/50 overflow-y-auto sticky top-0 h-screen"
+          className={`w-80 ${theme === 'light' ? 'bg-white/95' : 'bg-gradient-to-b from-gray-900/95 to-black/95'} backdrop-blur-xl border-r ${getBorderColor(theme)} overflow-y-auto sticky top-0 h-screen`}
         >
           <div className="p-6">
             {/* Close Button */}
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">Project Details</h2>
+              <h2 className={`text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent'}`}>Project Details</h2>
               <button
                 onClick={onClose}
-                className="group relative p-3 rounded-xl bg-gradient-to-r from-gray-800/50 via-gray-700/50 to-gray-600/50 text-gray-300 hover:from-purple-600/20 hover:via-pink-600/20 hover:to-rose-600/20 hover:text-white transition-all duration-300 border border-gray-600/30 hover:border-purple-500/50 overflow-hidden"
+                className={`group relative p-3 rounded-xl ${theme === 'light' ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-200' : 'bg-gradient-to-r from-gray-800/50 via-gray-700/50 to-gray-600/50 text-gray-300 hover:from-purple-600/20 hover:via-pink-600/20 hover:to-rose-600/20 hover:text-white border-gray-600/30 hover:border-purple-500/50'} transition-all duration-300 border overflow-hidden`}
               >
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-400/10 via-pink-400/10 to-rose-400/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className={`absolute inset-0 ${theme === 'light' ? 'bg-gray-200/50' : 'bg-gradient-to-r from-purple-400/10 via-pink-400/10 to-rose-400/10'} rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                 <ArrowLeft className="relative w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
               </button>
             </div>
@@ -1103,22 +933,43 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                   initial={{ x: -50, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={() => {
+                    setActiveTab(tab.id as any);
+                    setTabChangeKey(prev => prev + 1);
+                    // Force scroll to top immediately when tab is clicked
+                    setTimeout(() => {
+                      if (contentAreaRef.current) {
+                        contentAreaRef.current.scrollTop = 0;
+                        contentAreaRef.current.scrollTo(0, 0);
+                      }
+                    }, 0);
+                    // Also try after a short delay to ensure it works
+                    setTimeout(() => {
+                      if (contentAreaRef.current) {
+                        contentAreaRef.current.scrollTop = 0;
+                        contentAreaRef.current.scrollTo(0, 0);
+                      }
+                    }, 100);
+                  }}
                   className={`group relative w-full flex items-center gap-4 p-5 rounded-2xl text-left transition-all duration-500 overflow-hidden ${
                     activeTab === tab.id
-                      ? 'bg-gradient-to-r from-purple-600/30 via-pink-600/20 to-rose-600/30 border border-purple-500/40 text-white shadow-2xl shadow-purple-500/30'
-                      : 'text-gray-300 hover:bg-gradient-to-r hover:from-gray-800/50 hover:to-gray-700/50 hover:text-white border border-transparent hover:border-gray-600/30'
+                      ? theme === 'light' 
+                        ? 'bg-purple-100 border border-purple-300 text-purple-900 shadow-lg shadow-purple-200'
+                        : 'bg-gradient-to-r from-purple-600/30 via-pink-600/20 to-rose-600/30 border border-purple-500/40 text-white shadow-2xl shadow-purple-500/30'
+                      : theme === 'light'
+                        ? `${getTextColor(theme, 'secondary')} hover:bg-gray-100 border border-transparent hover:border-gray-300`
+                        : 'text-gray-300 hover:bg-gradient-to-r hover:from-gray-800/50 hover:to-gray-700/50 hover:text-white border border-transparent hover:border-gray-600/30'
                   }`}
                 >
-                  <div className={`absolute inset-0 bg-gradient-to-r ${tab.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
-                  <div className={`relative p-3 rounded-xl bg-gradient-to-r ${tab.color} text-white shadow-lg group-hover:scale-110 transition-transform duration-300 overflow-hidden`}>
+                  <div className={`absolute inset-0 ${theme === 'light' ? 'bg-purple-100/50' : `bg-gradient-to-r ${tab.color}`} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                  <div className={`relative p-3 rounded-xl ${theme === 'light' ? 'bg-purple-500 text-white' : `bg-gradient-to-r ${tab.color} text-white`} shadow-lg group-hover:scale-110 transition-transform duration-300 overflow-hidden`}>
                     <tab.icon className="relative w-5 h-5" />
                   </div>
                   <span className="relative font-semibold text-sm">{tab.label}</span>
                   {activeTab === tab.id && (
                     <motion.div
                       layoutId="activeTab"
-                      className="relative w-2 h-10 bg-gradient-to-b from-purple-400 via-pink-400 to-rose-400 rounded-full ml-auto shadow-lg shadow-purple-500/50"
+                      className={`relative w-2 h-10 ${theme === 'light' ? 'bg-purple-500' : 'bg-gradient-to-b from-purple-400 via-pink-400 to-rose-400'} rounded-full ml-auto shadow-lg ${theme === 'light' ? 'shadow-purple-300' : 'shadow-purple-500/50'}`}
                     />
                   )}
                 </motion.button>
@@ -1128,22 +979,42 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         </motion.div>
 
         {/* Right Content Area */}
-        <div ref={contentAreaRef} className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-900 to-black">
+        <div 
+          key={`content-area-${activeTab}-${tabChangeKey}`}
+          ref={setContentAreaRef} 
+          className={`flex-1 overflow-y-auto ${theme === 'light' ? 'bg-pink-100' : 'bg-gradient-to-b from-gray-900 to-black'}`}
+        >
 
           {/* Content Sections */}
           <div className="relative z-10">
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeTab}
+                key={`${activeTab}-${tabChangeKey}`}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -50 }}
                 transition={{ duration: 0.5 }}
                 className="p-8"
+                onAnimationComplete={() => {
+                  // Ensure scroll to top after animation completes
+                  setTimeout(() => {
+                    if (contentAreaRef.current) {
+                      contentAreaRef.current.scrollTop = 0;
+                      contentAreaRef.current.scrollTo(0, 0);
+                    }
+                  }, 0);
+                  // Also try after animation delay to ensure it works
+                  setTimeout(() => {
+                    if (contentAreaRef.current) {
+                      contentAreaRef.current.scrollTop = 0;
+                      contentAreaRef.current.scrollTo(0, 0);
+                    }
+                  }, 200);
+                }}
               >
                 {/* Content will be rendered based on activeTab */}
-                <div className="text-white">
-                  <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent drop-shadow-lg">
+                <div className={getTextColor(theme, 'primary')}>
+                  <h2 className={`text-4xl font-bold mb-8 ${theme === 'light' ? 'text-gray-900' : 'bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent'} drop-shadow-lg`}>
                     {navigationTabs.find(tab => tab.id === activeTab)?.label}
                   </h2>
                   
@@ -1155,84 +1026,84 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="group relative bg-gradient-to-br from-gray-800/50 via-gray-900/50 to-black/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50 hover:border-purple-500/30 transition-all duration-500 shadow-2xl shadow-purple-500/10 hover:shadow-purple-500/20"
+                          className={`group relative ${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 via-gray-900/50 to-black/50'} backdrop-blur-xl rounded-3xl p-8 border ${theme === 'light' ? 'border-gray-200 hover:border-purple-300' : 'border-gray-700/50 hover:border-purple-500/30'} transition-all duration-500 shadow-2xl ${theme === 'light' ? 'shadow-purple-200/50 hover:shadow-purple-300/50' : 'shadow-purple-500/10 hover:shadow-purple-500/20'}`}
                         >
-                          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-rose-500/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                          <h3 className="relative text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                            <div className="p-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg">
+                          <div className={`absolute inset-0 ${theme === 'light' ? 'bg-purple-100/30' : 'bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-rose-500/5'} rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                          <h3 className={`relative text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
+                            <div className={`p-2 rounded-xl ${theme === 'light' ? 'bg-purple-500' : 'bg-gradient-to-r from-purple-500 to-pink-500'} shadow-lg`}>
                               <BookOpen className="w-6 h-6 text-white" />
                             </div>
-                            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Project Overview</span>
+                            <span className={theme === 'light' ? 'text-purple-700' : 'bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent'}>Project Overview</span>
                           </h3>
                           
                           {/* Main Info Grid */}
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Director</p>
-                              <p className="text-white font-semibold">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm`}>Director</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
                                 {movieDetails?.credits?.crew?.find(c => c.known_for_department === 'Directing')?.name || project.director || 'TBA'}
                               </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Lead Actor</p>
-                              <p className="text-white font-semibold">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm`}>Lead Actor</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
                                 {cast.length > 0 ? cast[0]?.name : (project as any).actor || 'TBA'}
                               </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Lead Actress</p>
-                              <p className="text-white font-semibold">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm`}>Lead Actress</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
                                 {cast.find(c => c.known_for_department === 'Acting' && c.gender === 1)?.name || (project as any).actress || 'TBA'}
                               </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Production House</p>
-                              <p className="text-white font-semibold">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm`}>Production House</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
                                 {movieDetails?.production_companies?.[0]?.name || project.productionHouse || 'TBA'}
                               </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Runtime</p>
-                              <p className="text-white font-semibold">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm`}>Runtime</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
                                 {movieDetails?.runtime ? `${movieDetails.runtime} min` : (project as any).runtime ? `${(project as any).runtime} min` : '150 min'}
                               </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">TMDB Rating</p>
-                              <p className="text-white font-semibold flex items-center gap-1">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm`}>TMDB Rating</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold flex items-center gap-1`}>
                                 <Star className="w-4 h-4 text-yellow-400 fill-current" />
                                 {movieDetails?.vote_average ? movieDetails.vote_average.toFixed(1) : (project as any).tmdbRating || project.rating || 'N/A'}
                               </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Country</p>
-                              <p className="text-white font-semibold">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm`}>Country</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
                                 {movieDetails?.production_companies?.[0]?.origin_country || (project as any).country || 'India'}
                               </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Release Year</p>
-                              <p className="text-white font-semibold">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm`}>Release Year</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
                                 {movieDetails?.release_date ? new Date(movieDetails.release_date).getFullYear() : (project as any).releaseYear || 'TBA'}
                               </p>
                             </div>
                             <div className="space-y-2">
-                              <p className="text-gray-400 text-sm">Language</p>
-                              <p className="text-white font-semibold">{project.language || 'Hindi'}</p>
+                              <p className={`${getTextColor(theme, 'muted')} text-sm`}>Language</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold`}>{project.language || 'Hindi'}</p>
                             </div>
                           </div>
 
                           {/* Genres */}
                           {(project as any).tmdbGenres && (project as any).tmdbGenres.length > 0 && (
                             <div className="mb-6">
-                              <p className="text-gray-400 text-sm mb-3">Genres</p>
+                              <p className={`${getTextColor(theme, 'muted')} text-sm mb-3`}>Genres</p>
                               <div className="flex flex-wrap gap-2">
                                 {(project as any).tmdbGenres.map((genre: string, index: number) => (
                                   <span 
                                     key={index}
-                                    className="group relative px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 text-sm rounded-full border border-purple-500/40 hover:from-purple-500/30 hover:to-pink-500/30 hover:border-purple-400/60 transition-all duration-300 shadow-lg hover:shadow-purple-500/20"
+                                    className={`group relative px-4 py-2 ${theme === 'light' ? 'bg-purple-100 text-purple-700 border-purple-300 hover:bg-purple-200' : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border-purple-500/40 hover:from-purple-500/30 hover:to-pink-500/30 hover:border-purple-400/60'} text-sm rounded-full border transition-all duration-300 shadow-lg ${theme === 'light' ? 'hover:shadow-purple-200' : 'hover:shadow-purple-500/20'}`}
                                   >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-purple-400/10 to-pink-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                    <div className={`absolute inset-0 ${theme === 'light' ? 'bg-purple-200/50' : 'bg-gradient-to-r from-purple-400/10 to-pink-400/10'} rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                                     <span className="relative">{genre}</span>
                                   </span>
                                 ))}
@@ -1243,14 +1114,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           {/* Spoken Languages */}
                           {(project as any).spokenLanguages && (project as any).spokenLanguages.length > 0 && (
                             <div className="mb-6">
-                              <p className="text-gray-400 text-sm mb-3">Spoken Languages</p>
+                              <p className={`${getTextColor(theme, 'muted')} text-sm mb-3`}>Spoken Languages</p>
                               <div className="flex flex-wrap gap-2">
                                 {(project as any).spokenLanguages.map((language: string, index: number) => (
                                   <span 
                                     key={index}
-                                    className="group relative px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 text-sm rounded-full border border-blue-500/40 hover:from-blue-500/30 hover:to-cyan-500/30 hover:border-blue-400/60 transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
+                                    className={`group relative px-4 py-2 ${theme === 'light' ? 'bg-blue-100 text-blue-700 border-blue-300 hover:bg-blue-200' : 'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 border-blue-500/40 hover:from-blue-500/30 hover:to-cyan-500/30 hover:border-blue-400/60'} text-sm rounded-full border transition-all duration-300 shadow-lg ${theme === 'light' ? 'hover:shadow-blue-200' : 'hover:shadow-blue-500/20'}`}
                                   >
-                                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-cyan-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                    <div className={`absolute inset-0 ${theme === 'light' ? 'bg-blue-200/50' : 'bg-gradient-to-r from-blue-400/10 to-cyan-400/10'} rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                                     <span className="relative">{language}</span>
                                   </span>
                                 ))}
@@ -1261,11 +1132,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           {/* TMDB Overview */}
                           {(movieDetails?.overview || (project as any).tmdbOverview) && (
                             <div className="mb-6">
-                              <p className="text-gray-400 text-sm mb-3 flex items-center gap-2">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm mb-3 flex items-center gap-2`}>
                                 Plot Summary
                                 {tmdbLoading && <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />}
                               </p>
-                              <p className="text-gray-300 leading-relaxed">
+                              <p className={`${getTextColor(theme, 'secondary')} leading-relaxed`}>
                                 {movieDetails?.overview || (project as any).tmdbOverview}
                               </p>
                             </div>
@@ -1274,8 +1145,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           {/* Tagline */}
                           {(project as any).tagline && (
                             <div className="mb-6">
-                              <p className="text-gray-400 text-sm mb-3">Tagline</p>
-                              <p className="text-white font-semibold italic">
+                              <p className={`${getTextColor(theme, 'muted')} text-sm mb-3`}>Tagline</p>
+                              <p className={`${getTextColor(theme, 'primary')} font-semibold italic`}>
                                 "{(project as any).tagline}"
                               </p>
                             </div>
@@ -1288,13 +1159,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 href={`https://www.imdb.com/title/${(project as any).imdbId}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 px-4 py-2 bg-yellow-500/20 text-yellow-300 rounded-lg hover:bg-yellow-500/30 transition-colors duration-300"
+                                className={`flex items-center gap-2 px-4 py-2 ${theme === 'light' ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/30'} rounded-lg transition-colors duration-300`}
                               >
                                 <ExternalLink className="w-4 h-4" />
                                 View on IMDb
                               </a>
                             )}
-                            <button className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 transition-colors duration-300">
+                            <button className={`flex items-center gap-2 px-4 py-2 ${theme === 'light' ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50'} rounded-lg transition-colors duration-300`}>
                               <Share2 className="w-4 h-4" />
                               Share Project
                             </button>
@@ -1306,9 +1177,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.1 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <TrendingUp className="w-6 h-6 text-purple-400" />
                             Funding Progress
                           </h3>
@@ -1316,10 +1187,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           {/* Progress Bar */}
                           <div className="mb-8">
                             <div className="flex justify-between items-center mb-4">
-                              <span className="text-gray-300">Progress</span>
-                              <span className="text-white font-bold text-xl">{project.fundedPercentage}%</span>
+                              <span className={getTextColor(theme, 'secondary')}>Progress</span>
+                              <span className={`${getTextColor(theme, 'primary')} font-bold text-xl`}>{project.fundedPercentage}%</span>
                             </div>
-                            <div className="relative h-6 bg-gray-700 rounded-full overflow-hidden">
+                            <div className={`relative h-6 ${theme === 'light' ? 'bg-gray-200' : 'bg-gray-700'} rounded-full overflow-hidden`}>
                               <motion.div
                                 initial={{ width: 0 }}
                                 animate={{ width: `${project.fundedPercentage}%` }}
@@ -1329,7 +1200,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400/50 to-pink-400/50 animate-pulse" />
                               </motion.div>
                             </div>
-                            <div className="flex justify-between mt-2 text-sm text-gray-400">
+                            <div className={`flex justify-between mt-2 text-sm ${getTextColor(theme, 'muted')}`}>
                               <span>Raised: {formatCurrency(project.raisedAmount)}</span>
                               <span>Goal: {formatCurrency(project.targetAmount)}</span>
                             </div>
@@ -1337,57 +1208,57 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
                           {/* Funding Stats Grid */}
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="flex items-center gap-3 mb-3">
                                 <Users className="w-6 h-6 text-blue-400" />
-                                <span className="text-gray-400 text-sm">Total Investors</span>
+                                <span className={`${getTextColor(theme, 'muted')} text-sm`}>Total Investors</span>
                               </div>
-                              <p className="text-3xl font-bold text-white">{fundingStats.totalInvestors}</p>
+                              <p className={`text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{fundingStats.totalInvestors}</p>
                               <p className="text-green-400 text-sm">+12 this week</p>
                             </div>
                             
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="flex items-center gap-3 mb-3">
                                 <DollarSign className="w-6 h-6 text-green-400" />
-                                <span className="text-gray-400 text-sm">Avg. Investment</span>
+                                <span className={`${getTextColor(theme, 'muted')} text-sm`}>Avg. Investment</span>
                               </div>
-                              <p className="text-3xl font-bold text-white">{formatCurrency(fundingStats.averageInvestment)}</p>
+                              <p className={`text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{formatCurrency(fundingStats.averageInvestment)}</p>
                               <p className="text-green-400 text-sm">+8% from last month</p>
                             </div>
                             
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="flex items-center gap-3 mb-3">
                                 <Clock className="w-6 h-6 text-yellow-400" />
-                                <span className="text-gray-400 text-sm">Days Active</span>
+                                <span className={`${getTextColor(theme, 'muted')} text-sm`}>Days Active</span>
                               </div>
-                              <p className="text-3xl font-bold text-white">{fundingStats.daysSinceCreated}</p>
+                              <p className={`text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{fundingStats.daysSinceCreated}</p>
                               <p className="text-blue-400 text-sm">45 days remaining</p>
                             </div>
                             
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="flex items-center gap-3 mb-3">
                                 <Zap className="w-6 h-6 text-orange-400" />
-                                <span className="text-gray-400 text-sm">Daily Velocity</span>
+                                <span className={`${getTextColor(theme, 'muted')} text-sm`}>Daily Velocity</span>
                               </div>
-                              <p className="text-3xl font-bold text-white">{formatCurrency(fundingStats.fundingVelocity)}</p>
+                              <p className={`text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{formatCurrency(fundingStats.fundingVelocity)}</p>
                               <p className="text-green-400 text-sm">+15% this week</p>
                             </div>
                             
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="flex items-center gap-3 mb-3">
                                 <TrendingUp className="w-6 h-6 text-purple-400" />
-                                <span className="text-gray-400 text-sm">Trending Score</span>
+                                <span className={`${getTextColor(theme, 'muted')} text-sm`}>Trending Score</span>
                               </div>
-                              <p className="text-3xl font-bold text-white">8.9</p>
+                              <p className={`text-3xl font-bold ${getTextColor(theme, 'primary')}`}>8.9</p>
                               <p className="text-green-400 text-sm">Top 5% of projects</p>
                             </div>
                             
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="flex items-center gap-3 mb-3">
                                 <MapPin className="w-6 h-6 text-red-400" />
-                                <span className="text-gray-400 text-sm">Top City</span>
+                                <span className={`${getTextColor(theme, 'muted')} text-sm`}>Top City</span>
                               </div>
-                              <p className="text-3xl font-bold text-white">Mumbai</p>
+                              <p className={`text-3xl font-bold ${getTextColor(theme, 'primary')}`}>Mumbai</p>
                               <p className="text-blue-400 text-sm">42% of investments</p>
                             </div>
                           </div>
@@ -1398,9 +1269,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.2 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <Target className="w-6 h-6 text-indigo-400" />
                             Funding Milestones
                           </h3>
@@ -1415,7 +1286,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 className={`relative p-6 rounded-2xl border-2 transition-all duration-300 ${
                                   milestone.achieved
                                     ? 'bg-gradient-to-br from-green-500/20 to-emerald-500/20 border-green-500/50'
-                                    : 'bg-gray-900/50 border-gray-700/50'
+                                    : theme === 'light' 
+                                      ? 'bg-white/80 border-gray-300'
+                                      : 'bg-gray-900/50 border-gray-700/50'
                                 }`}
                               >
                                 {milestone.achieved && (
@@ -1424,8 +1297,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   </div>
                                 )}
                                 <div className="text-4xl mb-3">{milestone.icon}</div>
-                                <h4 className="text-lg font-bold text-white mb-2">{milestone.label}</h4>
-                                <p className={`text-sm ${milestone.achieved ? 'text-green-400' : 'text-gray-400'}`}>
+                                <h4 className={`text-lg font-bold ${getTextColor(theme, 'primary')} mb-2`}>{milestone.label}</h4>
+                                <p className={`text-sm ${milestone.achieved ? 'text-green-400' : getTextColor(theme, 'muted')}`}>
                                   {milestone.achieved ? 'Achieved!' : `${milestone.percentage}% funding`}
                                 </p>
                               </motion.div>
@@ -1438,9 +1311,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.3 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <Star className="w-6 h-6 text-yellow-400" />
                             Movie Details & Ratings
                           </h3>
@@ -1448,48 +1321,48 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             {/* TMDB Rating */}
                             {(project as any).tmdbRating && (
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                                 <div className="flex items-center gap-3 mb-3">
                                   <Star className="w-6 h-6 text-yellow-400 fill-current" />
-                                  <span className="text-gray-400 text-sm">TMDB Rating</span>
+                                  <span className={`${getTextColor(theme, 'muted')} text-sm`}>TMDB Rating</span>
                                 </div>
-                                <p className="text-3xl font-bold text-white">{(project as any).tmdbRating}</p>
+                                <p className={`text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{(project as any).tmdbRating}</p>
                                 <p className="text-yellow-400 text-sm">Out of 10</p>
                               </div>
                             )}
                             
                             {/* Runtime */}
                             {(project as any).runtime && (
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                                 <div className="flex items-center gap-3 mb-3">
                                   <Clock className="w-6 h-6 text-blue-400" />
-                                  <span className="text-gray-400 text-sm">Runtime</span>
+                                  <span className={`${getTextColor(theme, 'muted')} text-sm`}>Runtime</span>
                                 </div>
-                                <p className="text-3xl font-bold text-white">{(project as any).runtime}</p>
+                                <p className={`text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{(project as any).runtime}</p>
                                 <p className="text-blue-400 text-sm">Minutes</p>
                               </div>
                             )}
                             
                             {/* Release Year */}
                             {(project as any).releaseYear && (
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                                 <div className="flex items-center gap-3 mb-3">
                                   <Calendar className="w-6 h-6 text-green-400" />
-                                  <span className="text-gray-400 text-sm">Release Year</span>
+                                  <span className={`${getTextColor(theme, 'muted')} text-sm`}>Release Year</span>
                                 </div>
-                                <p className="text-3xl font-bold text-white">{(project as any).releaseYear}</p>
+                                <p className={`text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{(project as any).releaseYear}</p>
                                 <p className="text-green-400 text-sm">Year</p>
                               </div>
                             )}
                             
                             {/* Country */}
                             {(project as any).country && (
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                                 <div className="flex items-center gap-3 mb-3">
                                   <Globe className="w-6 h-6 text-purple-400" />
-                                  <span className="text-gray-400 text-sm">Origin Country</span>
+                                  <span className={`${getTextColor(theme, 'muted')} text-sm`}>Origin Country</span>
                                 </div>
-                                <p className="text-xl font-bold text-white">{(project as any).country}</p>
+                                <p className={`text-xl font-bold ${getTextColor(theme, 'primary')}`}>{(project as any).country}</p>
                                 <p className="text-purple-400 text-sm">Production</p>
                               </div>
                             )}
@@ -1501,9 +1374,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.4 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <Clock className="w-6 h-6 text-red-400" />
                             Time Remaining
                           </h3>
@@ -1511,9 +1384,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                             {Object.entries(timeRemaining).map(([unit, value]) => (
                               <div key={unit} className="text-center">
-                                <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                  <p className="text-4xl font-bold text-white mb-2">{value.toString().padStart(2, '0')}</p>
-                                  <p className="text-gray-400 text-sm capitalize">{unit}</p>
+                                <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                                  <p className={`text-4xl font-bold ${getTextColor(theme, 'primary')} mb-2`}>{value.toString().padStart(2, '0')}</p>
+                                  <p className={`${getTextColor(theme, 'muted')} text-sm capitalize`}>{unit}</p>
                                 </div>
                               </div>
                             ))}
@@ -1528,16 +1401,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <DollarSign className="w-6 h-6 text-green-400" />
                             Make Your Investment
                           </h3>
                           
                           {/* Quick Amount Buttons */}
                           <div className="mb-8">
-                            <p className="text-gray-300 mb-4">Select Investment Amount</p>
+                            <p className={`${getTextColor(theme, 'secondary')} mb-4`}>Select Investment Amount</p>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                               {[5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000].map((amount) => (
                                 <button
@@ -1546,7 +1419,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   className={`p-4 rounded-xl font-bold text-lg transition-all duration-300 ${
                                     investmentAmount === amount
                                       ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/25'
-                                      : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:text-white'
+                                      : theme === 'light'
+                                        ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900'
+                                        : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50 hover:text-white'
                                   }`}
                                 >
                                   ₹{formatLargeNumber(amount)}
@@ -1557,34 +1432,34 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
                           {/* Custom Amount */}
                           <div className="mb-8">
-                            <label className="block text-gray-300 mb-2">Custom Amount</label>
+                            <label className={`block ${getTextColor(theme, 'secondary')} mb-2`}>Custom Amount</label>
                             <input
                               type="number"
                               value={investmentAmount}
                               onChange={(e) => setInvestmentAmount(Number(e.target.value))}
-                              className="w-full p-4 bg-gray-700/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-green-500/50 focus:ring-2 focus:ring-green-500/20"
+                              className={`w-full p-4 ${theme === 'light' ? 'bg-gray-100 border-gray-300 text-gray-900 placeholder-gray-500' : 'bg-gray-700/50 border-gray-600/50 text-white placeholder-gray-400'} border rounded-xl focus:outline-none focus:border-green-500/50 focus:ring-2 focus:ring-green-500/20`}
                               placeholder="Enter amount"
                             />
                           </div>
 
                           {/* Investment Calculator */}
-                          <div className="bg-gray-900/50 rounded-2xl p-6 mb-8">
-                            <h4 className="text-lg font-semibold text-white mb-4">Investment Breakdown</h4>
+                          <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 mb-8 border ${getBorderColor(theme)}`}>
+                            <h4 className={`text-lg font-semibold ${getTextColor(theme, 'primary')} mb-4`}>Investment Breakdown</h4>
                             <div className="space-y-3">
                               <div className="flex justify-between">
-                                <span className="text-gray-400">Investment Amount</span>
-                                <span className="text-white font-semibold">{formatCurrency(investmentAmount)}</span>
+                                <span className={getTextColor(theme, 'muted')}>Investment Amount</span>
+                                <span className={`${getTextColor(theme, 'primary')} font-semibold`}>{formatCurrency(investmentAmount)}</span>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-gray-400">Processing Fee (2%)</span>
-                                <span className="text-white font-semibold">{formatCurrency(investmentAmount * 0.02)}</span>
+                                <span className={getTextColor(theme, 'muted')}>Processing Fee (2%)</span>
+                                <span className={`${getTextColor(theme, 'primary')} font-semibold`}>{formatCurrency(investmentAmount * 0.02)}</span>
                               </div>
                               <div className="flex justify-between">
-                                <span className="text-gray-400">GST (18%)</span>
-                                <span className="text-white font-semibold">{formatCurrency(investmentAmount * 0.18)}</span>
+                                <span className={getTextColor(theme, 'muted')}>GST (18%)</span>
+                                <span className={`${getTextColor(theme, 'primary')} font-semibold`}>{formatCurrency(investmentAmount * 0.18)}</span>
                               </div>
-                              <div className="border-t border-gray-700 pt-3 flex justify-between">
-                                <span className="text-white font-bold text-lg">Total Amount</span>
+                              <div className={`border-t ${theme === 'light' ? 'border-gray-300' : 'border-gray-700'} pt-3 flex justify-between`}>
+                                <span className={`${getTextColor(theme, 'primary')} font-bold text-lg`}>Total Amount</span>
                                 <span className="text-green-400 font-bold text-lg">
                                   {formatCurrency(investmentAmount * 1.20)}
                                 </span>
@@ -1594,7 +1469,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
                           {/* Payment Method */}
                           <div className="mb-8">
-                            <p className="text-gray-300 mb-4">Payment Method</p>
+                            <p className={`${getTextColor(theme, 'secondary')} mb-4`}>Payment Method</p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                               {[
                                 { id: 'upi', label: 'UPI', icon: '📱' },
@@ -1607,7 +1482,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   className={`p-4 rounded-xl border-2 transition-all duration-300 ${
                                     paymentMethod === method.id
                                       ? 'border-green-500 bg-green-500/10 text-green-400'
-                                      : 'border-gray-600 text-gray-300 hover:border-gray-500 hover:text-white'
+                                      : theme === 'light'
+                                        ? 'border-gray-300 text-gray-700 hover:border-gray-400 hover:text-gray-900'
+                                        : 'border-gray-600 text-gray-300 hover:border-gray-500 hover:text-white'
                                   }`}
                                 >
                                   <div className="text-2xl mb-2">{method.icon}</div>
@@ -1620,20 +1497,38 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           {/* Own It Button */}
                           <button
                             onClick={handleInvest}
-                            className="group relative w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-8 px-8 rounded-2xl font-bold text-xl hover:from-slate-800 hover:via-purple-800 hover:to-slate-800 transition-all duration-500 shadow-2xl shadow-purple-500/20 hover:shadow-purple-500/40 border border-purple-500/30 hover:border-purple-400/50 overflow-hidden backdrop-blur-sm"
+                            className={`group relative w-full py-8 px-8 rounded-2xl font-bold text-xl transition-all duration-500 shadow-2xl overflow-hidden backdrop-blur-sm ${
+                              theme === 'light'
+                                ? 'bg-gradient-to-br from-purple-600 via-purple-700 to-purple-800 text-white hover:from-purple-700 hover:via-purple-800 hover:to-purple-900 shadow-purple-500/30 hover:shadow-purple-500/50 border border-purple-500/30 hover:border-purple-400/50'
+                                : 'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white hover:from-slate-800 hover:via-purple-800 hover:to-slate-800 shadow-purple-500/20 hover:shadow-purple-500/40 border border-purple-500/30 hover:border-purple-400/50'
+                            }`}
                           >
                             {/* Rich gradient overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                              theme === 'light'
+                                ? 'bg-gradient-to-r from-purple-400/20 via-transparent to-fuchsia-400/20'
+                                : 'bg-gradient-to-r from-purple-500/10 via-transparent to-fuchsia-500/10'
+                            }`} />
                             
                             {/* Elegant border glow */}
-                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
+                            <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm ${
+                              theme === 'light'
+                                ? 'bg-gradient-to-r from-purple-400/30 to-fuchsia-400/30'
+                                : 'bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20'
+                            }`} />
                             
                             {/* Subtle animated particles */}
                             <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                              <div className="absolute top-2 left-4 w-1 h-1 bg-purple-400/60 rounded-full group-hover:animate-pulse" />
-                              <div className="absolute bottom-3 right-6 w-1 h-1 bg-fuchsia-400/60 rounded-full group-hover:animate-pulse delay-300" />
-                              <div className="absolute top-1/2 left-1/4 w-0.5 h-0.5 bg-purple-300/40 rounded-full group-hover:animate-pulse delay-500" />
-                              </div>
+                              <div className={`absolute top-2 left-4 w-1 h-1 rounded-full group-hover:animate-pulse ${
+                                theme === 'light' ? 'bg-purple-300/80' : 'bg-purple-400/60'
+                              }`} />
+                              <div className={`absolute bottom-3 right-6 w-1 h-1 rounded-full group-hover:animate-pulse delay-300 ${
+                                theme === 'light' ? 'bg-fuchsia-300/80' : 'bg-fuchsia-400/60'
+                              }`} />
+                              <div className={`absolute top-1/2 left-1/4 w-0.5 h-0.5 rounded-full group-hover:animate-pulse delay-500 ${
+                                theme === 'light' ? 'bg-purple-200/60' : 'bg-purple-300/40'
+                              }`} />
+                            </div>
                             
                             <div className="relative flex items-center justify-center gap-4">
                               {/* Rotating circles logo */}
@@ -1649,17 +1544,23 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   }}
                                 />
                               </div>
-                              <span className="bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent font-semibold tracking-wide">
+                              <span className={`bg-clip-text text-transparent font-semibold tracking-wide ${
+                                theme === 'light'
+                                  ? 'bg-gradient-to-r from-white via-purple-50 to-white'
+                                  : 'bg-gradient-to-r from-white via-purple-100 to-white'
+                              }`}>
                                 Own it
                               </span>
-                              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300 text-purple-300" />
+                              <ChevronRight className={`w-5 h-5 group-hover:translate-x-1 transition-transform duration-300 ${
+                                theme === 'light' ? 'text-purple-200' : 'text-purple-300'
+                              }`} />
                             </div>
                           </button>
 
                           {/* Available Slots */}
                           <div className="mt-6 text-center">
-                            <p className="text-gray-400 text-sm">
-                              <span className="text-green-400 font-semibold">100</span> of <span className="text-white font-semibold">150</span> investment slots remaining
+                            <p className={`${getTextColor(theme, 'muted')} text-sm`}>
+                              <span className="text-green-400 font-semibold">100</span> of <span className={`${getTextColor(theme, 'primary')} font-semibold`}>150</span> investment slots remaining
                             </p>
                           </div>
                         </motion.div>
@@ -1822,13 +1723,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <div className="p-2 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 shadow-lg">
                               <Crown className="w-6 h-6 text-white" />
                             </div>
-                            <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">Experience Tiers</span>
+                            <span className={theme === 'light' ? 'text-yellow-700' : 'bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent'}>Experience Tiers</span>
                           </h3>
                           
                           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -1843,14 +1744,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="group relative bg-gradient-to-br from-gray-900/50 via-gray-800/50 to-black/50 rounded-3xl p-6 border border-gray-700/50 hover:border-yellow-500/50 transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-yellow-500/20 overflow-hidden"
+                                className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gradient-to-br from-gray-900/50 via-gray-800/50 to-black/50'} rounded-3xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-yellow-500/50' : 'border-gray-700/50 hover:border-yellow-500/50'} transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-yellow-500/20 overflow-hidden`}
                               >
-                                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/5 via-orange-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className={`absolute inset-0 ${theme === 'light' ? 'bg-yellow-100/30' : 'bg-gradient-to-r from-yellow-500/5 via-orange-500/5 to-red-500/5'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                                 <div className="relative text-center">
                                   <div className="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300">{tierInfo.icon}</div>
-                                  <h4 className="text-lg font-bold text-white mb-2 group-hover:text-yellow-300 transition-colors duration-300">{tierInfo.name}</h4>
-                                  <p className="text-gray-400 text-sm mb-4">Min. Investment</p>
-                                  <p className="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">{formatCurrency(tierInfo.minAmount)}</p>
+                                  <h4 className={`text-lg font-bold ${getTextColor(theme, 'primary')} mb-2 group-hover:text-yellow-600 transition-colors duration-300`}>{tierInfo.name}</h4>
+                                  <p className={`${getTextColor(theme, 'muted')} text-sm mb-4`}>Min. Investment</p>
+                                  <p className={`text-2xl font-bold ${theme === 'light' ? 'text-yellow-700' : 'bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent'}`}>{formatCurrency(tierInfo.minAmount)}</p>
                                   <div className={`w-full h-2 bg-gradient-to-r ${tierInfo.color} rounded-full mt-4 shadow-lg`} />
                                 </div>
                               </motion.div>
@@ -1863,13 +1764,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.1 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <div className="p-2 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 shadow-lg">
                               <Medal className="w-6 h-6 text-white" />
                             </div>
-                            <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">Perks & Experiences</span>
+                            <span className={theme === 'light' ? 'text-yellow-700' : 'bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent'}>Perks & Experiences</span>
                           </h3>
                           
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1960,9 +1861,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: index * 0.1 }}
-                                  className="group relative bg-gradient-to-br from-gray-900/50 via-gray-800/50 to-black/50 rounded-3xl p-6 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-purple-500/20 overflow-hidden"
+                                  className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gradient-to-br from-gray-900/50 via-gray-800/50 to-black/50'} rounded-3xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-purple-500/50' : 'border-gray-700/50 hover:border-purple-500/50'} transition-all duration-500 hover:scale-105 shadow-xl hover:shadow-purple-500/20 overflow-hidden`}
                                 >
-                                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                  <div className={`absolute inset-0 ${theme === 'light' ? 'bg-purple-100/30' : 'bg-gradient-to-r from-purple-500/5 via-pink-500/5 to-rose-500/5'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                                   {/* Perk Icon */}
                                   <div className="relative text-5xl mb-4 text-center transform group-hover:scale-110 transition-transform duration-300">{perk.icon}</div>
                                   
@@ -1977,21 +1878,21 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   </div>
                                   
                                   {/* Perk Title */}
-                                  <h4 className="relative text-lg font-bold text-white mb-3 group-hover:text-purple-400 transition-colors duration-300">
+                                  <h4 className={`relative text-lg font-bold ${getTextColor(theme, 'primary')} mb-3 group-hover:text-purple-600 transition-colors duration-300`}>
                                     {perk.title}
                                   </h4>
                                   
                                   {/* Perk Description */}
-                                  <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+                                  <p className={`${getTextColor(theme, 'secondary')} text-sm mb-4 leading-relaxed`}>
                                     {perk.description}
                                   </p>
                                   
                                   {/* Features List */}
                                   <div className="mb-4">
-                                    <p className="text-gray-500 text-xs mb-2 font-semibold">INCLUDES:</p>
+                                    <p className={`${getTextColor(theme, 'muted')} text-xs mb-2 font-semibold`}>INCLUDES:</p>
                                     <ul className="space-y-1">
                                       {perk.features.map((feature, idx) => (
-                                        <li key={idx} className="text-gray-300 text-xs flex items-center gap-2">
+                                        <li key={idx} className={`${getTextColor(theme, 'secondary')} text-xs flex items-center gap-2`}>
                                           <span className="text-green-400">✓</span>
                                           {feature}
                                         </li>
@@ -2002,16 +1903,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   {/* Perk Details */}
                                   <div className="space-y-2 mb-4">
                                     <div className="flex justify-between text-sm">
-                                      <span className="text-gray-500">Min Investment:</span>
-                                      <span className="text-white font-semibold">{formatCurrency(perk.minAmount)}</span>
+                                      <span className={getTextColor(theme, 'muted')}>Min Investment:</span>
+                                      <span className={`${getTextColor(theme, 'primary')} font-semibold`}>{formatCurrency(perk.minAmount)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm">
-                                      <span className="text-gray-500">Value:</span>
+                                      <span className={getTextColor(theme, 'muted')}>Value:</span>
                                       <span className="text-green-400 font-semibold">{formatCurrency(perk.estimatedValue)}</span>
                                     </div>
                                     {perk.maxParticipants && (
                                       <div className="flex justify-between text-sm">
-                                        <span className="text-gray-500">Available:</span>
+                                        <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-500'}`}>Available:</span>
                                         <span className="text-blue-400 font-semibold">
                                           {perk.maxParticipants - perk.currentParticipants} left
                                         </span>
@@ -2022,11 +1923,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   {/* Progress Bar for Limited Perks */}
                                   {perk.maxParticipants && (
                                     <div className="mb-4">
-                                      <div className="flex justify-between text-xs text-gray-400 mb-1">
+                                      <div className={`flex justify-between text-xs mb-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                         <span>Filled</span>
                                         <span>{perk.currentParticipants}/{perk.maxParticipants}</span>
                                       </div>
-                                      <div className="w-full bg-gray-700 rounded-full h-2">
+                                      <div className={`w-full rounded-full h-2 ${theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'}`}>
                                         <div 
                                           className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all duration-300"
                                           style={{ width: `${(perk.currentParticipants / perk.maxParticipants) * 100}%` }}
@@ -2059,9 +1960,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.2 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <Calendar className="w-6 h-6 text-indigo-400" />
                             Experience Timeline
                           </h3>
@@ -2091,12 +1992,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   </div>
                                   
                                   {/* Content */}
-                                  <div className="flex-1 bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                                  <div className={`flex-1 ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                                     <div className="flex items-center justify-between mb-2">
-                                      <h4 className="text-lg font-bold text-white">{event.title}</h4>
+                                      <h4 className={`text-lg font-bold ${getTextColor(theme, 'primary')}`}>{event.title}</h4>
                                       <span className="text-purple-400 font-semibold text-sm">{event.month}</span>
                                     </div>
-                                    <p className="text-gray-400 text-sm">{event.description}</p>
+                                    <p className={`${getTextColor(theme, 'secondary')} text-sm`}>{event.description}</p>
                                   </div>
                                 </motion.div>
                               ))}
@@ -2112,16 +2013,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <Users className="w-6 h-6 text-blue-400" />
                             Team & Cast
                           </h3>
                           
                           {/* TMDB Cast Section */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                            <h4 className={`text-xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                               Main Cast
                               {tmdbLoading && <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />}
                             </h4>
@@ -2141,7 +2042,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.1 }}
-                                    className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
+                                    className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-blue-500/50' : 'border-gray-700/50 hover:border-blue-500/50'} transition-all duration-300 hover:scale-105`}
                                   >
                                     <div className="relative mb-4">
                                       <img
@@ -2157,7 +2058,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                       </div>
                                     </div>
                                     <div className="text-center mb-4">
-                                      <h5 className="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors duration-300">
+                                      <h5 className={`text-lg font-bold ${getTextColor(theme, 'primary')} mb-1 group-hover:text-blue-600 transition-colors duration-300`}>
                                         {member.name}
                                       </h5>
                                       <p className="text-blue-400 font-semibold text-sm">
@@ -2180,7 +2081,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 <motion.div
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
-                                  className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
+                                  className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-blue-500/50' : 'border-gray-700/50 hover:border-blue-500/50'} transition-all duration-300 hover:scale-105`}
                                 >
                                   <div className="relative mb-4">
                                     <img
@@ -2193,7 +2094,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     </div>
                                   </div>
                                   <div className="text-center mb-4">
-                                    <h5 className="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors duration-300">
+                                    <h5 className={`text-lg font-bold ${getTextColor(theme, 'primary')} mb-1 group-hover:text-blue-600 transition-colors duration-300`}>
                                       {project.director}
                                     </h5>
                                     <p className="text-blue-400 font-semibold text-sm">Director</p>
@@ -2213,7 +2114,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: 0.1 }}
-                                  className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-green-500/50 transition-all duration-300 hover:scale-105"
+                                  className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-green-500/50' : 'border-gray-700/50 hover:border-green-500/50'} transition-all duration-300 hover:scale-105`}
                                 >
                                   <div className="relative mb-4">
                                     <img
@@ -2226,7 +2127,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     </div>
                                   </div>
                                   <div className="text-center mb-4">
-                                    <h5 className="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors duration-300">
+                                    <h5 className={`text-lg font-bold ${getTextColor(theme, 'primary')} mb-1 group-hover:text-green-600 transition-colors duration-300`}>
                                       {(project as any).actor}
                                     </h5>
                                     <p className="text-green-400 font-semibold text-sm">Lead Actor</p>
@@ -2246,7 +2147,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: 0.2 }}
-                                  className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-pink-500/50 transition-all duration-300 hover:scale-105"
+                                  className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-pink-500/50' : 'border-gray-700/50 hover:border-pink-500/50'} transition-all duration-300 hover:scale-105`}
                                 >
                                   <div className="relative mb-4">
                                     <img
@@ -2259,7 +2160,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     </div>
                                   </div>
                                   <div className="text-center mb-4">
-                                    <h5 className="text-lg font-bold text-white mb-1 group-hover:text-pink-400 transition-colors duration-300">
+                                    <h5 className={`text-lg font-bold ${getTextColor(theme, 'primary')} mb-1 group-hover:text-pink-600 transition-colors duration-300`}>
                                       {(project as any).actress}
                                     </h5>
                                     <p className="text-pink-400 font-semibold text-sm">Lead Actress</p>
@@ -2279,7 +2180,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: 0.3 }}
-                                  className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300 hover:scale-105"
+                                  className={`group relative rounded-2xl p-6 border transition-all duration-300 hover:scale-105 ${theme === 'light' ? 'bg-white/80 border-gray-300 hover:border-purple-500/50' : 'bg-gray-900/50 border-gray-700/50 hover:border-purple-500/50'}`}
                                 >
                                   <div className="relative mb-4">
                                     <div className="w-20 h-20 rounded-full bg-purple-500/20 border-2 border-gray-600 group-hover:border-purple-500 transition-colors duration-300 mx-auto flex items-center justify-center">
@@ -2311,7 +2212,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           {/* TMDB Crew Section */}
                           {crew.length > 0 && (
                             <div className="mb-8">
-                              <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                              <h4 className={`text-xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                                 Key Crew
                                 {tmdbLoading && <Loader2 className="w-5 h-5 text-green-400 animate-spin" />}
                               </h4>
@@ -2323,7 +2224,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.1 }}
-                                    className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-green-500/50 transition-all duration-300 hover:scale-105"
+                                    className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-green-500/50' : 'border-gray-700/50 hover:border-green-500/50'} transition-all duration-300 hover:scale-105`}
                                   >
                                     <div className="relative mb-4">
                                       <img
@@ -2339,7 +2240,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                       </div>
                                     </div>
                                     <div className="text-center mb-4">
-                                      <h5 className="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors duration-300">
+                                      <h5 className={`text-lg font-bold ${getTextColor(theme, 'primary')} mb-1 group-hover:text-green-600 transition-colors duration-300`}>
                                         {member.name}
                                       </h5>
                                       <p className="text-green-400 font-semibold text-sm">
@@ -2361,7 +2262,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           {/* Key People Section */}
                           {project.keyPeople && Array.isArray(project.keyPeople) && project.keyPeople.length > 0 && (
                             <div className="mb-8">
-                              <h4 className="text-xl font-bold text-white mb-6">Cast & Crew</h4>
+                              <h4 className={`text-xl font-bold ${getTextColor(theme, 'primary')} mb-6`}>Cast & Crew</h4>
                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {project.keyPeople.map((person, index) => {
                                   // Handle both object and string formats for backward compatibility
@@ -2379,7 +2280,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                       initial={{ opacity: 0, y: 20 }}
                                       animate={{ opacity: 1, y: 0 }}
                                       transition={{ delay: index * 0.1 }}
-                                      className="group relative bg-gray-900/50 rounded-2xl p-4 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
+                                      className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-4 border ${theme === 'light' ? 'border-gray-300 hover:border-blue-500/50' : 'border-gray-700/50 hover:border-blue-500/50'} transition-all duration-300 hover:scale-105`}
                                     >
                                       {/* Avatar */}
                                       <div className="relative mb-3">
@@ -2403,7 +2304,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                       
                                       {/* Name & Role */}
                                       <div className="text-center">
-                                        <h5 className="text-white font-bold mb-1 group-hover:text-blue-400 transition-colors duration-300">
+                                        <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-1 group-hover:text-blue-600 transition-colors duration-300`}>
                                           {personData.name || 'Unknown'}
                                         </h5>
                                         <p className="text-blue-400 font-semibold text-sm capitalize">
@@ -2434,12 +2335,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Role Filters */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6">Browse by Role</h4>
+                            <h4 className={`text-xl font-bold ${getTextColor(theme, 'primary')} mb-6`}>Browse by Role</h4>
                             <div className="flex flex-wrap gap-3">
                             {['All', 'Director', 'Actor', 'Producer', 'Composer', 'Cinematographer'].map((role) => (
                               <button
                                 key={role}
-                                className="px-4 py-2 rounded-full bg-gray-700/50 text-gray-300 hover:bg-blue-500/20 hover:text-blue-300 border border-gray-600/50 hover:border-blue-500/50 transition-all duration-300"
+                                className={`px-4 py-2 rounded-full ${theme === 'light' ? 'bg-gray-100 text-gray-700 hover:bg-blue-100 hover:text-blue-700 border-gray-300 hover:border-blue-400' : 'bg-gray-700/50 text-gray-300 hover:bg-blue-500/20 hover:text-blue-300 border-gray-600/50 hover:border-blue-500/50'} border transition-all duration-300`}
                               >
                                 {role}
                               </button>
@@ -2474,7 +2375,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="group relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300 hover:scale-105"
+                                className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-blue-500/50' : 'border-gray-700/50 hover:border-blue-500/50'} transition-all duration-300 hover:scale-105`}
                               >
                                 {/* Avatar */}
                                 <div className="relative mb-4">
@@ -2490,14 +2391,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 
                                 {/* Name & Role */}
                                 <div className="text-center mb-4">
-                                  <h4 className="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors duration-300">
+                                  <h4 className={`text-lg font-bold ${getTextColor(theme, 'primary')} mb-1 group-hover:text-blue-600 transition-colors duration-300`}>
                                     {member.name}
                                   </h4>
                                   <p className="text-blue-400 font-semibold text-sm">{member.role}</p>
                                 </div>
                                 
                                 {/* Bio */}
-                                <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+                                <p className={`${getTextColor(theme, 'secondary')} text-sm mb-4 leading-relaxed`}>
                                   {member.bio}
                                 </p>
                                 
@@ -2505,24 +2406,24 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 <div className="flex justify-between items-center mb-4">
                                   <div className="text-center">
                                     <p className="text-white font-bold">{member.awards}</p>
-                                    <p className="text-gray-400 text-xs">Awards</p>
+                                    <p className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Awards</p>
                                   </div>
                                   <div className="text-center">
                                     <p className="text-white font-bold">{member.films.length}</p>
-                                    <p className="text-gray-400 text-xs">Films</p>
+                                    <p className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Films</p>
                                   </div>
                                   <div className="text-center">
                                     <p className="text-white font-bold">{member.rating}</p>
-                                    <p className="text-gray-400 text-xs">Rating</p>
+                                    <p className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Rating</p>
                                   </div>
                                 </div>
                                 
                                 {/* Notable Films */}
                                 <div className="mb-4">
-                                  <p className="text-gray-500 text-xs mb-2">Notable Films:</p>
+                                  <p className={`text-xs mb-2 ${theme === 'light' ? 'text-gray-600' : 'text-gray-500'}`}>Notable Films:</p>
                                   <div className="flex flex-wrap gap-1">
                                     {member.films.slice(0, 3).map((film) => (
-                                      <span key={film} className="px-2 py-1 bg-gray-800/50 text-gray-300 text-xs rounded-full">
+                                                                              <span key={film} className={`px-2 py-1 text-xs rounded-full ${theme === 'light' ? 'bg-gray-200 text-gray-700' : 'bg-gray-800/50 text-gray-300'}`}>
                                         {film}
                                       </span>
                                     ))}
@@ -2549,16 +2450,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <BookOpen className="w-6 h-6 text-teal-400" />
                             Story & Plot
                           </h3>
                           
                           {/* TMDB Story Overview */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                            <h4 className={`text-xl font-bold ${getTextColor(theme, 'primary')} mb-4 flex items-center gap-3`}>
                               Synopsis
                               {tmdbLoading && <Loader2 className="w-5 h-5 text-teal-400 animate-spin" />}
                             </h4>
@@ -2567,7 +2468,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 {tmdbError} - Showing fallback data
                               </div>
                             )}
-                            <p className="text-gray-300 leading-relaxed text-lg">
+                            <p className={`${getTextColor(theme, 'secondary')} leading-relaxed text-lg`}>
                               {movieDetails?.overview || (project as any).tmdbOverview || project.description || "Plot summary not available."}
                             </p>
                             {movieDetails?.tagline && (
@@ -2581,31 +2482,31 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* TMDB Story Elements Grid */}
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="text-4xl mb-3">🎭</div>
-                              <h5 className="text-white font-bold mb-2">Genre</h5>
-                              <p className="text-gray-400 text-sm">
+                              <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-2`}>Genre</h5>
+                              <p className={`${getTextColor(theme, 'secondary')} text-sm`}>
                                 {movieDetails?.genres?.map(g => g.name).join(', ') || (project as any).tmdbGenres?.join(', ') || project.genre || 'Not specified'}
                               </p>
                             </div>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="text-4xl mb-3">⏱️</div>
-                              <h5 className="text-white font-bold mb-2">Runtime</h5>
-                              <p className="text-gray-400 text-sm">
+                              <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-2`}>Runtime</h5>
+                              <p className={`${getTextColor(theme, 'secondary')} text-sm`}>
                                 {movieDetails?.runtime ? `${movieDetails.runtime} minutes` : (project as any).runtime ? `${(project as any).runtime} minutes` : 'Not specified'}
                               </p>
                             </div>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="text-4xl mb-3">📅</div>
-                              <h5 className="text-white font-bold mb-2">Release Date</h5>
-                              <p className="text-gray-400 text-sm">
+                              <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-2`}>Release Date</h5>
+                              <p className={`${getTextColor(theme, 'secondary')} text-sm`}>
                                 {movieDetails?.release_date ? new Date(movieDetails.release_date).toLocaleDateString() : (project as any).releaseYear ? `${(project as any).releaseYear}` : 'Not specified'}
                               </p>
                             </div>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="text-4xl mb-3">⭐</div>
-                              <h5 className="text-white font-bold mb-2">Rating</h5>
-                              <p className="text-gray-400 text-sm">
+                              <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-2`}>Rating</h5>
+                              <p className={`${getTextColor(theme, 'secondary')} text-sm`}>
                                 {movieDetails?.vote_average ? `${movieDetails.vote_average}/10` : (project as any).tmdbRating ? `${(project as any).tmdbRating}/10` : 'Not rated'}
                               </p>
                             </div>
@@ -2613,7 +2514,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* TMDB Character Profiles */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                            <h4 className={`text-xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                               Main Cast
                               {tmdbLoading && <Loader2 className="w-5 h-5 text-teal-400 animate-spin" />}
                             </h4>
@@ -2625,7 +2526,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: index * 0.1 }}
-                                  className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-teal-500/50 transition-all duration-300"
+                                  className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-teal-500/50' : 'border-gray-700/50 hover:border-teal-500/50'} transition-all duration-300`}
                                 >
                                     <div className="flex items-center gap-3 mb-3">
                                       <img
@@ -2637,12 +2538,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                         }}
                                       />
                                       <div>
-                                        <h5 className="text-lg font-bold text-white">{member.name}</h5>
+                                        <h5 className={`text-lg font-bold ${getTextColor(theme, 'primary')}`}>{member.name}</h5>
                                         <p className="text-teal-400 text-sm">Actor</p>
                                       </div>
                                     </div>
                                   <div className="mb-4">
-                                      <p className="text-gray-500 text-xs mb-2">Known For:</p>
+                                      <p className={`${getTextColor(theme, 'secondary')} text-xs mb-2`}>Known For:</p>
                                     <div className="flex flex-wrap gap-1">
                                         {member.known_for?.slice(0, 2).map((movie) => (
                                           <span key={movie.id} className="px-2 py-1 bg-teal-500/20 text-teal-300 text-xs rounded-full">
@@ -2652,14 +2553,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     </div>
                                   </div>
                                   <div>
-                                      <p className="text-gray-500 text-xs mb-1">Popularity:</p>
-                                      <p className="text-white text-sm font-semibold">{Math.round(member.popularity)}</p>
+                                      <p className={`${getTextColor(theme, 'secondary')} text-xs mb-1`}>Popularity:</p>
+                                      <p className={`${getTextColor(theme, 'primary')} text-sm font-semibold`}>{Math.round(member.popularity)}</p>
                                   </div>
                                 </motion.div>
                                 ))
                               ) : (
                                 <div className="col-span-3 text-center py-8">
-                                  <p className="text-gray-400">Cast information not available</p>
+                                  <p className={`${getTextColor(theme, 'secondary')}`}>Cast information not available</p>
                                 </div>
                               )}
                             </div>
@@ -2667,11 +2568,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* TMDB Director's Vision */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                            <h4 className={`text-xl font-bold ${getTextColor(theme, 'primary')} mb-4 flex items-center gap-3`}>
                               Director
                               {tmdbLoading && <Loader2 className="w-5 h-5 text-teal-400 animate-spin" />}
                             </h4>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               {crew.length > 0 ? (
                                 (() => {
                                   const director = crew.find(member => 
@@ -2689,25 +2590,25 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                         }}
                                 />
                                 <div>
-                                        <h5 className="text-white font-bold mb-2">{director.name}</h5>
+                                        <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-2`}>{director.name}</h5>
                                         <p className="text-teal-400 text-sm mb-3">Director</p>
-                                  <p className="text-gray-300 leading-relaxed">
+                                                                          <p className={`${getTextColor(theme, 'secondary')} leading-relaxed`}>
                                           {director.known_for?.length > 0 
                                             ? `Known for directing ${director.known_for[0]?.title || 'various films'}.`
                                             : 'Esteemed director with a passion for storytelling.'
                                           }
-                                  </p>
+                                        </p>
                                 </div>
                               </div>
                                   ) : (
                                     <div className="text-center py-4">
-                                      <p className="text-gray-400">Director information not available</p>
+                                      <p className={`${getTextColor(theme, 'secondary')}`}>Director information not available</p>
                                     </div>
                                   );
                                 })()
                               ) : (
                                 <div className="text-center py-4">
-                                  <p className="text-gray-400">Director information not available</p>
+                                  <p className={`${getTextColor(theme, 'secondary')}`}>Director information not available</p>
                                 </div>
                               )}
                             </div>
@@ -2715,35 +2616,35 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* TMDB Production Information */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                            <h4 className={`text-xl font-bold ${getTextColor(theme, 'primary')} mb-4 flex items-center gap-3`}>
                               Production Information
                               {tmdbLoading && <Loader2 className="w-5 h-5 text-teal-400 animate-spin" />}
                             </h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3">🎬 Production Companies</h5>
-                                <p className="text-gray-400 text-sm leading-relaxed">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                                <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3`}>🎬 Production Companies</h5>
+                                <p className={`${getTextColor(theme, 'secondary')} text-sm leading-relaxed`}>
                                   {movieDetails?.production_companies && movieDetails.production_companies.length > 0 
                                     ? movieDetails.production_companies.map(company => company.name).join(', ')
                                     : project.productionHouse || 'Not specified'
                                   }
                                 </p>
                               </div>
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3">🌍 Country of Origin</h5>
-                                <p className="text-gray-400 text-sm leading-relaxed">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                                <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3`}>🌍 Country of Origin</h5>
+                                <p className={`${getTextColor(theme, 'secondary')} text-sm leading-relaxed`}>
                                   {movieDetails?.production_companies?.[0]?.origin_country || (project as any).country || 'Not specified'}
                                 </p>
                               </div>
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3">🗣️ Spoken Languages</h5>
-                                <p className="text-gray-400 text-sm leading-relaxed">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                                <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3`}>🗣️ Spoken Languages</h5>
+                                <p className={`${getTextColor(theme, 'secondary')} text-sm leading-relaxed`}>
                                   {(project as any).spokenLanguages?.join(', ') || project.language || 'Not specified'}
                                 </p>
                               </div>
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3">📊 Popularity Score</h5>
-                                <p className="text-gray-400 text-sm leading-relaxed">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                                <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3`}>📊 Popularity Score</h5>
+                                <p className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                   {movieDetails?.popularity ? Math.round(movieDetails.popularity) : 'Not available'}
                                 </p>
                               </div>
@@ -2752,21 +2653,21 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Background Score Preview */}
                           <div>
-                            <h4 className="text-xl font-bold text-white mb-4">Background Score Preview</h4>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <h4 className={`text-xl font-bold mb-4 ${getTextColor(theme, 'primary')}`}>Background Score Preview</h4>
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="flex items-center justify-between mb-4">
                                 <div>
-                                  <h5 className="text-white font-bold">"Dreams Never Die"</h5>
-                                  <p className="text-gray-400 text-sm">Composed by Pritam</p>
+                                  <h5 className={`${getTextColor(theme, 'primary')} font-bold`}>"Dreams Never Die"</h5>
+                                  <p className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Composed by Pritam</p>
                                 </div>
                                 <button className="p-3 rounded-full bg-teal-600 hover:bg-teal-700 transition-colors duration-300">
                                   <Play className="w-6 h-6 text-white" />
                                 </button>
                               </div>
-                              <div className="w-full bg-gray-700 rounded-full h-2">
+                              <div className={`w-full rounded-full h-2 ${theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'}`}>
                                 <div className="bg-gradient-to-r from-teal-500 to-cyan-500 h-2 rounded-full w-1/3"></div>
                               </div>
-                              <div className="flex justify-between mt-2 text-xs text-gray-400">
+                              <div className={`flex justify-between mt-2 text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                 <span>1:23</span>
                                 <span>4:15</span>
                               </div>
@@ -2782,9 +2683,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <Camera className="w-6 h-6 text-violet-400" />
                             Gallery
                           </h3>
@@ -2794,7 +2695,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                             {['All', 'Posters', 'Behind the Scenes', 'Concept Art', 'Location Shots'].map((category) => (
                               <button
                                 key={category}
-                                className="px-4 py-2 rounded-full bg-gray-700/50 text-gray-300 hover:bg-violet-500/20 hover:text-violet-300 border border-gray-600/50 hover:border-violet-500/50 transition-all duration-300"
+                                className={`px-4 py-2 rounded-full ${theme === 'light' ? 'bg-gray-100 text-gray-700 hover:bg-violet-100 hover:text-violet-700 border-gray-300 hover:border-violet-400' : 'bg-gray-700/50 text-gray-300 hover:bg-violet-500/20 hover:text-violet-300 border-gray-600/50 hover:border-violet-500/50'} border transition-all duration-300`}
                               >
                                 {category}
                               </button>
@@ -2846,7 +2747,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="group relative bg-gray-900/50 rounded-2xl overflow-hidden border border-gray-700/50 hover:border-violet-500/50 transition-all duration-300 hover:scale-105"
+                                className={`group relative ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl overflow-hidden border ${theme === 'light' ? 'border-gray-300 hover:border-violet-500/50' : 'border-gray-700/50 hover:border-violet-500/50'} transition-all duration-300 hover:scale-105`}
                               >
                                 {/* Image */}
                                 <div className="relative aspect-[4/3] overflow-hidden">
@@ -2874,10 +2775,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 
                                 {/* Content */}
                                 <div className="p-4">
-                                  <h4 className="text-white font-bold mb-2 group-hover:text-violet-400 transition-colors duration-300">
+                                  <h4 className={`${getTextColor(theme, 'primary')} font-bold mb-2 group-hover:text-violet-600 transition-colors duration-300`}>
                                     {item.title}
                                   </h4>
-                                  <p className="text-gray-400 text-sm leading-relaxed">
+                                  <p className={`${getTextColor(theme, 'secondary')} text-sm leading-relaxed`}>
                                     {item.description}
                                   </p>
                                 </div>
@@ -2921,9 +2822,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold ${getTextColor(theme, 'primary')} mb-6 flex items-center gap-3`}>
                             <MessageCircle className="w-6 h-6 text-amber-400" />
                             Updates & News
                           </h3>
@@ -2943,16 +2844,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                             ].map((category) => (
                               <button
                                 key={category.name}
-                                className="group relative px-4 py-2 rounded-full bg-gradient-to-r from-gray-700/50 via-gray-600/50 to-gray-500/50 text-gray-300 hover:from-amber-500/30 hover:via-yellow-500/30 hover:to-orange-500/30 hover:text-amber-300 border border-gray-600/50 hover:border-amber-500/50 transition-all duration-500 overflow-hidden"
+                                className={`group relative px-4 py-2 rounded-full ${theme === 'light' ? 'bg-gray-100 text-gray-700 hover:bg-amber-100 hover:text-amber-700 border-gray-300 hover:border-amber-400' : 'bg-gradient-to-r from-gray-700/50 via-gray-600/50 to-gray-500/50 text-gray-300 hover:from-amber-500/30 hover:via-yellow-500/30 hover:to-orange-500/30 hover:text-amber-300 border-gray-600/50 hover:border-amber-500/50'} border transition-all duration-500 overflow-hidden`}
                               >
                                 {/* Gradient overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-amber-400/10 via-yellow-400/10 to-orange-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className={`absolute inset-0 ${theme === 'light' ? 'bg-amber-200/20' : 'bg-gradient-to-r from-amber-400/10 via-yellow-400/10 to-orange-400/10'} rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                                 <span className="relative flex items-center gap-2">
                                   <span>{category.icon}</span>
                                   <span>{category.name}</span>
-                                  <span className="bg-amber-500/20 text-amber-300 text-xs px-2 py-1 rounded-full">
-                                    {category.count}
-                                  </span>
+                                                                  <span className={`${theme === 'light' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-300'} text-xs px-2 py-1 rounded-full`}>
+                                  {category.count}
+                                </span>
                                 </span>
                               </button>
                             ))}
@@ -3079,12 +2980,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className={`relative bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-amber-500/50 transition-all duration-300 ${
+                                className={`relative ${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-amber-500/50' : 'border-gray-700/50 hover:border-amber-500/50'} transition-all duration-300 ${
                                   update.isPinned ? 'ring-2 ring-amber-500/30' : ''
                                 }`}
                               >
                                 {update.isPinned && (
-                                  <div className="absolute -top-2 -right-2 px-3 py-1 bg-amber-500 text-white text-xs font-bold rounded-full">
+                                  <div className={`absolute -top-2 -right-2 px-3 py-1 ${theme === 'light' ? 'bg-amber-500 text-white' : 'bg-amber-500 text-white'} text-xs font-bold rounded-full`}>
                                     PINNED
                                   </div>
                                 )}
@@ -3104,7 +3005,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                         </div>
                                       )}
                                       {update.audioPreview && (
-                                        <div className="absolute top-2 right-2 bg-amber-500 text-white text-xs px-2 py-1 rounded-full">
+                                        <div className={`absolute top-2 right-2 ${theme === 'light' ? 'bg-amber-500 text-white' : 'bg-amber-500 text-white'} text-xs px-2 py-1 rounded-full`}>
                                           🎵
                                         </div>
                                       )}
@@ -3114,7 +3015,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   {/* Enhanced Content */}
                                   <div className="flex-1">
                                     <div className="flex items-center gap-3 mb-3">
-                                      <span className="px-3 py-1 bg-amber-500/20 text-amber-300 text-xs font-semibold rounded-full">
+                                      <span className={`px-3 py-1 ${theme === 'light' ? 'bg-amber-100 text-amber-700' : 'bg-amber-500/20 text-amber-300'} text-xs font-semibold rounded-full`}>
                                         {update.category}
                                       </span>
                                       {update.isVerified && (
@@ -3122,7 +3023,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                           ✓ Verified
                                         </span>
                                       )}
-                                      <span className="text-gray-400 text-sm">
+                                      <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                         {new Date(update.date).toLocaleDateString('en-US', {
                                           year: 'numeric',
                                           month: 'long',
@@ -3131,11 +3032,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                       </span>
                                     </div>
                                     
-                                    <h4 className="text-lg font-bold text-white mb-2 hover:text-amber-400 transition-colors duration-300">
+                                    <h4 className={`text-lg font-bold ${getTextColor(theme, 'primary')} mb-2 hover:text-amber-600 transition-colors duration-300`}>
                                       {update.title}
                                     </h4>
                                     
-                                    <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                                    <p className={`${getTextColor(theme, 'secondary')} text-sm leading-relaxed mb-4`}>
                                       {update.content}
                                     </p>
                                     
@@ -3143,7 +3044,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     {update.tags && (
                                       <div className="flex flex-wrap gap-2 mb-4">
                                         {update.tags.map((tag) => (
-                                          <span key={tag} className="px-2 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full">
+                                          <span key={tag} className={`px-2 py-1 text-xs rounded-full ${theme === 'light' ? 'bg-gray-200 text-gray-700' : 'bg-gray-700/50 text-gray-300'}`}>
                                             #{tag}
                                           </span>
                                         ))}
@@ -3153,9 +3054,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     {/* Cast Members Preview */}
                                     {update.castMembers && update.castMembers.length > 0 && (
                                       <div className="flex items-center gap-2 mb-4">
-                                        <span className="text-gray-500 text-xs">Cast:</span>
+                                        <span className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-500'}`}>Cast:</span>
                                         <div className="flex -space-x-2">
-                                          {update.castMembers.map((member, idx) => (
+                                          {update.castMembers.map((member) => (
                                             <img
                                               key={member.id}
                                               src={member.profile_path ? `https://image.tmdb.org/t/p/w32${member.profile_path}` : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop&crop=face'}
@@ -3170,7 +3071,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     
                                     {/* Enhanced Reactions */}
                                     <div className="flex items-center gap-6 mb-4">
-                                      <div className="flex items-center gap-4 text-sm text-gray-400">
+                                      <div className={`flex items-center gap-4 text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                         <span className="flex items-center gap-1 hover:text-amber-400 cursor-pointer transition-colors">
                                           <ThumbsUp className="w-4 h-4" />
                                           {update.reactions.likes}
@@ -3183,7 +3084,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                           <Share2 className="w-4 h-4" />
                                           {update.reactions.shares}
                                         </span>
-                                        <span className="flex items-center gap-1 text-gray-500">
+                                        <span className={`flex items-center gap-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-500'}`}>
                                           <Eye className="w-4 h-4" />
                                           {update.reactions.views}
                                         </span>
@@ -3200,7 +3101,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                             className="w-6 h-6 rounded-full"
                                           />
                                         )}
-                                      <span className="text-gray-500 text-sm">
+                                      <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-500'}`}>
                                         By {update.author}
                                       </span>
                                       </div>
@@ -3215,7 +3116,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                             Listen
                                           </button>
                                         )}
-                                      <button className="px-4 py-2 bg-amber-500/20 text-amber-300 rounded-lg hover:bg-amber-500/30 transition-colors duration-300 text-sm font-semibold">
+                                      <button className={`px-4 py-2 ${theme === 'light' ? 'bg-amber-100 text-amber-700 hover:bg-amber-200' : 'bg-amber-500/20 text-amber-300 hover:bg-amber-500/30'} rounded-lg transition-colors duration-300 text-sm font-semibold`}>
                                         Read More
                                       </button>
                                       </div>
@@ -3228,7 +3129,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Real-time Updates Feed */}
                           <div className="mt-8 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-2xl p-6 border border-blue-500/20">
-                            <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                            <h4 className={`text-xl font-bold mb-4 flex items-center gap-3 ${getTextColor(theme, 'primary')}`}>
                               📡 Real-time Updates
                               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                             </h4>
@@ -3241,8 +3142,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               ].map((update, idx) => (
                                 <div key={idx} className="flex items-center gap-3 text-sm">
                                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                  <span className="text-gray-400">{update.time}</span>
-                                  <span className="text-gray-300">{update.text}</span>
+                                  <span className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{update.time}</span>
+                                  <span className={`${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>{update.text}</span>
                                 </div>
                               ))}
                             </div>
@@ -3250,7 +3151,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
                           {/* Press Coverage */}
                           <div className="mt-8 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-purple-500/20">
-                            <h4 className="text-xl font-bold text-white mb-4">📰 Press Coverage</h4>
+                            <h4 className={`text-xl font-bold mb-4 ${getTextColor(theme, 'primary')}`}>📰 Press Coverage</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {[
                                 { source: 'Filmfare', title: 'Exclusive: Behind the scenes of ' + project.title, date: '2024-01-14' },
@@ -3258,12 +3159,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 { source: 'Hindustan Times', title: 'Director reveals shooting locations', date: '2024-01-10' },
                                 { source: 'DNA India', title: 'Music director shares recording insights', date: '2024-01-08' }
                               ].map((article, idx) => (
-                                <div key={idx} className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/50 hover:border-purple-500/50 transition-all duration-300">
+                                <div key={idx} className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-xl p-4 border ${theme === 'light' ? 'border-gray-300 hover:border-purple-500/50' : 'border-gray-700/50 hover:border-purple-500/50'} transition-all duration-300`}>
                                   <div className="flex items-center gap-2 mb-2">
                                     <span className="text-purple-400 font-semibold text-sm">{article.source}</span>
-                                    <span className="text-gray-500 text-xs">{new Date(article.date).toLocaleDateString()}</span>
+                                    <span className={`text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-500'}`}>{new Date(article.date).toLocaleDateString()}</span>
                                   </div>
-                                  <h5 className="text-white text-sm font-semibold mb-2">{article.title}</h5>
+                                  <h5 className={`text-sm font-semibold mb-2 ${getTextColor(theme, 'primary')}`}>{article.title}</h5>
                                   <button className="text-purple-400 text-xs hover:text-purple-300 transition-colors">
                                     Read Article →
                                   </button>
@@ -3273,16 +3174,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           </div>
 
                           {/* Enhanced Newsletter Signup */}
-                          <div className="mt-8 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl p-6 border border-amber-500/20">
-                            <h4 className="text-xl font-bold text-white mb-4">Stay Updated</h4>
-                            <p className="text-gray-300 mb-4">
+                          <div className={`mt-8 ${theme === 'light' ? 'bg-amber-50 border-amber-200' : 'bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-amber-500/20'} rounded-2xl p-6 border`}>
+                            <h4 className={`text-xl font-bold ${getTextColor(theme, 'primary')} mb-4`}>Stay Updated</h4>
+                            <p className={`${getTextColor(theme, 'secondary')} mb-4`}>
                               Get exclusive behind-the-scenes updates, cast announcements, location reveals, and production news delivered to your inbox.
                             </p>
                             <div className="flex gap-4">
                               <input
                                 type="email"
                                 placeholder="Enter your email address"
-                                className="flex-1 px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20"
+                                className={`flex-1 px-4 py-3 ${theme === 'light' ? 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-amber-500 focus:ring-2 focus:ring-amber-200' : 'bg-gray-800/50 border-gray-600/50 text-white placeholder-gray-400 focus:border-amber-500/50 focus:ring-2 focus:ring-amber-500/20'} border rounded-xl focus:outline-none`}
                               />
                               <button className="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-semibold hover:from-amber-600 hover:to-orange-600 transition-all duration-300">
                                 Subscribe
@@ -3299,44 +3200,44 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold mb-6 flex items-center gap-3 ${getTextColor(theme, 'primary')}`}>
                             <Users className="w-6 h-6 text-lime-400" />
                             Community
                           </h3>
                           
                           {/* Community Stats */}
                           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 text-center">
-                              <div className="text-3xl font-bold text-white mb-2">1,247</div>
-                              <div className="text-gray-400 text-sm">Investors</div>
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)} text-center`}>
+                              <div className={`text-3xl font-bold mb-2 ${getTextColor(theme, 'primary')}`}>1,247</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Investors</div>
                             </div>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 text-center">
-                              <div className="text-3xl font-bold text-white mb-2">89</div>
-                              <div className="text-gray-400 text-sm">Discussions</div>
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)} text-center`}>
+                              <div className={`text-3xl font-bold mb-2 ${getTextColor(theme, 'primary')}`}>89</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Discussions</div>
                             </div>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 text-center">
-                              <div className="text-3xl font-bold text-white mb-2">156</div>
-                              <div className="text-gray-400 text-sm">Questions</div>
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)} text-center`}>
+                              <div className={`text-3xl font-bold mb-2 ${getTextColor(theme, 'primary')}`}>156</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Questions</div>
                             </div>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 text-center">
-                              <div className="text-3xl font-bold text-white mb-2">4.8</div>
-                              <div className="text-gray-400 text-sm">Community Rating</div>
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)} text-center`}>
+                              <div className={`text-3xl font-bold mb-2 ${getTextColor(theme, 'primary')}`}>4.8</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Community Rating</div>
                             </div>
                           </div>
                           
                           {/* Ask a Question */}
                           <div className="bg-gradient-to-r from-lime-500/10 to-green-500/10 rounded-2xl p-6 border border-lime-500/20 mb-8">
-                            <h4 className="text-xl font-bold text-white mb-4">Ask the Director</h4>
-                            <p className="text-gray-300 mb-4">
+                            <h4 className={`text-xl font-bold mb-4 ${getTextColor(theme, 'primary')}`}>Ask the Director</h4>
+                            <p className={`mb-4 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
                               Have a question for Rajkumar Hirani or the production team? Ask here and get direct responses!
                             </p>
                             <div className="space-y-4">
                               <input
                                 type="text"
                                 placeholder="Your question..."
-                                className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-lime-500/50 focus:ring-2 focus:ring-lime-500/20"
+                                className={`w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-lime-500/20 ${theme === 'light' ? 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-lime-500' : 'bg-gray-800/50 border-gray-600/50 text-white placeholder-gray-400 focus:border-lime-500/50'}`}
                               />
                               <button className="px-6 py-3 bg-gradient-to-r from-lime-500 to-green-500 text-white rounded-xl font-semibold hover:from-lime-600 hover:to-green-600 transition-all duration-300">
                                 Submit Question
@@ -3346,7 +3247,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Recent Discussions */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6">Recent Discussions</h4>
+                            <h4 className={`text-xl font-bold mb-6 ${getTextColor(theme, 'primary')}`}>Recent Discussions</h4>
                             <div className="space-y-4">
                               {[
                                 {
@@ -3379,7 +3280,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: index * 0.1 }}
-                                  className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/50 hover:border-lime-500/50 transition-all duration-300"
+                                  className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-xl p-4 border ${theme === 'light' ? 'border-gray-300 hover:border-lime-500/50' : 'border-gray-700/50 hover:border-lime-500/50'} transition-all duration-300`}
                                 >
                                   <div className="flex items-start gap-4">
                                     <img
@@ -3389,16 +3290,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     />
                                     <div className="flex-1">
                                       <div className="flex items-center gap-2 mb-2">
-                                        <h5 className="text-white font-semibold hover:text-lime-400 transition-colors duration-300">
+                                        <h5 className={`${getTextColor(theme, 'primary')} font-semibold hover:text-lime-400 transition-colors duration-300`}>
                                           {discussion.title}
                                         </h5>
                                         {discussion.isAnswered && (
-                                          <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">
+                                          <span className={`px-2 py-1 text-xs rounded-full ${theme === 'light' ? 'bg-green-500/20 text-green-700' : 'bg-green-500/20 text-green-300'}`}>
                                             Answered
                                           </span>
                                         )}
                                       </div>
-                                      <div className="flex items-center gap-4 text-sm text-gray-400">
+                                      <div className={`flex items-center gap-4 text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                         <span>By {discussion.author}</span>
                                         <span>{discussion.replies} replies</span>
                                         <span>{discussion.views} views</span>
@@ -3411,9 +3312,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           </div>
                           
                           {/* Community Poll */}
-                          <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                            <h4 className="text-xl font-bold text-white mb-4">Community Poll</h4>
-                            <p className="text-gray-300 mb-6">Which aspect of the film are you most excited about?</p>
+                          <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                            <h4 className={`text-xl font-bold mb-4 ${getTextColor(theme, 'primary')}`}>Community Poll</h4>
+                            <p className={`mb-6 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>Which aspect of the film are you most excited about?</p>
                             <div className="space-y-3">
                               {[
                                 { option: 'The star-studded cast', votes: 45, percentage: 45 },
@@ -3423,10 +3324,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               ].map((poll, index) => (
                                 <div key={poll.option} className="relative">
                                   <div className="flex items-center justify-between mb-2">
-                                    <span className="text-white text-sm">{poll.option}</span>
-                                    <span className="text-gray-400 text-sm">{poll.percentage}%</span>
+                                    <span className={`text-sm ${getTextColor(theme, 'primary')}`}>{poll.option}</span>
+                                    <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{poll.percentage}%</span>
                                   </div>
-                                  <div className="w-full bg-gray-700 rounded-full h-2">
+                                  <div className={`w-full rounded-full h-2 ${theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'}`}>
                                     <motion.div
                                       initial={{ width: 0 }}
                                       animate={{ width: `${poll.percentage}%` }}
@@ -3438,7 +3339,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               ))}
                             </div>
                             <div className="mt-4 text-center">
-                              <span className="text-gray-400 text-sm">100 total votes</span>
+                              <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>100 total votes</span>
                             </div>
                           </div>
                         </motion.div>
@@ -3451,28 +3352,28 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold mb-6 flex items-center gap-3 ${getTextColor(theme, 'primary')}`}>
                             <Star className="w-6 h-6 text-rose-400" />
                             Reviews & Testimonials
                           </h3>
                           
                           {/* Overall Rating */}
-                          <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 mb-8">
+                          <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)} mb-8`}>
                             <div className="flex items-center justify-between mb-6">
                               <div>
-                                <div className="text-4xl font-bold text-white mb-2">4.8</div>
+                                <div className={`text-4xl font-bold mb-2 ${getTextColor(theme, 'primary')}`}>4.8</div>
                                 <div className="flex items-center gap-1 mb-2">
                                   {[1, 2, 3, 4, 5].map((star) => (
                                     <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                                   ))}
                                 </div>
-                                <div className="text-gray-400 text-sm">Based on 1,247 investor reviews</div>
+                                <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Based on 1,247 investor reviews</div>
                               </div>
                               <div className="text-right">
                                 <div className="text-2xl font-bold text-rose-400 mb-2">98%</div>
-                                <div className="text-gray-400 text-sm">Would recommend</div>
+                                <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Would recommend</div>
                               </div>
                             </div>
                             
@@ -3487,10 +3388,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               ].map((rating) => (
                                 <div key={rating.stars} className="flex items-center gap-3">
                                   <div className="flex items-center gap-1 w-16">
-                                    <span className="text-white text-sm">{rating.stars}</span>
+                                    <span className={`text-sm ${getTextColor(theme, 'primary')}`}>{rating.stars}</span>
                                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                                   </div>
-                                  <div className="flex-1 bg-gray-700 rounded-full h-2">
+                                  <div className={`flex-1 rounded-full h-2 ${theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'}`}>
                                     <motion.div
                                       initial={{ width: 0 }}
                                       animate={{ width: `${rating.percentage}%` }}
@@ -3498,7 +3399,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                       className="bg-gradient-to-r from-yellow-400 to-orange-400 h-2 rounded-full"
                                     />
                                   </div>
-                                  <span className="text-gray-400 text-sm w-12 text-right">{rating.count}</span>
+                                  <span className={`text-sm w-12 text-right ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{rating.count}</span>
                                 </div>
                               ))}
                             </div>
@@ -3506,7 +3407,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Featured Reviews */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6">Featured Reviews</h4>
+                            <h4 className={`text-xl font-bold mb-6 ${getTextColor(theme, 'primary')}`}>Featured Reviews</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               {[
                                 {
@@ -3551,7 +3452,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: index * 0.1 }}
-                                  className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-rose-500/50 transition-all duration-300"
+                                  className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${theme === 'light' ? 'border-gray-300 hover:border-rose-500/50' : 'border-gray-700/50 hover:border-rose-500/50'} transition-all duration-300`}
                                 >
                                   <div className="flex items-start gap-4 mb-4">
                                     <img
@@ -3561,14 +3462,14 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     />
                                     <div className="flex-1">
                                       <div className="flex items-center gap-2 mb-1">
-                                        <h5 className="text-white font-semibold">{review.name}</h5>
+                                        <h5 className={`${getTextColor(theme, 'primary')} font-semibold`}>{review.name}</h5>
                                         {review.verified && (
-                                          <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">
+                                          <span className={`px-2 py-1 text-xs rounded-full ${theme === 'light' ? 'bg-blue-500/20 text-blue-700' : 'bg-blue-500/20 text-blue-300'}`}>
                                             Verified Investor
                                           </span>
                                         )}
                                       </div>
-                                      <div className="flex items-center gap-4 text-sm text-gray-400">
+                                      <div className={`flex items-center gap-4 text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                         <div className="flex items-center gap-1">
                                           {[1, 2, 3, 4, 5].map((star) => (
                                             <Star
@@ -3587,7 +3488,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                     </div>
                                   </div>
                                   
-                                  <p className="text-gray-300 leading-relaxed">
+                                  <p className={`leading-relaxed ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
                                     "{review.review}"
                                   </p>
                                   
@@ -3607,20 +3508,24 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           </div>
                           
                           {/* Review Tags */}
-                          <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                            <h4 className="text-xl font-bold text-white mb-4">What Investors Are Saying</h4>
+                          <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                            <h4 className={`text-xl font-bold mb-4 ${getTextColor(theme, 'primary')}`}>What Investors Are Saying</h4>
                             <div className="flex flex-wrap gap-3">
                               {[
-                                { tag: 'Transparent Communication', count: 234, color: 'bg-green-500/20 text-green-300' },
-                                { tag: 'Great Team', count: 189, color: 'bg-blue-500/20 text-blue-300' },
-                                { tag: 'Strong Potential', count: 156, color: 'bg-purple-500/20 text-purple-300' },
-                                { tag: 'Amazing Perks', count: 123, color: 'bg-yellow-500/20 text-yellow-300' },
-                                { tag: 'Professional', count: 98, color: 'bg-cyan-500/20 text-cyan-300' },
-                                { tag: 'Worth Investing', count: 87, color: 'bg-rose-500/20 text-rose-300' }
+                                { tag: 'Transparent Communication', count: 234, color: 'green' },
+                                { tag: 'Great Team', count: 189, color: 'blue' },
+                                { tag: 'Strong Potential', count: 156, color: 'purple' },
+                                { tag: 'Amazing Perks', count: 123, color: 'yellow' },
+                                { tag: 'Professional', count: 98, color: 'cyan' },
+                                { tag: 'Worth Investing', count: 87, color: 'rose' }
                               ].map((tag) => (
                                 <div
                                   key={tag.tag}
-                                  className={`px-4 py-2 rounded-full ${tag.color} text-sm font-semibold`}
+                                  className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                                    theme === 'light' 
+                                      ? `bg-${tag.color}-100 text-${tag.color}-700 border border-${tag.color}-200`
+                                      : `bg-${tag.color}-500/20 text-${tag.color}-300`
+                                  }`}
                                 >
                                   {tag.tag} ({tag.count})
                                 </div>
@@ -3637,9 +3542,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold mb-6 flex items-center gap-3 ${getTextColor(theme, 'primary')}`}>
                             <HelpCircle className="w-6 h-6 text-sky-400" />
                             Frequently Asked Questions
                           </h3>
@@ -3649,7 +3554,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                             {['All', 'Investment', 'Project', 'Legal', 'Perks'].map((category) => (
                               <button
                                 key={category}
-                                className="px-4 py-2 rounded-full bg-gray-700/50 text-gray-300 hover:bg-sky-500/20 hover:text-sky-300 border border-gray-600/50 hover:border-sky-500/50 transition-all duration-300"
+                                className={`px-4 py-2 rounded-full border transition-all duration-300 ${theme === 'light' ? 'bg-gray-100 text-gray-700 hover:bg-sky-100 hover:text-sky-700 border-gray-300 hover:border-sky-400' : 'bg-gray-700/50 text-gray-300 hover:bg-sky-500/20 hover:text-sky-300 border-gray-600/50 hover:border-sky-500/50'}`}
                               >
                                 {category}
                               </button>
@@ -3715,26 +3620,26 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="bg-gray-900/50 rounded-2xl border border-gray-700/50 hover:border-sky-500/50 transition-all duration-300"
+                                className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl border ${theme === 'light' ? 'border-gray-300 hover:border-sky-500/50' : 'border-gray-700/50 hover:border-sky-500/50'} transition-all duration-300`}
                               >
                                 <button
-                                  className="w-full p-6 text-left flex items-center justify-between hover:bg-gray-800/30 transition-colors duration-300"
+                                  className={`w-full p-6 text-left flex items-center justify-between transition-colors duration-300 ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-800/30'}`}
                                   onClick={() => {
                                     // Toggle FAQ expansion logic would go here
                                   }}
                                 >
                                   <div className="flex-1">
-                                    <h4 className="text-white font-semibold mb-2 hover:text-sky-400 transition-colors duration-300">
+                                    <h4 className={`${getTextColor(theme, 'primary')} font-semibold mb-2 hover:text-sky-400 transition-colors duration-300`}>
                                       {faq.question}
                                     </h4>
                                     <span className="px-3 py-1 bg-sky-500/20 text-sky-300 text-xs rounded-full">
                                       {faq.category}
                                     </span>
                                   </div>
-                                  <ChevronRight className="w-5 h-5 text-gray-400 ml-4" />
+                                  <ChevronRight className={`w-5 h-5 ml-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} />
                                 </button>
                                 <div className="px-6 pb-6">
-                                  <p className="text-gray-300 leading-relaxed">
+                                  <p className={`leading-relaxed ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
                                     {faq.answer}
                                   </p>
                                 </div>
@@ -3744,15 +3649,15 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Contact Support */}
                           <div className="mt-8 bg-gradient-to-r from-sky-500/10 to-blue-500/10 rounded-2xl p-6 border border-sky-500/20">
-                            <h4 className="text-xl font-bold text-white mb-4">Still Have Questions?</h4>
-                            <p className="text-gray-300 mb-4">
+                            <h4 className={`text-xl font-bold mb-4 ${getTextColor(theme, 'primary')}`}>Still Have Questions?</h4>
+                            <p className={`mb-4 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
                               Our support team is here to help! Get in touch with us for personalized assistance.
                             </p>
                             <div className="flex gap-4">
                               <button className="px-6 py-3 bg-gradient-to-r from-sky-500 to-blue-500 text-white rounded-xl font-semibold hover:from-sky-600 hover:to-blue-600 transition-all duration-300">
                                 Contact Support
                               </button>
-                              <button className="px-6 py-3 bg-gray-700/50 text-gray-300 rounded-xl font-semibold hover:bg-gray-600/50 transition-all duration-300">
+                              <button className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${theme === 'light' ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50'}`}>
                                 Schedule a Call
                               </button>
                             </div>
@@ -3767,10 +3672,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                            <FileCheck className="w-6 h-6 text-gray-400" />
+                          <h3 className={`text-2xl font-bold mb-6 flex items-center gap-3 ${getTextColor(theme, 'primary')}`}>
+                            <FileCheck className={`w-6 h-6 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} />
                             Legal & Transparency
                           </h3>
                           
@@ -3778,24 +3683,24 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                             <div className="bg-green-500/10 rounded-2xl p-6 border border-green-500/30 text-center">
                                                               <Shield className="w-8 h-8 text-green-400 mx-auto mb-3" />
-                              <h4 className="text-white font-bold mb-2">SEBI Compliant</h4>
-                              <p className="text-green-300 text-sm">Fully regulated investment platform</p>
+                              <h4 className={`${getTextColor(theme, 'primary')} font-bold mb-2`}>SEBI Compliant</h4>
+                              <p className={`text-sm ${theme === 'light' ? 'text-green-700' : 'text-green-300'}`}>Fully regulated investment platform</p>
                             </div>
                             <div className="bg-blue-500/10 rounded-2xl p-6 border border-blue-500/30 text-center">
                                                               <Award className="w-8 h-8 text-blue-400 mx-auto mb-3" />
-                              <h4 className="text-white font-bold mb-2">ISO Certified</h4>
-                              <p className="text-blue-300 text-sm">Quality management certified</p>
+                              <h4 className={`${getTextColor(theme, 'primary')} font-bold mb-2`}>ISO Certified</h4>
+                              <p className={`text-sm ${theme === 'light' ? 'text-blue-700' : 'text-blue-300'}`}>Quality management certified</p>
                             </div>
                             <div className="bg-purple-500/10 rounded-2xl p-6 border border-purple-500/30 text-center">
                                                               <Globe className="w-8 h-8 text-purple-400 mx-auto mb-3" />
-                              <h4 className="text-white font-bold mb-2">GDPR Compliant</h4>
-                              <p className="text-purple-300 text-sm">Data protection standards met</p>
+                              <h4 className={`${getTextColor(theme, 'primary')} font-bold mb-2`}>GDPR Compliant</h4>
+                              <p className={`text-sm ${theme === 'light' ? 'text-purple-700' : 'text-purple-300'}`}>Data protection standards met</p>
                             </div>
                           </div>
                           
                           {/* Legal Documents */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6">Legal Documents</h4>
+                            <h4 className={`text-xl font-bold mb-6 ${getTextColor(theme, 'primary')}`}>Legal Documents</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {[
                                 {
@@ -3846,22 +3751,22 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: index * 0.1 }}
-                                  className="bg-gray-900/50 rounded-xl p-4 border border-gray-700/50 hover:border-gray-500/50 transition-all duration-300"
+                                  className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-xl p-4 border ${theme === 'light' ? 'border-gray-300 hover:border-gray-500/50' : 'border-gray-700/50 hover:border-gray-500/50'} transition-all duration-300`}
                                 >
                                   <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-gray-800/50 rounded-lg">
-                                      <document.icon className="w-6 h-6 text-gray-400" />
+                                    <div className={`p-3 rounded-lg ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-800/50'}`}>
+                                      <document.icon className={`w-6 h-6 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`} />
                                     </div>
                                     <div className="flex-1">
-                                      <h5 className="text-white font-semibold mb-1">{document.title}</h5>
-                                      <p className="text-gray-400 text-sm mb-3">{document.description}</p>
+                                      <h5 className={`${getTextColor(theme, 'primary')} font-semibold mb-1`}>{document.title}</h5>
+                                      <p className={`text-sm mb-3 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{document.description}</p>
                                       <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                                        <div className={`flex items-center gap-2 text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-500'}`}>
                                           <span>{document.size}</span>
                                           <span>•</span>
                                           <span>{document.type}</span>
                                         </div>
-                                        <button className="px-3 py-1 bg-gray-700/50 text-gray-300 rounded-lg hover:bg-gray-600/50 transition-colors duration-300 text-sm">
+                                        <button className={`px-3 py-1 rounded-lg transition-colors duration-300 text-sm ${theme === 'light' ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50'}`}>
                                           Download
                                         </button>
                                       </div>
@@ -3874,41 +3779,41 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Investor Protections */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6">Investor Protections</h4>
+                            <h4 className={`text-xl font-bold mb-6 ${getTextColor(theme, 'primary')}`}>Investor Protections</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3 flex items-center gap-2">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                                <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3 flex items-center gap-2`}>
                                   <Shield className="w-5 h-5 text-green-400" />
                                   Escrow Protection
                                 </h5>
-                                <p className="text-gray-400 text-sm leading-relaxed">
+                                <p className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                   All investments are held in secure escrow accounts until funding goals are met. Funds are only released to production when milestones are achieved.
                                 </p>
                               </div>
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3 flex items-center gap-2">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                                <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3 flex items-center gap-2`}>
                                   <Award className="w-5 h-5 text-blue-400" />
                                   Insurance Coverage
                                 </h5>
-                                <p className="text-gray-400 text-sm leading-relaxed">
+                                <p className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                   Comprehensive insurance coverage protects against production delays, accidents, and other unforeseen circumstances that could impact the project.
                                 </p>
                               </div>
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3 flex items-center gap-2">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                                <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3 flex items-center gap-2`}>
                                   <FileCheck className="w-5 h-5 text-purple-400" />
                                   Legal Recourse
                                 </h5>
-                                <p className="text-gray-400 text-sm leading-relaxed">
+                                <p className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                   Investors have full legal recourse through binding arbitration and court proceedings if needed. All contracts are enforceable under Indian law.
                                 </p>
                               </div>
-                              <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
-                                <h5 className="text-white font-bold mb-3 flex items-center gap-2">
+                              <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
+                                <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3 flex items-center gap-2`}>
                                   <Globe className="w-5 h-5 text-cyan-400" />
                                   Transparency
                                 </h5>
-                                <p className="text-gray-400 text-sm leading-relaxed">
+                                <p className={`text-sm leading-relaxed ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                   Complete transparency in all financial matters, production progress, and decision-making processes. Regular audits and reporting ensure accountability.
                                 </p>
                               </div>
@@ -3917,8 +3822,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Legal Team */}
                           <div className="mb-8">
-                            <h4 className="text-xl font-bold text-white mb-6">Legal Team</h4>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50">
+                            <h4 className={`text-xl font-bold mb-6 ${getTextColor(theme, 'primary')}`}>Legal Team</h4>
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                               <div className="flex items-start gap-6">
                                 <img
                                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face"
@@ -3926,11 +3831,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   className="w-20 h-20 rounded-full object-cover"
                                 />
                                 <div>
-                                  <h5 className="text-white font-bold mb-2">Amarchand & Mangaldas</h5>
-                                  <p className="text-gray-400 text-sm mb-3">
+                                  <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-2`}>Amarchand & Mangaldas</h5>
+                                  <p className={`text-sm mb-3 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                     Leading Indian law firm specializing in entertainment law, corporate governance, and investor protection.
                                   </p>
-                                  <div className="flex items-center gap-4 text-sm text-gray-500">
+                                  <div className={`flex items-center gap-4 text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-500'}`}>
                                     <span>• SEBI Registered</span>
                                     <span>• 25+ Years Experience</span>
                                     <span>• 1000+ Entertainment Cases</span>
@@ -3942,8 +3847,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Contact Legal */}
                           <div className="bg-gradient-to-r from-gray-500/10 to-slate-500/10 rounded-2xl p-6 border border-gray-500/20">
-                            <h4 className="text-xl font-bold text-white mb-4">Legal Inquiries</h4>
-                            <p className="text-gray-300 mb-4">
+                            <h4 className={`text-xl font-bold mb-4 ${getTextColor(theme, 'primary')}`}>Legal Inquiries</h4>
+                            <p className={`mb-4 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
                               For legal questions or concerns, our legal team is available for consultation.
                             </p>
                             <button className="px-6 py-3 bg-gradient-to-r from-gray-600 to-slate-600 text-white rounded-xl font-semibold hover:from-gray-700 hover:to-slate-700 transition-all duration-300">
@@ -3960,9 +3865,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50"
+                          className={`${theme === 'light' ? 'bg-white/90' : 'bg-gradient-to-br from-gray-800/50 to-gray-900/50'} backdrop-blur-xl rounded-3xl p-8 border ${getBorderColor(theme)}`}
                         >
-                          <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                          <h3 className={`text-2xl font-bold mb-6 flex items-center gap-3 ${getTextColor(theme, 'primary')}`}>
                             <Target className="w-6 h-6 text-indigo-400" />
                             Project Milestones
                           </h3>
@@ -4051,28 +3956,28 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                   </div>
                                   
                                   {/* Content */}
-                                  <div className="flex-1 bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 hover:border-indigo-500/50 transition-all duration-300">
+                                  <div className={`flex-1 rounded-2xl p-6 border transition-all duration-300 ${theme === 'light' ? 'bg-white/80 border-gray-300 hover:border-indigo-500/50' : 'bg-gray-900/50 border-gray-700/50 hover:border-indigo-500/50'}`}>
                                     <div className="flex items-center gap-3 mb-3">
-                                      <h4 className="text-white font-bold text-lg">{milestone.title}</h4>
+                                      <h4 className={`${getTextColor(theme, 'primary')} font-bold text-lg`}>{milestone.title}</h4>
                                       <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                                         milestone.status === 'completed' 
-                                          ? 'bg-green-500/20 text-green-300' 
+                                          ? theme === 'light' ? 'bg-green-500/20 text-green-700' : 'bg-green-500/20 text-green-300'
                                           : milestone.status === 'in-progress'
-                                          ? 'bg-yellow-500/20 text-yellow-300'
-                                          : 'bg-gray-500/20 text-gray-300'
+                                          ? theme === 'light' ? 'bg-yellow-500/20 text-yellow-700' : 'bg-yellow-500/20 text-yellow-300'
+                                          : theme === 'light' ? 'bg-gray-500/20 text-gray-700' : 'bg-gray-500/20 text-gray-300'
                                       }`}>
                                         {milestone.status === 'completed' ? 'Completed' : 
                                          milestone.status === 'in-progress' ? 'In Progress' : 'Upcoming'}
                                       </span>
                                     </div>
                                     
-                                    <p className="text-gray-400 mb-4">{milestone.description}</p>
+                                    <p className={`mb-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>{milestone.description}</p>
                                     
                                     <div className="mb-4">
-                                      <p className="text-gray-500 text-sm mb-2">Key Achievements:</p>
+                                      <p className={`text-sm mb-2 ${theme === 'light' ? 'text-gray-600' : 'text-gray-500'}`}>Key Achievements:</p>
                                       <ul className="space-y-1">
                                         {milestone.achievements.map((achievement, idx) => (
-                                          <li key={idx} className="flex items-center gap-2 text-sm text-gray-300">
+                                          <li key={idx} className={`flex items-center gap-2 text-sm ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
                                             <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full"></div>
                                             {achievement}
                                           </li>
@@ -4091,33 +3996,33 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           {/* Progress Summary */}
                           <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 text-center">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)} text-center`}>
                               <div className="text-3xl font-bold text-green-400 mb-2">2</div>
-                              <div className="text-gray-400 text-sm">Completed</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Completed</div>
                             </div>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 text-center">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)} text-center`}>
                               <div className="text-3xl font-bold text-yellow-400 mb-2">1</div>
-                              <div className="text-gray-400 text-sm">In Progress</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>In Progress</div>
                             </div>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 text-center">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)} text-center`}>
                               <div className="text-3xl font-bold text-gray-400 mb-2">4</div>
-                              <div className="text-gray-400 text-sm">Upcoming</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Upcoming</div>
                             </div>
-                            <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-700/50 text-center">
+                            <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)} text-center`}>
                               <div className="text-3xl font-bold text-indigo-400 mb-2">29%</div>
-                              <div className="text-gray-400 text-sm">Overall Progress</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Overall Progress</div>
                             </div>
                           </div>
                           
                           {/* Next Milestone */}
                           <div className="mt-8 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-2xl p-6 border border-indigo-500/20">
-                            <h4 className="text-xl font-bold text-white mb-4">Next Milestone</h4>
+                            <h4 className={`text-xl font-bold mb-4 ${getTextColor(theme, 'primary')}`}>Next Milestone</h4>
                             <div className="flex items-center gap-4">
                               <div className="text-4xl">🎥</div>
                               <div>
-                                <h5 className="text-white font-bold text-lg">Principal Photography</h5>
-                                <p className="text-gray-300 mb-2">Main shooting schedule begins with lead cast and key scenes</p>
-                                <div className="flex items-center gap-4 text-sm text-gray-400">
+                                <h5 className={`${getTextColor(theme, 'primary')} font-bold text-lg`}>Principal Photography</h5>
+                                <p className={`mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>Main shooting schedule begins with lead cast and key scenes</p>
+                                <div className={`flex items-center gap-4 text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                   <span>Expected: March 2024</span>
                                   <span>•</span>
                                   <span>Duration: 60 days</span>

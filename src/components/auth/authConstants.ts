@@ -34,18 +34,18 @@ export interface AuthContextType {
 
 export const MOCK_USER: User = {
   id: '1',
-  email: 'rahul.investor@gmail.com',
-  name: 'Rahul Krishnan',
-  avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150',
+  email: 'pyushmatania@gmail.com',
+  name: 'Akash Matania',
+  avatar: '/src/images/akash-matania.jpg',
   bio: 'Passionate about supporting innovative entertainment projects. Film enthusiast and early investor in emerging talent.',
-  location: 'Mumbai, India',
-  joinDate: '2023-01-15',
+  location: 'Bangalore, India',
+  joinDate: '2025-07-01',
   investmentCount: 12,
   totalInvested: 450000,
   socialLinks: {
-    twitter: 'https://twitter.com/rahul_investor',
-    linkedin: 'https://linkedin.com/in/rahul-krishnan',
-    instagram: 'https://instagram.com/rahul.films'
+    twitter: 'https://twitter.com/akash_matania',
+    linkedin: 'https://www.linkedin.com/in/akash-matania-ba5b77276/',
+    instagram: 'https://www.instagram.com/akashmatania/'
   },
   preferences: {
     notifications: true,

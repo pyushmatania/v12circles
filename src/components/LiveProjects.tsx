@@ -88,14 +88,16 @@ const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onTrackInvestmen
                   alt={project.title}
                   className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 bg-black"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                {/* Subtle dark overlay over entire poster */}
+                <div className="absolute inset-0 bg-black/30" />
+                {/* No dark overlay - keeping posters clean */}
                 
                 {/* Type Badge */}
                 <div className="absolute top-4 left-4">
                   <div className={`flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-md ${
                     project.type === 'film' 
-                      ? 'bg-purple-500/20 border border-purple-500/30 text-purple-300' 
-                      : 'bg-blue-500/20 border border-blue-500/30 text-blue-300'
+                      ? 'bg-purple-500/80 border border-purple-400/30 text-white' 
+                      : 'bg-blue-500/80 border border-blue-400/30 text-white'
                   }`}>
                     {project.type === 'film' ? (
                       <Film className="w-4 h-4" />
@@ -106,21 +108,26 @@ const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onTrackInvestmen
                   </div>
                 </div>
 
-                {/* Time Left */}
+                {/* Funding Status */}
                 <div className="absolute top-4 right-4">
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-md bg-orange-500/20 border border-orange-500/30 text-orange-300">
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full backdrop-blur-md bg-orange-500/80 border border-orange-400/30 text-white">
                     <Clock className="w-4 h-4" />
-                    <span className="text-sm font-medium">{project.timeLeft}</span>
+                    <span className="text-sm font-medium">
+                      {project.fundedPercentage >= 75 ? 'Almost Funded' : 
+                       project.fundedPercentage >= 50 ? 'Halfway There' : 'Just Started'}
+                    </span>
                   </div>
                 </div>
 
                 {/* Project Info Overlay */}
                 <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-white text-2xl font-bold mb-2">{project.title}</h3>
-                  <p className="text-gray-300 text-sm mb-2">{project.description}</p>
-                  <p className="text-gray-400 text-sm">
-                    by {project.director || project.artist} • {project.genre}
-                  </p>
+                  <div className="relative p-3 z-10">
+                    <h3 className="!text-white text-2xl font-bold mb-2 drop-shadow-2xl">{project.title}</h3>
+                    <p className="!text-white font-semibold text-sm mb-2 drop-shadow-2xl">{project.description}</p>
+                    <p className="!text-white font-medium text-sm drop-shadow-2xl">
+                      by {project.director || project.artist} • {project.genre}
+                    </p>
+                  </div>
                 </div>
               </div>
 
