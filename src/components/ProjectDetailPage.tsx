@@ -42,6 +42,7 @@ import {
 import { Project, KeyPerson } from '../types';
 import { useTMDBProjectData, getMainCast, getKeyCrew } from '../hooks/useTMDBProjectData';
 import { getTextColor, getBorderColor, getMainBgColor } from '../utils/themeUtils';
+import useIsMobile from '../hooks/useIsMobile';
 
 // Import logo image
 import { circlesLogo, getUserAvatar } from '../utils/imageUtils';
@@ -63,6 +64,7 @@ interface ProjectDetailPageProps {
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onClose, onInvest, initialTab = 'overview' }) => {
   const themeContext = useContext(ThemeContext);
   const theme = themeContext.theme;
+  const { isMobile } = useIsMobile();
 
   const [activeTab, setActiveTab] = useState(initialTab);
   const [tabChangeKey, setTabChangeKey] = useState(0);
@@ -321,18 +323,19 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     // Start playing video immediately when it loads
     setIsVideoPlaying(true);
     if (videoRef.current && !embedUrl) {
-      videoRef.current.volume = 0.5;
-      videoRef.current.muted = false;
+      videoRef.current.volume = isMobile ? 0 : 0.5;
+      videoRef.current.muted = isMobile ? true : false;
       videoRef.current.play().then(() => {
         setIsVideoPlaying(true);
-      }).catch(() => {
-        setIsMuted(false);
+      }).catch((error) => {
+        console.log('Video autoplay failed:', error);
+        setIsMuted(isMobile ? true : false);
       });
     }
     
-    // For YouTube videos, ensure they start unmuted
+    // For YouTube videos, ensure they start with appropriate mute state
     if (embedUrl && iframeRef.current) {
-      setIsMuted(false);
+      setIsMuted(isMobile ? true : false);
     }
     
     // Add a 2 second delay before showing the video (hiding poster)
@@ -390,7 +393,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
   const videoId = getYouTubeVideoId(project.trailer);
   const finalVideoId = searchVideoId || videoId;
-  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=0&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1&vq=hd720` : null;
+  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=${isMobile ? 1 : 0}&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1&vq=hd720` : null;
   
   // Check if it's a search query URL
   const isSearchQuery = project.trailer?.includes('youtube.com/results?search_query=');
@@ -400,23 +403,39 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     if (embedUrl) {
       setIsVideoPlaying(true);
       setIsVideoLoaded(true);
-      setIsMuted(false); // Ensure YouTube videos start unmuted
+      setIsMuted(isMobile ? true : false); // Handle mobile mute requirements
     } else if (videoRef.current) {
       const playVideo = async () => {
         try {
-          videoRef.current!.volume = 0.5;
-          videoRef.current!.muted = false;
+          videoRef.current!.volume = isMobile ? 0 : 0.5;
+          videoRef.current!.muted = isMobile ? true : false;
           await videoRef.current!.play();
           setIsVideoPlaying(true);
           setIsVideoLoaded(true);
         } catch (error) {
-          setIsMuted(false);
+          console.log('Mobile autoplay failed, trying muted:', error);
+          // If autoplay fails on mobile, try with muted
+          if (isMobile && videoRef.current) {
+            try {
+              videoRef.current.muted = true;
+              videoRef.current.volume = 0;
+              await videoRef.current.play();
+              setIsVideoPlaying(true);
+              setIsVideoLoaded(true);
+              setIsMuted(true);
+            } catch (mutedError) {
+              console.log('Muted autoplay also failed:', mutedError);
+              setIsMuted(true);
+            }
+          } else {
+            setIsMuted(false);
+          }
         }
       };
       const timer = setTimeout(playVideo, 100);
       return () => clearTimeout(timer);
     }
-  }, [embedUrl]);
+  }, [embedUrl, isMobile]);
 
 
 
@@ -603,12 +622,36 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         style={{ opacity: heroOpacity, scale: heroScale }}
         className="relative w-full h-[600px] overflow-hidden cursor-pointer"
         onClick={() => {
-          // Force autoplay on user interaction
+          // Handle mobile video interaction
+          if (isMobile && videoRef.current && !embedUrl) {
+            // On mobile, try to unmute and play with sound on user interaction
+            if (isMuted) {
+              videoRef.current.muted = false;
+              videoRef.current.volume = 0.5;
+              setIsMuted(false);
+              videoRef.current.play().catch(() => {
+                // If unmuting fails, keep it muted
+                videoRef.current.muted = true;
+                videoRef.current.volume = 0;
+                setIsMuted(true);
+              });
+            }
+          }
+          
+          // Force autoplay on user interaction for YouTube videos
           if (embedUrl && iframeRef.current) {
             const currentSrc = iframeRef.current.src;
             // Reload with autoplay if not already playing
             if (!currentSrc.includes('&autoplay=1')) {
               iframeRef.current.src = currentSrc + '&autoplay=1';
+            }
+            // On mobile, try to unmute YouTube video on user interaction
+            if (isMobile && isMuted) {
+              const unmuteUrl = currentSrc.replace('&mute=1', '&mute=0');
+              if (unmuteUrl !== currentSrc) {
+                iframeRef.current.src = unmuteUrl;
+                setIsMuted(false);
+              }
             }
           }
         }}
@@ -655,10 +698,12 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                 ref={videoRef}
                 className="absolute inset-0 w-full h-full object-cover"
                 onLoadedData={handleVideoLoad}
-                muted={false}
+                muted={isMobile ? true : false}
                 loop
                 playsInline
                 autoPlay
+                preload="auto"
+                webkit-playsinline="true"
               >
                 <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -703,6 +748,20 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           <div className="absolute top-0 left-1/4 w-1/2 h-32 bg-gradient-to-b from-yellow-500/5 via-orange-500/3 to-transparent transform -skew-x-12" />
           <div className="absolute bottom-0 right-1/4 w-1/3 h-24 bg-gradient-to-t from-cyan-500/5 via-blue-500/3 to-transparent transform skew-x-12" />
         </div>
+
+        {/* Mobile Tap to Unmute Indicator */}
+        {isMobile && isMuted && isVideoPlaying && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute bottom-20 right-4 z-30 p-3 rounded-lg bg-black/70 backdrop-blur-sm border border-white/20"
+          >
+            <p className="text-white text-sm flex items-center gap-2">
+              <VolumeX className="w-4 h-4" />
+              Tap to unmute
+            </p>
+          </motion.div>
+        )}
 
         {/* Mute Control */}
         <motion.button
