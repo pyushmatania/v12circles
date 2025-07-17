@@ -132,8 +132,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   }, [activeTab]);
 
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true); // Default to muted for mobile compatibility
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState({
     days: 45,
     hours: 12,
@@ -319,30 +321,47 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
 
 
-  const handleVideoLoad = () => {
-    // Start playing video immediately when it loads
-    setIsVideoPlaying(true);
-    if (videoRef.current && !embedUrl) {
+  const handleVideoLoad = useCallback(async () => {
+    if (!videoRef.current) return;
+    
+    try {
+      setVideoError(false);
+      
+      // Always start muted for better autoplay compatibility
+      videoRef.current.muted = true;
       videoRef.current.volume = isMobile ? 0 : 0.5;
-      videoRef.current.muted = isMobile ? true : false;
-      videoRef.current.play().then(() => {
-        setIsVideoPlaying(true);
-      }).catch((error) => {
-        console.log('Video autoplay failed:', error);
-        setIsMuted(isMobile ? true : false);
-      });
+      setIsMuted(true);
+      
+      // Try to play the video
+      await videoRef.current.play();
+      setIsVideoPlaying(true);
+      
+      // On desktop, attempt to unmute after successful autoplay if user hasn't interacted
+      if (!isMobile && !userInteracted) {
+        setTimeout(() => {
+          if (videoRef.current && !userInteracted) {
+            videoRef.current.muted = false;
+            setIsMuted(false);
+          }
+        }, 1000);
+      }
+      
+    } catch (error) {
+      console.log('Video autoplay failed:', error);
+      setVideoError(true);
+      setIsVideoPlaying(false);
     }
     
-    // For YouTube videos, ensure they start with appropriate mute state
+    // For YouTube videos, ensure they start muted
     if (embedUrl && iframeRef.current) {
-      setIsMuted(isMobile ? true : false);
+      setIsMuted(true);
     }
     
     // Add a 2 second delay before showing the video (hiding poster)
     setTimeout(() => {
       setIsVideoLoaded(true);
     }, 2000);
-  };
+  }, [isMobile, embedUrl, userInteracted]);
 
 
 
@@ -393,7 +412,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
   const videoId = getYouTubeVideoId(project.trailer);
   const finalVideoId = searchVideoId || videoId;
-  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=${isMobile ? 1 : 0}&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1&vq=hd720` : null;
+  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=1&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1&vq=hd720` : null;
   
   // Check if it's a search query URL
   const isSearchQuery = project.trailer?.includes('youtube.com/results?search_query=');
@@ -440,18 +459,26 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
 
 
-  const toggleMute = () => {
+
+
+  const toggleMute = useCallback(() => {
+    // Mark that user has interacted with video controls
+    setUserInteracted(true);
+    
     setIsMuted((prev) => {
+      const newMutedState = !prev;
+      
       if (videoRef.current) {
-        videoRef.current.muted = !prev;
+        videoRef.current.muted = newMutedState;
       }
+      
       // For YouTube videos, use the YouTube Player API if available
       if (embedUrl && iframeRef.current) {
         try {
           // Try to use YouTube Player API for better control
           const iframe = iframeRef.current;
           if (iframe.contentWindow && (iframe.contentWindow as any).postMessage) {
-            const command = prev ? 'unMute' : 'mute';
+            const command = newMutedState ? 'mute' : 'unMute';
             iframe.contentWindow.postMessage(
               JSON.stringify({ event: 'command', func: command, args: [] }),
               '*'
@@ -459,7 +486,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           } else {
             // Fallback: reload iframe with new mute parameter
             const currentSrc = iframe.src;
-            const newMuteParam = prev ? '&mute=0' : '&mute=1';
+            const newMuteParam = newMutedState ? '&mute=1' : '&mute=0';
             const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
             iframe.src = newSrc;
           }
@@ -467,16 +494,32 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           console.log('YouTube Player API not available, using fallback');
           // Fallback: reload iframe with new mute parameter
           const currentSrc = iframeRef.current.src;
-          const newMuteParam = prev ? '&mute=0' : '&mute=1';
+          const newMuteParam = newMutedState ? '&mute=1' : '&mute=0';
           const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
           iframeRef.current.src = newSrc;
         }
       }
-      return !prev;
+      return newMutedState;
     });
-  };
+  }, [embedUrl, isVideoPlaying]);
 
-
+  const handleVideoClick = useCallback(() => {
+    // Mark user interaction
+    setUserInteracted(true);
+    
+    if (videoRef.current && !embedUrl) {
+      if (isMobile && isMuted) {
+        // On mobile, simply unmute on video click - don't interfere with playback
+        try {
+          videoRef.current.muted = false;
+          setIsMuted(false);
+        } catch (error) {
+          console.log('Could not unmute video on click:', error);
+        }
+      }
+      // On desktop, don't interfere with video playback on click
+    }
+  }, [isMobile, isMuted, embedUrl]);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -696,9 +739,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
             <>
               <video
                 ref={videoRef}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover cursor-pointer"
                 onLoadedData={handleVideoLoad}
-                muted={isMobile ? true : false}
+                onClick={handleVideoClick}
+                muted={true}
                 loop
                 playsInline
                 autoPlay
