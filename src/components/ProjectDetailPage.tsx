@@ -34,7 +34,6 @@ import {
   Loader2,
   VolumeX,
   Volume2,
-  RotateCcw,
   MessageSquare,
   Shield,
   FileText
@@ -339,15 +338,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
       
       // On desktop, attempt to unmute after successful autoplay if user hasn't interacted
       if (!isMobile && !userInteracted) {
-        setTimeout(async () => {
+        setTimeout(() => {
           if (videoRef.current && !userInteracted) {
-            try {
-              videoRef.current.muted = false;
-              setIsMuted(false);
-            } catch (error) {
-              console.log('Could not unmute automatically:', error);
-              // Keep muted if unmuting fails
-            }
+            videoRef.current.muted = false;
+            setIsMuted(false);
           }
         }, 1000);
       }
@@ -465,37 +459,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
 
 
-  // Restart video function
-  const restartVideo = useCallback(async () => {
-    if (!videoRef.current) return;
-    
-    try {
-      // Pause and reset to beginning
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-      
-      // Ensure muted state for mobile compatibility
-      videoRef.current.muted = true;
-      setIsMuted(true);
-      setIsVideoPlaying(false);
-      
-      // Wait a bit then restart
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      // Try to play again
-      await videoRef.current.play();
-      setIsVideoPlaying(true);
-      setVideoError(false);
-      
-      // Mark user interaction to prevent auto-unmuting
-      setUserInteracted(true);
-      
-    } catch (error) {
-      console.log('Video restart failed:', error);
-      setVideoError(true);
-      setIsVideoPlaying(false);
-    }
-  }, []);
+
 
   const toggleMute = useCallback(() => {
     // Mark that user has interacted with video controls
@@ -506,16 +470,6 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
       
       if (videoRef.current) {
         videoRef.current.muted = newMutedState;
-        
-        // If unmuting and video is not playing, try to play
-        if (!newMutedState && !isVideoPlaying) {
-          videoRef.current.play().catch(error => {
-            console.log('Could not play video when unmuting:', error);
-            // Revert mute state if play fails
-            videoRef.current.muted = true;
-            return true; // Keep muted
-          });
-        }
       }
       
       // For YouTube videos, use the YouTube Player API if available
@@ -555,40 +509,17 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     
     if (videoRef.current && !embedUrl) {
       if (isMobile && isMuted) {
-        // On mobile, try to unmute on video click
+        // On mobile, simply unmute on video click - don't interfere with playback
         try {
           videoRef.current.muted = false;
           setIsMuted(false);
-          
-          // Ensure video is playing
-          if (!isVideoPlaying) {
-            videoRef.current.play().catch((error) => {
-              console.log('Could not play video on click:', error);
-              // Revert mute state if play fails
-              videoRef.current.muted = true;
-              setIsMuted(true);
-            });
-          }
         } catch (error) {
           console.log('Could not unmute video on click:', error);
-          // Keep muted if unmuting fails
-          videoRef.current.muted = true;
-          setIsMuted(true);
-        }
-      } else if (!isMobile) {
-        // On desktop, toggle play/pause
-        if (isVideoPlaying) {
-          videoRef.current.pause();
-          setIsVideoPlaying(false);
-        } else {
-          videoRef.current.play().catch((error) => {
-            console.log('Could not play video:', error);
-            setVideoError(true);
-          });
         }
       }
+      // On desktop, don't interfere with video playback on click
     }
-  }, [isMobile, isMuted, isVideoPlaying, embedUrl]);
+  }, [isMobile, isMuted, embedUrl]);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -876,34 +807,20 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           </motion.div>
         )}
 
-        {/* Video Controls */}
-        <div className="absolute bottom-6 right-4 z-30 flex items-center gap-3">
-          {/* Restart Button */}
-          <motion.button
-            onClick={restartVideo}
-            className="p-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm border border-white/20 transition-all duration-200 group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            title="Restart Video"
-          >
-            <RotateCcw className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
-          </motion.button>
-
-          {/* Mute Control */}
-          <motion.button
-            onClick={toggleMute}
-            className="p-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm border border-white/20 transition-all duration-200 group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            title={isMuted ? 'Unmute' : 'Mute'}
-          >
-            {isMuted ? (
-              <VolumeX className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
-            ) : (
-              <Volume2 className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
-            )}
-          </motion.button>
-        </div>
+        {/* Mute Control */}
+        <motion.button
+          onClick={toggleMute}
+          className="absolute bottom-6 right-4 z-30 p-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm border border-white/20 transition-all duration-200 group"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          title={isMuted ? 'Unmute' : 'Mute'}
+        >
+          {isMuted ? (
+            <VolumeX className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
+          ) : (
+            <Volume2 className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
+          )}
+        </motion.button>
 
         {/* Top Bar with Back, Like, and Share */}
         <div className="absolute top-0 left-0 right-0 z-30 flex justify-between items-center p-6">
