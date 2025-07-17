@@ -34,6 +34,7 @@ import {
   Loader2,
   VolumeX,
   Volume2,
+  RotateCcw,
   MessageSquare,
   Shield,
   FileText
@@ -132,8 +133,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   }, [activeTab]);
 
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true); // Default to muted for mobile compatibility
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState({
     days: 45,
     hours: 12,
@@ -319,30 +322,52 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
 
 
-  const handleVideoLoad = () => {
-    // Start playing video immediately when it loads
-    setIsVideoPlaying(true);
-    if (videoRef.current && !embedUrl) {
+  const handleVideoLoad = useCallback(async () => {
+    if (!videoRef.current) return;
+    
+    try {
+      setVideoError(false);
+      
+      // Always start muted for better autoplay compatibility
+      videoRef.current.muted = true;
       videoRef.current.volume = isMobile ? 0 : 0.5;
-      videoRef.current.muted = isMobile ? true : false;
-      videoRef.current.play().then(() => {
-        setIsVideoPlaying(true);
-      }).catch((error) => {
-        console.log('Video autoplay failed:', error);
-        setIsMuted(isMobile ? true : false);
-      });
+      setIsMuted(true);
+      
+      // Try to play the video
+      await videoRef.current.play();
+      setIsVideoPlaying(true);
+      
+      // On desktop, attempt to unmute after successful autoplay if user hasn't interacted
+      if (!isMobile && !userInteracted) {
+        setTimeout(async () => {
+          if (videoRef.current && !userInteracted) {
+            try {
+              videoRef.current.muted = false;
+              setIsMuted(false);
+            } catch (error) {
+              console.log('Could not unmute automatically:', error);
+              // Keep muted if unmuting fails
+            }
+          }
+        }, 1000);
+      }
+      
+    } catch (error) {
+      console.log('Video autoplay failed:', error);
+      setVideoError(true);
+      setIsVideoPlaying(false);
     }
     
-    // For YouTube videos, ensure they start with appropriate mute state
+    // For YouTube videos, ensure they start muted
     if (embedUrl && iframeRef.current) {
-      setIsMuted(isMobile ? true : false);
+      setIsMuted(true);
     }
     
     // Add a 2 second delay before showing the video (hiding poster)
     setTimeout(() => {
       setIsVideoLoaded(true);
     }, 2000);
-  };
+  }, [isMobile, embedUrl, userInteracted]);
 
 
 
@@ -393,7 +418,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
   const videoId = getYouTubeVideoId(project.trailer);
   const finalVideoId = searchVideoId || videoId;
-  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=${isMobile ? 1 : 0}&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1&vq=hd720` : null;
+  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=1&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1&vq=hd720` : null;
   
   // Check if it's a search query URL
   const isSearchQuery = project.trailer?.includes('youtube.com/results?search_query=');
@@ -440,18 +465,66 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
 
 
-  const toggleMute = () => {
+  // Restart video function
+  const restartVideo = useCallback(async () => {
+    if (!videoRef.current) return;
+    
+    try {
+      // Pause and reset to beginning
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      
+      // Ensure muted state for mobile compatibility
+      videoRef.current.muted = true;
+      setIsMuted(true);
+      setIsVideoPlaying(false);
+      
+      // Wait a bit then restart
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Try to play again
+      await videoRef.current.play();
+      setIsVideoPlaying(true);
+      setVideoError(false);
+      
+      // Mark user interaction to prevent auto-unmuting
+      setUserInteracted(true);
+      
+    } catch (error) {
+      console.log('Video restart failed:', error);
+      setVideoError(true);
+      setIsVideoPlaying(false);
+    }
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    // Mark that user has interacted with video controls
+    setUserInteracted(true);
+    
     setIsMuted((prev) => {
+      const newMutedState = !prev;
+      
       if (videoRef.current) {
-        videoRef.current.muted = !prev;
+        videoRef.current.muted = newMutedState;
+        
+        // If unmuting and video is not playing, try to play
+        if (!newMutedState && !isVideoPlaying) {
+          videoRef.current.play().catch(error => {
+            console.log('Could not play video when unmuting:', error);
+            // Revert mute state if play fails
+            videoRef.current.muted = true;
+            return true; // Keep muted
+          });
+        }
       }
+      
       // For YouTube videos, use the YouTube Player API if available
       if (embedUrl && iframeRef.current) {
         try {
           // Try to use YouTube Player API for better control
           const iframe = iframeRef.current;
           if (iframe.contentWindow && (iframe.contentWindow as any).postMessage) {
-            const command = prev ? 'unMute' : 'mute';
+            const command = newMutedState ? 'mute' : 'unMute';
             iframe.contentWindow.postMessage(
               JSON.stringify({ event: 'command', func: command, args: [] }),
               '*'
@@ -459,7 +532,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           } else {
             // Fallback: reload iframe with new mute parameter
             const currentSrc = iframe.src;
-            const newMuteParam = prev ? '&mute=0' : '&mute=1';
+            const newMuteParam = newMutedState ? '&mute=1' : '&mute=0';
             const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
             iframe.src = newSrc;
           }
@@ -467,16 +540,55 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           console.log('YouTube Player API not available, using fallback');
           // Fallback: reload iframe with new mute parameter
           const currentSrc = iframeRef.current.src;
-          const newMuteParam = prev ? '&mute=0' : '&mute=1';
+          const newMuteParam = newMutedState ? '&mute=1' : '&mute=0';
           const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
           iframeRef.current.src = newSrc;
         }
       }
-      return !prev;
+      return newMutedState;
     });
-  };
+  }, [embedUrl, isVideoPlaying]);
 
-
+  const handleVideoClick = useCallback(() => {
+    // Mark user interaction
+    setUserInteracted(true);
+    
+    if (videoRef.current && !embedUrl) {
+      if (isMobile && isMuted) {
+        // On mobile, try to unmute on video click
+        try {
+          videoRef.current.muted = false;
+          setIsMuted(false);
+          
+          // Ensure video is playing
+          if (!isVideoPlaying) {
+            videoRef.current.play().catch((error) => {
+              console.log('Could not play video on click:', error);
+              // Revert mute state if play fails
+              videoRef.current.muted = true;
+              setIsMuted(true);
+            });
+          }
+        } catch (error) {
+          console.log('Could not unmute video on click:', error);
+          // Keep muted if unmuting fails
+          videoRef.current.muted = true;
+          setIsMuted(true);
+        }
+      } else if (!isMobile) {
+        // On desktop, toggle play/pause
+        if (isVideoPlaying) {
+          videoRef.current.pause();
+          setIsVideoPlaying(false);
+        } else {
+          videoRef.current.play().catch((error) => {
+            console.log('Could not play video:', error);
+            setVideoError(true);
+          });
+        }
+      }
+    }
+  }, [isMobile, isMuted, isVideoPlaying, embedUrl]);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -696,9 +808,10 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
             <>
               <video
                 ref={videoRef}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover cursor-pointer"
                 onLoadedData={handleVideoLoad}
-                muted={isMobile ? true : false}
+                onClick={handleVideoClick}
+                muted={true}
                 loop
                 playsInline
                 autoPlay
@@ -763,20 +876,34 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           </motion.div>
         )}
 
-        {/* Mute Control */}
-        <motion.button
-          onClick={toggleMute}
-          className="absolute bottom-6 right-4 z-30 p-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm border border-white/20 transition-all duration-200 group"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          title={isMuted ? 'Unmute' : 'Mute'}
-        >
-          {isMuted ? (
-            <VolumeX className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
-          ) : (
-            <Volume2 className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
-          )}
-        </motion.button>
+        {/* Video Controls */}
+        <div className="absolute bottom-6 right-4 z-30 flex items-center gap-3">
+          {/* Restart Button */}
+          <motion.button
+            onClick={restartVideo}
+            className="p-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm border border-white/20 transition-all duration-200 group"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            title="Restart Video"
+          >
+            <RotateCcw className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
+          </motion.button>
+
+          {/* Mute Control */}
+          <motion.button
+            onClick={toggleMute}
+            className="p-3 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm border border-white/20 transition-all duration-200 group"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            title={isMuted ? 'Unmute' : 'Mute'}
+          >
+            {isMuted ? (
+              <VolumeX className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
+            ) : (
+              <Volume2 className="w-5 h-5 text-white group-hover:text-gray-200 transition-colors" />
+            )}
+          </motion.button>
+        </div>
 
         {/* Top Bar with Back, Like, and Share */}
         <div className="absolute top-0 left-0 right-0 z-30 flex justify-between items-center p-6">
