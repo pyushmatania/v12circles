@@ -16,7 +16,7 @@ import { AuthProvider } from './components/auth/AuthProvider';
 import { useAuth } from './components/auth/useAuth';
 import { useToast } from './hooks/useToast';
 import DebugPanel from './components/DebugPanel';
-import { ErrorBoundary } from './components/ErrorBoundary';
+import ErrorBoundary from './components/ErrorBoundary';
 import { checkReactAvailability } from './utils/reactCheck';
 import { Project } from './types';
 

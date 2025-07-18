@@ -32,6 +32,9 @@ export default function useIsMobile(
 
   // 🚀 Optimized media query handler
   const handleResize = useCallback(() => {
+    // Check if window is available (client-side only)
+    if (typeof window === 'undefined') return;
+    
     const width = window.innerWidth;
     const height = window.innerHeight;
     
@@ -52,6 +55,9 @@ export default function useIsMobile(
 
   // 🚀 Optimized effect with cleanup
   useEffect(() => {
+    // Check if window is available (client-side only)
+    if (typeof window === 'undefined') return;
+
     // Initial check
     handleResize();
 
