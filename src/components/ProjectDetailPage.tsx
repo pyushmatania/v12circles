@@ -368,13 +368,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         } catch (unmutedError) {
           console.log('Desktop: Unmuted autoplay failed, trying muted:', unmutedError);
           // Fallback to muted autoplay
-          videoRef.current.muted = true;
+      videoRef.current.muted = true;
           videoRef.current.volume = 0;
           await videoRef.current.play();
           setIsVideoPlaying(true);
-          setIsMuted(true);
+      setIsMuted(true);
           setVideoError(null);
-          
+      
           // Try to unmute after user interaction
           console.log('Desktop: Muted autoplay successful, waiting for user interaction');
         }
@@ -385,8 +385,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         setIsMuted(true);
         setVideoError(null);
         
-        await videoRef.current.play();
-        setIsVideoPlaying(true);
+      await videoRef.current.play();
+      setIsVideoPlaying(true);
       }
       
     } catch (error) {
@@ -401,7 +401,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           videoRef.current.volume = 0;
           await videoRef.current.play();
           setIsVideoPlaying(true);
-          setIsMuted(true);
+      setIsMuted(true);
         }
       } catch (fallbackError) {
         console.log('Muted autoplay also failed:', fallbackError);
@@ -412,11 +412,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     if (finalVideoId && iframeRef.current) {
       if (!isMobile) {
         // Try unmuted YouTube autoplay for desktop
-        setIsMuted(false);
+          setIsMuted(false);
         console.log('Desktop: YouTube unmuted autoplay attempted');
       } else {
         setIsMuted(true);
-      }
+        }
     }
     
     // Add a 2 second delay before showing the video (hiding poster)
@@ -464,11 +464,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
       
       // For desktop, try unmuted YouTube autoplay
       if (!isMobile) {
-        setIsMuted(false);
+          setIsMuted(false);
         console.log('Desktop: YouTube unmuted autoplay attempted');
       } else {
         setIsMuted(true);
-      }
+        }
     } else if (videoRef.current) {
       const playVideo = async () => {
         try {
@@ -489,7 +489,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               // Fallback to muted autoplay
               videoRef.current!.muted = true;
               videoRef.current!.volume = 0;
-              await videoRef.current!.play();
+          await videoRef.current!.play();
               setIsVideoPlaying(true);
               setIsVideoLoaded(true);
               setIsMuted(true);
@@ -520,7 +520,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               videoRef.current.volume = 0;
               await videoRef.current.play();
               setIsVideoPlaying(true);
-              setIsMuted(true);
+          setIsMuted(true);
             }
           } catch (fallbackError) {
             console.log('Muted autoplay also failed:', fallbackError);
@@ -617,7 +617,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     } else {
       // Fallback: copy to clipboard
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(window.location.href);
+      navigator.clipboard.writeText(window.location.href);
       }
       // You could add a toast notification here
     }

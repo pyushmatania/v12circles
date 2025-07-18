@@ -41,6 +41,7 @@ import { comprehensiveCommunityData, type RealCommunityItem } from '../data/comp
 import OptimizedImage from './OptimizedImage';
 import { getSpotifyArtistData } from '../data/spotifyArtistImages';
 import { getUserAvatar } from '../utils/imageUtils';
+import './CommunityGenZ.css';
 
 // 🛡️ Type definitions for better type safety
 interface FeedPost {
@@ -76,6 +77,8 @@ const getLocalAvatar = (name: string) => {
   return getUserAvatar(name);
 };
 
+const EMOJIS = ['🔥', '✨', '💫', '🎉', '😍', '😎', '🥳', '🎵', '🎬', '🦄', '🌈', '👑', '💖', '🤩', '😜', '🎤', '📸', '🕺', '💃'];
+
 /**
  * 🎯 Enter Circles - The Ultimate Community Experience
  * @description Where creators, investors, and fans unite in the most vibrant entertainment community
@@ -95,6 +98,7 @@ const Community: React.FC = memo(() => {
   const [selectedCategory, setSelectedCategory] = useState<'productionHouse' | 'movie' | 'director' | 'actor' | 'actress' | 'musicArtist'>('movie');
   const [selectedItem, setSelectedItem] = useState<RealCommunityItem | null>(null);
   const [isItemSelected, setIsItemSelected] = useState(false);
+  const [transitioningItemId, setTransitioningItemId] = useState<string | null>(null);
 
   // Check for selected item from Dashboard navigation
   useEffect(() => {
@@ -796,11 +800,29 @@ const Community: React.FC = memo(() => {
     }
   ];
 
-
+  // Temporarily disabled floating emojis to prevent crashes
+  // const [floatingEmojis, setFloatingEmojis] = useState<Array<{id:number, emoji:string, left:number, size:number, duration:number}>>([]);
+  // const emojiIdRef = useRef(0);
+  
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setFloatingEmojis((prev) => [
+  //       ...prev,
+  //       {
+  //         id: emojiIdRef.current++,
+  //         emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+  //         left: Math.random() * 90 + 5, // 5% to 95%
+  //         size: Math.random() * 1.5 + 1, // 1rem to 2.5rem
+  //         duration: Math.random() * 4 + 6 // 6s to 10s
+  //       }
+  //     ].slice(-20)); // keep max 20
+  //   }, 900);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <div
-      className={`relative min-h-screen pt-16 pb-[100px] ${
+      className={`community-page relative min-h-screen pt-16 pb-[100px] ${
         theme === 'light'
           ? 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100'
           : 'bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900'
@@ -811,6 +833,20 @@ const Community: React.FC = memo(() => {
           : 'radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.25) 0%, transparent 70%)'
       }}
     >
+      {/* Floating Emojis for Gen Z Snapchat/TikTok vibes - Temporarily disabled */}
+      {/* <div className="floating-emojis">
+        {floatingEmojis.map(e => (
+          <span
+            key={e.id}
+            className="emoji"
+            style={{
+              left: `${e.left}%`,
+              fontSize: `${e.size}rem`,
+              animationDuration: `${e.duration}s`
+            }}
+          >{e.emoji}</span>
+        ))}
+      </div> */}
       {/* Enhanced Background Effects - Consistent with Browse/Details */}
         <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         {/* Dynamic Blue/Purple Floating Orbs */}
@@ -922,7 +958,7 @@ const Community: React.FC = memo(() => {
         {/* Category Selector - Instagram Stories Style */}
         <div className="mb-8">
           <div className="text-center mb-6">
-            <h2 className={`text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent`}>
+            <h2 className={`community-title text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent`}>
               Explore Your Circles
             </h2>
             <p className={`text-gray-500 ${
@@ -934,12 +970,12 @@ const Community: React.FC = memo(() => {
           
           <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide snap-x snap-mandatory justify-center">
             {[
-              { id: 'movie', label: 'Movies', icon: '🎬', color: 'from-blue-500 to-indigo-500', shape: 'square' },
-              { id: 'productionHouse', label: 'Studios', icon: '🏢', color: 'from-indigo-500 to-purple-500', shape: 'square' },
-              { id: 'director', label: 'Directors', icon: '🎥', color: 'from-purple-500 to-blue-600', shape: 'round' },
-              { id: 'actor', label: 'Actors', icon: '👨‍🎭', color: 'from-blue-600 to-indigo-600', shape: 'round' },
-              { id: 'actress', label: 'Actresses', icon: '👩‍🎭', color: 'from-indigo-600 to-purple-600', shape: 'round' },
-              { id: 'musicArtist', label: 'Music Artists', icon: '🎤', color: 'from-purple-600 to-blue-500', shape: 'round' }
+              { id: 'movie', label: 'Movies', icon: '🎬', categoryClass: 'movies-category', shape: 'square' },
+              { id: 'productionHouse', label: 'Studios', icon: '🏢', categoryClass: 'studios-category', shape: 'square' },
+              { id: 'director', label: 'Directors', icon: '🎥', categoryClass: 'directors-category', shape: 'round' },
+              { id: 'actor', label: 'Actors', icon: '👨‍🎭', categoryClass: 'actors-category', shape: 'round' },
+              { id: 'actress', label: 'Actresses', icon: '👩‍🎭', categoryClass: 'actresses-category', shape: 'round' },
+              { id: 'musicArtist', label: 'Music Artists', icon: '🎤', categoryClass: 'music-category', shape: 'round' }
             ].map((category) => {
               const isSelected = selectedCategory === category.id;
               const isPerson = category.shape === 'round';
@@ -955,11 +991,11 @@ const Community: React.FC = memo(() => {
                       setSelectedItem(null);
                       setIsItemSelected(false);
                     }}
-                    className={`relative w-20 h-20 p-1 transition-all duration-300 group overflow-hidden ${
+                    className={`category-button relative w-20 h-20 p-1 transition-all duration-300 group overflow-hidden ${
                       isPerson ? 'rounded-full' : 'rounded-2xl'
                     } ${
                       isSelected
-                        ? `bg-gradient-to-r ${category.color} shadow-2xl shadow-blue-500/40`
+                        ? `${category.categoryClass} shadow-2xl`
                         : `${theme === 'light' 
                             ? 'bg-white/80 border-2 border-blue-200 hover:border-indigo-400 shadow-lg hover:shadow-xl' 
                             : 'bg-slate-800/80 border-2 border-blue-700 hover:border-indigo-500 shadow-lg hover:shadow-xl'
@@ -972,7 +1008,7 @@ const Community: React.FC = memo(() => {
                         initial={{ scale: 0, rotate: 0 }}
                         animate={{ scale: 1, rotate: 360 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
-                        className={`absolute inset-0 bg-gradient-to-r ${category.color} ${
+                        className={`absolute inset-0 ${category.categoryClass} ${
                           isPerson ? 'rounded-full' : 'rounded-2xl'
                         } p-0.5 z-10`}
                       >
@@ -997,8 +1033,10 @@ const Community: React.FC = memo(() => {
                           ? 'bg-gradient-to-br from-slate-50 to-slate-100' 
                           : 'bg-gradient-to-br from-slate-700 to-slate-800'
                     }`}>
-                      <span className={`text-2xl ${
-                        isSelected ? 'filter drop-shadow-lg' : ''
+                      <span className={`text-2xl transition-all duration-300 ${
+                        isSelected 
+                          ? 'filter drop-shadow-lg scale-110 animate-pulse' 
+                          : 'group-hover:scale-110 group-hover:animate-bounce'
                       }`}>{category.icon}</span>
                     </div>
                     
@@ -1014,14 +1052,12 @@ const Community: React.FC = memo(() => {
                   
                   {/* Category Label */}
                   <span 
-                    className={`text-sm font-medium transition-colors duration-300 ${
+                    className={`text-sm font-bold transition-all duration-300 ${
                       isSelected 
-                        ? theme === 'light' 
-                          ? 'text-slate-900' 
-                          : 'text-white'
+                        ? 'text-white drop-shadow-lg scale-110' 
                         : theme === 'light' 
-                          ? 'text-slate-600' 
-                          : 'text-slate-400'
+                          ? 'text-slate-600 hover:text-slate-900' 
+                          : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
                     {category.label}
@@ -1189,27 +1225,35 @@ const Community: React.FC = memo(() => {
                         key={item.id}
                         className="flex flex-col items-center gap-3"
                       >
-                        <button
+                        <div 
                           onClick={() => {
                             // For Spotify music artists, open Spotify link if available
                             if (selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') && item.spotifyUrl) {
                               window.open(item.spotifyUrl, '_blank');
                               return;
                             }
-                            setSelectedItem(item);
-                            setIsItemSelected(true);
+                            
+                            // Start transition effect for this specific item
+                            setTransitioningItemId(item.id);
+                            
+                            // After 1 second, open the element
+                            setTimeout(() => {
+                              setSelectedItem(item);
+                              setIsItemSelected(true);
+                              setTransitioningItemId(null);
+                            }, 1000);
                           }}
                           title={selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') ? 'Click to open Spotify profile' : 'Click to view details'}
-                          className={`group relative aspect-square w-full max-w-[120px] overflow-hidden transition-all duration-300 ${
+                          className={`community-card p-2 cursor-pointer ${
+                            isPerson ? 'rounded-full' : 'rounded-2xl'
+                          } ${transitioningItemId === item.id ? 'transitioning' : ''}`}
+                        >
+                          <div className={`group relative aspect-square w-full max-w-[120px] overflow-hidden transition-all duration-300 ${
                             isPerson 
                               ? 'rounded-full' 
                               : 'rounded-2xl'
-                          } ${
-                theme === 'light'
-                              ? 'bg-white shadow-lg hover:shadow-xl border border-red-200 hover:border-rose-400'
-                              : 'bg-slate-800 shadow-lg hover:shadow-xl border border-red-700 hover:border-rose-500'
-                          } ${selectedCategory === 'musicArtist' && item.id.startsWith('spotify-') ? 'cursor-pointer hover:scale-105' : ''} ${isMobile ? 'touch-manipulation' : ''}`}
-                        >
+                          } ${isMobile ? 'touch-manipulation' : ''}`}
+                          >
                           {/* Instagram-style gradient border for active users */}
                           {item.isActive && (
                             <div className={`absolute inset-0 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 ${
@@ -1265,7 +1309,8 @@ const Community: React.FC = memo(() => {
           </div>
                             </div>
                           )}
-                        </button>
+                        </div>
+                        </div>
                         
                         {/* Item Info */}
                         <div className="text-center space-y-1">
@@ -1325,7 +1370,7 @@ const Community: React.FC = memo(() => {
                 </span>
                 {isMobile && totalPages > 1 && (
                   <div className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
-                    <span>Swipe to navigate</span>
+                    <span className="swipe-hint">Swipe to navigate</span>
                     <div className="flex gap-1">
                       <div className="w-1 h-1 bg-gray-400 dark:bg-gray-500 rounded-full animate-pulse" />
                       <div className="w-1 h-1 bg-gray-400 dark:bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />
@@ -1391,41 +1436,58 @@ const Community: React.FC = memo(() => {
               </div>
               </motion.div>
               
-              {/* Item Info Overlay */}
+              {/* Item Info Overlay - Two Column Layout */}
               <div className="absolute bottom-8 left-8 right-8">
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="flex items-center gap-6 mb-6"
+                  className="grid grid-cols-2 gap-8 items-center mb-6"
                 >
-                      <div className="relative">
-                    <OptimizedImage 
-                      src={selectedItem.avatar || getUserAvatar('Community Bot')}
-                      alt={selectedItem.name}
-                      width={80}
-                      height={80}
-                      className="w-20 h-20 rounded-2xl object-cover border-4 border-white/30 shadow-2xl"
-                    />
-                    {selectedItem.verified && (
+                  {/* Left Column - Image */}
+                  <div className="flex items-center gap-6">
+                    <div className="relative">
+                      <OptimizedImage 
+                        src={selectedItem.avatar || getUserAvatar('Community Bot')}
+                        alt={selectedItem.name}
+                        width={80}
+                        height={80}
+                        className="w-20 h-20 rounded-2xl object-cover border-4 border-white/30 shadow-2xl"
+                      />
+                      {selectedItem.verified && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center"
+                        >
+                          <CheckCircle className="w-4 h-4 text-white" />
+                        </motion.div>
+                      )}
                       <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center"
-                      >
-                        <CheckCircle className="w-4 h-4 text-white" />
-                      </motion.div>
-                    )}
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="absolute -top-1 -left-1 w-4 h-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"
+                      />
+                    </div>
+                    <div>
+                      <h2 className="text-white text-2xl font-black mb-2 drop-shadow-lg">{selectedItem.name}</h2>
+                      <p className="text-gray-200 text-sm leading-relaxed">{selectedItem.description}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Right Column - Magical Handwritten Animation */}
+                  <div className="flex items-center justify-center w-full h-full min-h-[120px]">
                     <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute -top-1 -left-1 w-4 h-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"
-                    />
-                </div>
-                  <div className="flex-1">
-                    <h2 className="text-white text-3xl font-black mb-2 drop-shadow-lg">{selectedItem.name}</h2>
-                    <p className="text-gray-200 text-lg leading-relaxed">{selectedItem.description}</p>
-                </div>
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.5, duration: 0.8 }}
+                      className="magical-handwriting-container w-full h-full flex items-center justify-center"
+                    >
+                      <div className="magical-handwriting magical-typewriter">
+                        {selectedItem.name}
+                      </div>
+                    </motion.div>
+                  </div>
                 </motion.div>
                 
                 {/* Enhanced Stats */}
