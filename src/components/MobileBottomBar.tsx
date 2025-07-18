@@ -85,8 +85,9 @@ const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ currentView, setCurre
               )}
               
               <div className="relative z-10 flex flex-col items-center gap-0.5">
-                {item.id === 'profile' && isAuthenticated && user?.avatar ? (
+                {item.id === 'profile' && isAuthenticated ? (
                   <div className="relative">
+                    {user?.avatar ? (
                     <img 
                       src={user.avatar} 
                       alt={user.name}
@@ -95,15 +96,33 @@ const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ currentView, setCurre
                         const target = e.currentTarget as HTMLImageElement;
                         target.style.display = 'none';
                         const fallback = target.nextElementSibling as HTMLElement;
-                        if (fallback) fallback.style.display = 'block';
-                      }}
-                    />
+                          if (fallback) fallback.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    {/* Fallback with user initials */}
+                    <div 
+                      className={`w-4 h-4 rounded-full ring-1 ring-white/20 flex items-center justify-center text-[8px] font-bold ${
+                        user?.avatar ? 'hidden' : 'flex'
+                      } ${
+                        theme === 'light' 
+                          ? 'bg-purple-500 text-white' 
+                          : 'bg-cyan-500 text-white'
+                      }`}
+                      style={{ display: user?.avatar ? 'none' : 'flex' }}
+                    >
+                      {user?.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'U'}
+                    </div>
                     {/* Online indicator */}
                     <div className="absolute -bottom-0.5 -right-0.5 w-1.5 h-1.5 bg-green-400 rounded-full border border-white" />
                   </div>
                 ) : (
                   <item.icon className={`w-3.5 h-3.5 transition-all duration-300 ${
                     currentView === item.id ? 'scale-110' : 'scale-100'
+                  } ${
+                    item.id === 'community'
+                      ? 'text-orange-400 filter drop-shadow-[0_0_6px_rgba(251,146,60,0.8)] drop-shadow-[0_0_12px_rgba(236,72,153,0.6)] drop-shadow-[0_0_18px_rgba(251,146,60,0.4)]'
+                      : ''
                   }`} />
                 )}
                 
@@ -111,6 +130,10 @@ const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ currentView, setCurre
                   currentView === item.id 
                     ? 'opacity-100' 
                     : 'opacity-70'
+                } ${
+                  item.id === 'community'
+                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 filter drop-shadow-[0_0_6px_rgba(251,146,60,0.8)] drop-shadow-[0_0_12px_rgba(236,72,153,0.6)]'
+                    : ''
                 }`}>
                   {item.label}
                 </span>

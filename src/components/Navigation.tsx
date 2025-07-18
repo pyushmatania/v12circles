@@ -403,8 +403,16 @@ const Navigation: React.FC<NavigationProps> = memo(({
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05, duration: 0.3 }}
                       >
-                        <item.icon className="w-5 h-5 drop-shadow-lg" />
-                        <span className="font-medium text-base drop-shadow-lg">
+                        <item.icon className={`w-5 h-5 drop-shadow-lg ${
+                          item.id === 'community'
+                            ? 'text-orange-400 filter drop-shadow-[0_0_8px_rgba(251,146,60,0.8)] drop-shadow-[0_0_16px_rgba(236,72,153,0.6)] drop-shadow-[0_0_24px_rgba(251,146,60,0.4)]'
+                            : ''
+                        }`} />
+                        <span className={`font-medium text-base drop-shadow-lg ${
+                          item.id === 'community'
+                            ? 'text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 filter drop-shadow-[0_0_8px_rgba(251,146,60,0.8)] drop-shadow-[0_0_16px_rgba(236,72,153,0.6)]'
+                            : ''
+                        }`}>
                           {item.label}
                         </span>
                         {item.requiresAuth && !isAuthenticated && (
@@ -545,7 +553,11 @@ const Navigation: React.FC<NavigationProps> = memo(({
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: index * 0.05, duration: 0.3 }}
                                                   >
-                            <item.icon className="w-5 h-5 drop-shadow-lg" />
+                            <item.icon className={`w-5 h-5 drop-shadow-lg ${
+                              item.id === 'community'
+                                ? 'text-orange-400 filter drop-shadow-[0_0_8px_rgba(251,146,60,0.8)] drop-shadow-[0_0_16px_rgba(236,72,153,0.6)] drop-shadow-[0_0_24px_rgba(251,146,60,0.4)]'
+                                : ''
+                            }`} />
                           {item.requiresAuth && !isAuthenticated && (
                             <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
                           )}
@@ -657,7 +669,11 @@ const Navigation: React.FC<NavigationProps> = memo(({
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05, duration: 0.3 }}
                                               >
-                          <item.icon className="w-6 h-6" />
+                          <item.icon className={`w-6 h-6 ${
+                            item.id === 'community'
+                              ? 'text-orange-400 filter drop-shadow-[0_0_6px_rgba(251,146,60,0.8)] drop-shadow-[0_0_12px_rgba(236,72,153,0.6)] drop-shadow-[0_0_18px_rgba(251,146,60,0.4)]'
+                              : ''
+                          }`} />
                         {item.requiresAuth && !isAuthenticated && (
                           <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
                         )}
@@ -677,13 +693,15 @@ const Navigation: React.FC<NavigationProps> = memo(({
                       
                       {/* Hover Text */}
                       <span className={`absolute left-16 top-1/2 transform -translate-y-1/2 whitespace-nowrap px-2 py-1 text-sm font-light opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out pointer-events-none select-none group-hover:translate-x-0 translate-x-[-10px] ${
-                        currentView === item.id
-                          ? theme === 'light'
-                            ? 'text-purple-600'
-                            : 'text-cyan-400'
-                          : theme === 'light'
-                            ? 'text-gray-700'
-                            : 'text-gray-400'
+                        item.id === 'community'
+                          ? 'text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 filter drop-shadow-[0_0_4px_rgba(251,146,60,0.8)] drop-shadow-[0_0_8px_rgba(236,72,153,0.6)]'
+                          : currentView === item.id
+                            ? theme === 'light'
+                              ? 'text-purple-600'
+                              : 'text-cyan-400'
+                            : theme === 'light'
+                              ? 'text-gray-700'
+                              : 'text-gray-400'
                       }`}>
                         {item.label}
                       </span>

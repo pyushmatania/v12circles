@@ -981,7 +981,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
       )}
 
       {/* Search and Filter Section */}
-      <div className="max-w-7xl mx-auto px-4 py-4 mt-2">
+      <div className="max-w-7xl mx-auto px-4 py-4 mt-16 sm:mt-2">
         <div className="flex flex-row gap-3 mb-4">
           {/* Search Bar */}
           <div className="relative flex-1">
@@ -1313,10 +1313,10 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
               {showAllProjects && (
                 <button
                   onClick={() => setShowAllProjects(null)}
-                  className="absolute top-0 left-0 z-10 flex items-center gap-1 px-2 py-1 bg-black/60 backdrop-blur-md text-white rounded-full hover:bg-black/80 transition-all duration-300 border border-white/20 hover:border-white/40 shadow-lg"
+                  className="absolute -top-6 left-2 z-10 flex items-center gap-1 px-1.5 py-0.5 bg-black/60 backdrop-blur-md text-white rounded-full hover:bg-black/80 transition-all duration-300 border border-white/20 hover:border-white/40 shadow-lg"
                 >
-                  <ArrowRight className="w-3 h-3 rotate-180" />
-                  <span className="text-xs font-medium">Back</span>
+                  <ArrowRight className="w-2.5 h-2.5 rotate-180" />
+                  <span className="text-[10px] font-medium">Back</span>
                 </button>
               )}
             </div>

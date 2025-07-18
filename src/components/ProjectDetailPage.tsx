@@ -15,7 +15,6 @@ import {
   DollarSign,
   Target,
   Award,
-  Film,
   MapPin,
   Globe,
   Eye,
@@ -39,13 +38,13 @@ import {
   FileText
 } from 'lucide-react';
 
-import { Project, KeyPerson } from '../types';
-import { useTMDBProjectData, getMainCast, getKeyCrew } from '../hooks/useTMDBProjectData';
+import { Project } from '../types';
+import { useTMDBProjectData, getMainCast } from '../hooks/useTMDBProjectData';
 import { getTextColor, getBorderColor, getMainBgColor } from '../utils/themeUtils';
 import useIsMobile from '../hooks/useIsMobile';
 
 // Import logo image
-import { circlesLogo, getUserAvatar } from '../utils/imageUtils';
+import { getUserAvatar } from '../utils/imageUtils';
 
 // 🛡️ Type definitions for better type safety
 interface ProjectDetailPageProps {
@@ -71,7 +70,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   const [isLiked, setIsLiked] = useState(false);
   const [investmentAmount, setInvestmentAmount] = useState(10000);
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
-  const [showMobileNav, setShowMobileNav] = useState(false);
+
   const [selectedUpdateFilter, setSelectedUpdateFilter] = useState('All');
   const [updateSearchQuery, setUpdateSearchQuery] = useState('');
   
@@ -134,7 +133,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true); // Default to muted for mobile compatibility
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
+
   const [userInteracted, setUserInteracted] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState({
     days: 45,
@@ -321,12 +320,32 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
 
 
+  const getYouTubeVideoId = (url: string): string | null => {
+    if (!url) return null;
+    // Handle direct video URLs
+    const videoPatterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+    ];
+    for (const pattern of videoPatterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    // Handle search query URLs - these don't have video IDs, so we return null
+    if (url.includes('youtube.com/results?search_query=')) {
+      return null;
+    }
+    return null;
+  };
+
+  // Move these declarations above handleVideoLoad to fix ReferenceError
+  const videoId = getYouTubeVideoId(project.trailer);
+  const finalVideoId = searchVideoId || videoId;
+  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=1&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1&vq=hd720` : null;
+
   const handleVideoLoad = useCallback(async () => {
     if (!videoRef.current) return;
     
     try {
-      setVideoError(false);
-      
       // Always start muted for better autoplay compatibility
       videoRef.current.muted = true;
       videoRef.current.volume = isMobile ? 0 : 0.5;
@@ -336,25 +355,28 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
       await videoRef.current.play();
       setIsVideoPlaying(true);
       
-      // On desktop, attempt to unmute after successful autoplay if user hasn't interacted
-      if (!isMobile && !userInteracted) {
+      // Auto unmute after 1 second for both mobile and desktop
         setTimeout(() => {
           if (videoRef.current && !userInteracted) {
             videoRef.current.muted = false;
             setIsMuted(false);
           }
         }, 1000);
-      }
       
     } catch (error) {
       console.log('Video autoplay failed:', error);
-      setVideoError(true);
       setIsVideoPlaying(false);
     }
     
-    // For YouTube videos, ensure they start muted
+    // For YouTube videos, ensure they start muted and auto unmute after 1 second
     if (embedUrl && iframeRef.current) {
       setIsMuted(true);
+      // Auto unmute YouTube videos after 1 second
+      setTimeout(() => {
+        if (!userInteracted) {
+          setIsMuted(false);
+        }
+      }, 1000);
     }
     
     // Add a 2 second delay before showing the video (hiding poster)
@@ -388,31 +410,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
 
 
-  // Extract YouTube video ID from URL
-  const getYouTubeVideoId = (url: string): string | null => {
-    if (!url) return null;
-    
-    // Handle direct video URLs
-    const videoPatterns = [
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
-    ];
-    
-    for (const pattern of videoPatterns) {
-      const match = url.match(pattern);
-      if (match) return match[1];
-    }
-    
-    // Handle search query URLs - these don't have video IDs, so we return null
-    if (url.includes('youtube.com/results?search_query=')) {
-      return null;
-    }
-    
-    return null;
-  };
-
-  const videoId = getYouTubeVideoId(project.trailer);
-  const finalVideoId = searchVideoId || videoId;
-  const embedUrl = finalVideoId ? `https://www.youtube.com/embed/${finalVideoId}?autoplay=1&mute=1&modestbranding=1&rel=0&showinfo=0&controls=1&enablejsapi=1&origin=${window.location.origin}&playsinline=1&loop=1&playlist=${finalVideoId}&iv_load_policy=3&cc_load_policy=0&fs=1&vq=hd720` : null;
+  // Extract YouTube video ID from URL - REMOVED DUPLICATE DECLARATION
   
   // Check if it's a search query URL
   const isSearchQuery = project.trailer?.includes('youtube.com/results?search_query=');
@@ -422,39 +420,43 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
     if (embedUrl) {
       setIsVideoPlaying(true);
       setIsVideoLoaded(true);
-      setIsMuted(isMobile ? true : false); // Handle mobile mute requirements
+      setIsMuted(true); // Always start muted for better autoplay
+      
+      // Auto unmute after 1 second for YouTube videos
+      const unmuteTimer = setTimeout(() => {
+        if (!userInteracted) {
+          setIsMuted(false);
+        }
+      }, 1000);
+      
+      return () => clearTimeout(unmuteTimer);
     } else if (videoRef.current) {
       const playVideo = async () => {
         try {
           videoRef.current!.volume = isMobile ? 0 : 0.5;
-          videoRef.current!.muted = isMobile ? true : false;
+          videoRef.current!.muted = true; // Always start muted
           await videoRef.current!.play();
-          setIsVideoPlaying(true);
-          setIsVideoLoaded(true);
-        } catch (error) {
-          console.log('Mobile autoplay failed, trying muted:', error);
-          // If autoplay fails on mobile, try with muted
-          if (isMobile && videoRef.current) {
-            try {
-              videoRef.current.muted = true;
-              videoRef.current.volume = 0;
-              await videoRef.current.play();
               setIsVideoPlaying(true);
               setIsVideoLoaded(true);
               setIsMuted(true);
-            } catch (mutedError) {
-              console.log('Muted autoplay also failed:', mutedError);
-              setIsMuted(true);
-            }
-          } else {
+          
+          // Auto unmute after 1 second
+          setTimeout(() => {
+            if (videoRef.current && !userInteracted) {
+              videoRef.current.muted = false;
             setIsMuted(false);
           }
+          }, 1000);
+          
+        } catch (error) {
+          console.log('Video autoplay failed:', error);
+          setIsMuted(true);
         }
       };
       const timer = setTimeout(playVideo, 100);
       return () => clearTimeout(timer);
     }
-  }, [embedUrl, isMobile]);
+  }, [embedUrl, isMobile, userInteracted]);
 
 
 
@@ -472,10 +474,9 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         videoRef.current.muted = newMutedState;
       }
       
-      // For YouTube videos, use the YouTube Player API if available
+      // For YouTube videos, only use postMessage to avoid reloading iframe
       if (embedUrl && iframeRef.current) {
         try {
-          // Try to use YouTube Player API for better control
           const iframe = iframeRef.current;
           if (iframe.contentWindow && (iframe.contentWindow as any).postMessage) {
             const command = newMutedState ? 'mute' : 'unMute';
@@ -483,25 +484,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               JSON.stringify({ event: 'command', func: command, args: [] }),
               '*'
             );
-          } else {
-            // Fallback: reload iframe with new mute parameter
-            const currentSrc = iframe.src;
-            const newMuteParam = newMutedState ? '&mute=1' : '&mute=0';
-            const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
-            iframe.src = newSrc;
           }
+          // Don't reload iframe - just update the state
         } catch (error) {
-          console.log('YouTube Player API not available, using fallback');
-          // Fallback: reload iframe with new mute parameter
-          const currentSrc = iframeRef.current.src;
-          const newMuteParam = newMutedState ? '&mute=1' : '&mute=0';
-          const newSrc = currentSrc.replace(/&mute=[01]/, '') + newMuteParam;
-          iframeRef.current.src = newSrc;
+          console.log('YouTube Player API not available, mute state updated in UI only');
+          // Don't reload iframe to prevent video restart
         }
       }
       return newMutedState;
     });
-  }, [embedUrl, isVideoPlaying]);
+  }, [embedUrl]);
 
   const handleVideoClick = useCallback(() => {
     // Mark user interaction
@@ -669,13 +661,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           if (isMobile && videoRef.current && !embedUrl) {
             // On mobile, try to unmute and play with sound on user interaction
             if (isMuted) {
-              videoRef.current.muted = false;
-              videoRef.current.volume = 0.5;
+              const video = videoRef.current;
+              video.muted = false;
+              video.volume = 0.5;
               setIsMuted(false);
-              videoRef.current.play().catch(() => {
+              video.play().catch(() => {
                 // If unmuting fails, keep it muted
+                if (videoRef.current) {
                 videoRef.current.muted = true;
                 videoRef.current.volume = 0;
+                }
                 setIsMuted(true);
               });
             }
@@ -1855,7 +1850,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: 0.5, duration: 0.5 }}
-                              className="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                              className="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent"
                             >
                               Now Enter Circles
                             </motion.h2>

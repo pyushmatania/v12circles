@@ -36,7 +36,7 @@ export const MOCK_USER: User = {
   id: '1',
   email: 'pyushmatania@gmail.com',
   name: 'Akash Matania',
-  avatar: '/images/akash-matania.jpg',
+  avatar: '/images/akash-matania.JPG',
   bio: 'Passionate about supporting innovative entertainment projects. Film enthusiast and early investor in emerging talent.',
   location: 'Bangalore, India',
   joinDate: '2025-07-01',
