@@ -1,7 +1,6 @@
 import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
-import { ErrorBoundary } from './components/ErrorBoundary';
 import { initSentry } from './services/sentry';
 import { debug } from './utils/debug';
 import { checkReactAvailability } from './utils/reactCheck';
@@ -12,6 +11,8 @@ initSentry();
 
 // 🛡️ Global error handler to catch React context issues
 window.addEventListener('error', (event) => {
+  console.error('Global error caught:', event.error);
+  
   if (event.error && event.error.message && event.error.message.includes('useState')) {
     console.error('React useState error detected:', event.error);
     // Reload the page to recover from React context issues
@@ -19,6 +20,21 @@ window.addEventListener('error', (event) => {
       window.location.reload();
     }, 1000);
   }
+  
+  // Check for memory issues
+  if (event.error && event.error.message && event.error.message.includes('out of memory')) {
+    console.error('Memory error detected:', event.error);
+  }
+  
+  // Check for network issues
+  if (event.error && event.error.message && event.error.message.includes('fetch')) {
+    console.error('Network error detected:', event.error);
+  }
+});
+
+// 🛡️ Unhandled promise rejection handler
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason);
 });
 
 // 🎯 Performance monitoring and development utilities

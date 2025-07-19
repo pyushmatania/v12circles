@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import Hero from './components/Hero';
 import ProblemSolution from './components/ProblemSolution';
 import HowItWorks from './components/HowItWorks';
@@ -65,7 +65,7 @@ function AppContent() {
   // 🚀 Memoized constants for performance
   const protectedViews = useMemo(() => ['profile', 'portfolio'] as const, []);
   const isCurrentViewProtected = useMemo(() => 
-    protectedViews.includes(currentView as any), 
+    protectedViews.includes(currentView as 'profile' | 'portfolio'), 
     [currentView, protectedViews]
   );
 
@@ -111,7 +111,7 @@ function AppContent() {
   // 🚀 Optimized view change handler
   const handleViewChange = useCallback((view: ViewType) => {
     // Check if authentication is required for certain views
-    if (protectedViews.includes(view as any)) {
+    if (protectedViews.includes(view as 'profile' | 'portfolio')) {
       if (!handleAuthRequired()) {
         toast.info('Please sign in', 'You need to be logged in to access this page');
         return;

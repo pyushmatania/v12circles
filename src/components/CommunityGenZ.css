@@ -12,32 +12,404 @@
   --text-white: #ffffff;
 }
 
+/* Minimal Instagram-style theme for all Community tabs */
 .community-page {
-  background: var(--bg-gradient);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  min-height: 100vh;
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Vibrant gradient text for headers */
+.gradient-text {
+  background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd23f, #ff6b35);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease-in-out infinite;
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Enhanced gradient text for main headers */
+.gradient-text-main {
+  background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd23f, #ff6b35);
+  background-size: 400% 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 4s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+}
+
+/* Minimal tab navigation */
+.instagram-tab-nav {
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.instagram-tab-button {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  border: none;
+  padding: 8px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.instagram-tab-button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.instagram-tab-button.active {
+  color: #ffffff;
+}
+
+.instagram-tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #833AB4;
+}
+
+/* Minimal cards */
+.instagram-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.instagram-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Minimal buttons */
+.instagram-button {
+  background: #833AB4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.instagram-button:hover {
+  background: #9B4DDB;
+}
+
+.instagram-button-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.instagram-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Minimal inputs */
+.instagram-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.instagram-input:focus {
+  outline: none;
+  border-color: #833AB4;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.instagram-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Minimal avatars */
+.instagram-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.instagram-avatar-small {
+  width: 32px;
+  height: 32px;
+}
+
+.instagram-avatar-medium {
+  width: 40px;
+  height: 40px;
+}
+
+.instagram-avatar-large {
+  width: 48px;
+  height: 48px;
+}
+
+/* Minimal status badges */
+.instagram-status-online {
+  background: #00D4AA;
+  border: 1px solid #000000;
+}
+
+.instagram-status-offline {
+  background: #8E8E93;
+  border: 1px solid #000000;
+}
+
+/* Minimal gradients */
+.instagram-gradient-primary {
+  background: #833AB4;
+}
+
+.instagram-gradient-secondary {
+  background: #667eea;
+}
+
+.instagram-gradient-success {
+  background: #11998e;
+}
+
+.instagram-gradient-warning {
+  background: #f093fb;
+}
+
+/* Minimal text */
+.instagram-text-primary {
+  color: #ffffff;
+}
+
+.instagram-text-secondary {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.instagram-text-muted {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Minimal shadows */
+.instagram-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.instagram-shadow-hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Minimal animations */
+.instagram-fade-in {
+  animation: instagramFadeIn 0.3s ease-out;
+}
+
+@keyframes instagramFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.instagram-scale-in {
+  animation: instagramScaleIn 0.2s ease-out;
+}
+
+@keyframes instagramScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Minimal scrollbar */
+.instagram-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.instagram-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+}
+
+.instagram-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.instagram-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Minimal media grid */
+.instagram-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  padding: 12px;
+}
+
+.instagram-media-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.2s ease;
+}
+
+.instagram-media-item:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Minimal chat bubbles */
+.instagram-chat-bubble {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin: 4px 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.instagram-chat-bubble-own {
+  background: rgba(131, 58, 180, 0.2);
+  border-color: rgba(131, 58, 180, 0.3);
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* Minimal notifications */
+.instagram-notification {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 4px 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+.instagram-notification:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(2px);
+}
+
+/* Minimal loading states */
+.instagram-loading {
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+  background-size: 200% 100%;
+  animation: instagramLoading 1s infinite;
+}
+
+@keyframes instagramLoading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Minimal responsive design */
+@media (max-width: 768px) {
+  .instagram-media-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  .instagram-tab-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .instagram-card {
+    border-radius: 8px;
+  }
+}
+
+/* Minimal dark mode enhancements */
+.instagram-dark {
+  background: #000000;
+  color: #ffffff;
+}
+
+.instagram-dark .instagram-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.instagram-dark .instagram-input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+/* Minimal focus states */
+.instagram-focus:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(131, 58, 180, 0.2);
+}
+
+/* Minimal transitions */
+.instagram-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.instagram-transition-fast {
+  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.instagram-transition-slow {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .community-card {
-  background: transparent;
-  backdrop-filter: blur(10px);
-  border: 3px solid transparent;
-  background-clip: padding-box;
+  background: var(--glass-effect);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: var(--shadow-glow);
   transform-style: preserve-3d;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .community-card::before {
   content: '';
   position: absolute;
@@ -45,29 +417,57 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   transition: left 0.7s;
 }
+
 .community-card:hover::before {
   left: 100%;
 }
+
 .community-card:hover {
-  transform: translateY(-5px) scale(1.02);
-  border-color: rgba(255, 255, 255, 0.6);
+  transform: rotateY(5deg) rotateX(5deg) translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 255, 255, 0.3);
 }
+
 .community-card::after {
   content: '';
   position: absolute;
   inset: -2px;
-  background: var(--neon-pink);
-  border-radius: 26px;
+  border-radius: inherit;
   z-index: -1;
   opacity: 0;
   transition: opacity 0.3s;
 }
+
 .community-card:hover::after {
   opacity: 1;
   animation: borderGlow 2s infinite;
+}
+
+/* Community card category-specific styles */
+.community-card.movie-card::after {
+  background: var(--neon-pink);
+}
+
+.community-card.studio-card::after {
+  background: var(--neon-purple);
+}
+
+.community-card.director-card::after {
+  background: var(--neon-blue);
+}
+
+.community-card.actor-card::after {
+  background: var(--neon-orange);
+}
+
+.community-card.actress-card::after {
+  background: var(--neon-pink);
+}
+
+.community-card.music-card::after {
+  background: var(--neon-green);
 }
 
 /* Transition effect for selected items */
@@ -267,35 +667,7 @@
   background: var(--neon-green); 
 }
 
-/* Category button animations */
-.category-button {
-  animation: categoryFloat 3s ease-in-out infinite;
-}
 
-.category-button:nth-child(2) {
-  animation-delay: 0.5s;
-}
-
-.category-button:nth-child(3) {
-  animation-delay: 1s;
-}
-
-.category-button:nth-child(4) {
-  animation-delay: 1.5s;
-}
-
-.category-button:nth-child(5) {
-  animation-delay: 2s;
-}
-
-.category-button:nth-child(6) {
-  animation-delay: 2.5s;
-}
-
-@keyframes categoryFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
-}
 
 /* Category icon glow effects */
 .category-button:hover .text-2xl {
@@ -639,4 +1011,109 @@
   .magical-handwriting-container::before {
     background-size: 200px 60px !important;
   }
+} 
+
+/* Feed-style Header for all tabs */
+.feed-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #000000 !important;
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.feed-title {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(45deg, #FF6B9D, #C44569, #F8B500, #4ECDC4, #45B7D1);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientShift 3s ease-in-out infinite;
+  letter-spacing: -0.5px;
+}
+
+.feed-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.feed-actions .action-btn {
+  background: none;
+  border: none;
+  color: #ffffff !important;
+  padding: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.feed-actions .action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Minimal Scrollbar Styles */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Firefox scrollbar */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+/* Sticky Header Lock Animation */
+.instagram-tab-nav.fixed {
+  animation: slideDown 0.5s ease-out;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Lock/Unlock Animation */
+.lock-indicator {
+  animation: lockPulse 0.6s ease-in-out;
+}
+
+@keyframes lockPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 } 

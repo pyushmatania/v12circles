@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -24,6 +24,19 @@ class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log the error to console
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+    
+    // Log additional debugging information
+    console.error('Error stack:', error.stack);
+    console.error('Component stack:', errorInfo.componentStack);
+    
+    // Check for common React errors
+    if (error.message.includes('useState') || error.message.includes('useEffect')) {
+      console.error('React Hook error detected - this might be a React context issue');
+    }
+    
+    if (error.message.includes('Maximum update depth exceeded')) {
+      console.error('Infinite re-render detected - check for circular dependencies');
+    }
     
     // In a production app, you would log this to an error reporting service
     // logErrorToService(error, errorInfo);
