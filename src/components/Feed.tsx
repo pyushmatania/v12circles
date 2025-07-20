@@ -8,6 +8,18 @@ import {
   MoreHorizontal,
   Smile,
   Share2,
+  Image,
+  Video,
+  X,
+  Paperclip,
+  MapPin,
+  Hash,
+  AtSign,
+  Calendar,
+  Mic,
+  Camera,
+  Gift,
+  BarChart3,
 } from 'lucide-react';
 import { getUserAvatar } from '../utils/imageUtils';
 import OptimizedImage from './OptimizedImage';
@@ -46,6 +58,14 @@ interface Post {
   isLiked: boolean;
   isBookmarked: boolean;
   reactions: { emoji: string; count: number }[];
+  hashtags?: string[];
+  mentions?: string[];
+  location?: string;
+  poll?: {
+    question: string;
+    options: string[];
+    votes: Record<string, number>;
+  };
 }
 
 const EMOJIS = ['❤️', '🔥', '😍', '😎', '🥳', '🎉', '✨', '💫', '👏', '🙌', '🚀', '💎', '🎯', '🏆', '⭐'];
@@ -943,6 +963,23 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
   const [userReactions, setUserReactions] = useState<Record<string, string[]>>({});
   const observer = useRef<IntersectionObserver>();
 
+  // Post creation state
+  const [showPostCreator, setShowPostCreator] = useState(false);
+  const [postContent, setPostContent] = useState('');
+  const [selectedMedia, setSelectedMedia] = useState<File[]>([]);
+  const [mediaPreview, setMediaPreview] = useState<string[]>([]);
+  const [showPostEmojiPicker, setShowPostEmojiPicker] = useState(false);
+  const [postLocation, setPostLocation] = useState('');
+  const [postHashtags, setPostHashtags] = useState<string[]>([]);
+  const [postMentions, setPostMentions] = useState<string[]>([]);
+  const [showPollCreator, setShowPollCreator] = useState(false);
+  const [pollQuestion, setPollQuestion] = useState('');
+  const [pollOptions, setPollOptions] = useState(['', '']);
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const mediaInputRef = useRef<HTMLInputElement>(null);
+  const audioRecorderRef = useRef<MediaRecorder | null>(null);
+
   // Load initial posts
   useEffect(() => {
     const allPosts = generateMockPosts();
@@ -1064,17 +1101,375 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
     setShowComments(prev => ({ ...prev, [postId]: !prev[postId] }));
   };
 
+  // Post creation functions
+  const handleMediaSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length > 0) {
+      setSelectedMedia(prev => [...prev, ...files]);
+      
+      // Create preview URLs
+      const newPreviews = files.map(file => URL.createObjectURL(file));
+      setMediaPreview(prev => [...prev, ...newPreviews]);
+    }
+  };
+
+  const removeMedia = (index: number) => {
+    setSelectedMedia(prev => prev.filter((_, i) => i !== index));
+    setMediaPreview(prev => {
+      const newPreviews = prev.filter((_, i) => i !== index);
+      // Revoke the removed URL to free memory
+      URL.revokeObjectURL(prev[index]);
+      return newPreviews;
+    });
+  };
+
+  const addEmojiToPost = (emoji: string) => {
+    setPostContent(prev => prev + emoji);
+    setShowPostEmojiPicker(false);
+  };
+
+  const extractHashtagsAndMentions = (content: string) => {
+    const hashtags = content.match(/#\w+/g)?.map(tag => tag.slice(1)) || [];
+    const mentions = content.match(/@\w+/g)?.map(mention => mention.slice(1)) || [];
+    return { hashtags, mentions };
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
+      
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'audio/webm' });
+        setAudioBlob(blob);
+        stream.getTracks().forEach(track => track.stop());
+      };
+      
+      recorder.start();
+      audioRecorderRef.current = recorder;
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error starting recording:', error);
+    }
+  };
+
+  const stopRecording = () => {
+    if (audioRecorderRef.current && isRecording) {
+      audioRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const createPost = () => {
+    if (!postContent.trim() && selectedMedia.length === 0 && !audioBlob) return;
+
+    const { hashtags, mentions } = extractHashtagsAndMentions(postContent);
+    
+    const newPost: Post = {
+      id: `post-${Date.now()}`,
+      user: {
+        name: 'You',
+        avatar: getUserAvatar('You'),
+        verified: false,
+        role: 'Community Member'
+      },
+      timestamp: 'Just now',
+      content: postContent,
+      likes: 0,
+      comments: [],
+      shares: 0,
+      isLiked: false,
+      isBookmarked: false,
+      reactions: [],
+      hashtags: hashtags.length > 0 ? hashtags : undefined,
+      mentions: mentions.length > 0 ? mentions : undefined,
+      location: postLocation || undefined,
+      poll: showPollCreator && pollQuestion ? {
+        question: pollQuestion,
+        options: pollOptions.filter(opt => opt.trim()),
+        votes: {}
+      } : undefined
+    };
+
+    // Add media if selected
+    if (selectedMedia.length > 0) {
+      const firstMedia = selectedMedia[0];
+      newPost.media = {
+        type: firstMedia.type.startsWith('image/') ? 'image' : 'video',
+        url: mediaPreview[0],
+        thumbnail: firstMedia.type.startsWith('video/') ? mediaPreview[0] : undefined
+      };
+    }
+
+    setPosts(prev => [newPost, ...prev]);
+    
+    // Reset form
+    setPostContent('');
+    setSelectedMedia([]);
+    setMediaPreview([]);
+    setPostLocation('');
+    setPostHashtags([]);
+    setPostMentions([]);
+    setShowPollCreator(false);
+    setPollQuestion('');
+    setPollOptions(['', '']);
+    setAudioBlob(null);
+    setShowPostCreator(false);
+  };
+
+  const addPollOption = () => {
+    if (pollOptions.length < 4) {
+      setPollOptions(prev => [...prev, '']);
+    }
+  };
+
+  const removePollOption = (index: number) => {
+    if (pollOptions.length > 2) {
+      setPollOptions(prev => prev.filter((_, i) => i !== index));
+    }
+  };
+
+  const updatePollOption = (index: number, value: string) => {
+    setPollOptions(prev => prev.map((opt, i) => i === index ? value : opt));
+  };
+
   return (
     <div className={`feed ${isExperienceView ? 'experience-view' : ''}`}>
-      {!isExperienceView && (
-        <div className="feed-header">
-          <h1 className="feed-title">Community Feed</h1>
-          <div className="feed-actions">
-            <button className="action-btn">
-              <Share2 size={24} />
-            </button>
+      {/* Post Creator */}
+      {(
+        <motion.div 
+          className="post-creator"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="post-creator-header">
+            <div className="post-creator-user">
+              <OptimizedImage
+                src={getUserAvatar('You')}
+                alt="Your avatar"
+                width={40}
+                height={40}
+                className="user-avatar"
+              />
+              <div className="user-info">
+                <div className="user-name">You</div>
+                <div className="user-role">Community Member</div>
+              </div>
+            </div>
+            <motion.button
+              className="create-post-btn"
+              onClick={() => setShowPostCreator(!showPostCreator)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {showPostCreator ? 'Cancel' : 'Create Post'}
+            </motion.button>
           </div>
-        </div>
+
+          <AnimatePresence>
+            {showPostCreator && (
+              <motion.div
+                className="post-creator-content"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <textarea
+                  className="post-textarea"
+                  placeholder="What's on your mind? #hashtag @mention"
+                  value={postContent}
+                  onChange={(e) => setPostContent(e.target.value)}
+                  rows={3}
+                />
+
+                {/* Media Preview */}
+                {mediaPreview.length > 0 && (
+                  <div className="media-preview">
+                    {mediaPreview.map((preview, index) => (
+                      <div key={index} className="media-item">
+                        <img src={preview} alt="Preview" />
+                        <button
+                          className="remove-media-btn"
+                          onClick={() => removeMedia(index)}
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Audio Preview */}
+                {audioBlob && (
+                  <div className="audio-preview">
+                    <audio controls src={URL.createObjectURL(audioBlob)} />
+                    <button
+                      className="remove-audio-btn"
+                      onClick={() => setAudioBlob(null)}
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                )}
+
+                {/* Poll Creator */}
+                {showPollCreator && (
+                  <div className="poll-creator">
+                    <input
+                      type="text"
+                      placeholder="Ask a question..."
+                      value={pollQuestion}
+                      onChange={(e) => setPollQuestion(e.target.value)}
+                      className="poll-question"
+                    />
+                    {pollOptions.map((option, index) => (
+                      <div key={index} className="poll-option">
+                        <input
+                          type="text"
+                          placeholder={`Option ${index + 1}`}
+                          value={option}
+                          onChange={(e) => updatePollOption(index, e.target.value)}
+                          className="poll-option-input"
+                        />
+                        {pollOptions.length > 2 && (
+                          <button
+                            className="remove-poll-option-btn"
+                            onClick={() => removePollOption(index)}
+                          >
+                            <X size={16} />
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    {pollOptions.length < 4 && (
+                      <button
+                        className="add-poll-option-btn"
+                        onClick={addPollOption}
+                      >
+                        Add Option
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Post Creator Actions */}
+                <div className="post-creator-actions">
+                  <div className="action-buttons">
+                    <motion.button
+                      className="action-btn"
+                      onClick={() => mediaInputRef.current?.click()}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      title="Add Media"
+                    >
+                      <Image size={20} />
+                    </motion.button>
+                    <motion.button
+                      className="action-btn"
+                      onClick={() => mediaInputRef.current?.click()}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      title="Add Video"
+                    >
+                      <Video size={20} />
+                    </motion.button>
+                    <motion.button
+                      className="action-btn"
+                      onClick={() => setShowPostEmojiPicker(!showPostEmojiPicker)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      title="Add Emoji"
+                    >
+                      <Smile size={20} />
+                    </motion.button>
+                    <motion.button
+                      className="action-btn"
+                      onClick={() => setShowPollCreator(!showPollCreator)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      title="Create Poll"
+                    >
+                      <BarChart3 size={20} />
+                    </motion.button>
+                    <motion.button
+                      className="action-btn"
+                      onClick={isRecording ? stopRecording : startRecording}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      title={isRecording ? "Stop Recording" : "Record Audio"}
+                      style={{ color: isRecording ? '#ef4444' : undefined }}
+                    >
+                      <Mic size={20} />
+                    </motion.button>
+                    <motion.button
+                      className="action-btn"
+                      onClick={() => setPostLocation(prompt('Enter location:') || '')}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      title="Add Location"
+                    >
+                      <MapPin size={20} />
+                    </motion.button>
+                  </div>
+
+                  <motion.button
+                    className="post-btn"
+                    onClick={createPost}
+                    disabled={!postContent.trim() && selectedMedia.length === 0 && !audioBlob}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Send size={16} />
+                    Post
+                  </motion.button>
+                </div>
+
+                {/* Hidden file input */}
+                <input
+                  ref={mediaInputRef}
+                  type="file"
+                  multiple
+                  accept="image/*,video/*"
+                  onChange={handleMediaSelect}
+                  style={{ display: 'none' }}
+                />
+
+                {/* Post Emoji Picker */}
+                <AnimatePresence>
+                  {showPostEmojiPicker && (
+                    <motion.div
+                      className="emoji-picker"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                    >
+                      <div className="emoji-grid">
+                        {EMOJIS.map((emoji, idx) => (
+                          <motion.button
+                            key={emoji}
+                            className="emoji-btn"
+                            onClick={() => addEmojiToPost(emoji)}
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: idx * 0.05 }}
+                            whileHover={{ scale: 1.2 }}
+                            whileTap={{ scale: 0.9 }}
+                          >
+                            {emoji}
+                          </motion.button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       )}
 
       <div className="posts-container">

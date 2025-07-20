@@ -348,7 +348,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
     } catch (error) {
       console.error('Error in categorizedProjects:', error);
       // Return empty arrays as fallback
-    return {
+      return {
         trending: [],
         bollywood: [],
         hollywood: [],
@@ -365,7 +365,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
         hindiMusic: [],
         hollywoodMusic: [],
         musicAlbums: []
-    };
+      };
     }
   }, []);
 
@@ -600,15 +600,8 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
     };
   }, [isAutoPlaying, isPaused, ultimateFallback.length]);
 
-  const [imageLoaded, setImageLoaded] = useState(false);
-
   // Replace safeCurrentSlide with wrapped index
   const wrappedSlide = ultimateFallback.length > 0 ? currentSlide % ultimateFallback.length : 0;
-  
-  // Reset image loaded state when slide changes
-  React.useEffect(() => {
-    setImageLoaded(false);
-  }, [currentSlide]);
   
   // Reset current slide if it's out of bounds
   React.useEffect(() => {
@@ -685,7 +678,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                 transition={{ duration: 0.6, ease: 'easeInOut' }}
                 className="absolute inset-0 w-full h-full object-cover"
                 style={{ minWidth: '100%', minHeight: '100%' }}
-                onLoad={() => setImageLoaded(true)}
               />
             </AnimatePresence>
 
@@ -777,7 +769,6 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
                   alt={ultimateFallback[wrappedSlide]?.title}
                   className="w-full h-full object-cover"
                   style={{ objectPosition: 'center', minWidth: '100%', minHeight: '100%' }}
-                  onLoad={() => setImageLoaded(true)}
                 />
 
                 {/* Subtle dark overlay over entire poster for better text readability */}
@@ -1637,16 +1628,16 @@ const ProjectRow = React.memo<ProjectRowProps>(({ title, projects, onProjectClic
       {/* Scroll Buttons */}
       <button
         onClick={() => scroll('left')}
-        className="hidden sm:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-black/80 rounded-full items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black"
+        className="hidden sm:flex absolute -left-12 top-1/2 transform -translate-y-1/2 z-10 w-16 h-16 bg-gradient-to-r from-black/90 via-gray-900/80 to-black/70 rounded-full items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:from-black hover:via-gray-800 hover:to-black backdrop-blur-sm border border-white/10 shadow-2xl"
       >
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-8 h-8" />
       </button>
       
       <button
         onClick={() => scroll('right')}
-        className="hidden sm:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-12 h-12 bg-black/80 rounded-full items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black"
+        className="hidden sm:flex absolute -right-12 top-1/2 transform -translate-y-1/2 z-10 w-16 h-16 bg-gradient-to-l from-black/90 via-gray-900/80 to-black/70 rounded-full items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 hover:from-black hover:via-gray-800 hover:to-black backdrop-blur-sm border border-white/10 shadow-2xl"
       >
-        <ChevronRight className="w-6 h-6" />
+        <ChevronRight className="w-8 h-8" />
       </button>
 
       {/* Projects Scroll Container */}

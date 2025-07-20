@@ -23,16 +23,18 @@ import { projects } from '../data/projects';
 import { portfolioData } from '../data/portfolio';
 import { musicAlbums } from '../data/musicAlbums';
 
+import { getUserAvatar } from './imageUtils';
+
 // Real friends data from Community component
 const realFriends = [
-  { id: 'alok', name: 'Alok Tripathy', avatar: '/images/alok.jpg', online: true },
-  { id: 'ankit', name: 'Ankit Singh', avatar: '/images/ankit.jpg', online: true },
-  { id: 'biren', name: 'Biren Dora', avatar: '/images/biren.jpg', online: false },
-  { id: 'adya', name: 'Adya Rath', avatar: '/images/adya.PNG', online: true },
-  { id: 'soham', name: 'Soham Bardhan', avatar: '/images/soham.jpg', online: false },
-  { id: 'praveen', name: 'Praveen Dehury', avatar: '/images/praveen.jpg', online: true },
-  { id: 'ipsit', name: 'Ipsit Tripathy', avatar: '/images/ipsit.jpg', online: true },
-  { id: 'kamlesh', name: 'Kamlesh Biswal', avatar: '/images/kamlesh.jpg', online: true }
+  { id: 'alok', name: 'Alok Tripathy', avatar: getUserAvatar('Alok Tripathy'), online: true },
+  { id: 'ankit', name: 'Ankit Singh', avatar: getUserAvatar('Ankit Singh'), online: true },
+  { id: 'biren', name: 'Biren Dora', avatar: getUserAvatar('Biren Dora'), online: false },
+  { id: 'adya', name: 'Adya Rath', avatar: getUserAvatar('Adya Rath'), online: true },
+  { id: 'soham', name: 'Soham Bardhan', avatar: getUserAvatar('Soham Bardhan'), online: false },
+  { id: 'praveen', name: 'Praveen Dehury', avatar: getUserAvatar('Praveen Dehury'), online: true },
+  { id: 'ipsit', name: 'Ipsit Tripathy', avatar: getUserAvatar('Ipsit Tripathy'), online: true },
+  { id: 'kamlesh', name: 'Kamlesh Biswal', avatar: getUserAvatar('Kamlesh Biswal'), online: true }
 ];
 
 // Real projects from data

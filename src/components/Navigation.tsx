@@ -843,12 +843,12 @@ const Navigation: React.FC<NavigationProps> = memo(({
                   >
                     {isAuthenticated ? (
                       <img 
-                        src={user?.avatar || '/src/images/akash-matania.JPG'} 
+                        src={user?.avatar || getUserAvatar('You')} 
                         alt={user?.name || 'Profile'}
                         className="w-6 h-6 rounded-full object-cover"
                         onError={(e) => {
                           const target = e.currentTarget as HTMLImageElement;
-                          target.src = '/src/images/akash-matania.JPG';
+                          target.src = getUserAvatar('You');
                         }}
                       />
                     ) : (

@@ -1,36 +1,60 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Users, 
   MessageCircle, 
-  Crown, 
+  Heart, 
+  Share2, 
+  MoreHorizontal, 
+  Send, 
+  Smile, 
+  Paperclip, 
+  Video, 
+  Image as ImageIcon,
+  Users, 
+  Hash, 
+  Bell, 
+  Settings, 
+  Search, 
+  Plus, 
+  ArrowLeft, 
+  ArrowRight, 
+  Play, 
+  Pause, 
+  Volume2, 
+  VolumeX, 
+  Maximize2, 
+  Minimize2, 
+  X, 
   Camera, 
-  Video,
-  Send,
-  Settings,
-  Bell,
-  Play,
-  Clock,
+  Gift, 
+  Ticket, 
+  Crown, 
   MapPin,
-  Gift,
+  Star,
+  TrendingUp,
+  Calendar,
+  Clock,
+  DollarSign,
+  Award,
+  Zap,
+  Globe,
+  MessageSquare,
+  User,
   CheckCircle,
+  AlertCircle,
+  Info,
   ShoppingBag,
-  Activity,
-  Hash,
-  Ticket,
-  ArrowLeft,
-  Film,
+  Music,
   ChevronLeft,
   ChevronRight,
-  Music,
-  Plus,
+  Activity,
+  Film,
   Phone,
-  MoreVertical,
-  Paperclip,
-  Heart,
-  Share2,
-  X,
+  MoreVertical
 } from 'lucide-react';
+import { ThemeContext } from './ThemeProvider';
+import { getTextColor } from '../utils/themeUtils';
+import { getUserAvatar } from '../utils/imageUtils';
 import Feed from './Feed';
 import { useTheme } from './ThemeContext';
 import useIsMobile from '../hooks/useIsMobile';
@@ -38,7 +62,6 @@ import Merchandise from './Merchandise';
 import { comprehensiveCommunityData, type RealCommunityItem } from '../data/comprehensiveCommunityData';
 import OptimizedImage from './OptimizedImage';
 import { getSpotifyArtistData } from '../data/spotifyArtistImages';
-import { getUserAvatar } from '../utils/imageUtils';
 import './CommunityGenZ.css';
 import DecryptedText from './TextAnimations/DecryptedText/DecryptedText';
 import Typewriter from './Typewriter';
@@ -51,7 +74,7 @@ import Typewriter from './Typewriter';
  * 🎯 Enter Circles - The Ultimate Community Experience
  * @description Where creators, investors, and fans unite in the most vibrant entertainment community
  */
-const Community: React.FC = memo(() => {
+const Community: React.FC = () => {
   // Comprehensive Community Data
   const movies = comprehensiveCommunityData.movies;
   const actors = comprehensiveCommunityData.actors;
@@ -449,29 +472,41 @@ const Community: React.FC = memo(() => {
 
   // Scroll detection for experience view - for channels, friends, and feed tabs
   useEffect(() => {
-    const handleScroll = () => {
-      // Only apply experience view for channels, friends, and feed tabs
-      if (activeTab !== 'channels' && activeTab !== 'friends' && activeTab !== 'feed') {
-        return;
-      }
-      
+            const handleScroll = () => {
       // Don't trigger experience view if it was recently closed
       if (wasExperienceViewClosed) {
         return;
       }
       
-      let headerRect: DOMRect | null = null;
+      // Check for experience view based on current active tab
+      let headerRef = null;
       
-      if (activeTab === 'channels' && channelsHeaderRef.current) {
-        headerRect = channelsHeaderRef.current.getBoundingClientRect();
+      if (activeTab === 'feed' && feedHeaderRef.current) {
+        headerRef = feedHeaderRef.current;
+      } else if (activeTab === 'channels' && channelsHeaderRef.current) {
+        headerRef = channelsHeaderRef.current;
       } else if (activeTab === 'friends' && friendsHeaderRef.current) {
-        headerRect = friendsHeaderRef.current.getBoundingClientRect();
-      } else if (activeTab === 'feed' && feedHeaderRef.current) {
-        headerRect = feedHeaderRef.current.getBoundingClientRect();
+        headerRef = friendsHeaderRef.current;
       }
       
-      if (headerRect && headerRect.top <= 0 && !isExperienceView) {
-        setIsExperienceView(true);
+      // Only check for experience view if we have a valid header reference
+      if (headerRef) {
+        const headerRect = headerRef.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        // Only trigger experience view when:
+        // 1. The header has scrolled up past the top of the viewport
+        // 2. The section is still visible in the viewport
+        // 3. User has scrolled down significantly (at least 200px from top)
+        if (headerRect.top <= 0 && 
+            headerRect.bottom > 0 && 
+            window.scrollY > 200 && 
+            !isExperienceView) {
+          // Add entrance effects with a small delay for better UX
+          setTimeout(() => {
+            setIsExperienceView(true);
+          }, 100);
+        }
       }
     };
 
@@ -708,10 +743,10 @@ const Community: React.FC = memo(() => {
                 disabled={totalPages === 1}
                 whileHover={{ scale: 1.1, x: -5 }}
                 whileTap={{ scale: 0.9 }}
-                className={`hidden md:block absolute -left-6 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-sm border transition-all duration-300 shadow-lg ${
+                className={`hidden md:block absolute -left-16 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-md border transition-all duration-300 shadow-xl ${
                   totalPages === 1
                     ? 'opacity-50 cursor-not-allowed bg-gray-200/50 dark:bg-gray-700/50 border-gray-300/50 dark:border-gray-600/50'
-                    : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 border-purple-300/30 dark:border-purple-600/30 hover:shadow-xl hover:shadow-purple-500/25'
+                    : 'bg-gradient-to-r from-black/80 via-gray-900/70 to-black/80 hover:from-black/90 hover:via-gray-800/80 hover:to-black/90 border-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-purple-500/20'
                 }`}
               >
                 <motion.div
@@ -721,14 +756,14 @@ const Community: React.FC = memo(() => {
                   <ChevronLeft className={`w-7 h-7 ${
                     currentPage === 0 
                       ? 'text-gray-400 dark:text-gray-500' 
-                      : 'text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300'
+                      : 'text-white/80 group-hover:text-white'
                   }`} />
         </motion.div>
                 {currentPage !== 0 && (
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     whileHover={{ scale: 1, opacity: 1 }}
-                    className="absolute inset-0 rounded-full border-2 border-purple-400/50"
+                    className="absolute inset-0 rounded-full border-2 border-white/30"
                   />
                 )}
               </motion.button>
@@ -739,10 +774,10 @@ const Community: React.FC = memo(() => {
                 disabled={totalPages === 1}
                 whileHover={{ scale: 1.1, x: 5 }}
                 whileTap={{ scale: 0.9 }}
-                className={`hidden md:block absolute -right-6 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-sm border transition-all duration-300 shadow-lg ${
+                className={`hidden md:block absolute -right-16 top-[150px] md:top-[180px] lg:top-[200px] z-10 group p-4 rounded-full backdrop-blur-md border transition-all duration-300 shadow-xl ${
                   totalPages === 1
                     ? 'opacity-50 cursor-not-allowed bg-gray-200/50 dark:bg-gray-700/50 border-gray-300/50 dark:border-gray-600/50'
-                    : 'bg-gradient-to-r from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 border-pink-300/30 dark:border-pink-600/30 hover:shadow-xl hover:shadow-pink-500/25'
+                    : 'bg-gradient-to-l from-black/80 via-gray-900/70 to-black/80 hover:from-black/90 hover:via-gray-800/80 hover:to-black/90 border-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-pink-500/20'
                 }`}
               >
         <motion.div
@@ -752,14 +787,14 @@ const Community: React.FC = memo(() => {
                   <ChevronRight className={`w-7 h-7 ${
                     currentPage >= totalPages - 1 
                       ? 'text-gray-400 dark:text-gray-500' 
-                      : 'text-pink-600 dark:text-pink-400 group-hover:text-pink-700 dark:group-hover:text-pink-300'
+                      : 'text-white/80 group-hover:text-white'
                   }`} />
                 </motion.div>
                 {currentPage < totalPages - 1 && (
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     whileHover={{ scale: 1, opacity: 1 }}
-                    className="absolute inset-0 rounded-full border-2 border-pink-400/50"
+                    className="absolute inset-0 rounded-full border-2 border-white/30"
                   />
                 )}
               </motion.button>
@@ -1277,9 +1312,14 @@ const Community: React.FC = memo(() => {
                 transition={{ duration: 0.4 }}
               className="w-full max-w-6xl mx-auto"
               >
-              {/* Hidden header for experience view detection */}
-              <div ref={feedHeaderRef} className="hidden">
+              {/* Feed header for experience view detection */}
+              <div ref={feedHeaderRef} className="feed-header relative">
                 <h1 className="feed-title">Community Feed</h1>
+                <div className="feed-actions">
+                  <button className="action-btn">
+                    <Share2 size={24} />
+                  </button>
+                </div>
               </div>
               <Feed isExperienceView={false} />
             </motion.div>
@@ -1716,9 +1756,9 @@ const Community: React.FC = memo(() => {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {[
                   // People - Real images
-                  { url: '/images/praveen.jpg', height: 'h-64', category: 'People', likes: 234, comments: 12 },
-                  { url: '/images/ankit.jpg', height: 'h-80', category: 'People', likes: 189, comments: 8 },
-                  { url: '/images/soham.jpg', height: 'h-72', category: 'People', likes: 456, comments: 23 },
+                  { url: getUserAvatar('Praveen Dehury'), height: 'h-64', category: 'People', likes: 234, comments: 12 },
+                  { url: getUserAvatar('Ankit Singh'), height: 'h-80', category: 'People', likes: 189, comments: 8 },
+                  { url: getUserAvatar('Soham Bardhan'), height: 'h-72', category: 'People', likes: 456, comments: 23 },
                   
                   // Pets
                   { url: 'https://images.pexels.com/photos/1904105/pexels-photo-1904105.jpeg?auto=compress&cs=tinysrgb&w=800', height: 'h-96', category: 'Pets', likes: 789, comments: 45 },
@@ -1731,9 +1771,9 @@ const Community: React.FC = memo(() => {
                   { url: 'https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?auto=compress&cs=tinysrgb&w=800', height: 'h-72', category: 'Nature', likes: 678, comments: 29 },
                   
                   // More People - Real images
-                  { url: '/images/kamlesh.jpg', height: 'h-96', category: 'People', likes: 234, comments: 15 },
-                  { url: '/images/alok.jpg', height: 'h-56', category: 'People', likes: 456, comments: 22 },
-                  { url: '/images/biren.jpg', height: 'h-88', category: 'People', likes: 789, comments: 41 }
+                  { url: getUserAvatar('Kamlesh Biswal'), height: 'h-96', category: 'People', likes: 234, comments: 15 },
+                  { url: getUserAvatar('Alok Tripathy'), height: 'h-56', category: 'People', likes: 456, comments: 22 },
+                  { url: getUserAvatar('Biren Dora'), height: 'h-88', category: 'People', likes: 789, comments: 41 }
                 ].map((image, index) => (
                   <motion.div
                     key={index}
@@ -1923,13 +1963,25 @@ const Community: React.FC = memo(() => {
       <AnimatePresence>
         {isExperienceView && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ 
+              duration: 0.6, 
+              ease: "easeOut",
+              type: "spring",
+              stiffness: 100,
+              damping: 20
+            }}
             className="fixed inset-0 bg-black z-50"
           >
             {/* Experience Header */}
-            <div className="absolute top-0 left-0 right-0 p-8 bg-black/80 backdrop-blur-md border-b border-white/10">
+            <motion.div 
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              className="absolute top-0 left-0 right-0 p-8 bg-black/80 backdrop-blur-md border-b border-white/10"
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="feed-title text-3xl">
@@ -1957,7 +2009,12 @@ const Community: React.FC = memo(() => {
                 </div>
                 <div className="flex items-center gap-4">
                   {/* Quick Navigation Buttons */}
-                  <div className="flex items-center gap-2">
+                  <motion.div 
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                    className="flex items-center gap-2"
+                  >
                     {activeTab === 'feed' && (
                       <>
                         <motion.button
@@ -2018,20 +2075,30 @@ const Community: React.FC = memo(() => {
                         </motion.button>
                       </>
                     )}
-                  </div>
+                  </motion.div>
                   <p className="text-sm text-gray-400">Click X to close</p>
-                  <button
+                  <motion.button
                     onClick={closeExperienceView}
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.9 }}
                     className="p-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg"
                   >
                     <X className="w-6 h-6 text-white" />
-                  </button>
+                  </motion.button>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Experience Content */}
-            <div className="pt-24 h-full">
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+              className="pt-24 h-full"
+            >
               {activeTab === 'channels' && (
                 <div className="flex gap-8 h-full p-8">
                   {/* Left Side: Channels List */}
@@ -2370,14 +2437,12 @@ const Community: React.FC = memo(() => {
                   </div>
                 </div>
               )}
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
-});
-
-Community.displayName = 'Community';
+};
 
 export default Community;
