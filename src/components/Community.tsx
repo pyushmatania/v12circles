@@ -5,20 +5,20 @@ import {
   Heart, 
   Share2, 
   MoreHorizontal, 
-  Send, 
+  Send,
   Smile, 
   Paperclip, 
   Video, 
   Image as ImageIcon,
   Users, 
   Hash, 
-  Bell, 
+  Bell,
   Settings, 
   Search, 
   Plus, 
   ArrowLeft, 
   ArrowRight, 
-  Play, 
+  Play,
   Pause, 
   Volume2, 
   VolumeX, 
@@ -26,7 +26,7 @@ import {
   Minimize2, 
   X, 
   Camera, 
-  Gift, 
+  Gift,
   Ticket, 
   Crown, 
   MapPin,
@@ -50,7 +50,8 @@ import {
   Activity,
   Film,
   Phone,
-  MoreVertical
+  MoreVertical,
+  Filter
 } from 'lucide-react';
 import { ThemeContext } from './ThemeProvider';
 import { getTextColor } from '../utils/themeUtils';
@@ -121,7 +122,17 @@ const Community: React.FC = () => {
 
   const [selectedChannel, setSelectedChannel] = useState<string>('announcements');
   const [newMessage, setNewMessage] = useState('');
-  const [messages, setMessages] = useState<Record<string, {user:string; message:string; time:string; avatar:string}[]>>({
+  const [messages, setMessages] = useState<Record<string, {
+    user: string; 
+    message: string; 
+    time: string; 
+    avatar: string;
+    isUser?: boolean;
+    reactions?: string[];
+    mentions?: string[];
+    isOfficial?: boolean;
+    isBot?: boolean;
+  }[]>>({
     announcements: [
       { user: 'Alok Tripathy', message: 'Bhai, latest behind-the-scenes footage dekh liya! 🔥 Kya mast hai yaar!', time: '2:30 PM', avatar: getUserAvatar('Alok Tripathy') },
       { user: 'Ankit Singh', message: 'Action sequences toh bilkul zabardast hai! VFX team ne kaam kar diya!', time: '2:32 PM', avatar: getUserAvatar('Ankit Singh') },
@@ -181,6 +192,7 @@ const Community: React.FC = () => {
   const previewTimeout = useRef<number | null>(null);
   const [friendInput, setFriendInput] = useState('');
   const [friendTyping, setFriendTyping] = useState(false);
+  const [channelTyping, setChannelTyping] = useState<string[]>([]);
   
   // Swipe functionality state
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -194,7 +206,28 @@ const Community: React.FC = () => {
   const friendsHeaderRef = useRef<HTMLDivElement>(null);
   const feedHeaderRef = useRef<HTMLDivElement>(null);
   
-  const [friendChats, setFriendChats] = useState<Record<string, {user:string; message:string; time:string; avatar?:string}[]>>({
+  // Prevent body scrolling when experience view is active
+  useEffect(() => {
+    if (isExperienceView) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isExperienceView]);
+  
+  const [friendChats, setFriendChats] = useState<Record<string, {
+    user: string; 
+    message: string; 
+    time: string; 
+    avatar?: string;
+    isUser?: boolean;
+    reactions?: string[];
+    mentions?: string[];
+  }[]>>({
     alok: [
       { user: 'Alok Tripathy', message: 'Bhai, new Marvel trailer dekha kya?! 🤯 Kya mast hai yaar!', time: '10:30 AM', avatar: getUserAvatar('Alok Tripathy') },
       { user: 'You', message: 'Haan bhai! Multiverse toh bilkul crazy ho gaya hai 😱 Kya direction hai!', time: '10:32 AM', avatar: getUserAvatar('You') },
@@ -349,29 +382,214 @@ const Community: React.FC = () => {
     } catch {
       // Vibration not supported or failed
     }
-    const msg = {
+    
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    // Create user message
+    const userMsg = {
       user: 'You',
       message: newMessage,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      avatar: getUserAvatar('You')
+      time: currentTime,
+      avatar: getUserAvatar('You'),
+      isUser: true,
+      reactions: [],
+      mentions: extractMentions(newMessage)
     };
+    
     setMessages(prev => ({
       ...prev,
-      [selectedChannel]: [...(prev[selectedChannel] || []), msg]
+      [selectedChannel]: [...(prev[selectedChannel] || []), userMsg]
     }));
+    
+    const sentMessage = newMessage;
     setNewMessage('');
+    
+    // Show typing indicator
+    setChannelTyping(prev => [...prev, 'Community']);
+    
+    // Generate contextual responses based on channel and message content
     setTimeout(() => {
-      const reply = {
-        user: 'Friend',
-        message: 'Got it!',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        avatar: getUserAvatar('Praveen Dehury')
-      };
+      const responses = generateChannelResponses(selectedChannel, sentMessage);
+      responses.forEach((response, index) => {
+        setTimeout(() => {
       setMessages(prev => ({
         ...prev,
-        [selectedChannel]: [...(prev[selectedChannel] || []), reply]
-      }));
-    }, 3000);
+            [selectedChannel]: [...(prev[selectedChannel] || []), response]
+          }));
+        }, index * 1500); // Stagger responses
+      });
+      
+      // Hide typing indicator after responses
+      setTimeout(() => {
+        setChannelTyping(prev => prev.filter(user => user !== 'Community'));
+      }, responses.length * 1500 + 1000);
+    }, 2000);
+  };
+
+  // Extract mentions from message
+  const extractMentions = (message: string) => {
+    const mentions = message.match(/@(\w+)/g);
+    return mentions ? mentions.map(mention => mention.slice(1)) : [];
+  };
+
+  // Handle message reactions
+  const handleReaction = (messageIndex: number, reaction: string) => {
+    try { 
+      navigator.vibrate?.(20); 
+    } catch {
+      // Vibration not supported or failed
+    }
+    
+    setMessages(prev => {
+      const channelMessages = [...(prev[selectedChannel] || [])];
+      if (channelMessages[messageIndex]) {
+        const message = { ...channelMessages[messageIndex] };
+        if (!message.reactions) message.reactions = [];
+        
+        // Toggle reaction
+        const reactionIndex = message.reactions.indexOf(reaction);
+        if (reactionIndex > -1) {
+          message.reactions.splice(reactionIndex, 1);
+        } else {
+          message.reactions.push(reaction);
+        }
+        
+        channelMessages[messageIndex] = message;
+        return {
+          ...prev,
+          [selectedChannel]: channelMessages
+        };
+      }
+      return prev;
+    });
+  };
+
+  // Generate contextual channel responses
+  const generateChannelResponses = (channelId: string, userMessage: string) => {
+    const responses = [];
+    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    // Get channel info
+    const channel = channels.find(c => c.id === channelId);
+    const channelMembers = channel?.members || 1000;
+    
+    // Generate responses based on channel type and message content
+    if (channelId === 'announcements') {
+      if (userMessage.toLowerCase().includes('question') || userMessage.includes('?')) {
+        responses.push({
+          user: 'Community Manager',
+          message: 'Great question! I\'ll get back to you with an official response soon. 📋',
+          time: currentTime,
+          avatar: getUserAvatar('Community Manager'),
+          isUser: false,
+          reactions: [],
+          isOfficial: true
+        });
+      } else {
+        responses.push({
+          user: 'Alok Tripathy',
+          message: 'Thanks for sharing this with the community! 🙏',
+          time: currentTime,
+          avatar: getUserAvatar('Alok Tripathy'),
+          isUser: false,
+          reactions: ['👍', '❤️']
+        });
+      }
+    } else if (channelId === 'investor-hall') {
+      if (userMessage.toLowerCase().includes('investment') || userMessage.toLowerCase().includes('fund')) {
+        responses.push({
+          user: 'Soham Bardhan',
+          message: 'Interesting perspective on the investment strategy! 📈 What\'s your take on the market trends?',
+          time: currentTime,
+          avatar: getUserAvatar('Soham Bardhan'),
+          isUser: false,
+          reactions: ['📈', '💼']
+        });
+      } else {
+        responses.push({
+          user: 'Praveen Dehury',
+          message: 'The numbers look promising! Let\'s discuss this further in our next investor call. 📊',
+          time: currentTime,
+          avatar: getUserAvatar('Praveen Dehury'),
+          isUser: false,
+          reactions: ['📊', '👍']
+        });
+      }
+    } else if (channelId === 'creator-talks') {
+      if (userMessage.toLowerCase().includes('camera') || userMessage.toLowerCase().includes('equipment')) {
+        responses.push({
+          user: 'Biren Dora',
+          message: 'For that setup, I\'d recommend the RED Komodo 6K. Perfect for indie projects! 🎬',
+          time: currentTime,
+          avatar: getUserAvatar('Biren Dora'),
+          isUser: false,
+          reactions: ['🎬', '📹']
+        });
+      } else {
+        responses.push({
+          user: 'Ankit Singh',
+          message: 'Love the creative direction! Let\'s collaborate on this project! ✨',
+          time: currentTime,
+          avatar: getUserAvatar('Ankit Singh'),
+          isUser: false,
+          reactions: ['✨', '🤝']
+        });
+      }
+    } else if (channelId === 'fan-zone') {
+      responses.push({
+        user: 'Adya Rath',
+        message: 'OMG YES! I totally agree with you! This is exactly what I was thinking! 😍',
+        time: currentTime,
+        avatar: getUserAvatar('Adya Rath'),
+        isUser: false,
+        reactions: ['😍', '🔥', '💯']
+      });
+      
+      if (Math.random() > 0.5) {
+        responses.push({
+          user: 'Ipsit Tripathy',
+          message: 'Can\'t wait to see more content like this! You guys are amazing! 🎉',
+          time: currentTime,
+          avatar: getUserAvatar('Ipsit Tripathy'),
+          isUser: false,
+          reactions: ['🎉', '👏']
+        });
+      }
+    } else if (channelId === 'polls') {
+      responses.push({
+        user: 'Community Bot',
+        message: '📊 Your response has been recorded! Current poll results will be updated shortly.',
+        time: currentTime,
+        avatar: getUserAvatar('Community Bot'),
+        isUser: false,
+        reactions: ['📊'],
+        isBot: true
+      });
+    } else if (channelId === 'behind-scenes') {
+      responses.push({
+        user: 'Kamlesh Biswal',
+        message: 'The behind-the-scenes content is always the best! Love seeing the magic happen! ✨',
+        time: currentTime,
+        avatar: getUserAvatar('Kamlesh Biswal'),
+        isUser: false,
+        reactions: ['✨', '🎭']
+      });
+    } else {
+      // Default response for other channels
+      const randomUsers = ['Alok Tripathy', 'Ankit Singh', 'Biren Dora', 'Adya Rath', 'Soham Bardhan'];
+      const randomUser = randomUsers[Math.floor(Math.random() * randomUsers.length)];
+      
+      responses.push({
+        user: randomUser,
+        message: 'Thanks for sharing! This adds great value to our community discussion! 🙌',
+        time: currentTime,
+        avatar: getUserAvatar(randomUser),
+        isUser: false,
+        reactions: ['🙌', '👍']
+      });
+    }
+    
+    return responses;
   };
 
   // Send message to selected friend
@@ -472,7 +690,7 @@ const Community: React.FC = () => {
 
   // Scroll detection for experience view - for channels, friends, and feed tabs
   useEffect(() => {
-            const handleScroll = () => {
+    const handleScroll = () => {
       // Don't trigger experience view if it was recently closed
       if (wasExperienceViewClosed) {
         return;
@@ -504,7 +722,7 @@ const Community: React.FC = () => {
             !isExperienceView) {
           // Add entrance effects with a small delay for better UX
           setTimeout(() => {
-            setIsExperienceView(true);
+        setIsExperienceView(true);
           }, 100);
         }
       }
@@ -545,12 +763,156 @@ const Community: React.FC = () => {
   }, [isExperienceView]);
 
   const channels = [
-    { id: 'announcements', name: 'announcements', icon: '📢', unread: 3 },
-    { id: 'investor-hall', name: 'investor-hall', icon: '💰', unread: 8 },
-    { id: 'creator-talks', name: 'creator-talks', icon: '🎬', unread: 2 },
-    { id: 'fan-zone', name: 'fan-zone', icon: '🎉', unread: 15 },
-    { id: 'polls', name: 'polls', icon: '📊', unread: 1 },
-    { id: 'behind-scenes', name: 'behind-the-scenes', icon: '🎭', unread: 5 }
+    { 
+      id: 'announcements', 
+      name: 'announcements', 
+      icon: '📢', 
+      unread: 3,
+      members: 15420,
+      online: 234,
+      description: 'Official announcements and updates from the team',
+      category: 'Official',
+      lastActivity: '2 minutes ago',
+      pinned: true,
+      verified: true,
+      activityLevel: 'high',
+      rules: ['No spam', 'Official updates only', 'Respectful communication']
+    },
+    { 
+      id: 'investor-hall', 
+      name: 'investor-hall', 
+      icon: '💰', 
+      unread: 8,
+      members: 8920,
+      online: 156,
+      description: 'Investment discussions, market analysis, and financial insights',
+      category: 'Business',
+      lastActivity: '5 minutes ago',
+      pinned: false,
+      verified: true,
+      activityLevel: 'high',
+      rules: ['Professional discussions only', 'No financial advice', 'Respect privacy']
+    },
+    { 
+      id: 'creator-talks', 
+      name: 'creator-talks', 
+      icon: '🎬', 
+      unread: 2,
+      members: 12340,
+      online: 89,
+      description: 'Behind-the-scenes discussions with creators and filmmakers',
+      category: 'Creative',
+      lastActivity: '15 minutes ago',
+      pinned: false,
+      verified: true,
+      activityLevel: 'medium',
+      rules: ['Share creative insights', 'No spoilers', 'Support fellow creators']
+    },
+    { 
+      id: 'fan-zone', 
+      name: 'fan-zone', 
+      icon: '🎉', 
+      unread: 15,
+      members: 25670,
+      online: 445,
+      description: 'Fan discussions, theories, and community bonding',
+      category: 'Community',
+      lastActivity: '1 minute ago',
+      pinned: false,
+      verified: false,
+      activityLevel: 'very-high',
+      rules: ['Be respectful', 'No hate speech', 'Share your passion']
+    },
+    { 
+      id: 'polls', 
+      name: 'polls', 
+      icon: '📊', 
+      unread: 1,
+      members: 18750,
+      online: 123,
+      description: 'Community polls and voting on important decisions',
+      category: 'Community',
+      lastActivity: '30 minutes ago',
+      pinned: true,
+      verified: true,
+      activityLevel: 'medium',
+      rules: ['One vote per person', 'Respect results', 'Constructive feedback']
+    },
+    { 
+      id: 'behind-scenes', 
+      name: 'behind-the-scenes', 
+      icon: '🎭', 
+      unread: 5,
+      members: 9870,
+      online: 67,
+      description: 'Exclusive behind-the-scenes content and production insights',
+      category: 'Exclusive',
+      lastActivity: '10 minutes ago',
+      pinned: false,
+      verified: true,
+      activityLevel: 'medium',
+      rules: ['Exclusive content only', 'No sharing outside', 'Respect NDA']
+    },
+    { 
+      id: 'tech-support', 
+      name: 'tech-support', 
+      icon: '🔧', 
+      unread: 0,
+      members: 5430,
+      online: 23,
+      description: 'Technical support and platform assistance',
+      category: 'Support',
+      lastActivity: '1 hour ago',
+      pinned: false,
+      verified: true,
+      activityLevel: 'low',
+      rules: ['Be patient', 'Provide clear details', 'Follow guidelines']
+    },
+    { 
+      id: 'marketplace', 
+      name: 'marketplace', 
+      icon: '🛍️', 
+      unread: 12,
+      members: 11230,
+      online: 78,
+      description: 'Buy, sell, and trade merchandise and collectibles',
+      category: 'Commerce',
+      lastActivity: '3 minutes ago',
+      pinned: false,
+      verified: false,
+      activityLevel: 'high',
+      rules: ['Safe transactions only', 'No scams', 'Fair pricing']
+    },
+    { 
+      id: 'events', 
+      name: 'events', 
+      icon: '🎪', 
+      unread: 7,
+      members: 15670,
+      online: 234,
+      description: 'Event announcements, meetups, and community gatherings',
+      category: 'Events',
+      lastActivity: '8 minutes ago',
+      pinned: true,
+      verified: true,
+      activityLevel: 'high',
+      rules: ['Event-related only', 'No spam', 'Follow event guidelines']
+    },
+    { 
+      id: 'feedback', 
+      name: 'feedback', 
+      icon: '💭', 
+      unread: 0,
+      members: 8230,
+      online: 45,
+      description: 'Platform feedback, suggestions, and improvement ideas',
+      category: 'Feedback',
+      lastActivity: '2 hours ago',
+      pinned: false,
+      verified: true,
+      activityLevel: 'low',
+      rules: ['Constructive feedback only', 'Be specific', 'Respectful tone']
+    }
   ];
 
 
@@ -1350,8 +1712,36 @@ const Community: React.FC = () => {
                 {/* Left Side: Channels List */}
                 <div className="w-1/3 bg-white/2 rounded-2xl overflow-hidden">
                   <div className="p-8">
-                    <h3 className="font-medium text-white text-xl mb-2">Channels</h3>
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="font-medium text-white text-xl mb-1">Channels</h3>
                     <p className="text-sm text-gray-400">{channels.length} channels available</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Search channels">
+                          <Search className="w-4 h-4 text-gray-400" />
+                        </button>
+                        <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Filter channels">
+                          <Filter className="w-4 h-4 text-gray-400" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Channel Categories */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {['All', 'Official', 'Business', 'Creative', 'Community', 'Exclusive', 'Support', 'Commerce', 'Events', 'Feedback'].map((category) => (
+                        <button
+                          key={category}
+                          className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
+                            category === 'All'
+                              ? 'bg-purple-500 text-white'
+                              : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                          }`}
+                        >
+                          {category}
+                        </button>
+                      ))}
+                    </div>
                             </div>
                   
                   <div className="overflow-y-auto h-full scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300">
@@ -1368,24 +1758,49 @@ const Community: React.FC = () => {
                         }`}
                         onClick={() => setSelectedChannel(channel.id)}
                       >
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm">
                               {channel.icon}
                             </div>
                             <div>
+                              <div className="flex items-center gap-2">
                               <h3 className="font-medium text-white text-sm">#{channel.name}</h3>
-                              <p className="text-xs text-gray-400">1.2k members</p>
+                                {channel.verified && (
+                                  <span className="text-blue-400 text-xs">✓</span>
+                                )}
+                                {channel.pinned && (
+                                  <span className="text-yellow-400 text-xs">📌</span>
+                                )}
                             </div>
+                              <p className="text-xs text-gray-400">{channel.members.toLocaleString()} members • {channel.online} online</p>
                       </div>
+                      </div>
+                      <div className="flex items-center gap-2">
                       {channel.unread > 0 && (
                             <span className="px-2 py-1 bg-purple-500 rounded-full text-white text-xs font-medium">
                           {channel.unread}
                         </span>
                       )}
+                        <div className={`w-2 h-2 rounded-full ${
+                          channel.activityLevel === 'very-high' ? 'bg-green-500' :
+                          channel.activityLevel === 'high' ? 'bg-blue-500' :
+                          channel.activityLevel === 'medium' ? 'bg-yellow-500' :
+                          'bg-gray-500'
+                        }`} />
                         </div>
-                        <div className="text-xs text-gray-400 truncate mt-2">
-                          Latest: Community updates...
+                        </div>
+                        <div className="text-xs text-gray-400 mb-2">
+                          {channel.description}
+                        </div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-gray-500">{channel.lastActivity}</span>
+                          <span className="text-xs text-gray-500">{channel.category}</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-gray-500">
+                          <span>📊 {channel.members.toLocaleString()}</span>
+                          <span>🟢 {channel.online}</span>
+                          <span>💬 {Math.floor(channel.members * 0.1)}</span>
                         </div>
                       </motion.div>
                   ))}
@@ -1403,6 +1818,7 @@ const Community: React.FC = () => {
                             {channels.find(c => c.id === selectedChannel)?.icon}
                           </div>
                           <div>
+                            <div className="flex items-center gap-2 mb-1">
                             <h3 className="font-medium text-white">
                               #<DecryptedText 
                                 text={selectedChannel} 
@@ -1415,18 +1831,51 @@ const Community: React.FC = () => {
                                 encryptedClassName="text-purple-400"
                               />
                   </h3>
-                            <p className="text-xs text-gray-400">1.2k members</p>
+                              {channels.find(c => c.id === selectedChannel)?.verified && (
+                                <span className="text-blue-400 text-xs">✓</span>
+                              )}
+                              {channels.find(c => c.id === selectedChannel)?.pinned && (
+                                <span className="text-yellow-400 text-xs">📌</span>
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-400">
+                              {channels.find(c => c.id === selectedChannel)?.members.toLocaleString()} members • {channels.find(c => c.id === selectedChannel)?.online} online • {channels.find(c => c.id === selectedChannel)?.category}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {channels.find(c => c.id === selectedChannel)?.description}
+                            </p>
                           </div>
                         </div>
                   <div className="flex items-center gap-2">
-                          <button className="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                          <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Channel notifications">
                             <Bell className="w-4 h-4 text-gray-400" />
                     </button>
-                          <button className="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                          <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Channel settings">
                             <Settings className="w-4 h-4 text-gray-400" />
+                    </button>
+                          <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Channel info">
+                            <Info className="w-4 h-4 text-gray-400" />
                     </button>
                   </div>
                 </div>
+
+                {/* Channel Rules Banner */}
+                {channels.find(c => c.id === selectedChannel)?.rules && (
+                  <div className="p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg mx-8 mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <AlertCircle className="w-4 h-4 text-purple-400" />
+                      <span className="text-sm font-medium text-purple-400">Channel Rules</span>
+                    </div>
+                    <div className="text-xs text-gray-300 space-y-1">
+                      {channels.find(c => c.id === selectedChannel)?.rules?.map((rule, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <span className="text-purple-400">•</span>
+                          <span>{rule}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Chat Messages */}
                 <AnimatePresence mode="wait" key={selectedChannel}>
@@ -1455,6 +1904,26 @@ const Community: React.FC = () => {
                     ))}
                   </motion.div>
                 </AnimatePresence>
+
+                {/* Channel Statistics */}
+                <div className="px-8 py-4 border-t border-white/10">
+                  <div className="flex items-center justify-between text-xs text-gray-400">
+                    <div className="flex items-center gap-4">
+                      <span>📊 {channels.find(c => c.id === selectedChannel)?.members.toLocaleString()} members</span>
+                      <span>🟢 {channels.find(c => c.id === selectedChannel)?.online} online</span>
+                      <span>💬 {Math.floor((channels.find(c => c.id === selectedChannel)?.members || 0) * 0.1)} messages today</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>Activity: {channels.find(c => c.id === selectedChannel)?.activityLevel}</span>
+                      <div className={`w-2 h-2 rounded-full ${
+                        channels.find(c => c.id === selectedChannel)?.activityLevel === 'very-high' ? 'bg-green-500' :
+                        channels.find(c => c.id === selectedChannel)?.activityLevel === 'high' ? 'bg-blue-500' :
+                        channels.find(c => c.id === selectedChannel)?.activityLevel === 'medium' ? 'bg-yellow-500' :
+                        'bg-gray-500'
+                      }`} />
+                    </div>
+                  </div>
+                </div>
 
                 {/* Message Input */}
                       <div className="flex gap-4 p-8 pb-40">
@@ -1973,18 +2442,26 @@ const Community: React.FC = () => {
               stiffness: 100,
               damping: 20
             }}
-            className="fixed inset-0 bg-black z-50"
+            className="fixed inset-0 bg-black z-50 overflow-hidden"
+            style={{ 
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              overflow: 'hidden'
+            }}
           >
             {/* Experience Header */}
             <motion.div 
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="absolute top-0 left-0 right-0 p-8 bg-black/80 backdrop-blur-md border-b border-white/10"
+              className="absolute top-0 left-0 right-0 p-4 bg-black/80 backdrop-blur-md border-b border-white/10"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="feed-title text-3xl">
+                  <h1 className="feed-title text-xl">
                     {activeTab === 'channels' ? (
                       <Typewriter 
                         text="Channels" 
@@ -2005,7 +2482,7 @@ const Community: React.FC = () => {
                       />
                     )}
                   </h1>
-                  <p className="text-sm text-gray-400 mt-2">Scroll left/right to navigate</p>
+                  <p className="text-xs text-gray-400 mt-1">Scroll left/right to navigate</p>
                 </div>
                 <div className="flex items-center gap-4">
                   {/* Quick Navigation Buttons */}
@@ -2097,36 +2574,65 @@ const Community: React.FC = () => {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="pt-24 h-full"
+              className="pt-16 h-full overflow-hidden"
             >
               {activeTab === 'channels' && (
-                <div className="flex gap-8 h-full p-8">
+                <div className="flex gap-4 h-full p-4">
                   {/* Left Side: Channels List */}
                   <div className="w-1/3 bg-white/2 rounded-2xl overflow-hidden">
-                    <div className="p-8">
-                      <h3 className="font-medium text-white text-xl mb-2">Channels</h3>
-                      <p className="text-sm text-gray-400">{channels.length} channels available</p>
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <h3 className="font-medium text-white text-base mb-1">Channels</h3>
+                          <p className="text-xs text-gray-400">{channels.length} channels available</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Search channels">
+                            <Search className="w-4 h-4 text-gray-400" />
+                          </button>
+                          <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Filter channels">
+                            <Filter className="w-4 h-4 text-gray-400" />
+                          </button>
+                        </div>
                     </div>
                     
-                    <div className="overflow-y-auto h-full scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300">
+                      {/* Channel Categories */}
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {['All', 'Official', 'Business', 'Creative', 'Community', 'Exclusive', 'Support', 'Commerce', 'Events', 'Feedback'].map((category) => (
+                          <button
+                            key={category}
+                            className={`px-2 py-1 rounded-full text-xs font-medium transition-all duration-300 ${
+                              category === 'All'
+                                ? 'bg-purple-500 text-white'
+                                : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                            }`}
+                          >
+                            {category}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="overflow-y-auto h-[calc(100%-120px)] scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300">
                       {channels.map((channel, index) => (
                         <motion.div
                           key={channel.id}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.05 }}
-                          className={`p-6 cursor-pointer transition-all duration-300 hover:bg-white/5 ${
+                          className={`p-4 cursor-pointer transition-all duration-300 hover:bg-white/5 ${
                             selectedChannel === channel.id ? 'bg-purple-500/10' : ''
                           }`}
                           onClick={() => setSelectedChannel(channel.id)}
                         >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xs">
                                 {channel.icon}
                               </div>
                               <div>
-                                <h3 className="font-medium text-white text-sm">
+                                <div className="flex items-center gap-1">
+                                  <h3 className="font-medium text-white text-xs">
                                   #<DecryptedText 
                                     text={channel.name} 
                                     speed={30} 
@@ -2138,17 +2644,41 @@ const Community: React.FC = () => {
                                     encryptedClassName="text-purple-400"
                                   />
                                 </h3>
-                                <p className="text-xs text-gray-400">1.2k members</p>
+                                  {channel.verified && (
+                                    <span className="text-blue-400 text-xs">✓</span>
+                                  )}
+                                  {channel.pinned && (
+                                    <span className="text-yellow-400 text-xs">📌</span>
+                                  )}
                               </div>
+                                <p className="text-xs text-gray-400">{channel.members.toLocaleString()} members • {channel.online} online</p>
                             </div>
+                            </div>
+                            <div className="flex items-center gap-2">
                             {channel.unread > 0 && (
                               <span className="px-2 py-1 bg-purple-500 rounded-full text-white text-xs font-medium">
                                 {channel.unread}
                               </span>
                             )}
+                              <div className={`w-2 h-2 rounded-full ${
+                                channel.activityLevel === 'very-high' ? 'bg-green-500' :
+                                channel.activityLevel === 'high' ? 'bg-blue-500' :
+                                channel.activityLevel === 'medium' ? 'bg-yellow-500' :
+                                'bg-gray-500'
+                              }`} />
                           </div>
-                          <div className="text-xs text-gray-400 truncate mt-2">
-                            Latest: Community updates...
+                          </div>
+                          <div className="text-xs text-gray-400 mb-1">
+                            {channel.description}
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-gray-500">{channel.lastActivity}</span>
+                            <span className="text-xs text-gray-500">{channel.category}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                            <span>📊 {channel.members.toLocaleString()}</span>
+                            <span>🟢 {channel.online}</span>
+                            <span>💬 {Math.floor(channel.members * 0.1)}</span>
                           </div>
                         </motion.div>
                       ))}
@@ -2160,25 +2690,70 @@ const Community: React.FC = () => {
                     {selectedChannel ? (
                       <>
                         {/* Chat Header */}
-                        <div className="flex items-center justify-between p-8">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm">
+                        <div className="flex items-center justify-between p-4">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-xs">
                               {channels.find(c => c.id === selectedChannel)?.icon}
                             </div>
                             <div>
-                              <h3 className="font-medium text-white">#{selectedChannel}</h3>
-                              <p className="text-xs text-gray-400">1.2k members</p>
+                              <div className="flex items-center gap-1 mb-1">
+                                <h3 className="font-medium text-white text-sm">
+                                  #<DecryptedText 
+                                    text={selectedChannel} 
+                                    speed={30} 
+                                    maxIterations={8} 
+                                    sequential={true} 
+                                    revealDirection="start"
+                                    animateOn="hover"
+                                    className="text-white"
+                                    encryptedClassName="text-purple-400"
+                                  />
+                                </h3>
+                                {channels.find(c => c.id === selectedChannel)?.verified && (
+                                  <span className="text-blue-400 text-xs">✓</span>
+                                )}
+                                {channels.find(c => c.id === selectedChannel)?.pinned && (
+                                  <span className="text-yellow-400 text-xs">📌</span>
+                                )}
+                              </div>
+                              <p className="text-xs text-gray-400">
+                                {channels.find(c => c.id === selectedChannel)?.members.toLocaleString()} members • {channels.find(c => c.id === selectedChannel)?.online} online • {channels.find(c => c.id === selectedChannel)?.category}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-1">
+                                {channels.find(c => c.id === selectedChannel)?.description}
+                              </p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <button className="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                            <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Channel notifications">
                               <Bell className="w-4 h-4 text-gray-400" />
                             </button>
-                            <button className="p-2 rounded-lg hover:bg-white/10 transition-colors">
+                            <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Channel settings">
                               <Settings className="w-4 h-4 text-gray-400" />
+                            </button>
+                            <button className="p-2 rounded-lg hover:bg-white/10 transition-colors" title="Channel info">
+                              <Info className="w-4 h-4 text-gray-400" />
                             </button>
                           </div>
                         </div>
+
+                        {/* Channel Rules Banner */}
+                        {channels.find(c => c.id === selectedChannel)?.rules && (
+                          <div className="p-3 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg mx-4 mb-3">
+                            <div className="flex items-center gap-2 mb-1">
+                              <AlertCircle className="w-3 h-3 text-purple-400" />
+                              <span className="text-xs font-medium text-purple-400">Channel Rules</span>
+                            </div>
+                            <div className="text-xs text-gray-300 space-y-1">
+                              {channels.find(c => c.id === selectedChannel)?.rules?.map((rule, index) => (
+                                <div key={index} className="flex items-center gap-1">
+                                  <span className="text-purple-400">•</span>
+                                  <span>{rule}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
 
                         {/* Chat Messages */}
                         <AnimatePresence mode="wait" key={selectedChannel}>
@@ -2187,32 +2762,153 @@ const Community: React.FC = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="p-8 space-y-5 overflow-y-auto h-[calc(100%-200px)] scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300"
+                            className="p-4 space-y-3 overflow-y-auto h-[calc(100%-140px)] scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300"
                           >
                             {(messages[selectedChannel] || []).map((msg, index) => (
-                              <div key={index} className="flex items-start gap-3">
+                              <motion.div 
+                                key={index} 
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3, delay: index * 0.1 }}
+                                className={`flex items-start gap-3 ${msg.isUser ? 'justify-end' : 'justify-start'}`}
+                              >
+                                {!msg.isUser && (
                                 <img
                                   src={msg.avatar || getUserAvatar(msg.user)}
                                   alt={msg.user}
                                   className="w-8 h-8 rounded-full object-cover flex-shrink-0"
                                 />
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 mb-1">
-                                    <span className="font-medium text-white text-sm">{msg.user}</span>
+                                )}
+                                <div className={`flex-1 min-w-0 max-w-[80%] ${msg.isUser ? 'order-first' : ''}`}>
+                                  <div className={`flex items-center gap-2 mb-1 ${msg.isUser ? 'justify-end' : 'justify-start'}`}>
+                                    {msg.isOfficial && (
+                                      <span className="text-blue-400 text-xs">👑</span>
+                                    )}
+                                    {msg.isBot && (
+                                      <span className="text-purple-400 text-xs">🤖</span>
+                                    )}
+                                    <span className={`font-medium text-sm ${msg.isUser ? 'text-purple-300' : 'text-white'}`}>
+                                      {msg.user}
+                                    </span>
                                     <span className="text-xs text-gray-400">{msg.time}</span>
                                   </div>
-                                  <div className="text-sm text-gray-300">{msg.message}</div>
+                                  <div className={`text-sm rounded-lg p-3 ${
+                                    msg.isUser 
+                                      ? 'bg-purple-500 text-white' 
+                                      : msg.isOfficial 
+                                        ? 'bg-blue-500/20 text-white border border-blue-500/30'
+                                        : msg.isBot
+                                          ? 'bg-purple-500/20 text-white border border-purple-500/30'
+                                          : 'bg-white/10 text-gray-300'
+                                  }`}>
+                                    {/* Process mentions */}
+                                    {msg.mentions && msg.mentions.length > 0 ? (
+                                      <div className="mb-2">
+                                        {msg.mentions.map((mention, idx) => (
+                                          <span key={idx} className="inline-block bg-purple-500/30 text-purple-300 px-2 py-1 rounded text-xs mr-1 mb-1">
+                                            @{mention}
+                                          </span>
+                                        ))}
                                 </div>
+                                    ) : null}
+                                    <div className="text-sm">{msg.message}</div>
                               </div>
+                                  
+                                  {/* Reactions */}
+                                  {msg.reactions && msg.reactions.length > 0 && (
+                                    <div className="flex items-center gap-1 mt-2">
+                                      {msg.reactions.map((reaction, idx) => (
+                                        <button
+                                          key={idx}
+                                          className="px-2 py-1 bg-white/10 rounded-full text-xs hover:bg-white/20 transition-colors"
+                                          onClick={() => handleReaction(index, reaction)}
+                                        >
+                                          {reaction}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                                {msg.isUser && (
+                                  <img
+                                    src={msg.avatar || getUserAvatar(msg.user)}
+                                    alt={msg.user}
+                                    className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                                  />
+                                )}
+                              </motion.div>
                             ))}
+                            
+                            {/* Typing Indicator */}
+                            {channelTyping.length > 0 && (
+                              <motion.div 
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="flex items-start gap-3"
+                              >
+                                <img
+                                  src={getUserAvatar('Community')}
+                                  alt="Community"
+                                  className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <span className="font-medium text-white text-sm">Community</span>
+                                    <span className="text-xs text-gray-400">typing...</span>
+                                  </div>
+                                  <div className="bg-white/10 text-gray-300 rounded-lg p-3">
+                                    <div className="flex items-center gap-1">
+                                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            )}
                           </motion.div>
                         </AnimatePresence>
 
+                        {/* Channel Statistics */}
+                        <div className="px-4 py-2 border-t border-white/10">
+                          <div className="flex items-center justify-between text-xs text-gray-400">
+                            <div className="flex items-center gap-3">
+                              <span>📊 {channels.find(c => c.id === selectedChannel)?.members.toLocaleString()} members</span>
+                              <span>🟢 {channels.find(c => c.id === selectedChannel)?.online} online</span>
+                              <span>💬 {Math.floor((channels.find(c => c.id === selectedChannel)?.members || 0) * 0.1)} messages today</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span>Activity: {channels.find(c => c.id === selectedChannel)?.activityLevel}</span>
+                              <div className={`w-2 h-2 rounded-full ${
+                                channels.find(c => c.id === selectedChannel)?.activityLevel === 'very-high' ? 'bg-green-500' :
+                                channels.find(c => c.id === selectedChannel)?.activityLevel === 'high' ? 'bg-blue-500' :
+                                channels.find(c => c.id === selectedChannel)?.activityLevel === 'medium' ? 'bg-yellow-500' :
+                                'bg-gray-500'
+                              }`} />
+                            </div>
+                          </div>
+                        </div>
+
                         {/* Message Input */}
-                        <div className="flex gap-4 p-8 pb-8">
+                        <div className="flex gap-4 p-4 pb-4">
+                          <div className="flex items-center gap-2 flex-1">
+                            <button 
+                              className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                              onClick={() => setNewMessage(prev => prev + ' @')}
+                              title="Mention someone"
+                            >
+                              <User className="w-4 h-4 text-gray-400" />
+                            </button>
+                            <button 
+                              className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                              onClick={() => setNewMessage(prev => prev + ' 😊')}
+                              title="Add emoji"
+                            >
+                              <Smile className="w-4 h-4 text-gray-400" />
+                            </button>
                           <input
                             type="text"
-                            placeholder={`Message #${selectedChannel}...`}
+                              placeholder={`Message #${selectedChannel}... (Use @ to mention)`}
                             value={newMessage}
                             onChange={(e) => setNewMessage(e.target.value)}
                             onKeyDown={(e) => {
@@ -2223,11 +2919,13 @@ const Community: React.FC = () => {
                             }}
                             className="flex-1 bg-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder-gray-400 focus:outline-none focus:bg-white/8"
                           />
+                          </div>
                           <button
                             onClick={sendChannelMessage}
                             disabled={!newMessage.trim()}
-                            className="px-8 py-4 bg-purple-500 rounded-2xl text-white text-sm font-medium hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 py-4 bg-purple-500 rounded-2xl text-white text-sm font-medium hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                           >
+                            <Send className="w-4 h-4" />
                             Send
                           </button>
                         </div>
@@ -2248,39 +2946,39 @@ const Community: React.FC = () => {
               )}
 
               {activeTab === 'friends' && (
-                <div className="flex gap-8 h-full p-8">
+                <div className="flex gap-4 h-full p-4">
                   {/* Left Side: Friends List */}
                   <div className="w-1/3 bg-white/2 rounded-2xl overflow-hidden">
-                    <div className="p-8">
-                      <h3 className="font-medium text-white text-xl mb-2">Friends</h3>
-                      <p className="text-sm text-gray-400">{friendsList.length} friends online</p>
+                    <div className="p-4">
+                      <h3 className="font-medium text-white text-base mb-1">Friends</h3>
+                      <p className="text-xs text-gray-400">{friendsList.length} friends online</p>
                     </div>
                     
-                    <div className="overflow-y-auto h-full scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300">
+                    <div className="overflow-y-auto h-[calc(100%-80px)] scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300">
                       {friendsList.map((friend, index) => (
                         <motion.div
                           key={friend.id}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.05 }}
-                          className={`p-6 cursor-pointer transition-all duration-300 hover:bg-white/5 ${
+                          className={`p-4 cursor-pointer transition-all duration-300 hover:bg-white/5 ${
                             selectedFriend === friend.id ? 'bg-purple-500/10' : ''
                           }`}
                           onClick={() => setSelectedFriend(friend.id)}
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2">
                             <div className="relative">
                               <img 
                                 src={friend.avatar || getUserAvatar(friend.name || '')} 
                                 alt={friend.name} 
-                                className="w-12 h-12 rounded-full object-cover"
+                                className="w-10 h-10 rounded-full object-cover"
                               />
                               {friend.online && (
-                                <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-black" />
+                                <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-black" />
                               )}
                             </div>
                             <div className="flex-1">
-                              <h3 className="font-medium text-white text-sm">
+                              <h3 className="font-medium text-white text-xs">
                                 <DecryptedText 
                                   text={friend.name} 
                                   speed={30} 
@@ -2310,20 +3008,20 @@ const Community: React.FC = () => {
                     {selectedFriend ? (
                       <>
                         {/* Chat Header */}
-                        <div className="flex items-center justify-between p-8">
-                          <div className="flex items-center gap-3">
+                        <div className="flex items-center justify-between p-4">
+                          <div className="flex items-center gap-2">
                             <div className="relative">
                               <img 
                                 src={friendsList.find(f => f.id === selectedFriend)?.avatar || getUserAvatar(friendsList.find(f => f.id === selectedFriend)?.name || '')} 
                                 alt={friendsList.find(f => f.id === selectedFriend)?.name}
-                                className="w-12 h-12 rounded-full object-cover" 
+                                className="w-10 h-10 rounded-full object-cover" 
                               />
                               {friendsList.find(f => f.id === selectedFriend)?.online && (
-                                <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-black" />
+                                <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-black" />
                               )}
                             </div>
                             <div>
-                              <h3 className="font-medium text-white text-lg">
+                              <h3 className="font-medium text-white text-sm">
                                 <DecryptedText 
                                   text={friendsList.find(f => f.id === selectedFriend)?.name || ''} 
                                   speed={30} 
@@ -2335,7 +3033,7 @@ const Community: React.FC = () => {
                                   encryptedClassName="text-purple-400"
                                 />
                               </h3>
-                              <p className={`text-sm ${friendsList.find(f => f.id === selectedFriend)?.online ? 'text-green-400' : 'text-gray-400'}`}>
+                              <p className={`text-xs ${friendsList.find(f => f.id === selectedFriend)?.online ? 'text-green-400' : 'text-gray-400'}`}>
                                 {friendsList.find(f => f.id === selectedFriend)?.online ? 'Online' : 'Offline'}
                               </p>
                             </div>
@@ -2362,7 +3060,7 @@ const Community: React.FC = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="p-8 space-y-5 overflow-y-auto h-[calc(100%-200px)] scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300"
+                            className="p-4 space-y-3 overflow-y-auto h-[calc(100%-140px)] scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300"
                           >
                             {(friendChats[selectedFriend] || []).map((msg, index) => (
                               <div key={index} className={`flex ${msg.user === 'You' ? 'justify-end' : 'justify-start'}`}>
@@ -2386,7 +3084,7 @@ const Community: React.FC = () => {
                         </AnimatePresence>
 
                         {/* Message Input */}
-                        <div className="flex gap-4 p-8 pb-8">
+                        <div className="flex gap-4 p-4 pb-4">
                           <button className="p-2 rounded-lg hover:bg-white/5 transition-colors">
                             <Paperclip className="w-5 h-5 text-gray-400" />
                           </button>
@@ -2428,7 +3126,7 @@ const Community: React.FC = () => {
               )}
 
               {activeTab === 'feed' && (
-                <div className="h-full p-8">
+                <div className="h-full p-4">
                   {/* Full Feed Experience */}
                   <div className="h-full bg-white/2 rounded-2xl overflow-hidden">
                     <div className="h-full overflow-y-auto scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent hover:scrollbar-thumb-purple-400 transition-all duration-300">

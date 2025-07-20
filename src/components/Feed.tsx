@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { getUserAvatar } from '../utils/imageUtils';
 import OptimizedImage from './OptimizedImage';
+import { celebrityService, CelebrityInfo } from '../services/celebrityService';
 import './Feed.css';
 
 interface Comment {
@@ -72,7 +73,7 @@ const EMOJIS = ['❤️', '🔥', '😍', '😎', '🥳', '🎉', '✨', '💫',
 
 const generateMockPosts = (): Post[] => {
   const posts: Post[] = [
-    // Community Posts
+    // Community Posts (Friends)
     {
       id: 'community-1',
       user: {
@@ -348,12 +349,12 @@ const generateMockPosts = (): Post[] => {
       ]
     },
 
-    // Celebrity Posts
+    // Celebrity Posts (Real Celebrities with TMDB Images)
     {
       id: 'celebrity-1',
       user: {
         name: 'Christopher Nolan',
-        avatar: getUserAvatar('Christopher Nolan'),
+        avatar: '', // Will be fetched from TMDB
         verified: true,
         role: 'Director'
       },
@@ -369,7 +370,7 @@ const generateMockPosts = (): Post[] => {
           id: 'c9',
           user: {
             name: 'Tom Hardy',
-            avatar: getUserAvatar('Tom Hardy'),
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
           text: 'Incredible work as always, Chris! 🔥',
@@ -390,7 +391,7 @@ const generateMockPosts = (): Post[] => {
       id: 'celebrity-2',
       user: {
         name: 'Taylor Swift',
-        avatar: getUserAvatar('Taylor Swift'),
+        avatar: '', // Will be fetched from TMDB
         verified: true,
         role: 'Music Artist'
       },
@@ -406,7 +407,7 @@ const generateMockPosts = (): Post[] => {
           id: 'c10',
           user: {
             name: 'Selena Gomez',
-            avatar: getUserAvatar('Selena Gomez'),
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
           text: 'I\'m so excited for this! 🎵💖',
@@ -427,7 +428,7 @@ const generateMockPosts = (): Post[] => {
       id: 'celebrity-3',
       user: {
         name: 'Marvel Studios',
-        avatar: getUserAvatar('Marvel Studios'),
+        avatar: '', // Will be fetched from TMDB
         verified: true,
         role: 'Production House'
       },
@@ -443,7 +444,7 @@ const generateMockPosts = (): Post[] => {
           id: 'c11',
           user: {
             name: 'Robert Downey Jr.',
-            avatar: getUserAvatar('Robert Downey Jr.'),
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
           text: 'The legacy continues! 🦸‍♂️',
@@ -464,7 +465,7 @@ const generateMockPosts = (): Post[] => {
       id: 'celebrity-4',
       user: {
         name: 'Leonardo DiCaprio',
-        avatar: getUserAvatar('Leonardo DiCaprio'),
+        avatar: '', // Will be fetched from TMDB
         verified: true,
         role: 'Actor'
       },
@@ -480,7 +481,7 @@ const generateMockPosts = (): Post[] => {
           id: 'c12',
           user: {
             name: 'Greta Thunberg',
-            avatar: getUserAvatar('Greta Thunberg'),
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
           text: 'Thank you for using your platform for this important cause! 🌱',
@@ -501,7 +502,7 @@ const generateMockPosts = (): Post[] => {
       id: 'celebrity-5',
       user: {
         name: 'Beyoncé',
-        avatar: getUserAvatar('Beyoncé'),
+        avatar: '', // Will be fetched from TMDB
         verified: true,
         role: 'Music Artist'
       },
@@ -517,7 +518,7 @@ const generateMockPosts = (): Post[] => {
           id: 'c13',
           user: {
             name: 'Jay-Z',
-            avatar: getUserAvatar('Jay-Z'),
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
           text: 'Proud of you, Queen! 👑',
@@ -538,7 +539,7 @@ const generateMockPosts = (): Post[] => {
       id: 'celebrity-6',
       user: {
         name: 'Tom Cruise',
-        avatar: getUserAvatar('Tom Cruise'),
+        avatar: '', // Will be fetched from TMDB
         verified: true,
         role: 'Actor'
       },
@@ -554,7 +555,7 @@ const generateMockPosts = (): Post[] => {
           id: 'c14',
           user: {
             name: 'Christopher McQuarrie',
-            avatar: getUserAvatar('Christopher McQuarrie'),
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
           text: 'You\'re absolutely fearless, Tom! 🚁',
@@ -572,375 +573,153 @@ const generateMockPosts = (): Post[] => {
       ]
     },
 
-    // Behind the Scenes Fun Posts
+    // More Celebrity Posts
     {
-      id: 'bts-1',
+      id: 'celebrity-7',
       user: {
-        name: 'Alok Tripathy',
-        avatar: '/src/images/alok.jpg',
+        name: 'Steven Spielberg',
+        avatar: '', // Will be fetched from TMDB
         verified: true,
-        role: 'Actor'
+        role: 'Director'
       },
-      timestamp: '2 hours ago',
-      content: 'Behind the scenes moment: Director says "Action!" and I completely forget my lines! 😅 The entire crew was like "Alok, bro, you okay?" 🤦‍♂️ #ActorLife #BTS #BlondeMoment',
+      timestamp: '1 day ago',
+      content: 'Every film is a new adventure. The magic of storytelling never gets old. 🎬✨ #Filmmaking #Storytelling #Cinema',
       media: {
         type: 'image',
         url: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop'
       },
-      likes: 892,
+      likes: 15678,
       comments: [
         {
           id: 'c15',
           user: {
-            name: 'Biren Dora',
-            avatar: '/src/images/biren.jpg',
+            name: 'Tom Hanks',
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
-          text: 'Happens to the best of us! 😂 That\'s why we do multiple takes!',
-          timestamp: '1 hour ago',
-          likes: 67
+          text: 'Working with you was always an honor, Steven! 🎭',
+          timestamp: '23 hours ago',
+          likes: 892
         }
       ],
-      shares: 45,
+      shares: 1234,
       isLiked: false,
-      isBookmarked: false,
+      isBookmarked: true,
       reactions: [
-        { emoji: '😂', count: 567 },
-        { emoji: '🤦‍♂️', count: 234 },
-        { emoji: '🎭', count: 91 }
+        { emoji: '🎬', count: 5678 },
+        { emoji: '✨', count: 3456 },
+        { emoji: '❤️', count: 2345 }
       ]
     },
     {
-      id: 'bts-2',
+      id: 'celebrity-8',
       user: {
-        name: 'Soham Bardhan',
-        avatar: '/src/images/soham.jpg',
+        name: 'Ariana Grande',
+        avatar: '', // Will be fetched from TMDB
         verified: true,
-        role: 'Actor'
+        role: 'Music Artist'
       },
-      timestamp: '4 hours ago',
-      content: 'Set pr prank war chal raha hai! Today I put fake spiders in everyone\'s coffee cups! 🕷️☕ The makeup artist literally jumped 3 feet high! 😂 #SetPranks #ActorLife #SpiderPrank',
+      timestamp: '1 day ago',
+      content: 'New album vibes are hitting different this time! 🎤💕 Can\'t wait to share this journey with you all! #NewMusic #StudioVibes #ArianaGrande',
       media: {
         type: 'image',
-        url: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=600&fit=crop'
+        url: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop'
       },
-      likes: 1245,
+      likes: 23456,
       comments: [
         {
           id: 'c16',
           user: {
-            name: 'Adya Rath',
-            avatar: '/src/images/adya.JPG',
-            verified: false
-          },
-          text: 'You\'re going to pay for this! 😤 Wait till I get my revenge!',
-          timestamp: '3 hours ago',
-          likes: 89
-        }
-      ],
-      shares: 123,
-      isLiked: true,
-      isBookmarked: false,
-      reactions: [
-        { emoji: '🕷️', count: 456 },
-        { emoji: '😂', count: 567 },
-        { emoji: '☕', count: 222 }
-      ]
-    },
-    {
-      id: 'bts-3',
-      user: {
-        name: 'Biren Dora',
-        avatar: '/src/images/biren.jpg',
-        verified: true,
-        role: 'Director'
-      },
-      timestamp: '6 hours ago',
-      content: 'Location scouting mein ek din pure jungle mein lost ho gaya! GPS bhi kaam nahi kar raha tha! 🗺️🌲 Finally 3 hours baad signal mila! Lesson learned: Always carry a compass! 😅 #LocationScouting #LostInJungle #DirectorLife',
-      media: {
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop'
-      },
-      likes: 1567,
-      comments: [
-        {
-          id: 'c17',
-          user: {
-            name: 'Kamlesh Biswal',
-            avatar: '/src/images/kamlesh.jpg',
+            name: 'Billie Eilish',
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
-          text: 'Biren, you\'re lucky you found your way back! Next time take me with you! 🧭',
-          timestamp: '5 hours ago',
-          likes: 123
+          text: 'So excited for this! Your voice is everything! 🎵',
+          timestamp: '22 hours ago',
+          likes: 1234
         }
       ],
-      shares: 234,
-      isLiked: false,
-      isBookmarked: true,
-      reactions: [
-        { emoji: '🗺️', count: 345 },
-        { emoji: '🌲', count: 234 },
-        { emoji: '😅', count: 567 }
-      ]
-    },
-    {
-      id: 'bts-4',
-      user: {
-        name: 'Adya Rath',
-        avatar: '/src/images/adya.JPG',
-        verified: false,
-        role: 'Film Critic'
-      },
-      timestamp: '8 hours ago',
-      content: 'Set visit ke time ek scene mein hero ko 15 baar "I love you" bolna pada! Take 15 mein finally perfect hua! 😂 Director bhi frustrated ho gaya! #SetVisit #MultipleTakes #ActorStruggles',
-      media: {
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop'
-      },
-      likes: 2341,
-      comments: [
-        {
-          id: 'c18',
-          user: {
-            name: 'Ankit Singh',
-            avatar: '/src/images/ankit.jpg',
-            verified: false
-          },
-          text: 'That\'s why I stick to action scenes! No dialogue problems! 💪',
-          timestamp: '7 hours ago',
-          likes: 156
-        }
-      ],
-      shares: 345,
+      shares: 2345,
       isLiked: true,
       isBookmarked: false,
       reactions: [
-        { emoji: '💕', count: 789 },
-        { emoji: '😂', count: 567 },
-        { emoji: '🎬', count: 234 }
+        { emoji: '🎤', count: 8765 },
+        { emoji: '💕', count: 6543 },
+        { emoji: '🎵', count: 5432 }
       ]
     },
     {
-      id: 'bts-5',
+      id: 'celebrity-9',
       user: {
-        name: 'Kamlesh Biswal',
-        avatar: '/src/images/kamlesh.jpg',
+        name: 'Disney',
+        avatar: '', // Will be fetched from TMDB
         verified: true,
-        role: 'Producer'
+        role: 'Production House'
       },
-      timestamp: '10 hours ago',
-      content: 'Budget meeting mein CFO ne bola "Kamlesh, yeh scene bahut expensive hai!" Maine kaha "But sir, audience ko pasand aayega!" 😅 Result: Scene approved! 🎉 #ProducerLife #BudgetNegotiations #CreativeCompromise',
-      media: {
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop'
-      },
-      likes: 1892,
-      comments: [
-        {
-          id: 'c19',
-          user: {
-            name: 'Praveen Dehury',
-            avatar: '/src/images/praveen.jpg',
-            verified: false
-          },
-          text: 'That\'s some smooth talking! 😎 Producer skills on point!',
-          timestamp: '9 hours ago',
-          likes: 234
-        }
-      ],
-      shares: 456,
-      isLiked: false,
-      isBookmarked: true,
-      reactions: [
-        { emoji: '💰', count: 567 },
-        { emoji: '😎', count: 345 },
-        { emoji: '🎉', count: 234 }
-      ]
-    },
-    {
-      id: 'bts-6',
-      user: {
-        name: 'Ankit Singh',
-        avatar: '/src/images/ankit.jpg',
-        verified: false,
-        role: 'Fan'
-      },
-      timestamp: '12 hours ago',
-      content: 'Set visit ke time hero ne mujhe autograph diya! But signature itna messy tha ki maine pucha "Sir, yeh kya likha hai?" 😂 Hero bhi confused ho gaya! #FanMoment #AutographFail #StarStruck',
-      media: {
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop'
-      },
-      likes: 3456,
-      comments: [
-        {
-          id: 'c20',
-          user: {
-            name: 'Ipsit Tripathy',
-            avatar: '/src/images/ipsit.jpg',
-            verified: true
-          },
-          text: 'Haha! That\'s why I always ask for a clear signature! 😄',
-          timestamp: '11 hours ago',
-          likes: 189
-        }
-      ],
-      shares: 567,
-      isLiked: true,
-      isBookmarked: false,
-      reactions: [
-        { emoji: '✍️', count: 456 },
-        { emoji: '😂', count: 789 },
-        { emoji: '⭐', count: 234 }
-      ]
-    },
-    {
-      id: 'bts-7',
-      user: {
-        name: 'Praveen Dehury',
-        avatar: '/src/images/praveen.jpg',
-        verified: false,
-        role: 'Screenwriter'
-      },
-      timestamp: '14 hours ago',
-      content: 'Script writing session mein 3 AM tak baitha! Coffee 5 cups pi li! ☕😵‍💫 Finally perfect dialogue mil gaya! But ab neend nahi aa rahi! 😴 #ScreenwriterLife #CoffeeAddict #LateNightWriting',
+      timestamp: '2 days ago',
+      content: 'The magic continues! ✨ New animated adventures coming your way! #Disney #Animation #Magic',
       media: {
         type: 'image',
         url: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&h=600&fit=crop'
       },
-      likes: 2789,
+      likes: 34567,
       comments: [
         {
-          id: 'c21',
+          id: 'c17',
           user: {
-            name: 'Alok Tripathy',
-            avatar: '/src/images/alok.jpg',
+            name: 'Emma Watson',
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
-          text: 'Worth it! That dialogue is going to be iconic! 🔥',
-          timestamp: '13 hours ago',
-          likes: 345
+          text: 'Disney magic is forever! 🏰✨',
+          timestamp: '1 day ago',
+          likes: 1567
         }
       ],
-      shares: 234,
+      shares: 3456,
       isLiked: false,
       isBookmarked: true,
       reactions: [
-        { emoji: '☕', count: 456 },
-        { emoji: '😵‍💫', count: 234 },
-        { emoji: '✍️', count: 567 }
+        { emoji: '✨', count: 12345 },
+        { emoji: '🏰', count: 9876 },
+        { emoji: '🎭', count: 7654 }
       ]
     },
     {
-      id: 'bts-8',
+      id: 'celebrity-10',
       user: {
-        name: 'Ipsit Tripathy',
-        avatar: '/src/images/ipsit.jpg',
+        name: 'Elon Musk',
+        avatar: '', // Will be fetched from TMDB
         verified: true,
-        role: 'Fitness Trainer'
+        role: 'Entrepreneur'
       },
-      timestamp: '16 hours ago',
-      content: 'Set pr fitness routine maintain karna mushkil hai! But today I convinced the entire crew to do 10 push-ups between takes! 💪 Even the director joined! 😂 #FitnessOnSet #HealthyCrew #PushUpChallenge',
-      media: {
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop'
-      },
-      likes: 1892,
-      comments: [
-        {
-          id: 'c22',
-          user: {
-            name: 'Soham Bardhan',
-            avatar: '/src/images/soham.jpg',
-            verified: true
-          },
-          text: 'My arms are still sore! But feeling great! 💪',
-          timestamp: '15 hours ago',
-          likes: 234
-        }
-      ],
-      shares: 345,
-      isLiked: true,
-      isBookmarked: false,
-      reactions: [
-        { emoji: '💪', count: 567 },
-        { emoji: '🔥', count: 345 },
-        { emoji: '🏋️‍♂️', count: 234 }
-      ]
-    },
-    {
-      id: 'bts-9',
-      user: {
-        name: 'Akash Matania',
-        avatar: '/src/images/akash-matania.JPG',
-        verified: true,
-        role: 'Cinematographer'
-      },
-      timestamp: '18 hours ago',
-      content: 'Camera setup mein 2 hours lag gaye! Perfect lighting chahiye thi! 🌟 Finally setup complete hua, aur tab tak hero ko bathroom jaana pada! 😅 #CinematographyLife #PerfectLighting #ActorProblems',
+      timestamp: '2 days ago',
+      content: 'The future of transportation is electric! 🚗⚡ #Tesla #ElectricVehicles #Innovation',
       media: {
         type: 'image',
         url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop'
       },
-      likes: 1456,
+      likes: 45678,
       comments: [
         {
-          id: 'c23',
+          id: 'c18',
           user: {
-            name: 'Biren Dora',
-            avatar: '/src/images/biren.jpg',
+            name: 'Bill Gates',
+            avatar: '', // Will be fetched from TMDB
             verified: true
           },
-          text: 'That\'s filmmaking for you! Timing is everything! ⏰',
-          timestamp: '17 hours ago',
-          likes: 123
+          text: 'Great work on sustainable technology! 🌱',
+          timestamp: '1 day ago',
+          likes: 2345
         }
       ],
-      shares: 234,
-      isLiked: false,
+      shares: 5678,
+      isLiked: true,
       isBookmarked: false,
       reactions: [
-        { emoji: '📷', count: 345 },
-        { emoji: '🌟', count: 234 },
-        { emoji: '😅', count: 456 }
-      ]
-    },
-    {
-      id: 'bts-10',
-      user: {
-        name: 'Adya Rath',
-        avatar: '/src/images/adya.JPG',
-        verified: false,
-        role: 'Film Critic'
-      },
-      timestamp: '20 hours ago',
-      content: 'Behind the scenes: Heroine ko emotional scene mein real tears nahi aa rahe the! Director ne onion kaatne ko bola! 🧅😭 Result: Perfect shot! But poor heroine ko 1 hour tak aansu aate rahe! 😂 #MethodActing #OnionTears #PerfectShot',
-      media: {
-        type: 'image',
-        url: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop'
-      },
-      likes: 3123,
-      comments: [
-        {
-          id: 'c24',
-          user: {
-            name: 'Soham Bardhan',
-            avatar: '/src/images/soham.jpg',
-            verified: true
-          },
-          text: 'Been there, done that! Onion is every actor\'s best friend! 😭',
-          timestamp: '19 hours ago',
-          likes: 456
-        }
-      ],
-      shares: 567,
-      isLiked: true,
-      isBookmarked: true,
-      reactions: [
-        { emoji: '🧅', count: 789 },
-        { emoji: '😭', count: 567 },
-        { emoji: '🎭', count: 234 }
+        { emoji: '🚗', count: 15678 },
+        { emoji: '⚡', count: 12345 },
+        { emoji: '🌱', count: 9876 }
       ]
     }
   ];
@@ -955,6 +734,7 @@ interface FeedProps {
 const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
   // Use only Instagram feed's own theme - no parent theme inheritance
   const [posts, setPosts] = useState<Post[]>([]);
+  const [celebrityInfo, setCelebrityInfo] = useState<Map<string, CelebrityInfo>>(new Map());
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [showEmojiPicker, setShowEmojiPicker] = useState<string | null>(null);
@@ -980,13 +760,56 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
   const mediaInputRef = useRef<HTMLInputElement>(null);
   const audioRecorderRef = useRef<MediaRecorder | null>(null);
 
-  // Load initial posts
+  // Load initial posts and celebrity images
   useEffect(() => {
+    const loadPostsWithCelebrities = async () => {
     const allPosts = generateMockPosts();
+      
+      // Load celebrity images for all users in posts
+      const celebrityInfoMap = new Map<string, CelebrityInfo>();
+      
+      for (const post of allPosts) {
+        if (!celebrityInfoMap.has(post.user.name)) {
+          try {
+            const info = await celebrityService.getCelebrityInfo(post.user.name);
+            celebrityInfoMap.set(post.user.name, info);
+          } catch (error) {
+            console.error(`Error loading celebrity info for ${post.user.name}:`, error);
+            // Fallback to default
+            celebrityInfoMap.set(post.user.name, {
+              name: post.user.name,
+              avatar: getUserAvatar(post.user.name),
+              verified: post.user.verified,
+              role: post.user.role
+            });
+          }
+        }
+      }
+      
+      setCelebrityInfo(celebrityInfoMap);
+      
+      // Update posts with celebrity info
+      const updatedPosts = allPosts.map(post => {
+        const celebrityInfo = celebrityInfoMap.get(post.user.name);
+        return {
+          ...post,
+          user: {
+            ...post.user,
+            name: celebrityInfo?.name || post.user.name,
+            avatar: celebrityInfo?.avatar || post.user.avatar, // Use local image if celebrity avatar is empty
+            verified: celebrityInfo?.verified || post.user.verified,
+            role: celebrityInfo?.role || post.user.role
+          }
+        };
+      });
+      
     // Load first 5 posts initially
-    setPosts(allPosts.slice(0, 5));
+      setPosts(updatedPosts.slice(0, 5));
     // Set hasMore based on total posts
-    setHasMore(allPosts.length > 5);
+      setHasMore(updatedPosts.length > 5);
+    };
+    
+    loadPostsWithCelebrities();
   }, []);
 
   const loadMorePosts = useCallback(async () => {
@@ -1007,14 +830,29 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
     // Get next batch of posts (5 posts at a time)
     const nextBatch = allPosts.slice(posts.length, posts.length + 5);
     
-    setPosts(prev => [...prev, ...nextBatch]);
+    // Update posts with celebrity info
+    const updatedNextBatch = nextBatch.map(post => {
+      const celebInfo = celebrityInfo.get(post.user.name);
+      return {
+        ...post,
+        user: {
+          ...post.user,
+          name: celebInfo?.name || post.user.name,
+          avatar: celebInfo?.avatar || post.user.avatar, // Use local image if celebrity avatar is empty
+          verified: celebInfo?.verified || post.user.verified,
+          role: celebInfo?.role || post.user.role
+        }
+      };
+    });
+    
+    setPosts(prev => [...prev, ...updatedNextBatch]);
     setLoading(false);
     
     // Check if we've reached the end
     if (posts.length + nextBatch.length >= allPosts.length) {
       setHasMore(false);
     }
-  }, [posts.length]);
+  }, [posts.length, celebrityInfo]);
 
   // Intersection Observer for infinite scroll
   const lastPostElementRef = useCallback((node: HTMLDivElement) => {
@@ -1076,11 +914,12 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
   const addComment = (postId: string) => {
     if (!commentText.trim()) return;
 
+    const celebInfo = celebrityInfo.get('You');
     const newComment: Comment = {
       id: `comment-${Date.now()}`,
       user: {
         name: 'You',
-        avatar: getUserAvatar('You'),
+        avatar: celebInfo?.avatar || getUserAvatar('You'),
         verified: false
       },
       text: commentText,
@@ -1248,7 +1087,7 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
           <div className="post-creator-header">
             <div className="post-creator-user">
               <OptimizedImage
-                src={getUserAvatar('You')}
+                src={celebrityInfo.get('You')?.avatar || getUserAvatar('You')}
                 alt="Your avatar"
                 width={40}
                 height={40}
@@ -1297,10 +1136,10 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
                           onClick={() => removeMedia(index)}
                         >
                           <X size={16} />
-                        </button>
-                      </div>
+            </button>
+          </div>
                     ))}
-                  </div>
+        </div>
                 )}
 
                 {/* Audio Preview */}

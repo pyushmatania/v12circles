@@ -348,7 +348,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
     } catch (error) {
       console.error('Error in categorizedProjects:', error);
       // Return empty arrays as fallback
-      return {
+    return {
         trending: [],
         bollywood: [],
         hollywood: [],
@@ -365,7 +365,7 @@ const ProjectCatalog: React.FC<ProjectCatalogProps> = ({ onProjectSelect }) => {
         hindiMusic: [],
         hollywoodMusic: [],
         musicAlbums: []
-      };
+    };
     }
   }, []);
 
