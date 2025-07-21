@@ -1055,6 +1055,7 @@ const Community: React.FC = () => {
   const [mergedMusicArtists, setMergedMusicArtists] = useState<RealCommunityItem[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
+
   
   // Original state for when item is selected - Community Hub as default
   const [activeTab, setActiveTab] = useState<'feed' | 'hub' | 'channels' | 'friends' | 'media' | 'perks' | 'merch'>('hub');
@@ -1109,6 +1110,7 @@ const Community: React.FC = () => {
     question: string;
     options: string[];
     votes: Record<string, number>;
+    totalVotes: number;
     duration: string;
     allowMultipleVotes: boolean;
     anonymous: boolean;
@@ -1124,6 +1126,15 @@ const Community: React.FC = () => {
     location: string;
     attendees: string[];
     createdAt: string;
+    eventData: {
+      title: string;
+      date: string;
+      time: string;
+      description: string;
+      maxAttendees: number;
+      location: string;
+      attendees: string[];
+    };
   }>>([]);
   const [userCreatedAnnouncements, setUserCreatedAnnouncements] = useState<Array<{
     id: string;
@@ -1132,6 +1143,12 @@ const Community: React.FC = () => {
     priority: string;
     category: string;
     createdAt: string;
+    announcementData: {
+      title: string;
+      content: string;
+      priority: string;
+      category: string;
+    };
   }>>([]);
   
   // Sample news and announcements data
@@ -1509,6 +1526,7 @@ const Community: React.FC = () => {
       question: pollForm.question,
       options: validOptions,
       votes: Object.fromEntries(validOptions.map((_, idx) => [String.fromCharCode(65 + idx), 0])),
+      totalVotes: 0,
       duration: pollForm.duration,
       allowMultipleVotes: pollForm.allowMultipleVotes,
       anonymous: pollForm.anonymous,
@@ -1556,7 +1574,16 @@ const Community: React.FC = () => {
       maxAttendees: eventForm.maxAttendees,
       location: eventForm.location,
       attendees: [],
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      eventData: {
+        title: eventForm.title,
+        date: eventForm.date,
+        time: eventForm.time,
+        description: eventForm.description,
+        maxAttendees: eventForm.maxAttendees,
+        location: eventForm.location,
+        attendees: []
+      }
     }, ...prev]); // Add to user events widget
     setShowEventModal(false);
     setEventForm({ title: '', date: '', time: '', description: '', maxAttendees: 50, location: 'Online' });
@@ -1606,7 +1633,13 @@ const Community: React.FC = () => {
       content: announcementForm.content,
       priority: announcementForm.priority,
       category: announcementForm.category,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      announcementData: {
+        title: announcementForm.title,
+        content: announcementForm.content,
+        priority: announcementForm.priority,
+        category: announcementForm.category
+      }
     }, ...prev]); // Add to user announcements widget
     setShowAnnouncementModal(false);
     setAnnouncementForm({ title: '', content: '', priority: 'normal', category: 'general' });
@@ -2823,7 +2856,7 @@ const Community: React.FC = () => {
                   <div className="flex items-center justify-center gap-2">
                     <Music className="w-6 h-6 text-green-500" />
                     <span>Music Artists</span>
-                    {isLoadingSpotifyArtists && (
+                    {!isDataLoaded && (
                       <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
                     )}
                   </div>
@@ -2833,10 +2866,10 @@ const Community: React.FC = () => {
                 {selectedCategory === 'musicArtist' ? (
                   <div className="flex flex-col items-center gap-2">
                     <span>Curated collection with real Spotify data</span>
-                    {isLoadingSpotifyArtists && (
+                    {!isDataLoaded && (
                       <span className="text-blue-500 text-xs">(Processing music artists...)</span>
                     )}
-                    {!isLoadingSpotifyArtists && (
+                    {isDataLoaded && (
                       <span className="text-green-500 text-xs">✓ Real Spotify images loaded</span>
                     )}
                   </div>
@@ -2923,7 +2956,7 @@ const Community: React.FC = () => {
                                      onTouchEnd={isMobile ? handleTouchEnd : undefined}
                 >
                   {/* Loading state - only show if no items available */}
-                  {selectedCategory === 'musicArtist' && isLoadingSpotifyArtists && paginatedItems.length === 0 && (
+                  {selectedCategory === 'musicArtist' && !isDataLoaded && paginatedItems.length === 0 && (
                     Array.from({ length: isMobile ? 9 : 12 }).map((_, _index) => (
                       <div key={`loading-${_index}`} className="flex flex-col items-center justify-center gap-3 min-h-[200px] md:min-h-[300px]">
                         <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-gray-700 to-gray-600 animate-pulse" />
@@ -2934,7 +2967,7 @@ const Community: React.FC = () => {
                   )}
 
                   {/* General loading state for empty categories */}
-                  {paginatedItems.length === 0 && !isLoadingSpotifyArtists && (
+                  {paginatedItems.length === 0 && isDataLoaded && (
                     <div className="col-span-full flex flex-col items-center justify-center gap-4 min-h-[300px] md:min-h-[400px]">
                       <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
                       <div className="text-center">
@@ -2950,10 +2983,7 @@ const Community: React.FC = () => {
                   
 
                   
-                  {/* Debug info */}
-                  <div className="col-span-full text-center text-white mb-4">
-                    <p>Items: {paginatedItems.length} | Page: {currentPage + 1} | Mobile: {isMobile ? 'Yes' : 'No'} | Screen: {window.innerWidth}x{window.innerHeight}</p>
-                  </div>
+
                   
                   {/* Regular items - always show if available */}
                   {paginatedItems.map((item, index) => {

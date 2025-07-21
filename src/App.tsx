@@ -20,6 +20,11 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { checkReactAvailability } from './utils/reactCheck';
 import { Project } from './types';
 
+// 🚀 Safe Performance Integration
+import { useSafePerformance } from './utils/performanceIntegration';
+import PerformanceToggle from './components/PerformanceToggle';
+import PerformanceTestButton from './components/PerformanceTestButton';
+
 // 🚀 Import components directly for instant loading
 import Dashboard from './components/Dashboard';
 import ProjectCatalog from './components/ProjectCatalog';
@@ -61,6 +66,9 @@ function AppContent() {
   // 🎯 Hooks
   const { isAuthenticated } = useAuth();
   const { toasts, toast, removeToast } = useToast();
+  
+  // 🚀 Safe Performance Integration
+  const { isEnabled: performanceEnabled, initialize: initializePerformance } = useSafePerformance();
 
   // 🚀 Memoized constants for performance
   const protectedViews = useMemo(() => ['profile', 'portfolio'] as const, []);
@@ -87,6 +95,15 @@ function AppContent() {
       setCurrentView('home');
     }
   }, [isAuthenticated, isCurrentViewProtected]);
+
+  // 🚀 Initialize performance optimizations safely
+  useEffect(() => {
+    if (performanceEnabled) {
+      initializePerformance().catch(error => {
+        console.warn('[V12] Performance initialization failed:', error);
+      });
+    }
+  }, [performanceEnabled, initializePerformance]);
 
   // 🚀 Optimized authentication handler with useCallback
   const handleAuthRequired = useCallback((mode: AuthModalMode = 'login'): boolean => {
@@ -310,6 +327,8 @@ function AppContent() {
       <Navigation {...navigationProps} />
       {renderCurrentView()}
       <DebugPanel />
+      <PerformanceToggle />
+      <PerformanceTestButton />
       <AuthModal {...authModalProps} />
       <ToastContainer {...toastContainerProps} />
     </div>

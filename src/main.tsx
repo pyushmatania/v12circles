@@ -54,6 +54,16 @@ if (import.meta.env.DEV) {
   debug.setEnabled(true);
 }
 
+// 🚀 Safe Performance Integration (non-blocking)
+import { performanceIntegration } from './utils/performanceIntegration';
+
+// 🧪 Performance Testing (development only)
+if (import.meta.env.DEV) {
+  import('./utils/performanceTest').catch(() => {
+    // Silently fail if test module doesn't exist
+  });
+}
+
 // 🛡️ Ensure React is properly loaded before proceeding
 const ensureReactLoaded = () => {
   if (!React || !React.useState || !React.useMemo || !React.createContext) {
@@ -130,3 +140,10 @@ const renderApp = () => {
 
 // 🚀 Start the application with a small delay to ensure React is loaded
 setTimeout(renderApp, 50);
+
+// 🚀 Initialize performance optimizations after app is rendered (non-blocking)
+setTimeout(() => {
+  performanceIntegration.initialize().catch(error => {
+    console.warn('[V12] Performance initialization failed, continuing normally:', error);
+  });
+}, 1000); // Wait 1 second after app renders
