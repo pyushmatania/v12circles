@@ -110,6 +110,116 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  // Quick Action Handlers
+  const handleBrowseProjects = () => {
+    // Show a toast notification instead of navigation
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-purple-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-x-full';
+    toast.innerHTML = `
+      <div class="flex items-center gap-2">
+        <span>🎬</span>
+        <span>Browse Projects feature coming soon!</span>
+      </div>
+    `;
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+      toast.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      toast.classList.add('translate-x-full');
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 300);
+    }, 3000);
+  };
+
+  const handleInvestNow = () => {
+    // Show a toast notification instead of navigation
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-x-full';
+    toast.innerHTML = `
+      <div class="flex items-center gap-2">
+        <span>💰</span>
+        <span>Investment opportunities coming soon!</span>
+      </div>
+    `;
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+      toast.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      toast.classList.add('translate-x-full');
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 300);
+    }, 3000);
+  };
+
+  const handleJoinCircle = () => {
+    // Show a toast notification instead of navigation
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-purple-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-x-full';
+    toast.innerHTML = `
+      <div class="flex items-center gap-2">
+        <span>👥</span>
+        <span>Join Circle feature coming soon!</span>
+      </div>
+    `;
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+      toast.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      toast.classList.add('translate-x-full');
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 300);
+    }, 3000);
+  };
+
+  const handleAnalytics = () => {
+    // Switch to investments tab to show analytics
+    setActiveTab('investments');
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Show a toast notification
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-4 right-4 bg-orange-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 translate-x-full';
+    toast.innerHTML = `
+      <div class="flex items-center gap-2">
+        <span>📊</span>
+        <span>Switched to Analytics tab!</span>
+      </div>
+    `;
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+      toast.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      toast.classList.add('translate-x-full');
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 300);
+    }, 3000);
+  };
+
   // Get investment data from shared service with proper mapping
   const rawInvestments = portfolioService.getFormattedInvestments();
   const investments = rawInvestments.map(inv => ({
@@ -395,6 +505,203 @@ const ProfilePage: React.FC = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* Achievement Badges */}
+              <div className={`p-6 rounded-2xl backdrop-blur-xl border ${
+                theme === 'light'
+                  ? 'bg-white/50 border-white/60'
+                  : 'bg-gradient-to-br from-yellow-500/10 to-orange-500/5 border-yellow-500/20'
+              }`}>
+                <h3 className={`text-xl font-bold mb-6 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                  🏆 Achievements & Badges
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {[
+                    { name: 'First Investment', icon: '💎', earned: true, progress: 100 },
+                    { name: 'Diversified Portfolio', icon: '📊', earned: true, progress: 100 },
+                    { name: 'Community Leader', icon: '👑', earned: false, progress: 75 },
+                    { name: 'High Roller', icon: '💰', earned: false, progress: 45 },
+                    { name: 'Early Adopter', icon: '🚀', earned: true, progress: 100 },
+                    { name: 'Consistent Investor', icon: '📈', earned: false, progress: 60 },
+                    { name: 'Social Butterfly', icon: '🦋', earned: true, progress: 100 },
+                    { name: 'Risk Taker', icon: '🎲', earned: false, progress: 30 }
+                  ].map((badge, index) => (
+                    <div key={index} className={`p-4 rounded-xl text-center transition-all duration-300 ${
+                      badge.earned 
+                        ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/10 border border-yellow-500/30' 
+                        : 'bg-white/5 border border-white/10'
+                    }`}>
+                      <div className="text-3xl mb-2">{badge.icon}</div>
+                      <div className={`text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                        {badge.name}
+                      </div>
+                      {badge.earned ? (
+                        <div className="text-xs text-green-400">✓ Earned</div>
+                      ) : (
+                        <div className="text-xs text-gray-400">{badge.progress}%</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Investment Insights */}
+              <div className={`p-6 rounded-2xl backdrop-blur-xl border ${
+                theme === 'light'
+                  ? 'bg-white/50 border-white/60'
+                  : 'bg-gradient-to-br from-blue-500/10 to-cyan-500/5 border-blue-500/20'
+              }`}>
+                <h3 className={`text-xl font-bold mb-6 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                  📊 Investment Insights
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className={`p-4 rounded-xl ${
+                    theme === 'light' ? 'bg-white/50' : 'bg-white/5'
+                  }`}>
+                    <h4 className={`font-semibold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                      Portfolio Performance
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Best Performer</span>
+                        <span className="text-sm text-green-400">Pathaan 2 (+45%)</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Most Invested</span>
+                        <span className="text-sm text-blue-400">Sacred Games 3</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Risk Level</span>
+                        <span className="text-sm text-yellow-400">Moderate</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`p-4 rounded-xl ${
+                    theme === 'light' ? 'bg-white/50' : 'bg-white/5'
+                  }`}>
+                    <h4 className={`font-semibold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                      Market Trends
+                    </h4>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Film Industry</span>
+                        <span className="text-sm text-green-400">↗️ +12%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Music Industry</span>
+                        <span className="text-sm text-blue-400">→ 0%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>Web Series</span>
+                        <span className="text-sm text-green-400">↗️ +8%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Community Connections */}
+              <div className={`p-6 rounded-2xl backdrop-blur-xl border ${
+                theme === 'light'
+                  ? 'bg-white/50 border-white/60'
+                  : 'bg-gradient-to-br from-purple-500/10 to-pink-500/5 border-purple-500/20'
+              }`}>
+                <h3 className={`text-xl font-bold mb-6 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                  🤝 Community Connections
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className={`p-4 rounded-xl text-center ${
+                    theme === 'light' ? 'bg-white/50' : 'bg-white/5'
+                  }`}>
+                    <div className="text-3xl mb-2">👥</div>
+                    <div className={`text-2xl font-bold mb-1 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                      127
+                    </div>
+                    <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                      Connections Made
+                    </div>
+                  </div>
+                  <div className={`p-4 rounded-xl text-center ${
+                    theme === 'light' ? 'bg-white/50' : 'bg-white/5'
+                  }`}>
+                    <div className="text-3xl mb-2">💬</div>
+                    <div className={`text-2xl font-bold mb-1 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                      89
+                    </div>
+                    <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                      Discussions Joined
+                    </div>
+                  </div>
+                  <div className={`p-4 rounded-xl text-center ${
+                    theme === 'light' ? 'bg-white/50' : 'bg-white/5'
+                  }`}>
+                    <div className="text-3xl mb-2">⭐</div>
+                    <div className={`text-2xl font-bold mb-1 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                      4.8
+                    </div>
+                    <div className={`text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
+                      Community Rating
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className={`p-6 rounded-2xl backdrop-blur-xl border ${
+                theme === 'light'
+                  ? 'bg-white/50 border-white/60'
+                  : 'bg-gradient-to-br from-green-500/10 to-emerald-500/5 border-green-500/20'
+              }`}>
+                <h3 className={`text-xl font-bold mb-6 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                  ⚡ Quick Actions
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <button 
+                    onClick={handleBrowseProjects}
+                    className={`p-4 rounded-xl text-center transition-all duration-300 hover:scale-105 cursor-pointer ${
+                      theme === 'light' 
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600' 
+                        : 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 border border-blue-500/30 hover:from-blue-500/30 hover:to-purple-500/30'
+                    }`}
+                  >
+                    <div className="text-2xl mb-2">🎬</div>
+                    <div className="text-sm font-medium">Browse Projects</div>
+                  </button>
+                  <button 
+                    onClick={handleInvestNow}
+                    className={`p-4 rounded-xl text-center transition-all duration-300 hover:scale-105 cursor-pointer ${
+                      theme === 'light' 
+                        ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600' 
+                        : 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border border-green-500/30 hover:from-green-500/30 hover:to-emerald-500/30'
+                    }`}
+                  >
+                    <div className="text-2xl mb-2">💰</div>
+                    <div className="text-sm font-medium">Invest Now</div>
+                  </button>
+                  <button 
+                    onClick={handleJoinCircle}
+                    className={`p-4 rounded-xl text-center transition-all duration-300 hover:scale-105 cursor-pointer ${
+                      theme === 'light' 
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600' 
+                        : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/30 hover:from-purple-500/30 hover:to-pink-500/30'
+                    }`}
+                  >
+                    <div className="text-2xl mb-2">👥</div>
+                    <div className="text-sm font-medium">Join Circle</div>
+                  </button>
+                  <button 
+                    onClick={handleAnalytics}
+                    className={`p-4 rounded-xl text-center transition-all duration-300 hover:scale-105 cursor-pointer ${
+                      theme === 'light' 
+                        ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600' 
+                        : 'bg-gradient-to-r from-orange-500/20 to-red-500/20 text-orange-300 border border-orange-500/30 hover:from-orange-500/30 hover:to-red-500/30'
+                    }`}
+                  >
+                    <div className="text-2xl mb-2">📊</div>
+                    <div className="text-sm font-medium">Analytics</div>
+                  </button>
                 </div>
               </div>
             </motion.div>

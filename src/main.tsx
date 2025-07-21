@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import { initSentry } from './services/sentry';
 import { debug } from './utils/debug';
-import { checkReactAvailability } from './utils/reactCheck';
 import './index.css';
 
 // 🚀 Initialize Sentry for error tracking
@@ -62,7 +61,7 @@ const ensureReactLoaded = () => {
   console.log('React.useState:', typeof React?.useState);
   console.log('React.createContext:', typeof React?.createContext);
   
-  if (!checkReactAvailability()) {
+  if (!React || !React.useState || !React.createContext) {
     console.error('❌ React is not properly loaded, retrying...');
     return false;
   }

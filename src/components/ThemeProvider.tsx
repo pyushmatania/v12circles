@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { checkReactAvailability } from '../utils/reactCheck';
 
 interface ThemeContextType {
   theme: 'light' | 'dark';
@@ -38,12 +37,6 @@ const ThemeProviderFallback: React.FC<ThemeProviderProps> = ({ children }) => {
 
 // Create a wrapper component to handle potential React context issues
 const ThemeProviderWrapper: React.FC<ThemeProviderProps> = ({ children }) => {
-  // Check React availability before using hooks
-  if (!checkReactAvailability()) {
-    console.error('React is not available in ThemeProvider, using fallback');
-    return <ThemeProviderFallback>{children}</ThemeProviderFallback>;
-  }
-
   try {
     // Ensure React is properly imported
     if (!React || !React.useState) {

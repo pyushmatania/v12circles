@@ -21,6 +21,20 @@
   overflow: visible;
 }
 
+/* Experience View Feed Title - Premium Styling */
+.feed.experience-view .feed-title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 /* Feed - Fixed Dark Theme Only */
 .feed {
   --feed-bg: #000000;
@@ -73,15 +87,16 @@
 }
 
 .feed-title {
-  font-size: 3rem;
-  font-weight: 800;
-  background: linear-gradient(45deg, #FF6B9D, #C44569, #F8B500, #4ECDC4, #45B7D1);
-  background-size: 400% 400%;
+  font-size: 2.2rem;
+  font-weight: 600;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradientShift 3s ease-in-out infinite;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .feed-actions {
@@ -211,12 +226,18 @@
 }
 
 .post-text {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 16px;
-  color: #ffffff !important;
-  font-weight: 400;
-  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-weight: 500;
+  font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .post-media {
@@ -333,8 +354,13 @@
 
 .comment-preview {
   margin-bottom: 6px;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   line-height: 1.5;
+  font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .comment-user {
@@ -479,10 +505,14 @@
 }
 
 .comment-text {
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.5;
-  color: #ffffff !important;
+  color: rgba(255, 255, 255, 0.9) !important;
   margin-bottom: 8px;
+  font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .comment-actions {
@@ -851,6 +881,20 @@
   font-size: 1rem;
 }
 
+/* Experience View Post Text - Premium Styling */
+.feed.experience-view .post-text {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* Compact Action Buttons in Experience View */
 .feed.experience-view .post-creator-actions {
   margin-top: 16px;
@@ -1155,35 +1199,146 @@
 /* Mobile Responsive for Post Creator */
 @media (max-width: 768px) {
   .post-creator {
-    padding: 16px;
+    padding: 8px !important;
+    margin-bottom: 8px !important;
   }
   
   .post-creator-header {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
+    padding: 6px 8px !important;
+    gap: 6px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  
+  .post-creator-user {
+    gap: 6px !important;
+    align-items: center !important;
+  }
+  
+  .user-avatar {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  
+  .user-name {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+  }
+  
+  .user-role {
+    font-size: 0.625rem !important;
+    opacity: 0.8 !important;
   }
   
   .create-post-btn {
-    width: 100%;
+    font-size: 0.625rem !important;
+    padding: 4px 8px !important;
+    width: auto !important;
+    border-radius: 12px !important;
+  }
+  
+  .post-creator-content {
+    padding: 6px 8px !important;
+  }
+  
+  .post-textarea {
+    font-size: 0.75rem !important;
+    padding: 6px !important;
+    min-height: 50px !important;
+    border-radius: 8px !important;
   }
   
   .post-creator-actions {
-    flex-direction: column;
-    gap: 16px;
+    padding: 6px 8px !important;
+    gap: 6px !important;
+    flex-direction: row !important;
+    align-items: center !important;
   }
   
   .post-creator-actions .action-buttons {
-    justify-content: center;
-    flex-wrap: wrap;
+    gap: 4px !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+  }
+  
+  .post-creator-actions .action-btn {
+    padding: 4px !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+  }
+  
+  .post-creator-actions .action-btn svg {
+    width: 14px !important;
+    height: 14px !important;
   }
   
   .post-btn {
-    width: 100%;
-    justify-content: center;
+    font-size: 0.625rem !important;
+    padding: 4px 8px !important;
+    width: auto !important;
+    border-radius: 12px !important;
+  }
+  
+  .post-btn svg {
+    width: 12px !important;
+    height: 12px !important;
   }
   
   .media-preview {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 6px !important;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)) !important;
+  }
+  
+  .media-item {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .poll-creator {
+    gap: 8px !important;
+    padding: 8px !important;
+  }
+  
+  .poll-question {
+    font-size: 0.875rem !important;
+    padding: 6px 8px !important;
+  }
+  
+  .poll-option-input {
+    font-size: 0.875rem !important;
+    padding: 6px 8px !important;
+  }
+  
+  .add-poll-option-btn {
+    font-size: 0.75rem !important;
+    padding: 6px 12px !important;
+  }
+  
+  /* Feed header mobile optimization */
+  .feed-header {
+    padding: 6px 8px !important;
+    align-items: center !important;
+  }
+  
+  .feed-title {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+  }
+  
+  .feed-actions {
+    gap: 4px !important;
+    align-items: center !important;
+  }
+  
+  .feed-actions .action-btn {
+    padding: 4px !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+  }
+  
+  .feed-actions .action-btn svg {
+    width: 16px !important;
+    height: 16px !important;
   }
 } 
