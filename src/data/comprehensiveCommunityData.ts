@@ -11,7 +11,12 @@ export type RealCommunityItem = {
   followers: number;
   verified: boolean;
   isActive: boolean;
-  projects: any[];
+  projects: Array<{
+    id: string;
+    title: string;
+    type: string;
+    year?: number;
+  }>;
   tmdbId?: number;
   rating?: number;
   releaseDate?: string;

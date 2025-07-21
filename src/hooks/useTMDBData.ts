@@ -1,12 +1,48 @@
 import { useState, useEffect } from 'react';
 import { debug } from '../utils/debug';
 
+// TMDB API Types
+interface TMDBMovie {
+  id: number;
+  title: string;
+  overview: string;
+  poster_path: string;
+  release_date: string;
+  vote_average: number;
+  vote_count: number;
+  popularity: number;
+}
+
+interface TMDBCrewMember {
+  id: number;
+  name: string;
+  job: string;
+  department: string;
+  profile_path?: string;
+}
+
+interface TMDBPerson {
+  id: number;
+  name: string;
+  gender: number;
+  profile_path?: string;
+  popularity: number;
+  known_for_department: string;
+}
+
+interface TMDBCompany {
+  id: number;
+  name: string;
+  logo_path?: string;
+  origin_country: string;
+}
+
 export const useTMDBData = () => {
-  const [movies, setMovies] = useState<any[]>([]);
-  const [actors, setActors] = useState<any[]>([]);
-  const [actresses, setActresses] = useState<any[]>([]);
-  const [directors, setDirectors] = useState<any[]>([]);
-  const [productionHouses, setProductionHouses] = useState<any[]>([]);
+  const [movies, setMovies] = useState<TMDBMovie[]>([]);
+  const [actors, setActors] = useState<TMDBPerson[]>([]);
+  const [actresses, setActresses] = useState<TMDBPerson[]>([]);
+  const [directors, setDirectors] = useState<TMDBCrewMember[]>([]);
+  const [productionHouses, setProductionHouses] = useState<TMDBCompany[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,8 +70,8 @@ export const useTMDBData = () => {
         const allActors = actorsData.results?.slice(0, 50) || [];
         
         // Filter actors and actresses by gender (1 = female, 2 = male)
-        const maleActors = allActors.filter((person: any) => person.gender === 2).slice(0, 25);
-        const femaleActors = allActors.filter((person: any) => person.gender === 1).slice(0, 25);
+        const maleActors = allActors.filter((person: TMDBPerson) => person.gender === 2).slice(0, 25);
+        const femaleActors = allActors.filter((person: TMDBPerson) => person.gender === 1).slice(0, 25);
         
         setActors(maleActors);
         setActresses(femaleActors);
@@ -48,14 +84,14 @@ export const useTMDBData = () => {
         const directorsData = await directorsResponse.json();
         
         // Get credits for first few movies to find directors
-        const directorPromises = directorsData.results?.slice(0, 10).map(async (movie: any) => {
+        const directorPromises = directorsData.results?.slice(0, 10).map(async (movie: TMDBMovie) => {
           try {
             const creditsResponse = await fetch(
               `${BASE_URL}/movie/${movie.id}/credits?api_key=${TMDB_API_KEY}`
             );
             if (creditsResponse.ok) {
               const creditsData = await creditsResponse.json();
-              return creditsData.crew?.filter((member: any) => member.job === 'Director').slice(0, 2) || [];
+              return creditsData.crew?.filter((member: TMDBCrewMember) => member.job === 'Director').slice(0, 2) || [];
             }
             return [];
           } catch {
@@ -66,7 +102,7 @@ export const useTMDBData = () => {
         const allDirectors = await Promise.all(directorPromises);
         const uniqueDirectors = Array.from(
           new Map(
-            allDirectors.flat().map((director: any) => [director.id, director])
+            allDirectors.flat().map((director: TMDBCrewMember) => [director.id, director])
           ).values()
         ).slice(0, 20);
         
@@ -80,7 +116,7 @@ export const useTMDBData = () => {
         const companiesData = await companiesResponse.json();
         setProductionHouses(companiesData.results?.slice(0, 30) || []);
 
-      } catch (err: any) {
+      } catch (err: unknown) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to fetch TMDB data';
         setError(errorMessage);
         if (import.meta.env.DEV) {

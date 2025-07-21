@@ -1,4 +1,5 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { useState, ReactNode } from 'react';
+import { AdminContext } from './AdminContextTypes';
 import type { 
   Project, 
   MerchandiseItem, 
@@ -10,9 +11,6 @@ import type {
   AdminContextType 
 } from './AdminContextTypes';
 
-// Create context
-export const AdminContext = createContext<AdminContextType | undefined>(undefined);
-
 // Provider component
 export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Mock data
@@ -22,26 +20,36 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       title: 'Pathaan 2',
       type: 'film',
       category: 'Bollywood',
+      language: 'Hindi',
       status: 'active',
       fundedPercentage: 85,
       targetAmount: 15000000,
       raisedAmount: 12750000,
       createdAt: '2023-12-15T10:30:00Z',
       updatedAt: '2024-01-20T14:45:00Z',
-      poster: 'https://m.media-amazon.com/images/M/MV5BOGY4NWNlM2QtMzVjYy00OGY1LWI4N2UtZDNlYWE2ZThjYmRmXkEyXkFqcGdeQXVyMTUzNTgzNzM0._V1_FMjpg_UX1000_.jpg'
+      poster: 'https://m.media-amazon.com/images/M/MV5BOGY4NWNlM2QtMzVjYy00OGY1LWI4N2UtZDNlYWE2ZThjYmRmXkEyXkFqcGdeQXVyMTUzNTgzNzM0._V1_FMjpg_UX1000_.jpg',
+      tags: ['action', 'thriller', 'bollywood'],
+      description: 'The sequel to the blockbuster Pathaan',
+      genre: 'Action',
+      perks: ['Meet & Greet', 'VIP Screening', 'Merchandise']
     },
     {
       id: '2',
       title: 'A.R. Rahman: Symphony of India',
       type: 'music',
       category: 'Bollywood',
+      language: 'Hindi',
       status: 'active',
       fundedPercentage: 95,
       targetAmount: 5000000,
       raisedAmount: 4750000,
       createdAt: '2023-11-10T08:15:00Z',
       updatedAt: '2024-01-15T11:20:00Z',
-      poster: 'https://i.scdn.co/image/ab67616d0000b273f54b99bf27cda88f4a7403ac'
+      poster: 'https://i.scdn.co/image/ab67616d0000b273f54b99bf27cda88f4a7403ac',
+      tags: ['music', 'classical', 'bollywood'],
+      description: 'A.R. Rahman\'s latest musical masterpiece',
+      genre: 'Classical',
+      perks: ['Concert Tickets', 'Signed Album', 'Backstage Pass']
     },
     {
       id: '3',

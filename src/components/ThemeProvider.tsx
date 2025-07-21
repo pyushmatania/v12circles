@@ -1,18 +1,5 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-
-interface ThemeContextType {
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-  currentGradient: number;
-}
-
-const defaultThemeContext: ThemeContextType = {
-  theme: 'dark',
-  toggleTheme: () => {},
-  currentGradient: 0
-};
-
-export const ThemeContext = createContext<ThemeContextType>(defaultThemeContext);
+import React, { useState, useEffect, ReactNode } from 'react';
+import { ThemeContext, ThemeContextType } from './ThemeContext';
 
 interface ThemeProviderProps {
   children: ReactNode;
@@ -29,7 +16,11 @@ const ThemeProviderFallback: React.FC<ThemeProviderProps> = ({ children }) => {
   }
 
   return (
-    <ThemeContext.Provider value={defaultThemeContext}>
+    <ThemeContext.Provider value={{
+      theme: 'dark',
+      toggleTheme: () => {},
+      currentGradient: 0
+    }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -37,74 +28,68 @@ const ThemeProviderFallback: React.FC<ThemeProviderProps> = ({ children }) => {
 
 // Create a wrapper component to handle potential React context issues
 const ThemeProviderWrapper: React.FC<ThemeProviderProps> = ({ children }) => {
-  try {
-    // Ensure React is properly imported
-    if (!React || !React.useState) {
-      console.error('React.useState is not available, using fallback');
-      return <ThemeProviderFallback>{children}</ThemeProviderFallback>;
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [currentGradient, setCurrentGradient] = useState(0);
+
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('circles-theme') as 'light' | 'dark';
+      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+        setTheme(savedTheme);
+      }
+    } catch (error) {
+      console.warn('Failed to load theme from localStorage:', error);
     }
+  }, []);
 
-    const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-    const [currentGradient, setCurrentGradient] = useState(0);
+  useEffect(() => {
+    try {
+      localStorage.setItem('circles-theme', theme);
+      document.documentElement.classList.toggle('light', theme === 'light');
+    } catch (error) {
+      console.warn('Failed to save theme to localStorage:', error);
+    }
+  }, [theme]);
 
-    useEffect(() => {
-      try {
-        const savedTheme = localStorage.getItem('circles-theme') as 'light' | 'dark';
-        if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
-          setTheme(savedTheme);
-        }
-      } catch (error) {
-        console.warn('Failed to load theme from localStorage:', error);
-      }
-    }, []);
+  // Auto-cycle through gradient themes every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentGradient((prev) => (prev + 1) % 5); // 5 total gradients (0-4)
+    }, 4000);
 
-    useEffect(() => {
-      try {
-        localStorage.setItem('circles-theme', theme);
-        document.documentElement.classList.toggle('light', theme === 'light');
-      } catch (error) {
-        console.warn('Failed to save theme to localStorage:', error);
-      }
-    }, [theme]);
+    return () => clearInterval(interval);
+  }, []);
 
-    // Auto-cycle through gradient themes every 4 seconds
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setCurrentGradient((prev) => (prev + 1) % 5); // 5 total gradients (0-4)
-      }, 4000);
+  // Apply current gradient to document
+  useEffect(() => {
+    try {
+      document.documentElement.setAttribute('data-gradient', currentGradient.toString());
+    } catch (error) {
+      console.warn('Failed to set gradient attribute:', error);
+    }
+  }, [currentGradient]);
 
-      return () => clearInterval(interval);
-    }, []);
-
-    // Apply current gradient to document
-    useEffect(() => {
-      try {
-        document.documentElement.setAttribute('data-gradient', currentGradient.toString());
-      } catch (error) {
-        console.warn('Failed to set gradient attribute:', error);
-      }
-    }, [currentGradient]);
-
-    const toggleTheme = () => {
-      setTheme(prev => prev === 'light' ? 'dark' : 'light');
-    };
-
-    const contextValue: ThemeContextType = {
-      theme,
-      toggleTheme,
-      currentGradient
-    };
-
-    return (
-      <ThemeContext.Provider value={contextValue}>
-        {children}
-      </ThemeContext.Provider>
-    );
-  } catch (error) {
-    console.error('ThemeProvider error:', error);
-    // Fallback to default context if there's an error
+  // Safety check for React availability - after all hooks are called
+  if (!React || !React.useState) {
+    console.error('React.useState is not available, using fallback');
     return <ThemeProviderFallback>{children}</ThemeProviderFallback>;
   }
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
+
+  const contextValue: ThemeContextType = {
+    theme,
+    toggleTheme,
+    currentGradient
+  };
+
+  return (
+    <ThemeContext.Provider value={contextValue}>
+      {children}
+    </ThemeContext.Provider>
+  );
 };
 
 export const ThemeProvider = ThemeProviderWrapper;

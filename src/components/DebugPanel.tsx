@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { debug, perf } from '../utils/debug';
+
 
 interface DebugInfo {
   timestamp: string;
   level: string;
   message: string;
-  data?: any;
+  data?: string;
+}
+
+interface MemoryInfo {
+  usedJSHeapSize: number;
+  totalJSHeapSize: number;
+  jsHeapSizeLimit: number;
+}
+
+interface AppState {
+  memory?: MemoryInfo;
+  timestamp?: string;
 }
 
 interface PerformanceMetric {
@@ -18,7 +29,7 @@ const DebugPanel: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [logs, setLogs] = useState<DebugInfo[]>([]);
   const [performanceMetrics, setPerformanceMetrics] = useState<PerformanceMetric[]>([]);
-  const [appState, setAppState] = useState<any>({});
+  const [appState, setAppState] = useState<AppState>({});
 
   // Capture console logs
   useEffect(() => {
@@ -29,12 +40,12 @@ const DebugPanel: React.FC = () => {
     const originalWarn = console.warn;
     const originalDebug = console.debug;
 
-    const addLog = (level: string, message: string, ...args: any[]) => {
+    const addLog = (level: string, message: string, ...args: unknown[]) => {
       setLogs(prev => [...prev.slice(-99), {
         timestamp: new Date().toISOString(),
         level,
         message,
-        data: args.length > 0 ? args : undefined
+        data: args.length > 0 ? JSON.stringify(args) : undefined
       }]);
     };
 
@@ -73,16 +84,18 @@ const DebugPanel: React.FC = () => {
     const interval = setInterval(() => {
       // Monitor memory usage
       if ('memory' in performance) {
-        const memory = (performance as any).memory;
-        setAppState((prev: any) => ({
-          ...prev,
-          memory: {
-            used: Math.round(memory.usedJSHeapSize / 1024 / 1024),
-            total: Math.round(memory.totalJSHeapSize / 1024 / 1024),
-            limit: Math.round(memory.jsHeapSizeLimit / 1024 / 1024)
-          },
-          timestamp: new Date().toISOString()
-        }));
+        const memory = (performance as { memory?: MemoryInfo }).memory;
+        if (memory) {
+          setAppState((prev: AppState) => ({
+            ...prev,
+            memory: {
+              usedJSHeapSize: Math.round(memory.usedJSHeapSize / 1024 / 1024),
+              totalJSHeapSize: Math.round(memory.totalJSHeapSize / 1024 / 1024),
+              jsHeapSizeLimit: Math.round(memory.jsHeapSizeLimit / 1024 / 1024)
+            },
+            timestamp: new Date().toISOString()
+          }));
+        }
       }
     }, 1000);
 
@@ -168,13 +181,13 @@ const DebugPanel: React.FC = () => {
                   <div className="bg-gray-700 p-2 rounded">
                     <h4 className="font-semibold mb-1">Memory Usage</h4>
                     <div className="space-y-1">
-                      <div>Used: {appState.memory.used}MB</div>
-                      <div>Total: {appState.memory.total}MB</div>
-                      <div>Limit: {appState.memory.limit}MB</div>
+                      <div>Used: {appState.memory.usedJSHeapSize}MB</div>
+                      <div>Total: {appState.memory.totalJSHeapSize}MB</div>
+                      <div>Limit: {appState.memory.jsHeapSizeLimit}MB</div>
                       <div className="w-full bg-gray-600 rounded-full h-2">
                         <div
                           className="bg-green-500 h-2 rounded-full"
-                          style={{ width: `${(appState.memory.used / appState.memory.limit) * 100}%` }}
+                          style={{ width: `${(appState.memory.usedJSHeapSize / appState.memory.jsHeapSizeLimit) * 100}%` }}
                         />
                       </div>
                     </div>

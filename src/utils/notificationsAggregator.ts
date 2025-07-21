@@ -6,7 +6,6 @@ import {
   Gift, 
   Info, 
   Music,
-  Tv,
   TrendingUp,
   Users,
   Star,
@@ -14,10 +13,7 @@ import {
   Award,
   Hash,
   Zap,
-  Globe,
-  Heart,
-  Calendar,
-  Bell
+  Globe
 } from 'lucide-react';
 import { projects } from '../data/projects';
 import { portfolioData } from '../data/portfolio';
@@ -48,8 +44,6 @@ const realInvestments = portfolioData.slice(0, 8);
 
 // Generate realistic notifications from real data
 export const generateRealNotifications = () => {
-  const notifications = [];
-
   // 1. Community Notifications (from real friends and projects)
   const communityNotifications = [
     {

@@ -4,7 +4,7 @@ import { debug } from '../utils/debug';
 
 export interface TMDBProjectData extends TMDBMovieDetails {
   cast: TMDBActor[];
-  crew: any[];
+  crew: TMDBActor[];
 }
 
 export const useTMDBProjectData = (projectTitle: string, tmdbId?: number) => {
@@ -94,6 +94,8 @@ export const getMainCast = (cast: TMDBActor[], limit: number = 5): TMDBActor[] =
   return cast.slice(0, limit);
 };
 
-export const getKeyCrew = (crew: any[], roles: string[] = ['Director', 'Producer', 'Writer']): any[] => {
-  return crew.filter(member => roles.includes(member.job));
+// Note: Crew members have different structure than actors
+// This function expects crew data with job property
+export const getKeyCrew = (crew: Array<TMDBActor & { job?: string }>, roles: string[] = ['Director', 'Producer', 'Writer']): Array<TMDBActor & { job?: string }> => {
+  return crew.filter(member => roles.includes(member.job || ''));
 }; 

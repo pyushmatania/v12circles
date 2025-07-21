@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Bell,
@@ -23,11 +23,6 @@ import {
 import { useTheme } from './ThemeContext';
 import generateRealNotifications from '../utils/notificationsAggregator';
 import { getUserAvatar } from '../utils/imageUtils';
-
-// Add image mapping function
-const getLocalAvatar = (name: string) => {
-  return getUserAvatar(name);
-};
 
 // Add channel avatar mapping function
 const getChannelAvatar = (name: string) => {

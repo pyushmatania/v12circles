@@ -15,13 +15,8 @@ import {
   ExternalLink,
   Download,
   MapPin,
-  Clock,
-  CheckCircle,
   ShoppingBag,
-  Activity,
-  Hash,
-  Ticket,
-  Music
+  Ticket
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import { getTextColor, getBgColor, getBorderColor } from '../utils/themeUtils';
@@ -77,7 +72,7 @@ interface Tab {
 type TabType = 'overview' | 'investments' | 'perks' | 'circles' | 'portfolio' | 'profile';
 
 interface DashboardProps {
-  setCurrentView?: (view: any) => void;
+  setCurrentView?: (view: string) => void;
 }
 
 /**
@@ -101,7 +96,7 @@ const Dashboard: React.FC<DashboardProps> = memo(({ setCurrentView }) => {
 
   // 🚀 Memoized investments data with proper mapping and filtering
   const investments = useMemo(() => {
-    const mappedInvestments = portfolioData.map((inv: any) => ({
+    const mappedInvestments = portfolioData.map((inv) => ({
       ...inv,
       type: inv.projectType,
       poster: inv.projectPoster,
@@ -115,7 +110,7 @@ const Dashboard: React.FC<DashboardProps> = memo(({ setCurrentView }) => {
     
     // Apply filter
     if (investmentFilter === 'all') return mappedInvestments;
-    return mappedInvestments.filter((inv: any) => inv.type === investmentFilter);
+    return mappedInvestments.filter((inv) => inv.type === investmentFilter);
   }, [investmentFilter]);
 
   // 🚀 Memoized perks data

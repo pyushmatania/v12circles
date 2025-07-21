@@ -27,7 +27,7 @@ export const SentryErrorBoundary = Sentry.ErrorBoundary;
 export const SentryProfiler = Sentry.Profiler;
 
 // Custom error reporting
-export function reportError(error: Error, context?: Record<string, any>) {
+export function reportError(error: Error, context?: Record<string, unknown>) {
   if (import.meta.env.PROD) {
     Sentry.captureException(error, {
       extra: context,

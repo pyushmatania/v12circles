@@ -1,4 +1,4 @@
-import { tmdbService, TMDBActor } from './tmdbApi';
+import { tmdbService } from './tmdbApi';
 
 // Only map actual celebrity names to their TMDB images
 const CELEBRITY_MAPPING = {

@@ -56,17 +56,11 @@ if (import.meta.env.DEV) {
 
 // 🛡️ Ensure React is properly loaded before proceeding
 const ensureReactLoaded = () => {
-  console.log('🔍 Checking React availability...');
-  console.log('React object:', typeof React);
-  console.log('React.useState:', typeof React?.useState);
-  console.log('React.createContext:', typeof React?.createContext);
-  
-  if (!React || !React.useState || !React.createContext) {
+  if (!React || !React.useState || !React.useMemo || !React.createContext) {
     console.error('❌ React is not properly loaded, retrying...');
     return false;
   }
   
-  console.log('✅ React is properly loaded');
   return true;
 };
 
@@ -111,25 +105,22 @@ container.innerHTML = `
 
 // 🚀 Create and render the application with React availability check
 const renderApp = () => {
-  console.log('🚀 Attempting to render app...');
-  
   if (!ensureReactLoaded()) {
     // Retry after a short delay
-    console.log('⏳ Retrying in 100ms...');
     setTimeout(renderApp, 100);
     return;
   }
 
   try {
-    console.log('🎯 Creating React root...');
+    // Clear the loading state
+    container.innerHTML = '';
+    
     const root = createRoot(container);
-    console.log('🎯 Rendering app...');
     root.render(
       <StrictMode>
         <App />
       </StrictMode>
     );
-    console.log('✅ App rendered successfully');
   } catch (error) {
     console.error('❌ Failed to render app:', error);
     // Retry rendering after a delay
@@ -137,6 +128,5 @@ const renderApp = () => {
   }
 };
 
-// 🚀 Start the application
-console.log('🚀 Starting Circles application...');
-renderApp();
+// 🚀 Start the application with a small delay to ensure React is loaded
+setTimeout(renderApp, 50);

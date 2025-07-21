@@ -24,6 +24,7 @@ type ToastType = Toast['type'];
 export const useToast = () => {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const toastTimeouts = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+  const removeToastRef = useRef<((id: string) => void) | null>(null);
   const maxToasts = 5; // Prevent too many toasts from overwhelming the UI
 
   // 🚀 Optimized toast addition with queue management
@@ -49,7 +50,9 @@ export const useToast = () => {
     // Auto-dismiss toast unless persistent
     if (!options.persistent && newToast.duration && newToast.duration > 0) {
       const timeout = setTimeout(() => {
-        removeToast(id);
+        if (removeToastRef.current) {
+          removeToastRef.current(id);
+        }
       }, newToast.duration);
       
       toastTimeouts.current.set(id, timeout);
@@ -69,6 +72,9 @@ export const useToast = () => {
 
     setToasts(prev => prev.filter(toast => toast.id !== id));
   }, []);
+
+  // Store removeToast in ref for use in addToast
+  removeToastRef.current = removeToast;
 
   // 🚀 Optimized toast methods with better type safety
   const toast = useMemo(() => ({
@@ -121,10 +127,11 @@ export const useToast = () => {
 
   // 🚀 Cleanup on unmount
   useEffect(() => {
+    const timeouts = toastTimeouts.current;
     return () => {
       // Clear all timeouts on cleanup
-      toastTimeouts.current.forEach(timeout => clearTimeout(timeout));
-      toastTimeouts.current.clear();
+      timeouts.forEach(timeout => clearTimeout(timeout));
+      timeouts.clear();
     };
   }, []);
 

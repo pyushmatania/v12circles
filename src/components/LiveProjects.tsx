@@ -12,11 +12,10 @@ import useIsMobile from '../hooks/useIsMobile';
 
 interface LiveProjectsProps {
   onViewAll?: () => void;
-  onTrackInvestment?: () => void;
   onProjectSelect?: (project: Project, tab?: 'overview' | 'invest') => void;
 }
 
-const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onTrackInvestment, onProjectSelect }) => {
+const LiveProjects: React.FC<LiveProjectsProps> = ({ onViewAll, onProjectSelect }) => {
 
   const { theme } = useTheme();
   const [statsInView, setStatsInView] = useState<{ [key: number]: boolean }>({});

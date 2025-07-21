@@ -63,17 +63,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject, initia
     }
   }, []);
 
-  // Trigger search when initialSearchTerm is provided or on mount
-  useEffect(() => {
-    if (initialSearchTerm) {
-      setSearchTerm(initialSearchTerm);
-      // Trigger search after a short delay to ensure component is mounted
-      setTimeout(() => {
-        handleSearch();
-      }, 100);
-    }
-    // Don't show any projects on initial load if no search term
-  }, [initialSearchTerm]);
+
 
   // Save recent searches to localStorage
   const saveRecentSearch = useCallback((term: string) => {
@@ -86,7 +76,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject, initia
     
     setRecentSearches(updatedSearches);
     localStorage.setItem('circles_recent_searches', JSON.stringify(updatedSearches));
-  }, [recentSearches]);
+  }, [recentSearches, setRecentSearches]);
 
   // Clear recent searches
   const clearRecentSearches = () => {
@@ -127,7 +117,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject, initia
   };
 
   // Enhanced search matching with fuzzy search
-  const matchesSearchTerm = (project: Project, term: string): boolean => {
+  const matchesSearchTerm = useCallback((project: Project, term: string): boolean => {
     if (!term.trim()) return true;
     
     const searchTermLower = term.toLowerCase();
@@ -183,7 +173,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject, initia
     }
 
     return false;
-  };
+  }, []);
 
   // Handle search
   const handleSearch = useCallback(() => {
@@ -245,7 +235,7 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject, initia
     results = sortResults(results, sortBy, sortOrder);
     
     setSearchResults(results);
-  }, [searchTerm, activeCategory, activeType, activeLanguage, activeGenre, fundingRange, sortBy, sortOrder, saveRecentSearch]);
+  }, [searchTerm, activeCategory, activeType, activeLanguage, activeGenre, fundingRange, sortBy, sortOrder, saveRecentSearch, matchesSearchTerm]);
 
   // Real-time search effect
   useEffect(() => {
@@ -254,7 +244,19 @@ const EnhancedSearch: React.FC<EnhancedSearchProps> = ({ onSelectProject, initia
     }, 300); // Debounce search by 300ms
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, activeCategory, activeType, activeLanguage, activeGenre, fundingRange, sortBy, sortOrder, handleSearch]);
+  }, [searchTerm, activeCategory, activeType, activeLanguage, activeGenre, fundingRange, sortBy, sortOrder, handleSearch, matchesSearchTerm]);
+
+  // Trigger search when initialSearchTerm is provided or on mount
+  useEffect(() => {
+    if (initialSearchTerm) {
+      setSearchTerm(initialSearchTerm);
+      // Trigger search after a short delay to ensure component is mounted
+      setTimeout(() => {
+        handleSearch();
+      }, 100);
+    }
+    // Don't show any projects on initial load if no search term
+  }, [initialSearchTerm, handleSearch]);
 
   // Sort results based on criteria
   const sortResults = (results: Project[], sortField: string, order: 'asc' | 'desc') => {

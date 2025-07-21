@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { 
   BarChart, 
   PieChart, 
-  LineChart, 
   TrendingUp, 
   TrendingDown,
   DollarSign,
@@ -498,7 +497,7 @@ const PortfolioAnalytics: React.FC<PortfolioAnalyticsProps> = () => {
                 </label>
                 <select
                   value={sortKey}
-                  onChange={(e) => setSortKey(e.target.value as any)} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border-emerald-500/30 focus:border-emerald-500 bg-white/5 text-white">
+                  onChange={(e) => setSortKey(e.target.value as 'investmentDate' | 'projectName' | 'investmentAmount' | 'currentValue' | 'returnPercentage' | 'status')} className="w-full px-4 py-2 rounded-xl border focus:outline-none focus:ring-2 focus:ring-emerald-500/20 border-emerald-500/30 focus:border-emerald-500 bg-white/5 text-white">
                   <option value="investmentDate" className="bg-gray-800 text-white">Investment Date</option>
                   <option value="projectName" className="bg-gray-800 text-white">Project Name</option>
                   <option value="investmentAmount" className="bg-gray-800 text-white">Investment Amount</option>

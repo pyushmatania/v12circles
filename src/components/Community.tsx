@@ -830,7 +830,7 @@ const mobileStyles = `
     }
     
     /* Fix message bubble sizes on mobile */
-    .friends-chat-messages .max-w-\[70%\] {
+    .friends-chat-messages .max-w-[70%] {
       max-width: 85% !important;
     }
     
@@ -972,7 +972,7 @@ const mobileStyles = `
     }
     
     /* Message bubble fixes */
-    .friends-chat-messages .max-w-\[70%\] {
+    .friends-chat-messages .max-w-[70%] {
       max-width: 90% !important;
     }
     
@@ -1104,9 +1104,35 @@ const Community: React.FC = () => {
   // Widget states
   const [showWidgets, setShowWidgets] = useState(true);
   const [widgetPage, setWidgetPage] = useState(0);
-  const [userCreatedPolls, setUserCreatedPolls] = useState<any[]>([]);
-  const [userCreatedEvents, setUserCreatedEvents] = useState<any[]>([]);
-  const [userCreatedAnnouncements, setUserCreatedAnnouncements] = useState<any[]>([]);
+  const [userCreatedPolls, setUserCreatedPolls] = useState<Array<{
+    id: string;
+    question: string;
+    options: string[];
+    votes: Record<string, number>;
+    duration: string;
+    allowMultipleVotes: boolean;
+    anonymous: boolean;
+    createdAt: string;
+  }>>([]);
+  const [userCreatedEvents, setUserCreatedEvents] = useState<Array<{
+    id: string;
+    title: string;
+    date: string;
+    time: string;
+    description: string;
+    maxAttendees: number;
+    location: string;
+    attendees: string[];
+    createdAt: string;
+  }>>([]);
+  const [userCreatedAnnouncements, setUserCreatedAnnouncements] = useState<Array<{
+    id: string;
+    title: string;
+    content: string;
+    priority: string;
+    category: string;
+    createdAt: string;
+  }>>([]);
   
   // Sample news and announcements data
   const [communityNews] = useState([
@@ -1478,7 +1504,16 @@ const Community: React.FC = () => {
     };
     
     setHubChatMessages(prev => [...prev, newPoll]);
-    setUserCreatedPolls((prev: any[]) => [newPoll, ...prev]); // Add to user polls widget
+    setUserCreatedPolls((prev) => [{
+      id: newPoll.id.toString(),
+      question: pollForm.question,
+      options: validOptions,
+      votes: Object.fromEntries(validOptions.map((_, idx) => [String.fromCharCode(65 + idx), 0])),
+      duration: pollForm.duration,
+      allowMultipleVotes: pollForm.allowMultipleVotes,
+      anonymous: pollForm.anonymous,
+      createdAt: new Date().toISOString()
+    }, ...prev]); // Add to user polls widget
     setShowPollModal(false);
     setPollForm({ question: '', options: ['', '', '', ''], duration: '24h', allowMultipleVotes: false, anonymous: false });
     
@@ -1512,7 +1547,17 @@ const Community: React.FC = () => {
     };
     
     setHubChatMessages(prev => [...prev, newEvent]);
-    setUserCreatedEvents((prev: any[]) => [newEvent, ...prev]); // Add to user events widget
+    setUserCreatedEvents((prev) => [{
+      id: newEvent.id.toString(),
+      title: eventForm.title,
+      date: eventForm.date,
+      time: eventForm.time,
+      description: eventForm.description,
+      maxAttendees: eventForm.maxAttendees,
+      location: eventForm.location,
+      attendees: [],
+      createdAt: new Date().toISOString()
+    }, ...prev]); // Add to user events widget
     setShowEventModal(false);
     setEventForm({ title: '', date: '', time: '', description: '', maxAttendees: 50, location: 'Online' });
     
@@ -1535,13 +1580,15 @@ const Community: React.FC = () => {
       urgent: '🚨🚨'
     };
     
-    const newAnnouncement: any = {
+    const newAnnouncement: BotMessage = {
       id: Date.now(),
       user: 'You',
       message: `${priorityEmoji[announcementForm.priority as keyof typeof priorityEmoji]} ANNOUNCEMENT: ${announcementForm.title}\n\n${announcementForm.content}`,
       time: 'Just now',
       avatar: getUserAvatar('You'),
       likes: 0,
+      reactions: [],
+      mentions: [],
       isBot: true, // This makes it render in special format
       isOfficial: true,
       announcementData: { 
@@ -1553,7 +1600,14 @@ const Community: React.FC = () => {
     };
     
     setHubChatMessages(prev => [...prev, newAnnouncement]);
-    setUserCreatedAnnouncements((prev: any[]) => [newAnnouncement, ...prev]); // Add to user announcements widget
+    setUserCreatedAnnouncements((prev) => [{
+      id: newAnnouncement.id.toString(),
+      title: announcementForm.title,
+      content: announcementForm.content,
+      priority: announcementForm.priority,
+      category: announcementForm.category,
+      createdAt: new Date().toISOString()
+    }, ...prev]); // Add to user announcements widget
     setShowAnnouncementModal(false);
     setAnnouncementForm({ title: '', content: '', priority: 'normal', category: 'general' });
     
@@ -1680,7 +1734,6 @@ const Community: React.FC = () => {
   ];
   const [selectedFriend, setSelectedFriend] = useState<string>(friendsList[0].id);
   // const [previewFriend, setPreviewFriend] = useState<string | null>(null);
-  const previewTimeout = useRef<number | null>(null);
   const [friendInput, setFriendInput] = useState('');
   const [friendTyping, setFriendTyping] = useState(false);
   const [channelTyping, setChannelTyping] = useState<string[]>([]);
@@ -1722,11 +1775,11 @@ const Community: React.FC = () => {
     }
   };
 
-  const scrollToBottomDelayed = (ref: React.RefObject<HTMLDivElement>, delay: number = 100) => {
+  const scrollToBottomDelayed = useCallback((ref: React.RefObject<HTMLDivElement>, delay: number = 100) => {
     setTimeout(() => {
       scrollToBottom(ref);
     }, delay);
-  };
+  }, []);
   
   const [friendChats, setFriendChats] = useState<Record<string, {
     user: string; 
@@ -1803,7 +1856,7 @@ const Community: React.FC = () => {
       scrollToBottomDelayed(channelMessagesRef, 100);
       scrollToBottomDelayed(expChannelMessagesRef, 100);
     }
-  }, [messages, selectedChannel]);
+  }, [messages, selectedChannel, scrollToBottomDelayed]);
 
   // Auto-scroll when friend chats change
   useEffect(() => {
@@ -1811,7 +1864,7 @@ const Community: React.FC = () => {
       scrollToBottomDelayed(friendMessagesRef, 100);
       scrollToBottomDelayed(expFriendMessagesRef, 100);
     }
-  }, [friendChats, selectedFriend]);
+  }, [friendChats, selectedFriend, scrollToBottomDelayed]);
 
   const { theme } = useTheme();
   const isMobile = useIsMobile();
@@ -2628,7 +2681,7 @@ const Community: React.FC = () => {
                 >
               <button
                     onClick={() => {
-                      setSelectedCategory(category.id as any);
+                      setSelectedCategory(category.id as 'movie' | 'productionHouse' | 'director' | 'actor' | 'actress' | 'musicArtist');
                       setSelectedItem(null);
                       setIsItemSelected(false);
                     }}

@@ -1,43 +1,30 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight,
   Bell,
   Calendar,
-  Check,
-  CheckCircle,
-  ChevronDown,
   DollarSign, 
   Film, 
   Gift, 
+  Hash,
   Info, 
   MessageCircle,
   Music,
-  Settings,
   TrendingUp,
   Trash2,
   Tv,
   User,
   ArrowLeft,
   Users,
-  Heart,
   Share2,
   Star,
   Award,
-  Zap,
-  Globe,
-  Hash,
-  AtSign,
   X
 } from 'lucide-react';
 import { useTheme } from './ThemeContext';
 import generateRealNotifications from '../utils/notificationsAggregator';
 import { getUserAvatar } from '../utils/imageUtils';
-
-// Add image mapping function
-const getLocalAvatar = (name: string) => {
-  return getUserAvatar(name);
-};
 
 // Add channel avatar mapping function
 const getChannelAvatar = (name: string) => {

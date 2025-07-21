@@ -251,7 +251,7 @@ const SearchBar: React.FC<SearchBarProps> = memo(({ onSelectProject, onViewAllRe
         </span>
       ) : part
     );
-    } catch (error) {
+    } catch {
       // Fallback to original text if regex fails
       return text;
     }

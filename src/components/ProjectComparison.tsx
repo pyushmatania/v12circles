@@ -23,12 +23,10 @@ import { Heart } from 'lucide-react';
 
 interface ProjectComparisonProps {
   initialProjects?: Project[];
-  onTrackInvestment?: () => void;
-  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail') => void;
   onProjectSelect?: (project: Project, tab?: 'overview' | 'invest') => void;
 }
 
-const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, onTrackInvestment, setCurrentView, onProjectSelect }) => {
+const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, onProjectSelect }) => {
   const { theme } = useTheme();
 
   const [compareProjects, setCompareProjects] = useState<Project[]>(initialProjects || []);
@@ -41,10 +39,8 @@ const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, 
     fundedPercentage: true,
     targetAmount: true,
     raisedAmount: true,
-    timeLeft: true,
     rating: true,
-    perks: true,
-    investorCount: true
+    perks: true
   });
 
   // Function to handle search
@@ -142,15 +138,6 @@ const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, 
     
     if (criterion === 'fundedPercentage' || criterion === 'rating') {
       return Math.max(...compareProjects.map(p => p[criterion] as number || 0));
-    } else if (criterion === 'timeLeft' as keyof Project) {
-      // For timeLeft, lower days is better (closer to funding goal)
-      const daysLeft = compareProjects.map(p => {
-        const timeLeft = (p as any).timeLeft;
-        if (!timeLeft) return Infinity;
-        const days = parseInt(timeLeft.split(' ')[0]);
-        return isNaN(days) ? Infinity : days;
-      });
-      return Math.min(...daysLeft);
     }
     
     return null;
@@ -163,10 +150,6 @@ const ProjectComparison: React.FC<ProjectComparisonProps> = ({ initialProjects, 
     
     if (criterion === 'fundedPercentage' || criterion === 'rating') {
       return (project[criterion] as number || 0) === bestValue;
-    } else if (criterion === 'timeLeft') {
-      if (!project.timeLeft) return false;
-      const days = parseInt(project.timeLeft.split(' ')[0]);
-      return days === bestValue;
     }
     
     return false;

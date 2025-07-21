@@ -69,23 +69,7 @@ export function useDebounce<T>(
     };
   }, [value, debounce]);
 
-  // 🚀 Cancel function for manual cancellation
-  const cancel = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-  }, []);
 
-  // 🚀 Flush function to immediately update value
-  const flush = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setDebouncedValue(value);
-    lastCallTimeRef.current = Date.now();
-  }, [value]);
 
   return debouncedValue;
 }
@@ -94,7 +78,7 @@ export function useDebounce<T>(
  * 🎯 useDebouncedCallback - Hook for debouncing function calls
  * @description Creates a debounced version of a callback function
  */
-export function useDebouncedCallback<T extends (...args: any[]) => any>(
+export function useDebouncedCallback<T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number,
   options: {

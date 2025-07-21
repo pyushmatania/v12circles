@@ -67,9 +67,10 @@ const GlassCard: React.FC<GlassCardProps> = ({
 
   // Cleanup timeout on unmount
   useEffect(() => {
+    const timeout = touchTimeoutRef.current;
     return () => {
-      if (touchTimeoutRef.current) {
-        clearTimeout(touchTimeoutRef.current);
+      if (timeout) {
+        clearTimeout(timeout);
       }
     };
   }, []);

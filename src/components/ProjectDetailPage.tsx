@@ -78,7 +78,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   // TMDB data integration
   const { projectData, loading: tmdbLoading, error: tmdbError } = useTMDBProjectData(
     project.title, 
-    (project as any).tmdbId ? parseInt((project as any).tmdbId.toString()) : undefined
+    project.tmdbId ? parseInt(project.tmdbId.toString()) : undefined
   );
   
   // Extract cast and crew with safe defaults
@@ -136,7 +136,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState<string | null>(null);
 
-  const [userInteracted, setUserInteracted] = useState(false);
+
+
   const [timeRemaining, setTimeRemaining] = useState({
     days: 45,
     hours: 12,
@@ -364,9 +365,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           await videoRef.current.play();
           setIsVideoPlaying(true);
           setVideoError(null);
-          console.log('Desktop: Unmuted autoplay successful');
-        } catch (unmutedError) {
-          console.log('Desktop: Unmuted autoplay failed, trying muted:', unmutedError);
+
+        } catch {
           // Fallback to muted autoplay
       videoRef.current.muted = true;
           videoRef.current.volume = 0;
@@ -376,7 +376,6 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           setVideoError(null);
       
           // Try to unmute after user interaction
-          console.log('Desktop: Muted autoplay successful, waiting for user interaction');
         }
       } else {
         // Mobile: Always start muted
@@ -389,8 +388,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
       setIsVideoPlaying(true);
       }
       
-    } catch (error) {
-      console.log('Video autoplay failed:', error);
+    } catch {
       setIsVideoPlaying(false);
       setVideoError('Autoplay failed - click to play');
       
@@ -403,8 +401,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           setIsVideoPlaying(true);
       setIsMuted(true);
         }
-      } catch (fallbackError) {
-        console.log('Muted autoplay also failed:', fallbackError);
+      } catch {
+        // Muted autoplay also failed
       }
     }
     
@@ -413,7 +411,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
       if (!isMobile) {
         // Try unmuted YouTube autoplay for desktop
           setIsMuted(false);
-        console.log('Desktop: YouTube unmuted autoplay attempted');
+
       } else {
         setIsMuted(true);
         }
@@ -465,7 +463,6 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
       // For desktop, try unmuted YouTube autoplay
       if (!isMobile) {
           setIsMuted(false);
-        console.log('Desktop: YouTube unmuted autoplay attempted');
       } else {
         setIsMuted(true);
         }
@@ -483,9 +480,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               setIsVideoPlaying(true);
               setIsVideoLoaded(true);
               setVideoError(null);
-              console.log('Desktop: Unmuted autoplay successful');
-            } catch (unmutedError) {
-              console.log('Desktop: Unmuted autoplay failed, trying muted:', unmutedError);
+
+            } catch {
               // Fallback to muted autoplay
               videoRef.current!.muted = true;
               videoRef.current!.volume = 0;
@@ -494,7 +490,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               setIsVideoLoaded(true);
               setIsMuted(true);
               setVideoError(null);
-              console.log('Desktop: Muted autoplay successful, waiting for user interaction');
+
             }
           } else {
             // Mobile: Always start muted
@@ -538,8 +534,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
 
 
   const toggleMute = useCallback(() => {
-    // Mark that user has interacted with video controls
-    setUserInteracted(true);
+
     
     setIsMuted((prev) => {
       const newMutedState = !prev;
@@ -552,7 +547,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
       if (embedUrl && iframeRef.current) {
         try {
           const iframe = iframeRef.current;
-          if (iframe.contentWindow && (iframe.contentWindow as any).postMessage) {
+          if (iframe.contentWindow && (iframe.contentWindow as { postMessage?: (message: string, targetOrigin: string) => void }).postMessage) {
             const command = newMutedState ? 'mute' : 'unMute';
             iframe.contentWindow.postMessage(
               JSON.stringify({ event: 'command', func: command, args: [] }),
@@ -560,9 +555,8 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
             );
           }
           // Don't reload iframe - just update the state
-        } catch (error) {
-          console.log('YouTube Player API not available, mute state updated in UI only');
-          // Don't reload iframe to prevent video restart
+        } catch {
+          // YouTube Player API not available, mute state updated in UI only
         }
       }
       return newMutedState;
@@ -570,8 +564,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
   }, [embedUrl]);
 
   const handleVideoClick = useCallback(() => {
-    // Mark user interaction
-    setUserInteracted(true);
+
     
     if (videoRef.current && !embedUrl) {
       if (isMuted) {
@@ -580,16 +573,16 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
           videoRef.current.muted = false;
           videoRef.current.volume = isMobile ? 0.3 : 0.5;
           setIsMuted(false);
-        } catch (error) {
-          console.log('Could not unmute video on click:', error);
+        } catch {
+          // Could not unmute video on click
         }
       } else {
         // If not muted, toggle mute
         try {
           videoRef.current.muted = !videoRef.current.muted;
           setIsMuted(videoRef.current.muted);
-        } catch (error) {
-          console.log('Could not toggle mute on click:', error);
+        } catch {
+          // Could not toggle mute on click
         }
       }
     }
@@ -607,8 +600,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
         title: project.title,
         text: project.description,
         url: window.location.href,
-      }).catch((error) => {
-        console.log('Share failed:', error);
+      }).catch(() => {
         // Fallback to clipboard
         if (navigator.clipboard) {
           navigator.clipboard.writeText(window.location.href);
@@ -759,15 +751,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               video.muted = false;
               video.volume = isMobile ? 0.3 : 0.5;
               setIsMuted(false);
-              setUserInteracted(true);
-              console.log('Desktop: Video unmuted on click');
             } else {
               // Toggle mute if already unmuted
               const video = videoRef.current;
               video.muted = !video.muted;
               setIsMuted(video.muted);
-              setUserInteracted(true);
-              console.log('Desktop: Video mute toggled');
             }
           }
           
@@ -781,8 +769,6 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               if (unmuteUrl !== currentSrc) {
                 iframeRef.current.src = unmuteUrl;
                 setIsMuted(false);
-                setUserInteracted(true);
-                console.log('Desktop: YouTube video unmuted on click');
               }
             } else {
               // Mute YouTube video
@@ -790,8 +776,6 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               if (muteUrl !== currentSrc) {
                 iframeRef.current.src = muteUrl;
                 setIsMuted(true);
-                setUserInteracted(true);
-                console.log('Desktop: YouTube video muted on click');
               }
             }
           }
@@ -805,7 +789,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
               <div className="absolute inset-0 w-full h-full">
                 <iframe
                   ref={iframeRef}
-                  src={embedUrl}
+                  src={embedUrl || ''}
                   className="absolute top-1/2 left-1/2 w-[120vw] h-[120vh] min-w-full min-h-full -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
                   onLoad={handleVideoLoad}
                   frameBorder="0"
@@ -1198,7 +1182,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1 }}
                   onClick={() => {
-                    setActiveTab(tab.id as any);
+                    setActiveTab(tab.id as 'overview' | 'invest' | 'perks' | 'milestones' | 'team' | 'story' | 'gallery' | 'updates' | 'community' | 'reviews' | 'faqs' | 'legal');
                     setTabChangeKey(prev => prev + 1);
                     // Force scroll to top immediately when tab is clicked
                     setTimeout(() => {
@@ -1312,13 +1296,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                             <div className="space-y-2">
                               <p className={`${getTextColor(theme, 'muted')} text-sm`}>Lead Actor</p>
                               <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
-                                {cast.length > 0 ? cast[0]?.name : (project as any).actor || 'TBA'}
+                                {cast.length > 0 ? cast[0]?.name : project.actor || 'TBA'}
                               </p>
                             </div>
                             <div className="space-y-2">
                               <p className={`${getTextColor(theme, 'muted')} text-sm`}>Lead Actress</p>
                               <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
-                                {cast.find(c => c.known_for_department === 'Acting' && c.gender === 1)?.name || (project as any).actress || 'TBA'}
+                                {cast.find(c => c.known_for_department === 'Acting' && c.gender === 1)?.name || project.actress || 'TBA'}
                               </p>
                             </div>
                             <div className="space-y-2">
@@ -1330,26 +1314,26 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                             <div className="space-y-2">
                               <p className={`${getTextColor(theme, 'muted')} text-sm`}>Runtime</p>
                               <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
-                                {movieDetails?.runtime ? `${movieDetails.runtime} min` : (project as any).runtime ? `${(project as any).runtime} min` : '150 min'}
+                                {movieDetails?.runtime ? `${movieDetails.runtime} min` : project.runtime ? `${project.runtime} min` : '150 min'}
                               </p>
                             </div>
                             <div className="space-y-2">
                               <p className={`${getTextColor(theme, 'muted')} text-sm`}>TMDB Rating</p>
                               <p className={`${getTextColor(theme, 'primary')} font-semibold flex items-center gap-1`}>
                                 <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                                {movieDetails?.vote_average ? movieDetails.vote_average.toFixed(1) : (project as any).tmdbRating || project.rating || 'N/A'}
+                                {movieDetails?.vote_average ? movieDetails.vote_average.toFixed(1) : project.tmdbRating || project.rating || 'N/A'}
                               </p>
                             </div>
                             <div className="space-y-2">
                               <p className={`${getTextColor(theme, 'muted')} text-sm`}>Country</p>
                               <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
-                                {movieDetails?.production_companies?.[0]?.origin_country || (project as any).country || 'India'}
+                                {movieDetails?.production_companies?.[0]?.origin_country || project.country || 'India'}
                               </p>
                             </div>
                             <div className="space-y-2">
                               <p className={`${getTextColor(theme, 'muted')} text-sm`}>Release Year</p>
                               <p className={`${getTextColor(theme, 'primary')} font-semibold`}>
-                                {movieDetails?.release_date ? new Date(movieDetails.release_date).getFullYear() : (project as any).releaseYear || 'TBA'}
+                                {movieDetails?.release_date ? new Date(movieDetails.release_date).getFullYear() : project.releaseYear || 'TBA'}
                               </p>
                             </div>
                             <div className="space-y-2">
@@ -1359,11 +1343,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           </div>
 
                           {/* Genres */}
-                          {(project as any).tmdbGenres && (project as any).tmdbGenres.length > 0 && (
+                          {project.tmdbGenres && project.tmdbGenres.length > 0 && (
                             <div className="mb-4 md:mb-6">
                               <p className={`${getTextColor(theme, 'muted')} text-sm mb-2 md:mb-3`}>Genres</p>
                               <div className="flex flex-wrap gap-1 md:gap-2">
-                                {(project as any).tmdbGenres.map((genre: string, index: number) => (
+                                {project.tmdbGenres?.map((genre: string, index: number) => (
                                   <span 
                                     key={index}
                                     className={`group relative px-2 py-1 md:px-4 md:py-2 ${theme === 'light' ? 'bg-purple-100 text-purple-700 border-purple-300 hover:bg-purple-200' : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border-purple-500/40 hover:from-purple-500/30 hover:to-pink-500/30 hover:border-purple-400/60'} text-xs md:text-sm rounded-full border transition-all duration-300 shadow-lg ${theme === 'light' ? 'hover:shadow-purple-200' : 'hover:shadow-purple-500/20'}`}
@@ -1377,11 +1361,11 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           )}
 
                           {/* Spoken Languages */}
-                          {(project as any).spokenLanguages && (project as any).spokenLanguages.length > 0 && (
+                          {project.spokenLanguages && project.spokenLanguages.length > 0 && (
                             <div className="mb-4 md:mb-6">
                               <p className={`${getTextColor(theme, 'muted')} text-sm mb-2 md:mb-3`}>Spoken Languages</p>
                               <div className="flex flex-wrap gap-1 md:gap-2">
-                                {(project as any).spokenLanguages.map((language: string, index: number) => (
+                                {project.spokenLanguages?.map((language: string, index: number) => (
                                   <span 
                                     key={index}
                                     className={`group relative px-2 py-1 md:px-4 md:py-2 ${theme === 'light' ? 'bg-blue-100 text-blue-700 border-blue-300 hover:bg-blue-200' : 'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 border-blue-500/40 hover:from-blue-500/30 hover:to-cyan-500/30 hover:border-blue-400/60'} text-xs md:text-sm rounded-full border transition-all duration-300 shadow-lg ${theme === 'light' ? 'hover:shadow-blue-200' : 'hover:shadow-blue-500/20'}`}
@@ -1395,33 +1379,33 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           )}
 
                           {/* TMDB Overview */}
-                          {(movieDetails?.overview || (project as any).tmdbOverview) && (
+                          {(movieDetails?.overview || project.tmdbOverview) && (
                             <div className="mb-4 md:mb-6">
                               <p className={`${getTextColor(theme, 'muted')} text-sm mb-2 md:mb-3 flex items-center gap-2`}>
                                 Plot Summary
                                 {tmdbLoading && <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />}
                               </p>
                               <p className={`${getTextColor(theme, 'secondary')} leading-relaxed`}>
-                                {movieDetails?.overview || (project as any).tmdbOverview}
+                                {movieDetails?.overview || project.tmdbOverview}
                               </p>
                             </div>
                           )}
 
                           {/* Tagline */}
-                          {(project as any).tagline && (
+                          {project.tagline && (
                             <div className="mb-4 md:mb-6">
                               <p className={`${getTextColor(theme, 'muted')} text-sm mb-2 md:mb-3`}>Tagline</p>
                               <p className={`${getTextColor(theme, 'primary')} font-semibold italic`}>
-                                "{(project as any).tagline}"
+                                "{project.tagline}"
                               </p>
                             </div>
                           )}
 
                           {/* External Links */}
                           <div className="flex flex-col sm:flex-row gap-2 md:gap-4">
-                            {(project as any).imdbId && (
+                            {project.imdbId && (
                               <a
-                                href={`https://www.imdb.com/title/${(project as any).imdbId}`}
+                                                                  href={`https://www.imdb.com/title/${project.imdbId}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={`flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 text-sm md:text-base ${theme === 'light' ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : 'bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/30'} rounded-lg transition-colors duration-300`}
@@ -1585,49 +1569,49 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                           
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                             {/* TMDB Rating */}
-                            {(project as any).tmdbRating && (
+                            {project.tmdbRating && (
                               <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-4 md:p-6 border ${getBorderColor(theme)}`}>
                                 <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
                                   <Star className="w-5 h-5 md:w-6 md:h-6 text-yellow-400 fill-current" />
                                   <span className={`${getTextColor(theme, 'muted')} text-xs md:text-sm`}>TMDB Rating</span>
                                 </div>
-                                <p className={`text-2xl md:text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{(project as any).tmdbRating}</p>
+                                <p className={`text-2xl md:text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{project.tmdbRating}</p>
                                 <p className="text-yellow-400 text-xs md:text-sm">Out of 10</p>
                               </div>
                             )}
                             
                             {/* Runtime */}
-                            {(project as any).runtime && (
+                            {project.runtime && (
                               <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-4 md:p-6 border ${getBorderColor(theme)}`}>
                                 <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
                                   <Clock className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
                                   <span className={`${getTextColor(theme, 'muted')} text-xs md:text-sm`}>Runtime</span>
                                 </div>
-                                <p className={`text-2xl md:text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{(project as any).runtime}</p>
+                                <p className={`text-2xl md:text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{project.runtime}</p>
                                 <p className="text-blue-400 text-xs md:text-sm">Minutes</p>
                               </div>
                             )}
                             
                             {/* Release Year */}
-                            {(project as any).releaseYear && (
+                            {project.releaseYear && (
                               <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-4 md:p-6 border ${getBorderColor(theme)}`}>
                                 <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
                                   <Calendar className="w-5 h-5 md:w-6 md:h-6 text-green-400" />
                                   <span className={`${getTextColor(theme, 'muted')} text-xs md:text-sm`}>Release Year</span>
                                 </div>
-                                <p className={`text-2xl md:text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{(project as any).releaseYear}</p>
+                                <p className={`text-2xl md:text-3xl font-bold ${getTextColor(theme, 'primary')}`}>{project.releaseYear}</p>
                                 <p className="text-green-400 text-xs md:text-sm">Year</p>
                               </div>
                             )}
                             
                             {/* Country */}
-                            {(project as any).country && (
+                            {project.country && (
                               <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-4 md:p-6 border ${getBorderColor(theme)}`}>
                                 <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
                                   <Globe className="w-5 h-5 md:w-6 md:h-6 text-purple-400" />
                                   <span className={`${getTextColor(theme, 'muted')} text-xs md:text-sm`}>Origin Country</span>
                                 </div>
-                                <p className={`text-lg md:text-xl font-bold ${getTextColor(theme, 'primary')}`}>{(project as any).country}</p>
+                                <p className={`text-lg md:text-xl font-bold ${getTextColor(theme, 'primary')}`}>{project.country}</p>
                                 <p className="text-purple-400 text-xs md:text-sm">Production</p>
                               </div>
                             )}
@@ -1743,7 +1727,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               ].map((method) => (
                                 <button
                                   key={method.id}
-                                  onClick={() => setPaymentMethod(method.id as any)}
+                                  onClick={() => setPaymentMethod(method.id as 'card' | 'upi' | 'netbanking')}
                                   className={`p-3 md:p-4 rounded-xl border-2 transition-all duration-300 ${
                                     paymentMethod === method.id
                                       ? 'border-green-500 bg-green-500/10 text-green-400'
@@ -2379,7 +2363,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               </div>
                             )}
                             <p className={`${getTextColor(theme, 'secondary')} leading-relaxed text-base md:text-lg`}>
-                              {movieDetails?.overview || (project as any).tmdbOverview || project.description || "Plot summary not available."}
+                              {movieDetails?.overview || project.tmdbOverview || project.description || "Plot summary not available."}
                             </p>
                             {movieDetails?.tagline && (
                               <div className="mt-3 md:mt-4 p-3 md:p-4 bg-teal-500/10 rounded-lg border border-teal-500/20">
@@ -2396,28 +2380,28 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                                 <div className="text-3xl md:text-4xl mb-2 md:mb-3">🎭</div>
                                 <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-1 md:mb-2 text-sm md:text-base`}>Genre</h5>
                                 <p className={`${getTextColor(theme, 'secondary')} text-xs md:text-sm`}>
-                                {movieDetails?.genres?.map(g => g.name).join(', ') || (project as any).tmdbGenres?.join(', ') || project.genre || 'Not specified'}
+                                {movieDetails?.genres?.map(g => g.name).join(', ') || project.tmdbGenres?.join(', ') || project.genre || 'Not specified'}
                               </p>
                             </div>
                             <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-4 md:p-6 border ${getBorderColor(theme)}`}>
                               <div className="text-3xl md:text-4xl mb-2 md:mb-3">⏱️</div>
                               <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-1 md:mb-2 text-sm md:text-base`}>Runtime</h5>
                               <p className={`${getTextColor(theme, 'secondary')} text-xs md:text-sm`}>
-                                {movieDetails?.runtime ? `${movieDetails.runtime} minutes` : (project as any).runtime ? `${(project as any).runtime} minutes` : 'Not specified'}
+                                {movieDetails?.runtime ? `${movieDetails.runtime} minutes` : project.runtime ? `${project.runtime} minutes` : 'Not specified'}
                               </p>
                             </div>
                             <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-4 md:p-6 border ${getBorderColor(theme)}`}>
                               <div className="text-3xl md:text-4xl mb-2 md:mb-3">📅</div>
                               <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-1 md:mb-2 text-sm md:text-base`}>Release Date</h5>
                               <p className={`${getTextColor(theme, 'secondary')} text-xs md:text-sm`}>
-                                {movieDetails?.release_date ? new Date(movieDetails.release_date).toLocaleDateString() : (project as any).releaseYear ? `${(project as any).releaseYear}` : 'Not specified'}
+                                {movieDetails?.release_date ? new Date(movieDetails.release_date).toLocaleDateString() : project.releaseYear ? `${project.releaseYear}` : 'Not specified'}
                               </p>
                             </div>
                             <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-4 md:p-6 border ${getBorderColor(theme)}`}>
                               <div className="text-3xl md:text-4xl mb-2 md:mb-3">⭐</div>
                               <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-1 md:mb-2 text-sm md:text-base`}>Rating</h5>
                               <p className={`${getTextColor(theme, 'secondary')} text-xs md:text-sm`}>
-                                {movieDetails?.vote_average ? `${movieDetails.vote_average}/10` : (project as any).tmdbRating ? `${(project as any).tmdbRating}/10` : 'Not rated'}
+                                {movieDetails?.vote_average ? `${movieDetails.vote_average}/10` : project.tmdbRating ? `${project.tmdbRating}/10` : 'Not rated'}
                               </p>
                             </div>
                           </div>
@@ -2543,13 +2527,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = memo(({ project, onC
                               <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                                 <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3`}>🌍 Country of Origin</h5>
                                 <p className={`${getTextColor(theme, 'secondary')} text-sm leading-relaxed`}>
-                                  {movieDetails?.production_companies?.[0]?.origin_country || (project as any).country || 'Not specified'}
+                                  {movieDetails?.production_companies?.[0]?.origin_country || project.country || 'Not specified'}
                                 </p>
                               </div>
                               <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>
                                 <h5 className={`${getTextColor(theme, 'primary')} font-bold mb-3`}>🗣️ Spoken Languages</h5>
                                 <p className={`${getTextColor(theme, 'secondary')} text-sm leading-relaxed`}>
-                                  {(project as any).spokenLanguages?.join(', ') || project.language || 'Not specified'}
+                                  {project.spokenLanguages?.join(', ') || project.language || 'Not specified'}
                                 </p>
                               </div>
                               <div className={`${theme === 'light' ? 'bg-white/80' : 'bg-gray-900/50'} rounded-2xl p-6 border ${getBorderColor(theme)}`}>

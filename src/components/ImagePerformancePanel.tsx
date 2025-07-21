@@ -1,9 +1,9 @@
 import React from 'react';
 import { useImagePerformance } from '../hooks/useImagePerformance';
-import { BarChart3, Clock, CheckCircle, XCircle, Zap } from 'lucide-react';
+import { BarChart3, CheckCircle, XCircle } from 'lucide-react';
 
 const ImagePerformancePanel: React.FC = () => {
-  const { stats, isMonitoring, getPerformanceReport } = useImagePerformance();
+  const { isMonitoring, getPerformanceReport } = useImagePerformance();
 
   if (!isMonitoring) return null;
 

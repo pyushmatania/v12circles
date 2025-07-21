@@ -1,3 +1,5 @@
+import { createContext } from 'react';
+
 // Types for our data models
 export interface Project {
   id: string;
@@ -139,3 +141,6 @@ export interface AdminContextType {
   createBackup: () => Promise<void>;
   restoreBackup: (id: string) => Promise<void>;
 } 
+
+// Create context
+export const AdminContext = createContext<AdminContextType | undefined>(undefined); 

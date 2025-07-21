@@ -16,7 +16,6 @@ type DeviceType = 'mobile' | 'tablet' | 'desktop';
  * @param config - Optional breakpoint configuration
  */
 export default function useIsMobile(
-  breakpoint: number = 768,
   config?: Partial<BreakpointConfig>
 ) {
   const [isMobile, setIsMobile] = useState(false);

@@ -41,7 +41,7 @@ export interface Project {
     movieId: string;
     movieName: string;
     productionHouse: string;
-    keyPeople: any[];
+    keyPeople: KeyPerson[];
     actor: string;
     actress: string;
     director: string;

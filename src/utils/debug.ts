@@ -14,7 +14,7 @@ interface LogEntry {
   timestamp: number;
   level: string;
   message: string;
-  args: any[];
+  args: unknown[];
   stack?: string;
 }
 
@@ -38,9 +38,7 @@ const LOG_LEVELS: Record<LogLevel, number> = {
   trace: 4,
 };
 
-// 🚀 Performance monitoring with enhanced tracking
-const performanceMarks = new Map<string, number>();
-const performanceMeasures = new Map<string, number[]>();
+
 
 /**
  * 🎯 DebugLogger - Optimized debug logging with enhanced performance
@@ -68,7 +66,7 @@ export class DebugLogger {
     return this.isEnabled && level <= this.logLevel;
   }
 
-  private addToHistory(level: string, message: string, args: any[]): void {
+  private addToHistory(level: string, message: string, args: unknown[]): void {
     if (this.logHistory.length >= DEBUG_CONFIG.maxLogEntries) {
       this.logHistory = this.logHistory.slice(-DEBUG_CONFIG.maxLogEntries / 2);
     }
@@ -87,7 +85,7 @@ export class DebugLogger {
     return `[${timestamp}] [${level.toUpperCase()}] ${message}`;
   }
 
-  error(message: string, ...args: any[]): void {
+  error(message: string, ...args: unknown[]): void {
     if (this.shouldLog(LOG_LEVELS.error)) {
       const formattedMessage = this.formatMessage('ERROR', message);
       console.error(formattedMessage, ...args);
@@ -100,7 +98,7 @@ export class DebugLogger {
     }
   }
 
-  warn(message: string, ...args: any[]): void {
+  warn(message: string, ...args: unknown[]): void {
     if (this.shouldLog(LOG_LEVELS.warn)) {
       const formattedMessage = this.formatMessage('WARN', message);
       console.warn(formattedMessage, ...args);
@@ -108,7 +106,7 @@ export class DebugLogger {
     }
   }
 
-  info(message: string, ...args: any[]): void {
+  info(message: string, ...args: unknown[]): void {
     if (this.shouldLog(LOG_LEVELS.info)) {
       const formattedMessage = this.formatMessage('INFO', message);
       console.info(formattedMessage, ...args);
@@ -116,7 +114,7 @@ export class DebugLogger {
     }
   }
 
-  debug(message: string, ...args: any[]): void {
+  debug(message: string, ...args: unknown[]): void {
     if (this.shouldLog(LOG_LEVELS.debug)) {
       const formattedMessage = this.formatMessage('DEBUG', message);
       console.debug(formattedMessage, ...args);
@@ -124,7 +122,7 @@ export class DebugLogger {
     }
   }
 
-  trace(message: string, ...args: any[]): void {
+  trace(message: string, ...args: unknown[]): void {
     if (this.shouldLog(LOG_LEVELS.trace)) {
       const formattedMessage = this.formatMessage('TRACE', message);
       console.trace(formattedMessage, ...args);
@@ -252,12 +250,12 @@ export class PerformanceMonitor {
  */
 export function useDebugEffect(
   effect: React.EffectCallback, 
-  deps?: React.DependencyList, 
+  deps: React.DependencyList, 
   name?: string
 ): void {
   const logger = DebugLogger.getInstance();
   const effectName = name || 'useEffect';
-
+  
   React.useEffect(() => {
     logger.debug(`Effect started: ${effectName}`, { deps });
     const cleanup = effect();
@@ -265,7 +263,8 @@ export function useDebugEffect(
       logger.debug(`Effect cleanup: ${effectName}`);
       if (cleanup) cleanup();
     };
-  }, deps);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [...deps]);
 }
 
 /**

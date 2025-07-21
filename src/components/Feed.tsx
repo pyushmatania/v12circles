@@ -11,14 +11,8 @@ import {
   Image,
   Video,
   X,
-  Paperclip,
   MapPin,
-  Hash,
-  AtSign,
-  Calendar,
   Mic,
-  Camera,
-  Gift,
   BarChart3,
 } from 'lucide-react';
 import { getUserAvatar } from '../utils/imageUtils';
@@ -750,8 +744,6 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
   const [mediaPreview, setMediaPreview] = useState<string[]>([]);
   const [showPostEmojiPicker, setShowPostEmojiPicker] = useState(false);
   const [postLocation, setPostLocation] = useState('');
-  const [postHashtags, setPostHashtags] = useState<string[]>([]);
-  const [postMentions, setPostMentions] = useState<string[]>([]);
   const [showPollCreator, setShowPollCreator] = useState(false);
   const [pollQuestion, setPollQuestion] = useState('');
   const [pollOptions, setPollOptions] = useState(['', '']);
@@ -1049,8 +1041,6 @@ const Feed: React.FC<FeedProps> = ({ isExperienceView = false }) => {
     setSelectedMedia([]);
     setMediaPreview([]);
     setPostLocation('');
-    setPostHashtags([]);
-    setPostMentions([]);
     setShowPollCreator(false);
     setPollQuestion('');
     setPollOptions(['', '']);

@@ -52,7 +52,7 @@ export interface TMDBMovieDetails {
 }
 
 class TMDBService {
-  private async makeRequest(endpoint: string, params: Record<string, any> = {}) {
+  private async makeRequest(endpoint: string, params: Record<string, string | number> = {}) {
     const url = new URL(`${TMDB_BASE_URL}${endpoint}`);
     url.searchParams.append('api_key', TMDB_API_KEY);
     url.searchParams.append('language', 'en-US');
@@ -136,7 +136,7 @@ export const convertTMDBMovieToCommunityItem = (movie: TMDBMovie) => {
     avatar: tmdbService.getImageUrl(movie.poster_path, 'w500'),
     cover: tmdbService.getBackdropUrl(movie.backdrop_path, 'w1280'),
     description: `${Math.round(movie.popularity / 1000)}K+ fans`,
-    type: 'movie' as 'movie',
+    type: 'movie' as const,
     followers: Math.round(movie.popularity * 1000),
     verified: true,
     isActive: true,
@@ -155,7 +155,7 @@ export const convertTMDBActorToCommunityItem = (actor: TMDBActor, type: 'actor' 
     avatar: tmdbService.getImageUrl(actor.profile_path, 'w500'),
     cover: actor.known_for[0] ? tmdbService.getBackdropUrl(actor.known_for[0].backdrop_path, 'w1280') : '',
     description: `${Math.round(actor.popularity / 100)}K+ followers`,
-    type: type as 'actor' | 'actress' | 'director',
+    type,
     followers: Math.round(actor.popularity * 100),
     verified: true,
     isActive: true,
@@ -173,7 +173,7 @@ export const convertTMDBCompanyToCommunityItem = (company: TMDBProductionCompany
     avatar: company.logo_path ? tmdbService.getImageUrl(company.logo_path, 'w500') : '',
     cover: 'https://images.unsplash.com/photo-1635805737707-575885ab0820?w=1280',
     description: 'Production Company',
-    type: 'productionHouse' as 'productionHouse',
+    type: 'productionHouse' as const,
     followers: Math.floor(Math.random() * 1000000) + 100000, // Random followers for demo
     verified: true,
     isActive: true,

@@ -8,12 +8,6 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  // Safety check for React availability
-  if (typeof React === 'undefined' || !React.useState) {
-    console.error('React is not properly loaded in AuthProvider');
-    return <div>Loading authentication...</div>;
-  }
-
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -46,6 +40,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     checkAuth();
   }, [mockUser]);
+
+  // Safety check for React availability - after all hooks are called
+  if (typeof React === 'undefined' || !React.useState) {
+    console.error('React is not properly loaded in AuthProvider');
+    return <div>Loading authentication...</div>;
+  }
 
   const login = async (_email: string, _password: string, rememberMe = false) => {
     setIsLoading(true);

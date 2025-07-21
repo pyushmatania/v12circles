@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import Hero from './components/Hero';
 import ProblemSolution from './components/ProblemSolution';
 import HowItWorks from './components/HowItWorks';
@@ -251,11 +251,11 @@ function AppContent() {
             <ProblemSolution setCurrentView={handleViewChange} />
             <HowItWorks setCurrentView={handleViewChange} />
             <Rewards />
-            <LiveProjects
-              onViewAll={() => handleViewChange('projects')}
-              onTrackInvestment={() => handleViewChange('dashboard')}
-              onProjectSelect={handleLiveProjectsSelect}
-            />
+                      <LiveProjects
+            onViewAll={() => handleViewChange('projects')}
+            onTrackInvestment={() => handleViewChange('dashboard')}
+            onProjectSelect={handleLiveProjectsSelect}
+          />
             <WhyThisMatters onJoin={() => handleAuthRequired('register')} />
             <TechTrust />
             <Testimonials />
@@ -284,6 +284,7 @@ function AppContent() {
     onProjectSelect: handleNavigationProjectSelect,
     onSearchViewAll: handleSearchViewAll,
     previousView
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [currentView, handleViewChange, handleAuthRequired, handleNavigationProjectSelect, handleSearchViewAll, previousView]);
 
   // 🚀 Memoized auth modal props
