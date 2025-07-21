@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, memo, useContext, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { ThemeContext } from './ThemeProvider';
+import { ThemeContext } from './ThemeContext';
 import { 
   ArrowLeft, 
   Play, 

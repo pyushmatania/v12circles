@@ -28,46 +28,46 @@ const ThemeProviderFallback: React.FC<ThemeProviderProps> = ({ children }) => {
 
 // Create a wrapper component to handle potential React context issues
 const ThemeProviderWrapper: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  const [currentGradient, setCurrentGradient] = useState(0);
+    const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+    const [currentGradient, setCurrentGradient] = useState(0);
 
-  useEffect(() => {
-    try {
-      const savedTheme = localStorage.getItem('circles-theme') as 'light' | 'dark';
-      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
-        setTheme(savedTheme);
+    useEffect(() => {
+      try {
+        const savedTheme = localStorage.getItem('circles-theme') as 'light' | 'dark';
+        if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+          setTheme(savedTheme);
+        }
+      } catch (error) {
+        console.warn('Failed to load theme from localStorage:', error);
       }
-    } catch (error) {
-      console.warn('Failed to load theme from localStorage:', error);
-    }
-  }, []);
+    }, []);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem('circles-theme', theme);
-      document.documentElement.classList.toggle('light', theme === 'light');
-    } catch (error) {
-      console.warn('Failed to save theme to localStorage:', error);
-    }
-  }, [theme]);
+    useEffect(() => {
+      try {
+        localStorage.setItem('circles-theme', theme);
+        document.documentElement.classList.toggle('light', theme === 'light');
+      } catch (error) {
+        console.warn('Failed to save theme to localStorage:', error);
+      }
+    }, [theme]);
 
-  // Auto-cycle through gradient themes every 4 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentGradient((prev) => (prev + 1) % 5); // 5 total gradients (0-4)
-    }, 4000);
+    // Auto-cycle through gradient themes every 4 seconds
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentGradient((prev) => (prev + 1) % 5); // 5 total gradients (0-4)
+      }, 4000);
 
-    return () => clearInterval(interval);
-  }, []);
+      return () => clearInterval(interval);
+    }, []);
 
-  // Apply current gradient to document
-  useEffect(() => {
-    try {
-      document.documentElement.setAttribute('data-gradient', currentGradient.toString());
-    } catch (error) {
-      console.warn('Failed to set gradient attribute:', error);
-    }
-  }, [currentGradient]);
+    // Apply current gradient to document
+    useEffect(() => {
+      try {
+        document.documentElement.setAttribute('data-gradient', currentGradient.toString());
+      } catch (error) {
+        console.warn('Failed to set gradient attribute:', error);
+      }
+    }, [currentGradient]);
 
   // Safety check for React availability - after all hooks are called
   if (!React || !React.useState) {
@@ -75,21 +75,21 @@ const ThemeProviderWrapper: React.FC<ThemeProviderProps> = ({ children }) => {
     return <ThemeProviderFallback>{children}</ThemeProviderFallback>;
   }
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
-  };
+    const toggleTheme = () => {
+      setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    };
 
-  const contextValue: ThemeContextType = {
-    theme,
-    toggleTheme,
-    currentGradient
-  };
+    const contextValue: ThemeContextType = {
+      theme,
+      toggleTheme,
+      currentGradient
+    };
 
-  return (
-    <ThemeContext.Provider value={contextValue}>
-      {children}
-    </ThemeContext.Provider>
-  );
+    return (
+      <ThemeContext.Provider value={contextValue}>
+        {children}
+      </ThemeContext.Provider>
+    );
 };
 
 export const ThemeProvider = ThemeProviderWrapper;

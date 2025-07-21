@@ -87,14 +87,14 @@ const DebugPanel: React.FC = () => {
         const memory = (performance as { memory?: MemoryInfo }).memory;
         if (memory) {
           setAppState((prev: AppState) => ({
-            ...prev,
-            memory: {
+          ...prev,
+          memory: {
               usedJSHeapSize: Math.round(memory.usedJSHeapSize / 1024 / 1024),
               totalJSHeapSize: Math.round(memory.totalJSHeapSize / 1024 / 1024),
               jsHeapSizeLimit: Math.round(memory.jsHeapSizeLimit / 1024 / 1024)
-            },
-            timestamp: new Date().toISOString()
-          }));
+          },
+          timestamp: new Date().toISOString()
+        }));
         }
       }
     }, 1000);

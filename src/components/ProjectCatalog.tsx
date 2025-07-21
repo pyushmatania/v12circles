@@ -11,7 +11,7 @@ import {
 import { Project } from '../types';
 import ProjectCard from './ProjectCard';
 import ElasticSlider from './ElasticSlider';
-import { ThemeContext } from './ThemeProvider';
+import { ThemeContext } from './ThemeContext';
 import { getTextColor } from '../utils/themeUtils';
 
 interface ProjectCatalogProps {

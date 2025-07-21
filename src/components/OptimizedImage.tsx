@@ -34,22 +34,22 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   useEffect(() => {
     if (!src || src === placeholder) return;
 
-    // Convert TMDB URLs to optimized format
-    const getOptimizedSrc = (originalSrc: string): string => {
-      if (!originalSrc || originalSrc === placeholder) return placeholder;
+  // Convert TMDB URLs to optimized format
+  const getOptimizedSrc = (originalSrc: string): string => {
+    if (!originalSrc || originalSrc === placeholder) return placeholder;
+    
+    // If it's already a TMDB URL, optimize it
+    if (originalSrc.includes('image.tmdb.org')) {
+      // Use w300 for thumbnails, w500 for medium, w780 for larger images
+      const size = width && width <= 100 ? 'w150' : 
+                   width && width <= 200 ? 'w300' : 
+                   width && width <= 400 ? 'w500' : 'w780';
       
-      // If it's already a TMDB URL, optimize it
-      if (originalSrc.includes('image.tmdb.org')) {
-        // Use w300 for thumbnails, w500 for medium, w780 for larger images
-        const size = width && width <= 100 ? 'w150' : 
-                     width && width <= 200 ? 'w300' : 
-                     width && width <= 400 ? 'w500' : 'w780';
-        
-        return originalSrc.replace('/t/p/w500/', `/t/p/${size}/`);
-      }
-      
-      return originalSrc;
-    };
+      return originalSrc.replace('/t/p/w500/', `/t/p/${size}/`);
+    }
+    
+    return originalSrc;
+  };
 
     setIsLoading(true);
     setHasError(false);

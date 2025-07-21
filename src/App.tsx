@@ -251,11 +251,11 @@ function AppContent() {
             <ProblemSolution setCurrentView={handleViewChange} />
             <HowItWorks setCurrentView={handleViewChange} />
             <Rewards />
-                      <LiveProjects
-            onViewAll={() => handleViewChange('projects')}
-            onTrackInvestment={() => handleViewChange('dashboard')}
-            onProjectSelect={handleLiveProjectsSelect}
-          />
+            <LiveProjects
+              onViewAll={() => handleViewChange('projects')}
+              onTrackInvestment={() => handleViewChange('dashboard')}
+              onProjectSelect={handleLiveProjectsSelect}
+            />
             <WhyThisMatters onJoin={() => handleAuthRequired('register')} />
             <TechTrust />
             <Testimonials />

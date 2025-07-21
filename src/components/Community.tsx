@@ -1748,6 +1748,7 @@ const Community: React.FC = () => {
   const friendsHeaderRef = useRef<HTMLDivElement>(null);
   const feedHeaderRef = useRef<HTMLDivElement>(null);
   const hubHeaderRef = useRef<HTMLDivElement>(null);
+  const tabNavigationRef = useRef<HTMLDivElement>(null);
   
   // Refs for auto-scrolling
   const channelMessagesRef = useRef<HTMLDivElement>(null);
@@ -1867,7 +1868,7 @@ const Community: React.FC = () => {
   }, [friendChats, selectedFriend, scrollToBottomDelayed]);
 
   const { theme } = useTheme();
-  const isMobile = useIsMobile();
+  const { isMobile } = useIsMobile();
 
   // Use TMDB community data with Spotify for music artists
   // Memoized community data to prevent unnecessary recalculations
@@ -1887,7 +1888,7 @@ const Community: React.FC = () => {
   // Optimized pagination data with lazy loading and virtual scrolling
   const paginationData = useMemo(() => {
     const currentCategoryItems = getCommunityData()[selectedCategory] || [];
-                    const itemsPerPage = isMobile ? 9 : 12; // 3×3 for mobile, 2×6 for desktop
+                    const itemsPerPage = isMobile ? 9 : 12; // 3×3 for mobile, 6×2 for desktop (exactly 12 items)
     const totalPages = Math.ceil(currentCategoryItems.length / itemsPerPage);
     const paginatedItems = currentCategoryItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
@@ -2336,10 +2337,24 @@ const Community: React.FC = () => {
         headerRef = friendsHeaderRef.current;
       }
       
-      // Only check for experience view if we have a valid header reference
+      // Check if tab navigation (gradient text) has reached the top of the viewport
+      if (tabNavigationRef.current) {
+        const tabRect = tabNavigationRef.current.getBoundingClientRect();
+        
+        // Trigger experience view when tab navigation reaches the top (header position)
+        if (tabRect.top <= 50 && 
+            tabRect.bottom > 0 && 
+            window.scrollY > 50 && 
+            !isExperienceView &&
+            !wasExperienceViewClosed) {
+          console.log('Experience zone triggered by tab navigation scroll');
+          setIsExperienceView(true);
+        }
+      }
+      
+      // Only check for experience view if we have a valid header reference (fallback)
       if (headerRef) {
         const headerRect = headerRef.getBoundingClientRect();
-        // const viewportHeight = window.innerHeight;
         
         // Only trigger experience view when:
         // 1. The header has scrolled up past the top of the viewport
@@ -2394,17 +2409,56 @@ const Community: React.FC = () => {
     };
   }, [isExperienceView]);
 
-  // Auto-trigger experience view for channels and hub tabs
-  useEffect(() => {
-    if ((activeTab === 'channels' || activeTab === 'hub') && !isExperienceView && !wasExperienceViewClosed) {
-      // Add a small delay for better UX
-      const timer = setTimeout(() => {
-        setIsExperienceView(true);
-      }, 2000); // 2 second delay
+  // Auto-trigger experience view for channels and hub tabs (disabled to prevent immediate activation)
+  // useEffect(() => {
+  //   if ((activeTab === 'channels' || activeTab === 'hub') && !isExperienceView && !wasExperienceViewClosed) {
+  //     // Add a small delay for better UX
+  //     const timer = setTimeout(() => {
+  //       setIsExperienceView(true);
+  //     }, 2000); // 2 second delay
 
-      return () => clearTimeout(timer);
-    }
-  }, [activeTab, isExperienceView, wasExperienceViewClosed]);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [activeTab, isExperienceView, wasExperienceViewClosed]);
+
+  // Enhanced scroll detection for tab navigation trigger using Intersection Observer
+  useEffect(() => {
+    if (!tabNavigationRef.current || wasExperienceViewClosed || isExperienceView) return;
+
+    // Don't trigger immediately - wait for user to scroll
+    let hasScrolled = false;
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        hasScrolled = true;
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Only trigger if user has scrolled and tab navigation is near top
+          if (entry.isIntersecting && entry.boundingClientRect.top <= 50 && hasScrolled && window.scrollY > 100) {
+            console.log('Experience zone triggered by Intersection Observer');
+            setIsExperienceView(true);
+            observer.disconnect(); // Stop observing once triggered
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of element is visible
+        rootMargin: '-50px 0px 0px 0px' // Trigger 50px before element reaches top
+      }
+    );
+
+    observer.observe(tabNavigationRef.current);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isExperienceView, wasExperienceViewClosed]);
 
   // Experience zone trigger cooldown
   const [experienceTriggerCooldown, setExperienceTriggerCooldown] = useState<{ [key: string]: number }>({});
@@ -2863,7 +2917,7 @@ const Community: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                                     className={`grid grid-cols-3 md:grid-cols-6 gap-6 min-h-[400px] justify-items-center mobile-grid`}
+                                     className={`grid grid-cols-3 md:grid-cols-6 gap-6 min-h-[400px] justify-items-center mobile-grid force-grid-layout`}
                                      onTouchStart={isMobile ? handleTouchStart : undefined}
                                      onTouchMove={isMobile ? handleTouchMove : undefined}
                                      onTouchEnd={isMobile ? handleTouchEnd : undefined}
@@ -2895,6 +2949,11 @@ const Community: React.FC = () => {
                   )}
                   
 
+                  
+                  {/* Debug info */}
+                  <div className="col-span-full text-center text-white mb-4">
+                    <p>Items: {paginatedItems.length} | Page: {currentPage + 1} | Mobile: {isMobile ? 'Yes' : 'No'} | Screen: {window.innerWidth}x{window.innerHeight}</p>
+                  </div>
                   
                   {/* Regular items - always show if available */}
                   {paginatedItems.map((item, index) => {
@@ -3658,7 +3717,7 @@ const Community: React.FC = () => {
         )}
 
         {/* Redesigned Tab Navigation */}
-        <div className="mb-8 tab-navigation">
+        <div ref={tabNavigationRef} className="mb-8 tab-navigation">
           <div className="flex justify-center">
             <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-2 border border-white/10 shadow-2xl tab-container">
               <div className="flex gap-1 tab-list">

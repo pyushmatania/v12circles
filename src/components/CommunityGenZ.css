@@ -282,6 +282,48 @@
   padding: 12px;
 }
 
+/* Force correct grid layout for community page */
+.mobile-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1.5rem !important;
+  grid-auto-rows: auto !important;
+  grid-auto-flow: row !important;
+}
+
+@media (min-width: 768px) {
+  .mobile-grid {
+    grid-template-columns: repeat(6, 1fr) !important;
+    grid-template-rows: repeat(2, auto) !important;
+  }
+}
+
+/* Override any other grid styles that might interfere */
+.grid.mobile-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+@media (min-width: 768px) {
+  .grid.mobile-grid {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+}
+
+/* Ultimate grid override */
+.force-grid-layout {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1.5rem !important;
+}
+
+@media (min-width: 768px) {
+  .force-grid-layout {
+    grid-template-columns: repeat(6, 1fr) !important;
+    grid-template-rows: repeat(2, auto) !important;
+  }
+}
+
 .instagram-media-item {
   position: relative;
   border-radius: 8px;

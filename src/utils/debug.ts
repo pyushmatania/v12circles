@@ -255,7 +255,7 @@ export function useDebugEffect(
 ): void {
   const logger = DebugLogger.getInstance();
   const effectName = name || 'useEffect';
-  
+
   React.useEffect(() => {
     logger.debug(`Effect started: ${effectName}`, { deps });
     const cleanup = effect();
