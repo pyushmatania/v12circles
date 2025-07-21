@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useContext, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MessageCircle, 
@@ -15,33 +15,22 @@ import {
   Bell,
   Settings, 
   Search, 
-  Plus, 
   ArrowLeft, 
-  ArrowRight, 
-  Play,
-  Pause, 
   Volume2, 
-  VolumeX, 
   Maximize2, 
-  Minimize2, 
   X, 
   Camera, 
   Gift,
   Ticket, 
   Crown, 
   MapPin,
-  Star,
   TrendingUp,
   Calendar,
   Clock,
-  DollarSign,
   Award,
-  Zap,
-  Globe,
   MessageSquare,
   User,
   CheckCircle,
-  AlertCircle,
   Info,
   ShoppingBag,
   Music,
@@ -51,26 +40,87 @@ import {
   Film,
   Phone,
   MoreVertical,
-  Filter,
   BarChart3,
-  UserPlus,
   Bookmark,
-  Flag,
   Lightbulb,
   Shield
 } from 'lucide-react';
-import { getTextColor } from '../utils/themeUtils';
 import { getUserAvatar } from '../utils/imageUtils';
 import Feed from './Feed';
 import { useTheme } from './ThemeContext';
 import useIsMobile from '../hooks/useIsMobile';
-import Merchandise from './Merchandise';
 import { comprehensiveCommunityData, type RealCommunityItem } from '../data/comprehensiveCommunityData';
 import OptimizedImage from './OptimizedImage';
 import { getSpotifyArtistData } from '../data/spotifyArtistImages';
 import './CommunityGenZ.css';
 import DecryptedText from './TextAnimations/DecryptedText/DecryptedText';
 import Typewriter from './Typewriter';
+
+// TypeScript interfaces for message types
+interface BaseMessage {
+  id: number;
+  user: string;
+  message: string;
+  time: string;
+  avatar: string;
+  likes: number;
+  reactions: string[];
+  mentions: string[];
+}
+
+interface RegularMessage extends BaseMessage {
+  isOfficial?: boolean;
+  isBot?: boolean;
+  pollData?: undefined;
+  pollResults?: undefined;
+  isReply?: boolean;
+  replyTo?: number;
+  eventData?: undefined;
+}
+
+interface BotMessage extends BaseMessage {
+  isBot: true;
+  pollData?: {
+    question: string;
+    options: string[];
+    votes: Record<string, number>;
+    userVote?: string;
+  };
+  pollResults?: {
+    question: string;
+    results: Record<string, number>;
+  };
+  eventData?: {
+    title: string;
+    date: string;
+    description: string;
+    time?: string;
+    location?: string;
+    attendees?: string[];
+    maxAttendees?: number;
+  };
+  announcementData?: {
+    title: string;
+    content: string;
+    priority?: string;
+    category?: string;
+  };
+  isOfficial?: boolean;
+  isReply?: boolean;
+  replyTo?: number;
+}
+
+interface OfficialMessage extends BaseMessage {
+  isOfficial: true;
+  isBot?: boolean;
+  pollData?: undefined;
+  pollResults?: undefined;
+  isReply?: boolean;
+  replyTo?: number;
+  eventData?: undefined;
+}
+
+type ChatMessage = RegularMessage | BotMessage | OfficialMessage;
 
 // Mobile-only CSS styles
 const mobileStyles = `
@@ -308,7 +358,7 @@ const mobileStyles = `
       border-color: rgba(255, 255, 255, 0.1) !important;
     }
     
-    .channel-item.bg-purple-500\/10 {
+    .channel-item.bg-purple-500\\/10 {
       background: rgba(147, 51, 234, 0.05) !important;
       border-color: rgba(147, 51, 234, 0.2) !important;
     }
@@ -348,7 +398,7 @@ const mobileStyles = `
     }
     
     .channel-item .w-2,
-    .channel-item .w-1\.5 {
+    .channel-item .w-1\\.5 {
       width: 0.5rem !important;
       height: 0.5rem !important;
     }
@@ -780,7 +830,7 @@ const mobileStyles = `
     }
     
     /* Fix message bubble sizes on mobile */
-    .friends-chat-messages .max-w-\[70\%\] {
+    .friends-chat-messages .max-w-\[70%\] {
       max-width: 85% !important;
     }
     
@@ -922,7 +972,7 @@ const mobileStyles = `
     }
     
     /* Message bubble fixes */
-    .friends-chat-messages .max-w-\[70\%\] {
+    .friends-chat-messages .max-w-\[70%\] {
       max-width: 90% !important;
     }
     
@@ -948,7 +998,7 @@ const mobileStyles = `
 // Inject styles
 if (typeof document !== 'undefined') {
   const styleId = 'community-mobile-styles';
-  let existingStyle = document.getElementById(styleId);
+  const existingStyle = document.getElementById(styleId);
   if (existingStyle) {
     existingStyle.remove();
   }
@@ -963,15 +1013,19 @@ if (typeof document !== 'undefined') {
  * @description Where creators, investors, and fans unite in the most vibrant entertainment community
  */
 const Community: React.FC = () => {
-  // Comprehensive Community Data - Memoized to prevent re-creation
-  const communityData = useMemo(() => ({
-    movies: comprehensiveCommunityData.movies,
-    actors: comprehensiveCommunityData.actors,
-    actresses: comprehensiveCommunityData.actresses,
-    directors: comprehensiveCommunityData.directors,
-    productionHouses: comprehensiveCommunityData.productionHouses,
-    musicArtists: comprehensiveCommunityData.musicArtists
-  }), []);
+  // Comprehensive Community Data - Memoized to prevent re-creation with lazy loading
+  const communityData = useMemo(() => {
+    // Only load first 100 items per category for better performance
+    const limit = 100;
+    return {
+      movies: comprehensiveCommunityData.movies.slice(0, limit),
+      actors: comprehensiveCommunityData.actors.slice(0, limit),
+      actresses: comprehensiveCommunityData.actresses.slice(0, limit),
+      directors: comprehensiveCommunityData.directors.slice(0, limit),
+      productionHouses: comprehensiveCommunityData.productionHouses.slice(0, limit),
+      musicArtists: comprehensiveCommunityData.musicArtists.slice(0, limit)
+    };
+  }, []);
 
   // Hierarchical community state
   const [selectedCategory, setSelectedCategory] = useState<'productionHouse' | 'movie' | 'director' | 'actor' | 'actress' | 'musicArtist'>('movie');
@@ -999,108 +1053,56 @@ const Community: React.FC = () => {
   
   // Static data integration - no API calls
   const [mergedMusicArtists, setMergedMusicArtists] = useState<RealCommunityItem[]>([]);
-  const [isLoadingSpotifyArtists, setIsLoadingSpotifyArtists] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   
-  // Original state for when item is selected
-  const [activeTab, setActiveTab] = useState<'feed' | 'hub' | 'channels' | 'friends' | 'media' | 'perks' | 'merch'>('feed');
+  // Original state for when item is selected - Community Hub as default
+  const [activeTab, setActiveTab] = useState<'feed' | 'hub' | 'channels' | 'friends' | 'media' | 'perks' | 'merch'>('hub');
 
-  // Community Hub State
-  const [hubPosts, setHubPosts] = useState([
-    {
-      id: 1,
-      user: {
-        name: 'Shah Rukh Khan',
-        avatar: 'https://image.tmdb.org/t/p/w500/tCEppfUu0g2Luu0rS5VKMoL4eSw.jpg',
-        verified: true,
-        followers: '50M+'
-      },
-      content: 'Just wrapped up an incredible shoot! The energy on set was absolutely electric. Can\'t wait to share this project with all of you. 🎬✨ #NewProject #BehindTheScenes',
-      image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop',
-      likes: 125000,
-      comments: 8900,
-      shares: 3400,
-      timestamp: '2 hours ago',
-      isLiked: false,
-      isSaved: false
-    },
-    {
-      id: 2,
-      user: {
-        name: 'Aamir Khan',
-        avatar: 'https://image.tmdb.org/t/p/w500/iCBtJHaCmdashFEaFOyO0gSteJk.jpg',
-        verified: true,
-        followers: '45M+'
-      },
-      content: 'The magic of cinema lies in the details. Every frame, every emotion, every moment counts. Here\'s a glimpse into our creative process. 🎭 #CinemaMagic #ArtOfFilmmaking',
-      image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&h=600&fit=crop',
-      likes: 98000,
-      comments: 5600,
-      shares: 2100,
-      timestamp: '5 hours ago',
-      isLiked: true,
-      isSaved: false
-    },
-    {
-      id: 3,
-      user: {
-        name: 'Priyanka Chopra',
-        avatar: 'https://image.tmdb.org/t/p/w500/ymYNHV9luwgyrw17NXHqbOWTQkg.jpg',
-        verified: true,
-        followers: '60M+'
-      },
-      content: 'From Bollywood to Hollywood, the journey has been incredible. Grateful for every opportunity to tell stories that matter. 🌍 #GlobalCinema #Storytelling',
-      image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop',
-      likes: 150000,
-      comments: 12000,
-      shares: 4500,
-      timestamp: '1 day ago',
-      isLiked: false,
-      isSaved: true
-    }
-  ]);
+  // Community Hub State - Cleaned up unused code
 
-  const [hubChatMessages, setHubChatMessages] = useState([
+  // Initial chat messages - moved to constant for better performance
+  const initialHubChatMessages: ChatMessage[] = [
     { id: 1, user: 'FilmFan_2024', message: 'Latest trailer dekh liya! 🔥 Kya mast hai yaar!', time: '2:30 PM', avatar: '🎬', likes: 12, reactions: ['❤️', '🔥'], mentions: ['@CinemaLover'] },
-    { id: 2, user: 'CinemaLover', message: 'Action sequences toh bilkul zabardast hai! VFX team ne kaam kar diya!', time: '2:32 PM', avatar: '🎥', likes: 8, reactions: ['👏', '🎯'] },
-    { id: 3, user: 'MovieBuff', message: '🚨 BREAKING: New trailer kal 12 PM IST pe aa raha hai! 🚨 Sab ready ho jao!', time: '3:15 PM', avatar: '🍿', likes: 25, reactions: ['🚨', '🔥', '💯'], isOfficial: true },
-    { id: 4, user: 'ArtDirector', message: 'Finally! Main toh bas yahi wait kar rahi thi 😭 Ab toh excitement control nahi ho raha!', time: '3:16 PM', avatar: '🎨', likes: 15, reactions: ['😭', '❤️'] },
-    { id: 5, user: 'TechGuru', message: 'Q3 numbers are looking exceptionally strong! 📈 The market response has been phenomenal.', time: '3:20 PM', avatar: '💻', likes: 7, reactions: ['📈', '💎'] },
-    { id: 6, user: 'InvestorPro', message: 'The international market response has been absolutely phenomenal 🌍 We\'ve achieved remarkable global reach.', time: '3:25 PM', avatar: '💰', likes: 9, reactions: ['🌍', '🏆'] },
-    { id: 7, user: 'CreatorHub', message: 'Streaming platforms mein diversify karna chahiye kya? 🤔 Netflix, Amazon sab mein ja sakte hain!', time: '3:30 PM', avatar: '🎭', likes: 11, reactions: ['🤔', '💭'] },
-    { id: 8, user: 'FilmFan_2024', message: 'Netflix deal almost final ho gaya hai! 🎬 Ab toh international audience bhi milegi!', time: '3:35 PM', avatar: '🎬', likes: 18, reactions: ['🎬', '🌍', '💯'] },
-    { id: 9, user: 'CinemaLover', message: 'Bhai log, low light scenes mein color grading mein problem aa rahi hai kya? 🎨 Koi solution batao!', time: '3:40 PM', avatar: '🎥', likes: 6, reactions: ['🎨', '🤔'] },
-    { id: 10, user: 'MovieBuff', message: 'I recommend using a warmer LUT and slightly increasing the shadows. This should provide the perfect balance.', time: '3:42 PM', avatar: '🍿', likes: 4, reactions: ['💡', '👌'] },
-    { id: 11, user: 'Community Bot', message: '📊 POLL: Agle genre mein kya explore karein?\nA) Sci-Fi Thriller 🚀\nB) Romantic Comedy 💕\nC) Historical Drama 🏛️\nD) Horror Mystery 👻\n\nReact karke vote karo!', time: '3:45 PM', avatar: '🤖', likes: 0, isBot: true, pollData: { question: 'Agle genre mein kya explore karein?', options: ['Sci-Fi Thriller 🚀', 'Romantic Comedy 💕', 'Historical Drama 🏛️', 'Horror Mystery 👻'], votes: { 'A': 45, 'B': 23, 'C': 18, 'D': 14 } } },
-    { id: 12, user: 'VFXMaster', message: 'New RED camera footage toh bilkul insane hai! 📹 Quality dekh ke hi pata chalta hai!', time: '3:50 PM', avatar: '🎬', likes: 14, reactions: ['📹', '🔥'] },
-    { id: 13, user: 'SoundDesigner', message: 'I still prefer film grain over digital noise 🎞️ It provides a more authentic cinematic feel.', time: '3:52 PM', avatar: '🎵', likes: 9, reactions: ['🎞️', '🎭'] },
-    { id: 14, user: 'FanGirl_2024', message: 'IS ANYONE ELSE COMPLETELY SHOCKED BY THAT ENDING?! 😭😭😭 I\'m still processing what just happened!', time: '3:55 PM', avatar: '💖', likes: 22, reactions: ['😭', '🤯', '💔'] },
-    { id: 15, user: 'PlotTwistLover', message: 'Plot twist ne toh mujhe bilkul SHOOK kar diya! 🤯 Kya direction thi yaar!', time: '3:57 PM', avatar: '🎭', likes: 19, reactions: ['🤯', '👏', '🎯'] },
-    { id: 16, user: 'CinematographyFan', message: 'Cinematography ke baare mein baat karein? 🤌✨ Kya shots the yaar!', time: '4:00 PM', avatar: '📸', likes: 16, reactions: ['🤌', '✨', '📸'] },
-    { id: 17, user: 'RewatchKing', message: 'Main toh second watch plan kar raha hun! 🍿 Pehli baar miss ho gaya kuch!', time: '4:02 PM', avatar: '👑', likes: 12, reactions: ['🍿', '🔄'] },
-    { id: 18, user: 'VFXTeam', message: 'The VFX team deserves all the awards! 🏆 Their work was absolutely outstanding.', time: '4:05 PM', avatar: '🎬', likes: 28, reactions: ['🏆', '👏', '💯'], isOfficial: true },
-    { id: 19, user: 'FitnessMotivator', message: 'Action sequences mein hero ka body transformation dekh ke motivation mil gaya! 💪 Gym jana padega!', time: '4:08 PM', avatar: '💪', likes: 15, reactions: ['💪', '🔥', '💯'] },
-    { id: 20, user: 'Community Bot', message: '📊 POLL RESULTS: Best Movie Snack?\n🍿 Popcorn - 67%\n🍫 Chocolate - 18%\n🥤 Soda - 10%\n🍕 Pizza - 5%\n\nPopcorn jeet gaya! 🎉', time: '4:10 PM', avatar: '🤖', likes: 0, isBot: true, pollResults: { question: 'Best Movie Snack?', results: { '🍿 Popcorn': 67, '🍫 Chocolate': 18, '🥤 Soda': 10, '🍕 Pizza': 5 } } }
-  ]);
+    { id: 2, user: 'CinemaLover', message: 'Action sequences toh bilkul zabardast hai! VFX team ne kaam kar diya!', time: '2:32 PM', avatar: '🎥', likes: 8, reactions: ['👏', '🎯'], mentions: [] },
+    { id: 3, user: 'MovieBuff', message: '🚨 BREAKING: New trailer kal 12 PM IST pe aa raha hai! 🚨 Sab ready ho jao!', time: '3:15 PM', avatar: '🍿', likes: 25, reactions: ['🚨', '🔥', '💯'], mentions: [], isOfficial: true },
+    { id: 4, user: 'ArtDirector', message: 'Finally! Main toh bas yahi wait kar rahi thi 😭 Ab toh excitement control nahi ho raha!', time: '3:16 PM', avatar: '🎨', likes: 15, reactions: ['😭', '❤️'], mentions: [] },
+    { id: 5, user: 'TechGuru', message: 'Q3 numbers are looking exceptionally strong! 📈 The market response has been phenomenal.', time: '3:20 PM', avatar: '💻', likes: 7, reactions: ['📈', '💎'], mentions: [] },
+    { id: 6, user: 'InvestorPro', message: 'The international market response has been absolutely phenomenal 🌍 We\'ve achieved remarkable global reach.', time: '3:25 PM', avatar: '💰', likes: 9, reactions: ['🌍', '🏆'], mentions: [] },
+    { id: 7, user: 'CreatorHub', message: 'Streaming platforms mein diversify karna chahiye kya? 🤔 Netflix, Amazon sab mein ja sakte hain!', time: '3:30 PM', avatar: '🎭', likes: 11, reactions: ['🤔', '💭'], mentions: [] },
+    { id: 8, user: 'FilmFan_2024', message: 'Netflix deal almost final ho gaya hai! 🎬 Ab toh international audience bhi milegi!', time: '3:35 PM', avatar: '🎬', likes: 18, reactions: ['🎬', '🌍', '💯'], mentions: [] },
+    { id: 9, user: 'CinemaLover', message: 'Bhai log, low light scenes mein color grading mein problem aa rahi hai kya? 🎨 Koi solution batao!', time: '3:40 PM', avatar: '🎥', likes: 6, reactions: ['🎨', '🤔'], mentions: [] },
+    { id: 10, user: 'MovieBuff', message: 'I recommend using a warmer LUT and slightly increasing the shadows. This should provide the perfect balance.', time: '3:42 PM', avatar: '🍿', likes: 4, reactions: ['💡', '👌'], mentions: [] },
+    { id: 11, user: 'Community Bot', message: '📊 POLL: Agle genre mein kya explore karein?\nA) Sci-Fi Thriller 🚀\nB) Romantic Comedy 💕\nC) Historical Drama 🏛️\nD) Horror Mystery 👻\n\nReact karke vote karo!', time: '3:45 PM', avatar: '🤖', likes: 0, reactions: [], mentions: [], isBot: true, pollData: { question: 'Agle genre mein kya explore karein?', options: ['Sci-Fi Thriller 🚀', 'Romantic Comedy 💕', 'Historical Drama 🏛️', 'Horror Mystery 👻'], votes: { 'A': 45, 'B': 23, 'C': 18, 'D': 14 } } },
+    { id: 12, user: 'VFXMaster', message: 'New RED camera footage toh bilkul insane hai! 📹 Quality dekh ke hi pata chalta hai!', time: '3:50 PM', avatar: '🎬', likes: 14, reactions: ['📹', '🔥'], mentions: [] },
+    { id: 13, user: 'SoundDesigner', message: 'I still prefer film grain over digital noise 🎞️ It provides a more authentic cinematic feel.', time: '3:52 PM', avatar: '🎵', likes: 9, reactions: ['🎞️', '🎭'], mentions: [] },
+    { id: 14, user: 'FanGirl_2024', message: 'IS ANYONE ELSE COMPLETELY SHOCKED BY THAT ENDING?! 😭😭😭 I\'m still processing what just happened!', time: '3:55 PM', avatar: '💖', likes: 22, reactions: ['😭', '🤯', '💔'], mentions: [] },
+    { id: 15, user: 'PlotTwistLover', message: 'Plot twist ne toh mujhe bilkul SHOOK kar diya! 🤯 Kya direction thi yaar!', time: '3:57 PM', avatar: '🎭', likes: 19, reactions: ['🤯', '👏', '🎯'], mentions: [] },
+    { id: 16, user: 'CinematographyFan', message: 'Cinematography ke baare mein baat karein? 🤌✨ Kya shots the yaar!', time: '4:00 PM', avatar: '📸', likes: 16, reactions: ['🤌', '✨', '📸'], mentions: [] },
+    { id: 17, user: 'RewatchKing', message: 'Main toh second watch plan kar raha hun! 🍿 Pehli baar miss ho gaya kuch!', time: '4:02 PM', avatar: '👑', likes: 12, reactions: ['🍿', '🔄'], mentions: [] },
+    { id: 18, user: 'VFXTeam', message: 'The VFX team deserves all the awards! 🏆 Their work was absolutely outstanding.', time: '4:05 PM', avatar: '🎬', likes: 28, reactions: ['🏆', '👏', '💯'], mentions: [], isOfficial: true },
+    { id: 19, user: 'FitnessMotivator', message: 'Action sequences mein hero ka body transformation dekh ke motivation mil gaya! 💪 Gym jana padega!', time: '4:08 PM', avatar: '💪', likes: 15, reactions: ['💪', '🔥', '💯'], mentions: [] },
+    { id: 20, user: 'Community Bot', message: '📊 POLL RESULTS: Best Movie Snack?\n🍿 Popcorn - 67%\n🍫 Chocolate - 18%\n🥤 Soda - 10%\n🍕 Pizza - 5%\n\nPopcorn jeet gaya! 🎉', time: '4:10 PM', avatar: '🤖', likes: 0, reactions: [], mentions: [], isBot: true, pollResults: { question: 'Best Movie Snack?', results: { '🍿 Popcorn': 67, '🍫 Chocolate': 18, '🥤 Soda': 10, '🍕 Pizza': 5 } } }
+  ];
 
-  const [hubSearchQuery, setHubSearchQuery] = useState('');
-  const [hubFilter, setHubFilter] = useState('all'); // all, trending, latest, following
+  const [hubChatMessages, setHubChatMessages] = useState<ChatMessage[]>(initialHubChatMessages);
+
+
   const [hubChatInput, setHubChatInput] = useState('');
   
   // Detailed Window Chat State
-  const [detailedWindowChatMessages, setDetailedWindowChatMessages] = useState([
+  const [detailedWindowChatMessages, setDetailedWindowChatMessages] = useState<ChatMessage[]>([
     { id: 1, user: 'Fan_2024', message: 'Amazing performance! 🔥', time: '2:30 PM', avatar: '🎬', likes: 12, reactions: ['❤️', '🔥'], mentions: [] },
-    { id: 2, user: 'MovieLover', message: 'Can\'t wait for your next project!', time: '2:32 PM', avatar: '🎥', likes: 8, reactions: ['👏', '🎯'] },
-    { id: 3, user: 'Community Bot', message: '📊 POLL: What genre should we explore next?\nA) Action Thriller 🚀\nB) Romantic Drama 💕\nC) Comedy 🎭\nD) Mystery 🔍\n\nVote by reacting!', time: '3:15 PM', avatar: '🤖', likes: 0, isBot: true, pollData: { question: 'What genre should we explore next?', options: ['Action Thriller 🚀', 'Romantic Drama 💕', 'Comedy 🎭', 'Mystery 🔍'], votes: { 'A': 25, 'B': 18, 'C': 12, 'D': 8 } } },
-    { id: 4, user: 'CinemaFan', message: 'Your acting skills are incredible! 👏', time: '3:20 PM', avatar: '🍿', likes: 15, reactions: ['👏', '❤️'] },
-    { id: 5, user: 'FilmBuff', message: 'Looking forward to the next release! 🎬', time: '3:25 PM', avatar: '🎭', likes: 9, reactions: ['🎬', '🔥'] }
+    { id: 2, user: 'MovieLover', message: 'Can\'t wait for your next project!', time: '2:32 PM', avatar: '🎥', likes: 8, reactions: ['👏', '🎯'], mentions: [] },
+    { id: 3, user: 'Community Bot', message: '📊 POLL: What genre should we explore next?\nA) Action Thriller 🚀\nB) Romantic Drama 💕\nC) Comedy 🎭\nD) Mystery 🔍\n\nVote by reacting!', time: '3:15 PM', avatar: '🤖', likes: 0, reactions: [], mentions: [], isBot: true, pollData: { question: 'What genre should we explore next?', options: ['Action Thriller 🚀', 'Romantic Drama 💕', 'Comedy 🎭', 'Mystery 🔍'], votes: { 'A': 25, 'B': 18, 'C': 12, 'D': 8 } } },
+    { id: 4, user: 'CinemaFan', message: 'Your acting skills are incredible! 👏', time: '3:20 PM', avatar: '🍿', likes: 15, reactions: ['👏', '❤️'], mentions: [] },
+    { id: 5, user: 'FilmBuff', message: 'Looking forward to the next release! 🎬', time: '3:25 PM', avatar: '🎭', likes: 9, reactions: ['🎬', '🔥'], mentions: [] }
   ]);
   const [detailedWindowChatInput, setDetailedWindowChatInput] = useState('');
-  const [detailedWindowChatRef] = useState(useRef<HTMLDivElement>(null));
+  const detailedWindowChatRef = useRef<HTMLDivElement>(null);
   
   // Widget states
   const [showWidgets, setShowWidgets] = useState(true);
-  const [activeWidget, setActiveWidget] = useState<string | null>(null);
   const [widgetPage, setWidgetPage] = useState(0);
   const [userCreatedPolls, setUserCreatedPolls] = useState<any[]>([]);
   const [userCreatedEvents, setUserCreatedEvents] = useState<any[]>([]);
@@ -1192,52 +1194,38 @@ const Community: React.FC = () => {
     priority: 'normal', // low, normal, high, urgent
     category: 'general' // general, update, news, alert
   });
-  const [communityStats, setCommunityStats] = useState({
+  // Static data - moved to constants for better performance
+  const communityStats = {
     totalMembers: 15420,
     onlineMembers: 234,
     totalPosts: 8920,
     totalPolls: 156,
     activeEvents: 8,
     trendingTopics: ['#NewTrailer', '#BehindTheScenes', '#VFXMagic', '#Cinematography']
-  });
+  };
   
-  const [recentActivities, setRecentActivities] = useState([
+  const recentActivities = [
     { id: 1, user: 'FilmFan_2024', action: 'voted on poll', target: 'Best Movie Genre', time: '2 min ago' },
     { id: 2, user: 'CinemaLover', action: 'joined event', target: 'Behind the Scenes Tour', time: '5 min ago' },
     { id: 3, user: 'MovieBuff', action: 'created poll', target: 'Favorite Director', time: '8 min ago' },
     { id: 4, user: 'ArtDirector', action: 'shared announcement', target: 'New Project Launch', time: '12 min ago' },
     { id: 5, user: 'TechGuru', action: 'reacted to message', target: 'VFX Discussion', time: '15 min ago' }
-  ]);
+  ];
   
-  const [upcomingEvents, setUpcomingEvents] = useState([
+  const upcomingEvents = [
     { id: 1, title: 'Behind the Scenes Tour', date: '2024-01-15', time: '2:00 PM', attendees: 45, maxAttendees: 50 },
     { id: 2, title: 'VFX Workshop', date: '2024-01-18', time: '4:00 PM', attendees: 23, maxAttendees: 30 },
     { id: 3, title: 'Director Q&A Session', date: '2024-01-20', time: '7:00 PM', attendees: 67, maxAttendees: 100 },
     { id: 4, title: 'Community Meetup', date: '2024-01-22', time: '6:00 PM', attendees: 34, maxAttendees: 50 }
-  ]);
+  ];
   
-  const [activePolls, setActivePolls] = useState([
+  const activePolls = [
     { id: 1, question: 'Best Movie Genre for Next Project?', options: ['Sci-Fi', 'Romance', 'Action', 'Drama'], votes: [45, 23, 18, 14], totalVotes: 100 },
     { id: 2, question: 'Favorite Director?', options: ['Christopher Nolan', 'Quentin Tarantino', 'Martin Scorsese', 'Steven Spielberg'], votes: [67, 23, 8, 2], totalVotes: 100 },
     { id: 3, question: 'Best Movie Snack?', options: ['Popcorn', 'Nachos', 'Candy', 'Hot Dog'], votes: [78, 12, 8, 2], totalVotes: 100 }
-  ]);
+  ];
 
-  // Community Hub Functions
-  const handleHubPostLike = (postId: number) => {
-    setHubPosts(prev => prev.map(post => 
-      post.id === postId 
-        ? { ...post, isLiked: !post.isLiked, likes: post.isLiked ? post.likes - 1 : post.likes + 1 }
-        : post
-    ));
-  };
-
-  const handleHubPostSave = (postId: number) => {
-    setHubPosts(prev => prev.map(post => 
-      post.id === postId 
-        ? { ...post, isSaved: !post.isSaved }
-        : post
-    ));
-  };
+  // Community Hub Functions - Cleaned up unused functions
 
   const handleHubChatSend = () => {
     if (!hubChatInput.trim()) return;
@@ -1248,7 +1236,9 @@ const Community: React.FC = () => {
       message: hubChatInput,
       time: 'Just now',
       avatar: getUserAvatar('You'),
-      likes: 0
+      likes: 0,
+      reactions: [] as string[],
+      mentions: extractMentions(hubChatInput)
     };
     
     setHubChatMessages(prev => [...prev, newMessage]);
@@ -1282,29 +1272,31 @@ const Community: React.FC = () => {
     ));
   };
 
-  const handleHubChatReply = (messageId: number, replyText: string) => {
-    const newReply = {
-      id: Date.now(),
-      user: 'You',
-      message: replyText,
-      time: 'Just now',
-      avatar: getUserAvatar('You'),
-      likes: 0,
-      isReply: true,
-      replyTo: messageId
-    };
+  // const handleHubChatReply = (messageId: number, replyText: string) => {
+  //   const newReply = {
+  //     id: Date.now(),
+  //     user: 'You',
+  //     message: replyText,
+  //     time: 'Just now',
+  //     avatar: getUserAvatar('You'),
+  //     likes: 0,
+  //     reactions: [] as string[],
+  //     mentions: extractMentions(replyText),
+  //     isReply: true,
+  //     replyTo: messageId
+  //   };
     
-    setHubChatMessages(prev => [...prev, newReply]);
-    setHubChatInput('');
+  //   setHubChatMessages(prev => [...prev, newReply]);
+  //   setHubChatInput('');
     
-    // Auto-scroll to bottom after sending reply
-    setTimeout(() => {
-      const chatContainer = document.querySelector('.hub-chat-messages');
-      if (chatContainer) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      }
-    }, 100);
-  };
+  //   // Auto-scroll to bottom after sending reply
+  //   setTimeout(() => {
+  //     const chatContainer = document.querySelector('.hub-chat-messages');
+  //     if (chatContainer) {
+  //       chatContainer.scrollTop = chatContainer.scrollHeight;
+  //     }
+  //   }, 100);
+  // };
 
   const handlePollVote = (messageId: number, option: string) => {
     setHubChatMessages(prev => prev.map(msg => 
@@ -1315,7 +1307,7 @@ const Community: React.FC = () => {
               ...msg.pollData,
               votes: {
                 ...msg.pollData.votes,
-                [option as keyof typeof msg.pollData.votes]: (msg.pollData.votes[option as keyof typeof msg.pollData.votes] || 0) + 1
+                [option]: (msg.pollData.votes[option] || 0) + 1
               },
               userVote: option // Track user's vote
             }
@@ -1404,56 +1396,61 @@ const Community: React.FC = () => {
   };
 
   // Add more interactive functions
-  const createPoll = (question: string, options: string[]) => {
-    const newPoll: any = {
-      id: Date.now(),
-      user: 'Community Bot',
-      message: `📊 POLL: ${question}\n${options.map((opt, idx) => `${String.fromCharCode(65 + idx)}) ${opt}`).join('\n')}\n\nReact karke vote karo!`,
-      time: 'Just now',
-      avatar: '🤖',
-      likes: 0,
-      isBot: true,
-      pollData: { 
-        question, 
-        options, 
-        votes: { A: 0, B: 0, C: 0, D: 0 },
-        userVote: null
-      }
-    };
+  // const createPoll = (question: string, options: string[]) => {
+  //   const newPoll: BotMessage = {
+  //     id: Date.now(),
+  //     user: 'Community Bot',
+  //     message: `📊 POLL: ${question}\n${options.map((opt, idx) => `${String.fromCharCode(65 + idx)}) ${opt}`).join('\n')}\n\nReact karke vote karo!`,
+  //     time: 'Just now',
+  //     avatar: '🤖',
+  //     likes: 0,
+  //     reactions: [],
+  //     mentions: [],
+  //     isBot: true,
+  //     pollData: { 
+  //       question, 
+  //       options, 
+  //       votes: { A: 0, B: 0, C: 0, D: 0 },
+  //       userVote: undefined
+  //     }
+  //   };
     
-    setHubChatMessages(prev => [...prev, newPoll]);
-  };
+  //   setHubChatMessages(prev => [...prev, newPoll]);
+  // };
 
-  const createEvent = (title: string, date: string, description: string) => {
-    const newEvent: any = {
-      id: Date.now(),
-      user: 'Community Bot',
-      message: `📅 EVENT: ${title}\n📆 Date: ${date}\n📝 ${description}\n\nInterested? React with 👍`,
-      time: 'Just now',
-      avatar: '🤖',
-      likes: 0,
-      isBot: true,
-      eventData: { title, date, description, attendees: [] }
-    };
+  // const createEvent = (title: string, date: string, description: string) => {
+  //   const newEvent: BotMessage = {
+  //     id: Date.now(),
+  //     user: 'Community Bot',
+  //     message: `📅 EVENT: ${title}\n📆 Date: ${date}\n📝 ${description}\n\nInterested? React with 👍`,
+  //     time: 'Just now',
+  //     avatar: '🤖',
+  //     likes: 0,
+  //     reactions: [],
+  //     mentions: [],
+  //     isBot: true,
+  //     eventData: { title, date, description }
+  //   };
     
-    setHubChatMessages(prev => [...prev, newEvent]);
-  };
+  //   setHubChatMessages(prev => [...prev, newEvent]);
+  // };
 
-  const createAnnouncement = (title: string, content: string) => {
-    const newAnnouncement: any = {
-      id: Date.now(),
-      user: 'Community Bot',
-      message: `📢 ANNOUNCEMENT: ${title}\n\n${content}`,
-      time: 'Just now',
-      avatar: '🤖',
-      likes: 0,
-      isBot: true,
-      isOfficial: true,
-      announcementData: { title, content }
-    };
+  // const createAnnouncement = (title: string, content: string) => {
+  //   const newAnnouncement: BotMessage = {
+  //     id: Date.now(),
+  //     user: 'Community Bot',
+  //     message: `📢 ANNOUNCEMENT: ${title}\n\n${content}`,
+  //     time: 'Just now',
+  //     avatar: '🤖',
+  //     likes: 0,
+  //     reactions: [],
+  //     mentions: [],
+  //     isBot: true,
+  //     isOfficial: true
+  //   };
     
-    setHubChatMessages(prev => [...prev, newAnnouncement]);
-  };
+  //   setHubChatMessages(prev => [...prev, newAnnouncement]);
+  // };
 
   // Enhanced form handlers
   const handlePollSubmit = () => {
@@ -1462,23 +1459,21 @@ const Community: React.FC = () => {
     }
     
     const validOptions = pollForm.options.filter(opt => opt.trim());
-    const newPoll: any = {
+    const newPoll: BotMessage = {
       id: Date.now(),
       user: 'You',
       message: `📊 POLL: ${pollForm.question}\n${validOptions.map((opt, idx) => `${String.fromCharCode(65 + idx)}) ${opt}`).join('\n')}\n\nReact karke vote karo!`,
       time: 'Just now',
       avatar: getUserAvatar('You'),
       likes: 0,
+      reactions: [],
+      mentions: [],
       isBot: true, // This makes it render as a proper poll
       pollData: { 
         question: pollForm.question,
         options: validOptions,
         votes: Object.fromEntries(validOptions.map((_, idx) => [String.fromCharCode(65 + idx), 0])),
-        userVote: null,
-        duration: pollForm.duration,
-        allowMultipleVotes: pollForm.allowMultipleVotes,
-        anonymous: pollForm.anonymous,
-        createdAt: new Date().toISOString()
+        userVote: undefined
       }
     };
     
@@ -1499,23 +1494,20 @@ const Community: React.FC = () => {
       return;
     }
     
-    const newEvent: any = {
+    const newEvent: BotMessage = {
       id: Date.now(),
       user: 'You',
       message: `📅 EVENT: ${eventForm.title}\n📆 Date: ${eventForm.date} at ${eventForm.time}\n📍 Location: ${eventForm.location}\n📝 ${eventForm.description}\n\nInterested? React with 👍`,
       time: 'Just now',
       avatar: getUserAvatar('You'),
       likes: 0,
+      reactions: [],
+      mentions: [],
       isBot: true, // This makes it render in special format
       eventData: { 
         title: eventForm.title, 
         date: eventForm.date, 
-        time: eventForm.time,
-        location: eventForm.location,
-        description: eventForm.description,
-        maxAttendees: eventForm.maxAttendees,
-        attendees: [],
-        createdBy: 'You'
+        description: eventForm.description
       }
     };
     
@@ -1687,7 +1679,7 @@ const Community: React.FC = () => {
     { id: 'kamlesh', name: 'Kamlesh Biswal', avatar: getUserAvatar('Kamlesh Biswal'), online: true }
   ];
   const [selectedFriend, setSelectedFriend] = useState<string>(friendsList[0].id);
-  const [previewFriend, setPreviewFriend] = useState<string | null>(null);
+  // const [previewFriend, setPreviewFriend] = useState<string | null>(null);
   const previewTimeout = useRef<number | null>(null);
   const [friendInput, setFriendInput] = useState('');
   const [friendTyping, setFriendTyping] = useState(false);
@@ -1702,6 +1694,7 @@ const Community: React.FC = () => {
   const channelsHeaderRef = useRef<HTMLDivElement>(null);
   const friendsHeaderRef = useRef<HTMLDivElement>(null);
   const feedHeaderRef = useRef<HTMLDivElement>(null);
+  const hubHeaderRef = useRef<HTMLDivElement>(null);
   
   // Refs for auto-scrolling
   const channelMessagesRef = useRef<HTMLDivElement>(null);
@@ -1838,12 +1831,12 @@ const Community: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  // Memoized pagination data to prevent unnecessary recalculations
+  // Optimized pagination data with lazy loading and virtual scrolling
   const paginationData = useMemo(() => {
     const currentCategoryItems = getCommunityData()[selectedCategory] || [];
-  const itemsPerPage = isMobile ? 12 : 36; // 2x6 on mobile, 6x6 on desktop
-  const totalPages = Math.ceil(currentCategoryItems.length / itemsPerPage);
-  const paginatedItems = currentCategoryItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+                    const itemsPerPage = isMobile ? 9 : 12; // 3×3 for mobile, 2×6 for desktop
+    const totalPages = Math.ceil(currentCategoryItems.length / itemsPerPage);
+    const paginatedItems = currentCategoryItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return {
       currentCategoryItems,
@@ -1853,7 +1846,7 @@ const Community: React.FC = () => {
     };
   }, [getCommunityData, selectedCategory, currentPage, isMobile]);
 
-  const { currentCategoryItems, totalPages, paginatedItems } = paginationData;
+  const { totalPages, paginatedItems } = paginationData;
 
   // Mobile swipe navigation state
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -1890,44 +1883,60 @@ const Community: React.FC = () => {
   const processedMusicArtists = useMemo(() => {
     if (communityData.musicArtists.length === 0) return [];
     
-    return communityData.musicArtists.map(artist => {
-          const spotifyData = getSpotifyArtistData(artist.name);
-          
-          if (spotifyData) {
-            // Use saved Spotify data if available
-            return {
-              ...artist,
-              avatar: spotifyData.imageUrl,
-              cover: spotifyData.imageUrl,
-              description: spotifyData.genres?.slice(0, 3).join(', ') || artist.description,
-              followers: spotifyData.followers || artist.followers,
-              verified: spotifyData.verified,
-              rating: (spotifyData.popularity || 50) / 10,
-              knownFor: spotifyData.genres?.slice(0, 3) || artist.knownFor
-            };
-          } else {
-            // Use high-quality placeholder images for artists not found in Spotify
-            return {
-              ...artist,
-              avatar: artist.avatar.includes('tmdb.org') || artist.avatar.includes('placeholder') || !artist.avatar
-                ? `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=face&auto=format&q=80`
-                : artist.avatar,
-              cover: artist.cover.includes('tmdb.org') || artist.cover.includes('placeholder') || !artist.cover
-                ? `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop&auto=format&q=80`
-                : artist.cover
-            };
-          }
-        });
+    // Only process first 50 artists for better performance
+    const artistsToProcess = communityData.musicArtists.slice(0, 50);
+    
+    // Cache Spotify data lookups to avoid repeated function calls
+    const spotifyDataCache = new Map();
+    
+    return artistsToProcess.map(artist => {
+      // Check cache first
+      let spotifyData = spotifyDataCache.get(artist.name);
+      if (!spotifyData) {
+        spotifyData = getSpotifyArtistData(artist.name);
+        spotifyDataCache.set(artist.name, spotifyData);
+      }
+      
+      if (spotifyData) {
+        // Use saved Spotify data if available
+        return {
+          ...artist,
+          avatar: spotifyData.imageUrl,
+          cover: spotifyData.imageUrl,
+          description: spotifyData.genres?.slice(0, 3).join(', ') || artist.description,
+          followers: spotifyData.followers || artist.followers,
+          verified: spotifyData.verified,
+          rating: (spotifyData.popularity || 50) / 10,
+          knownFor: spotifyData.genres?.slice(0, 3) || artist.knownFor
+        };
+      } else {
+        // Use high-quality placeholder images for artists not found in Spotify
+        return {
+          ...artist,
+          avatar: artist.avatar.includes('tmdb.org') || artist.avatar.includes('placeholder') || !artist.avatar
+            ? `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=face&auto=format&q=80`
+            : artist.avatar,
+          cover: artist.cover.includes('tmdb.org') || artist.cover.includes('placeholder') || !artist.cover
+            ? `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop&auto=format&q=80`
+            : artist.cover
+        };
+      }
+    });
   }, [communityData.musicArtists]);
 
   // Update merged music artists when processed data changes
   useEffect(() => {
     setMergedMusicArtists(processedMusicArtists);
+    setIsDataLoaded(true);
   }, [processedMusicArtists]);
 
-  // Reset page when category changes
+  // Reset page when category changes with debouncing
   useEffect(() => {
-    setCurrentPage(0);
+    const timer = setTimeout(() => {
+      setCurrentPage(0);
+    }, 100); // Small delay to prevent rapid re-renders
+    
+    return () => clearTimeout(timer);
   }, [selectedCategory]);
 
   // Define tabs for navigation
@@ -2040,9 +2049,9 @@ const Community: React.FC = () => {
     const responses = [];
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
-    // Get channel info
-    const channel = channels.find(c => c.id === channelId);
-    const channelMembers = channel?.members || 1000;
+          // Get channel info
+      // const channel = channels.find(c => c.id === channelId);
+      // const channelMembers = channel?.members || 1000;
     
     // Generate responses based on channel type and message content
     if (channelId === 'announcements') {
@@ -2245,23 +2254,6 @@ const Community: React.FC = () => {
     }, 2000);
   };
 
-  const startPreview = (
-    id: string,
-    setter: React.Dispatch<React.SetStateAction<string | null>>,
-  ) => {
-    if (previewTimeout.current) clearTimeout(previewTimeout.current);
-    previewTimeout.current = setTimeout(() => setter(id), 500);
-  };
-
-  const endPreview = (
-    setter: React.Dispatch<React.SetStateAction<string | null>>,
-  ) => {
-    if (previewTimeout.current) {
-      clearTimeout(previewTimeout.current);
-      previewTimeout.current = null;
-    }
-    setter(null);
-  };
 
 
 
@@ -2269,7 +2261,8 @@ const Community: React.FC = () => {
 
 
 
-  // Scroll detection for experience view - for channels, friends, and feed tabs
+
+  // Scroll detection for experience view - for channels, friends, feed, and hub tabs
   useEffect(() => {
     const handleScroll = () => {
       // Don't trigger experience view if it was recently closed
@@ -2282,6 +2275,8 @@ const Community: React.FC = () => {
       
       if (activeTab === 'feed' && feedHeaderRef.current) {
         headerRef = feedHeaderRef.current;
+      } else if (activeTab === 'hub' && hubHeaderRef.current) {
+        headerRef = hubHeaderRef.current;
       } else if (activeTab === 'channels' && channelsHeaderRef.current) {
         headerRef = channelsHeaderRef.current;
       } else if (activeTab === 'friends' && friendsHeaderRef.current) {
@@ -2291,7 +2286,7 @@ const Community: React.FC = () => {
       // Only check for experience view if we have a valid header reference
       if (headerRef) {
         const headerRect = headerRef.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
+        // const viewportHeight = window.innerHeight;
         
         // Only trigger experience view when:
         // 1. The header has scrolled up past the top of the viewport
@@ -2302,14 +2297,17 @@ const Community: React.FC = () => {
             window.scrollY > 200 && 
             !isExperienceView) {
           // Add entrance effects with a small delay for better UX
-          setTimeout(() => {
-        setIsExperienceView(true);
+          const experienceTimer = setTimeout(() => {
+            setIsExperienceView(true);
           }, 100);
+          
+          // Store timer for cleanup
+          return () => clearTimeout(experienceTimer);
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isExperienceView, activeTab, wasExperienceViewClosed]);
 
@@ -2343,9 +2341,9 @@ const Community: React.FC = () => {
     };
   }, [isExperienceView]);
 
-  // Auto-trigger experience view for channels tab
+  // Auto-trigger experience view for channels and hub tabs
   useEffect(() => {
-    if (activeTab === 'channels' && !isExperienceView && !wasExperienceViewClosed) {
+    if ((activeTab === 'channels' || activeTab === 'hub') && !isExperienceView && !wasExperienceViewClosed) {
       // Add a small delay for better UX
       const timer = setTimeout(() => {
         setIsExperienceView(true);
@@ -2812,14 +2810,14 @@ const Community: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                                     className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 min-h-[400px] justify-items-center mobile-grid`}
+                                     className={`grid grid-cols-3 md:grid-cols-6 gap-6 min-h-[400px] justify-items-center mobile-grid`}
                                      onTouchStart={isMobile ? handleTouchStart : undefined}
                                      onTouchMove={isMobile ? handleTouchMove : undefined}
                                      onTouchEnd={isMobile ? handleTouchEnd : undefined}
                 >
                   {/* Loading state - only show if no items available */}
                   {selectedCategory === 'musicArtist' && isLoadingSpotifyArtists && paginatedItems.length === 0 && (
-                    Array.from({ length: isMobile ? 12 : 36 }).map((_, _index) => (
+                    Array.from({ length: isMobile ? 9 : 12 }).map((_, _index) => (
                       <div key={`loading-${_index}`} className="flex flex-col items-center justify-center gap-3 min-h-[200px] md:min-h-[300px]">
                         <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-gray-700 to-gray-600 animate-pulse" />
                         <div className="w-20 h-4 bg-gray-700 rounded animate-pulse" />
@@ -2846,9 +2844,9 @@ const Community: React.FC = () => {
 
                   
                   {/* Regular items - always show if available */}
-                  {paginatedItems.map((item) => {
+                  {paginatedItems.map((item, index) => {
                     const isPerson = selectedCategory === 'director' || selectedCategory === 'actor' || selectedCategory === 'actress' || selectedCategory === 'musicArtist';
-                    const itemKey = `${item.id}-${selectedCategory}`;
+                    const itemKey = `${item.id}-${selectedCategory}-${index}`;
                     return (
                       <div
                         key={itemKey}
@@ -2910,7 +2908,7 @@ const Community: React.FC = () => {
                             className={`w-full h-full object-cover transition-transform duration-300 relative z-20 ${
                               isPerson ? 'rounded-full' : 'rounded-2xl'
                             } ${item.isActive ? 'p-0.5' : ''}`}
-                            priority={false}
+                            priority={index < 8} // Only prioritize first 8 images
                           />
                           
                           {/* Overlay for non-person items */}
@@ -3518,10 +3516,10 @@ const Community: React.FC = () => {
                             {message.pollData && (
                               <div className="mt-3 space-y-2">
                                 <div className="text-sm font-medium">{message.pollData.question}</div>
-                                {message.pollData.options.map((option, idx) => {
+                                {message.pollData?.options.map((option, idx) => {
                                   const optionKey = String.fromCharCode(65 + idx);
-                                  const votes = message.pollData.votes[optionKey] || 0;
-                                  const totalVotes = Object.values(message.pollData.votes).reduce((a, b) => a + b, 0);
+                                  const votes = message.pollData?.votes[optionKey] || 0;
+                                  const totalVotes = Object.values(message.pollData?.votes || {}).reduce((a, b) => a + b, 0);
                                   const percentage = totalVotes > 0 ? (votes / totalVotes) * 100 : 0;
                                   
                                   return (
@@ -3678,11 +3676,31 @@ const Community: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <Feed isExperienceView={false} />
+              {!isDataLoaded ? (
+                <div className="w-full">
+                  <div className="flex items-center justify-center py-20">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+                      <p className="text-gray-400 text-sm">Loading community data...</p>
+                    </div>
+                  </div>
+                  {/* Loading skeleton */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 p-4">
+                    {Array.from({ length: 12 }).map((_, i) => (
+                      <div key={i} className="flex flex-col items-center gap-3">
+                        <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+                        <div className="w-16 h-3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Feed isExperienceView={false} />
+              )}
             </motion.div>
           )}
 
-          {/* Community Hub Tab - Instagram Style */}
+          {/* Community Hub Tab - Consolidated Experience View */}
           {activeTab === 'hub' && (
             <motion.div
               key="hub"
@@ -3693,7 +3711,7 @@ const Community: React.FC = () => {
               className="w-full max-w-7xl mx-auto"
             >
               {/* Hub Header */}
-              <div className="feed-header relative mb-8">
+              <div ref={hubHeaderRef} className="feed-header relative mb-8">
                 <h1 
                   className="feed-title cursor-pointer" 
                   onMouseEnter={() => triggerExperienceZone('hub')}
@@ -3718,148 +3736,304 @@ const Community: React.FC = () => {
                 </div>
               </div>
 
-              {/* Community Hub Layout - Full Chat Window */}
-              <div className="w-full h-[calc(100vh-200px)] bg-black">
-                
-                {/* Full Chat Window */}
-                <div className="bg-black h-full flex flex-col">
-                  
-                  {/* Chat Header */}
-                  <div className="p-2 bg-black border-b border-white/5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        <h3 className="text-xs font-medium text-white">Community Chat</h3>
-                        <span className="text-xs text-green-400 font-medium">Live</span>
-                      </div>
-                      
-                      {/* Hidden Sub-options (Expandable) */}
-                      <div className="flex items-center gap-2">
-                        {/* Community Functions Menu */}
-                        <button className="p-2 rounded-lg hover:bg-white/5 transition-colors group relative">
-                          <BarChart3 className="w-4 h-4 text-gray-400 group-hover:text-white" />
-                          
-                          {/* Expanded Community Functions */}
-                          <div className="absolute right-0 top-full mt-2 w-64 bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <div className="p-3 space-y-2">
-                              <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <BarChart3 className="w-4 h-4" />
-                                <span>Community Stats</span>
-                              </button>
-                              <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <Calendar className="w-4 h-4" />
-                                <span>Recent Activities</span>
-                              </button>
-                              <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <Gift className="w-4 h-4" />
-                                <span>Community Polls</span>
-                              </button>
-                              <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <Hash className="w-4 h-4" />
-                                <span>Trending Topics</span>
-                              </button>
-                              <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <MapPin className="w-4 h-4" />
-                                <span>Upcoming Events</span>
-                              </button>
-                              <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <Award className="w-4 h-4" />
-                                <span>Community Awards</span>
-                              </button>
-                            </div>
-                          </div>
-                        </button>
+              {/* Community Hub Layout - Full Chat Window with Mobile-Friendly Widgets */}
+              <div className="w-full h-[calc(100vh-200px)] bg-black rounded-2xl overflow-hidden">
 
-                        {/* Chat Settings Menu */}
-                        <button className="p-2 rounded-lg hover:bg-white/5 transition-colors group relative">
-                          <MoreHorizontal className="w-4 h-4 text-gray-400 group-hover:text-white" />
-                          
-                          {/* Expanded Chat Options */}
-                          <div className="absolute right-0 top-full mt-2 w-48 bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <div className="p-2 space-y-1">
-                              <button className="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <Users className="w-3 h-3" />
-                                <span>View Members</span>
-                              </button>
-                              <button className="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <Settings className="w-3 h-3" />
-                                <span>Chat Settings</span>
-                              </button>
-                              <button className="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <Search className="w-3 h-3" />
-                                <span>Search Messages</span>
-                              </button>
-                              <button className="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <Volume2 className="w-3 h-3" />
-                                <span>Mute Notifications</span>
-                              </button>
-                              <button className="w-full flex items-center gap-2 p-2 rounded-lg hover:bg-white/5 transition-colors text-xs text-gray-300 hover:text-white">
-                                <Bookmark className="w-3 h-3" />
-                                <span>Saved Messages</span>
-                              </button>
-                            </div>
-                          </div>
-                        </button>
+                {/* Full Chat Window with Mobile-Friendly Layout */}
+                <div className={`bg-black h-full ${isMobile ? 'flex flex-col' : 'flex gap-6'}`}>
+                  {/* Main Chat Area */}
+                  <div className={`${isMobile ? 'flex-1' : 'flex-1'} bg-black flex flex-col`}>
+                    
+                    {/* Chat Header */}
+                    <div className="p-2 bg-black border-b border-white/5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          <h3 className="text-xs font-medium text-white">Community Chat</h3>
+                          <span className="text-xs text-green-400 font-medium">Live</span>
+                        </div>
                         
-                        {/* Members List */}
-                        <button className="p-2 rounded-lg hover:bg-white/5 transition-colors group relative">
-                          <Users className="w-4 h-4 text-gray-400 group-hover:text-white" />
-                          
-                          {/* Expanded Member List */}
-                          <div className="absolute right-0 top-full mt-2 w-64 bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <div className="p-3">
-                              <h4 className="text-xs font-medium text-white mb-3">Online Members (12)</h4>
-                              <div className="space-y-2">
-                                {[
-                                  { name: 'FilmFan_2024', status: 'online', avatar: '🎬', role: 'Moderator' },
-                                  { name: 'CinemaLover', status: 'online', avatar: '🎥', role: 'Member' },
-                                  { name: 'MovieBuff', status: 'online', avatar: '🍿', role: 'Member' },
-                                  { name: 'ArtDirector', status: 'away', avatar: '🎨', role: 'Creator' },
-                                  { name: 'FilmStudent', status: 'online', avatar: '🎓', role: 'Member' }
-                                ].map((member, index) => (
-                                  <div key={index} className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/5 transition-colors">
-                                    <div className="w-6 h-6 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center text-xs">
-                                      {member.avatar}
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <div className="flex items-center gap-1">
-                                        <span className="text-xs text-gray-300 truncate">{member.name}</span>
-                                        <span className="text-xs text-gray-500">• {member.role}</span>
-                                      </div>
-                                    </div>
-                                    <div className={`w-2 h-2 rounded-full ${member.status === 'online' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-                                  </div>
-                                ))}
+                        {/* Quick Action Buttons */}
+                        <div className="flex items-center gap-2">
+                          <button 
+                            onClick={() => setShowPollModal(true)}
+                            className="p-2 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 transition-colors text-xs text-purple-300"
+                            title="Create Poll"
+                          >
+                            📊 Poll
+                          </button>
+                          <button 
+                            onClick={() => setShowEventModal(true)}
+                            className="p-2 rounded-lg bg-green-500/20 hover:bg-green-500/30 transition-colors text-xs text-green-300"
+                            title="Create Event"
+                          >
+                            📅 Event
+                          </button>
+                          <button 
+                            onClick={() => setShowAnnouncementModal(true)}
+                            className="p-2 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 transition-colors text-xs text-blue-300"
+                            title="Create Announcement"
+                          >
+                            📢 Announce
+                          </button>
+                        </div>
+                        
+                        {/* Chat Settings Menu */}
+                        <div className="flex items-center gap-3">
+
+                          {/* Chat Settings Menu */}
+                          <button className="p-3 rounded-lg hover:bg-white/5 transition-colors group relative">
+                            <MoreHorizontal className="w-5 h-5 text-gray-400 group-hover:text-white" />
+                            
+                            {/* Expanded Chat Options */}
+                            <div className="absolute right-0 top-full mt-2 w-56 bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                              <div className="p-3 space-y-2">
+                                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-sm text-gray-300 hover:text-white">
+                                  <Users className="w-4 h-4" />
+                                  <span>View Members</span>
+                                </button>
+                                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-sm text-gray-300 hover:text-white">
+                                  <Settings className="w-4 h-4" />
+                                  <span>Chat Settings</span>
+                                </button>
+                                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-sm text-gray-300 hover:text-white">
+                                  <Search className="w-4 h-4" />
+                                  <span>Search Messages</span>
+                                </button>
+                                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-sm text-gray-300 hover:text-white">
+                                  <Volume2 className="w-4 h-4" />
+                                  <span>Mute Notifications</span>
+                                </button>
+                                <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors text-sm text-gray-300 hover:text-white">
+                                  <Bookmark className="w-4 h-4" />
+                                  <span>Saved Messages</span>
+                                </button>
                               </div>
                             </div>
-                          </div>
-                        </button>
-                      </div>
+                          </button>
+                          
+                          {/* Members List */}
+                          <button className="p-3 rounded-lg hover:bg-white/5 transition-colors group relative">
+                            <Users className="w-5 h-5 text-gray-400 group-hover:text-white" />
+                            
+                            {/* Expanded Member List */}
+                            <div className="absolute right-0 top-full mt-2 w-72 bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                              <div className="p-4">
+                                <h4 className="text-sm font-medium text-white mb-4">Online Members (12)</h4>
+                                <div className="space-y-3">
+                                  {[
+                                    { name: 'FilmFan_2024', status: 'online', avatar: '🎬', role: 'Moderator' },
+                                    { name: 'CinemaLover', status: 'online', avatar: '🎥', role: 'Member' },
+                                    { name: 'MovieBuff', status: 'online', avatar: '🍿', role: 'Member' },
+                                    { name: 'ArtDirector', status: 'away', avatar: '🎨', role: 'Creator' },
+                                    { name: 'FilmStudent', status: 'online', avatar: '🎓', role: 'Member' }
+                                  ].map((member, index) => (
+                                    <div key={index} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors">
+                                      <div className="w-8 h-8 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center text-sm">
+                                        {member.avatar}
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-1">
+                                          <span className="text-sm text-gray-300 truncate">{member.name}</span>
+                                          <span className="text-sm text-gray-500">• {member.role}</span>
+                                        </div>
+                                      </div>
+                                      <div className={`w-3 h-3 rounded-full ${member.status === 'online' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        </div>
+                      
                     </div>
                   </div>
                   
                   {/* Chat Messages */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-purple-500/20 scrollbar-track-transparent">
+                  <div className="hub-chat-messages h-[calc(100vh-200px)] overflow-y-auto p-6 pb-24 space-y-4 scrollbar-thin scrollbar-thumb-purple-500/20 scrollbar-track-transparent">
                     {hubChatMessages.map((msg, index) => (
                       <motion.div
                         key={msg.id}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-start gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group"
+                        className={`flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors group ${msg.isOfficial ? 'border-l-4 border-purple-500' : ''} ${msg.isBot ? 'border-l-4 border-blue-500' : ''}`}
                       >
-                        <div className="w-8 h-8 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center text-sm">
-                          {msg.avatar}
+                        <div className="w-10 h-10 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center text-lg overflow-hidden">
+                          {msg.user === 'You' ? (
+                            <img 
+                              src={msg.avatar} 
+                              alt="Your avatar" 
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                const target = e.currentTarget as HTMLImageElement;
+                                target.style.display = 'none';
+                                target.parentElement!.innerHTML = '👤';
+                              }}
+                            />
+                          ) : (
+                            <span>{msg.avatar}</span>
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-medium text-purple-300">{msg.user}</span>
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className={`text-sm font-medium ${msg.isOfficial ? 'text-purple-300' : msg.isBot ? 'text-blue-300' : 'text-purple-300'}`}>
+                              {msg.user}
+                              {msg.isOfficial && <span className="ml-1 text-purple-400">✓</span>}
+                              {msg.isBot && <span className="ml-1 text-blue-400">🤖</span>}
+                            </span>
                             <span className="text-xs text-gray-500">{msg.time}</span>
                           </div>
-                          <p className="text-xs text-gray-300 mb-2 leading-relaxed">{msg.message}</p>
                           
-                          {/* Hidden Message Actions (Show on Hover) */}
-                          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          {/* Message Content */}
+                          <div className="mb-3">
+                            {msg.isBot && msg.pollData ? (
+                              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                                <p className="text-sm text-gray-300 mb-3 font-medium">{msg.pollData.question}</p>
+                                <div className="space-y-2">
+                                  {msg.pollData?.options.map((option, idx) => {
+                                    const optionKey = String.fromCharCode(65 + idx);
+                                    const votes = msg.pollData?.votes[optionKey] || 0;
+                                    const totalVotes = Object.values(msg.pollData?.votes || {}).reduce((a, b) => a + b, 0);
+                                    const percentage = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
+                                    return (
+                                      <button
+                                        key={idx}
+                                        onClick={() => handlePollVote(msg.id, optionKey)}
+                                        className="w-full flex items-center justify-between p-2 rounded-lg hover:bg-white/10 transition-colors text-left"
+                                      >
+                                        <span className="text-sm text-gray-300">{option}</span>
+                                        <div className="flex items-center gap-2">
+                                          <div className="w-20 bg-white/10 rounded-full h-2">
+                                            <div className="bg-purple-500 h-2 rounded-full" style={{ width: `${percentage}%` }}></div>
+                                          </div>
+                                          <span className="text-xs text-gray-400">{percentage}%</span>
+                                        </div>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ) : msg.isBot && msg.eventData ? (
+                              <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg p-4 border border-green-500/20">
+                                <div className="flex items-center gap-2 mb-3">
+                                  <Calendar className="w-5 h-5 text-green-400" />
+                                  <h3 className="text-lg font-semibold text-green-300">{msg.eventData.title}</h3>
+                                </div>
+                                <div className="space-y-2 text-sm">
+                                  <div className="flex items-center gap-2">
+                                    <Clock className="w-4 h-4 text-green-400" />
+                                    <span className="text-gray-300">{msg.eventData.date} at {msg.eventData.time || 'TBD'}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <MapPin className="w-4 h-4 text-green-400" />
+                                    <span className="text-gray-300">{msg.eventData.location || 'Location TBD'}</span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <Users className="w-4 h-4 text-green-400" />
+                                    <span className="text-gray-300">{(msg.eventData.attendees?.length || 0)}/{msg.eventData.maxAttendees || '∞'} attending</span>
+                                  </div>
+                                  <p className="text-gray-300 mt-3 leading-relaxed">{msg.eventData.description}</p>
+                                  <div className="flex gap-2 mt-4">
+                                    <button className="px-4 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 rounded-lg text-green-300 text-sm font-medium transition-colors">
+                                      👍 Interested
+                                    </button>
+                                    <button className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-gray-300 text-sm transition-colors">
+                                      📅 Add to Calendar
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : msg.isBot && 'announcementData' in msg && msg.announcementData ? (
+                              <div className={`rounded-lg p-4 border ${
+                                msg.announcementData.priority === 'urgent' ? 'bg-red-500/10 border-red-500/30' :
+                                msg.announcementData.priority === 'high' ? 'bg-orange-500/10 border-orange-500/30' :
+                                msg.announcementData.priority === 'normal' ? 'bg-blue-500/10 border-blue-500/30' :
+                                'bg-gray-500/10 border-gray-500/30'
+                              }`}>
+                                <div className="flex items-center gap-2 mb-3">
+                                  <div className={`p-2 rounded-full ${
+                                    msg.announcementData.priority === 'urgent' ? 'bg-red-500/20' :
+                                    msg.announcementData.priority === 'high' ? 'bg-orange-500/20' :
+                                    msg.announcementData.priority === 'normal' ? 'bg-blue-500/20' :
+                                    'bg-gray-500/20'
+                                  }`}>
+                                    <Bell className={`w-4 h-4 ${
+                                      msg.announcementData.priority === 'urgent' ? 'text-red-400' :
+                                      msg.announcementData.priority === 'high' ? 'text-orange-400' :
+                                      msg.announcementData.priority === 'normal' ? 'text-blue-400' :
+                                      'text-gray-400'
+                                    }`} />
+                                  </div>
+                                  <div>
+                                    <h3 className="text-lg font-semibold text-white">{msg.announcementData.title}</h3>
+                                    <div className="flex items-center gap-2 mt-1">
+                                      <span className={`text-xs px-2 py-1 rounded-full ${
+                                        msg.announcementData.priority === 'urgent' ? 'bg-red-500/20 text-red-300' :
+                                        msg.announcementData.priority === 'high' ? 'bg-orange-500/20 text-orange-300' :
+                                        msg.announcementData.priority === 'normal' ? 'bg-blue-500/20 text-blue-300' :
+                                        'bg-gray-500/20 text-gray-300'
+                                      }`}>
+                                        {msg.announcementData.priority?.toUpperCase() || 'NORMAL'}
+                                      </span>
+                                      <span className="text-xs text-gray-400">{msg.announcementData.category || 'General'}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <p className="text-gray-300 leading-relaxed">{msg.announcementData.content}</p>
+                                <div className="flex gap-2 mt-4">
+                                  <button className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded text-gray-300 text-xs transition-colors">
+                                    📌 Pin
+                                  </button>
+                                  <button className="px-3 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded text-gray-300 text-xs transition-colors">
+                                    🔔 Subscribe
+                                  </button>
+                                </div>
+                              </div>
+                            ) : msg.isBot && msg.pollResults ? (
+                              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                                <p className="text-sm text-gray-300 mb-3 font-medium">{msg.pollResults.question}</p>
+                                <div className="space-y-2">
+                                  {Object.entries(msg.pollResults.results).map(([option, percentage]) => (
+                                    <div key={option} className="flex items-center justify-between">
+                                      <span className="text-sm text-gray-300">{option}</span>
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-20 bg-white/10 rounded-full h-2">
+                                          <div className="bg-green-500 h-2 rounded-full" style={{ width: `${percentage}%` }}></div>
+                                        </div>
+                                        <span className="text-xs text-gray-400">{percentage}%</span>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-sm text-gray-300 leading-relaxed">
+                                {msg.message}
+                                {msg.mentions && msg.mentions.map((mention, idx) => (
+                                  <span key={idx} className="text-blue-400 font-medium">{mention} </span>
+                                ))}
+                              </p>
+                            )}
+                          </div>
+                          
+                          {/* Reactions */}
+                          {msg.reactions && msg.reactions.length > 0 && (
+                            <div className="flex items-center gap-1 mb-2">
+                              {msg.reactions.slice(0, 5).map((reaction, idx) => (
+                                <span key={idx} className="text-xs bg-white/10 px-2 py-1 rounded-full">
+                                  {reaction}
+                                </span>
+                              ))}
+                              {msg.reactions.length > 5 && (
+                                <span className="text-xs text-gray-500">+{msg.reactions.length - 5}</span>
+                              )}
+                            </div>
+                          )}
+                          
+                          {/* Message Actions */}
+                          <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <button
                               onClick={() => handleHubChatLike(msg.id)}
                               className="flex items-center gap-1 text-xs text-gray-500 hover:text-red-400 transition-colors"
@@ -3867,6 +4041,27 @@ const Community: React.FC = () => {
                               <Heart className="w-3 h-3" />
                               <span>{msg.likes}</span>
                             </button>
+                            
+                            {/* Reaction Picker */}
+                            <div className="relative group/reactions">
+                              <button className="text-xs text-gray-500 hover:text-yellow-400 transition-colors">
+                                😀
+                              </button>
+                              <div className="absolute bottom-full left-0 mb-2 bg-black/90 backdrop-blur-xl rounded-lg p-2 opacity-0 invisible group-hover/reactions:opacity-100 group-hover/reactions:visible transition-all duration-300 z-50">
+                                <div className="flex gap-1">
+                                  {['❤️', '🔥', '👏', '🎯', '💯', '🚀', '🏆', '✨'].map((emoji) => (
+                                    <button
+                                      key={emoji}
+                                      onClick={() => handleHubChatReaction(msg.id, emoji)}
+                                      className="p-1 hover:bg-white/10 rounded transition-colors"
+                                    >
+                                      {emoji}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                            
                             <button className="text-xs text-gray-500 hover:text-blue-400 transition-colors">Reply</button>
                             <button className="text-xs text-gray-500 hover:text-green-400 transition-colors">Share</button>
                             <button className="text-xs text-gray-500 hover:text-yellow-400 transition-colors">Bookmark</button>
@@ -3877,32 +4072,497 @@ const Community: React.FC = () => {
                   </div>
                   
                   {/* Chat Input */}
-                  <div className="p-3 bg-black border-t border-white/5">
-                    <div className="flex gap-2">
-                      <button className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
-                        <Paperclip className="w-3.5 h-3.5 text-gray-400" />
-                      </button>
+                  <div className="absolute bottom-0 left-0 right-0 p-0">
+                    <div className="flex gap-3 justify-center p-4">
                       <input
                         type="text"
                         placeholder="Type a message..."
                         value={hubChatInput}
                         onChange={(e) => setHubChatInput(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleHubChatSend()}
-                        className="flex-1 bg-white/5 rounded-lg px-3 py-1.5 text-xs text-white placeholder-gray-500 border border-white/10 focus:outline-none focus:border-purple-500/30 focus:bg-white/10"
+                        className="flex-1 bg-white/5 rounded-2xl px-6 py-4 text-sm text-white placeholder-gray-400 focus:outline-none focus:bg-white/8 max-w-lg"
                       />
                       <button
                         onClick={handleHubChatSend}
                         disabled={!hubChatInput.trim()}
-                        className="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white text-xs font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-8 py-4 bg-purple-500 rounded-2xl text-white text-sm font-medium hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        Send
+                        <Send className="w-5 h-5" />
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          )}
+              
+              {/* Widgets Sidebar */}
+              {!isMobile && (
+                <div className="w-80 bg-white/2 rounded-2xl overflow-hidden">
+                  <div className="p-4 space-y-4">
+                    {/* Widget Toggle */}
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-sm font-medium text-white">Community Widgets</h3>
+                      <button 
+                        onClick={() => setShowWidgets(!showWidgets)}
+                        className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+                      >
+                        {showWidgets ? <ChevronRight className="w-4 h-4 text-gray-400" /> : <ChevronLeft className="w-4 h-4 text-gray-400" />}
+                      </button>
+                    </div>
+                    
+                    {showWidgets && (
+                      <div className="space-y-4">
+                        {/* Widget Navigation */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <button 
+                              onClick={() => setWidgetPage(Math.max(0, widgetPage - 1))}
+                              disabled={widgetPage === 0}
+                              className="p-1 rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50"
+                            >
+                              <ChevronLeft className="w-4 h-4 text-gray-400" />
+                            </button>
+                            <span className="text-xs text-gray-400">
+                              {widgetPage + 1} / 4
+                            </span>
+                            <button 
+                              onClick={() => setWidgetPage(Math.min(3, widgetPage + 1))}
+                              disabled={widgetPage === 3}
+                              className="p-1 rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50"
+                            >
+                              <ChevronRight className="w-4 h-4 text-gray-400" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Page 0: Community Stats & Recent Activities */}
+                        {widgetPage === 0 && (
+                          <div className="space-y-4">
+                            {/* Community Stats Widget */}
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <BarChart3 className="w-4 h-4" />
+                                Community Stats
+                              </h4>
+                              <div className="space-y-2">
+                                <div className="flex justify-between text-xs">
+                                  <span className="text-gray-400">Total Members</span>
+                                  <span className="text-white font-medium">{formatNumber(communityStats.totalMembers)}</span>
+                                </div>
+                                <div className="flex justify-between text-xs">
+                                  <span className="text-gray-400">Online Now</span>
+                                  <span className="text-green-400 font-medium">{formatNumber(communityStats.onlineMembers)}</span>
+                                </div>
+                                <div className="flex justify-between text-xs">
+                                  <span className="text-gray-400">Total Posts</span>
+                                  <span className="text-white font-medium">{formatNumber(communityStats.totalPosts)}</span>
+                                </div>
+                                <div className="flex justify-between text-xs">
+                                  <span className="text-gray-400">Active Polls</span>
+                                  <span className="text-purple-400 font-medium">{formatNumber(communityStats.totalPolls)}</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Recent Activities Widget */}
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <Activity className="w-4 h-4" />
+                                Recent Activities
+                              </h4>
+                              <div className="space-y-2 max-h-32 overflow-y-auto">
+                                {recentActivities.map((activity) => (
+                                  <div key={activity.id} className="text-xs text-gray-400">
+                                    <span className="text-white font-medium">{activity.user}</span> {activity.action} <span className="text-purple-400">{activity.target}</span>
+                                    <div className="text-gray-500">{activity.time}</div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Page 1: Your Created Content */}
+                        {widgetPage === 1 && (
+                          <div className="space-y-4">
+                            {/* Your Polls Widget */}
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <BarChart3 className="w-4 h-4" />
+                                Your Polls ({userCreatedPolls.length})
+                              </h4>
+                              <div className="space-y-3">
+                                {userCreatedPolls.length > 0 ? (
+                                  userCreatedPolls.slice(0, 3).map((poll) => (
+                                    <div key={poll.id} className="text-xs">
+                                      <p className="text-gray-300 mb-2">{poll.question || 'Poll'}</p>
+                                      <div className="flex items-center gap-2 text-gray-400">
+                                        <span>👥 {poll.totalVotes} votes</span>
+                                        <span>⏰ {poll.options.length} options</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-xs text-gray-500">No polls created yet</p>
+                                )}
+                              </div>
+                            </div>
+                            
+                            {/* Your Events Widget */}
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <Calendar className="w-4 h-4" />
+                                Your Events ({userCreatedEvents.length})
+                              </h4>
+                              <div className="space-y-2">
+                                {userCreatedEvents.length > 0 ? (
+                                  userCreatedEvents.slice(0, 3).map((event) => (
+                                    <div key={event.id} className="text-xs">
+                                      <p className="text-white font-medium">{event.eventData?.title || 'Event'}</p>
+                                      <p className="text-gray-400">{event.eventData?.date} at {event.eventData?.time}</p>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <div className="flex-1 bg-white/10 rounded-full h-1">
+                                          <div className="bg-green-500 h-1 rounded-full" style={{ width: `${Math.min(100, ((event.eventData?.attendees?.length || 0) / (event.eventData?.maxAttendees || 1)) * 100)}%` }}></div>
+                                        </div>
+                                        <span className="text-gray-500 text-xs">{(event.eventData?.attendees?.length || 0)}/{event.eventData?.maxAttendees || '∞'}</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-xs text-gray-500">No events created yet</p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Page 2: Upcoming Events */}
+                        {widgetPage === 2 && (
+                          <div className="space-y-4">
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <Calendar className="w-4 h-4" />
+                                Upcoming Events
+                              </h4>
+                              <div className="space-y-3">
+                                {upcomingEvents.length > 0 ? (
+                                  upcomingEvents.slice(0, 3).map((event) => (
+                                    <div key={event.id} className="text-xs">
+                                      <p className="text-white font-medium">{event.title}</p>
+                                      <p className="text-gray-400">{event.date} at {event.time}</p>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <div className="flex-1 bg-white/10 rounded-full h-1">
+                                          <div className="bg-green-500 h-1 rounded-full" style={{ width: `${Math.min(100, (event.attendees / event.maxAttendees) * 100)}%` }}></div>
+                                        </div>
+                                        <span className="text-gray-500 text-xs">{event.attendees}/{event.maxAttendees}</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-xs text-gray-500">No upcoming events</p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Page 3: Active Polls */}
+                        {widgetPage === 3 && (
+                          <div className="space-y-4">
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <BarChart3 className="w-4 h-4" />
+                                Active Polls
+                              </h4>
+                              <div className="space-y-3">
+                                {activePolls.length > 0 ? (
+                                  activePolls.slice(0, 3).map((poll) => (
+                                    <div key={poll.id} className="text-xs">
+                                      <p className="text-gray-300 mb-2">{poll.question || 'Poll'}</p>
+                                      <div className="flex items-center gap-2 text-gray-400">
+                                        <span>👥 {poll.totalVotes} votes</span>
+                                        <span>⏰ {poll.options.length} options</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-xs text-gray-500">No active polls</p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Widgets Sidebar for Desktop */}
+              {!isMobile && (
+                <div className="w-80 bg-white/2 rounded-2xl overflow-hidden">
+                  <div className="p-4 space-y-4">
+                    {/* Widget Toggle */}
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-sm font-medium text-white">Community Widgets</h3>
+                      <button
+                        onClick={() => setShowWidgets(!showWidgets)}
+                        className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+                      >
+                        {showWidgets ? <ChevronRight className="w-4 h-4 text-gray-400" /> : <ChevronLeft className="w-4 h-4 text-gray-400" />}
+                      </button>
+                    </div>
+
+                    {showWidgets && (
+                      <div className="space-y-4">
+                        {/* Widget Navigation */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => setWidgetPage(Math.max(0, widgetPage - 1))}
+                              disabled={widgetPage === 0}
+                              className="p-1 rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50"
+                            >
+                              <ChevronLeft className="w-4 h-4 text-gray-400" />
+                            </button>
+                            <span className="text-xs text-gray-400">
+                              {widgetPage + 1} / 4
+                            </span>
+                            <button
+                              onClick={() => setWidgetPage(Math.min(3, widgetPage + 1))}
+                              disabled={widgetPage === 3}
+                              className="p-1 rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50"
+                            >
+                              <ChevronRight className="w-4 h-4 text-gray-400" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Page 0: Community Stats & Recent Activities */}
+                        {widgetPage === 0 && (
+                          <div className="space-y-4">
+                            {/* Community Stats Widget */}
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <BarChart3 className="w-4 h-4" />
+                                Community Stats
+                              </h4>
+                              <div className="space-y-2">
+                                <div className="flex justify-between text-xs">
+                                  <span className="text-gray-400">Total Members</span>
+                                  <span className="text-white font-medium">{formatNumber(communityStats.totalMembers)}</span>
+                                </div>
+                                <div className="flex justify-between text-xs">
+                                  <span className="text-gray-400">Online Members</span>
+                                  <span className="text-white font-medium">{formatNumber(communityStats.onlineMembers)}</span>
+                                </div>
+                                <div className="flex justify-between text-xs">
+                                  <span className="text-gray-400">Total Posts</span>
+                                  <span className="text-white font-medium">{formatNumber(communityStats.totalPosts)}</span>
+                                </div>
+                                <div className="flex justify-between text-xs">
+                                  <span className="text-gray-400">Active Polls</span>
+                                  <span className="text-white font-medium">{formatNumber(communityStats.totalPolls)}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Recent Activities Widget */}
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <Activity className="w-4 h-4" />
+                                Recent Activities
+                              </h4>
+                              <div className="space-y-2 max-h-32 overflow-y-auto">
+                                {recentActivities.slice(0, 4).map((activity) => (
+                                  <div key={activity.id} className="text-xs text-gray-400">
+                                    <span className="text-white font-medium">{activity.user}</span> {activity.action}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Page 1: Your Content */}
+                        {widgetPage === 1 && (
+                          <div className="space-y-4">
+                            {/* Your Polls Widget */}
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <BarChart3 className="w-4 h-4" />
+                                Your Polls ({userCreatedPolls.length})
+                              </h4>
+                              <div className="space-y-3">
+                                {userCreatedPolls.length > 0 ? (
+                                  userCreatedPolls.slice(0, 3).map((poll) => (
+                                    <div key={poll.id} className="text-xs">
+                                      <p className="text-gray-300 mb-2">{poll.question || 'Poll'}</p>
+                                      <div className="flex items-center gap-2 text-gray-400">
+                                        <span>👥 {poll.totalVotes} votes</span>
+                                        <span>⏰ {poll.options.length} options</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-xs text-gray-500">No polls created yet</p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Page 2: Upcoming Events */}
+                        {widgetPage === 2 && (
+                          <div className="space-y-4">
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <Calendar className="w-4 h-4" />
+                                Upcoming Events
+                              </h4>
+                              <div className="space-y-3">
+                                {upcomingEvents.length > 0 ? (
+                                  upcomingEvents.slice(0, 3).map((event) => (
+                                    <div key={event.id} className="text-xs">
+                                      <p className="text-white font-medium">{event.title}</p>
+                                      <p className="text-gray-400">{event.date} at {event.time}</p>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <div className="flex-1 bg-white/10 rounded-full h-1">
+                                          <div className="bg-green-500 h-1 rounded-full" style={{ width: `${Math.min(100, (event.attendees / event.maxAttendees) * 100)}%` }}></div>
+                                        </div>
+                                        <span className="text-gray-500 text-xs">{event.attendees}/{event.maxAttendees}</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-xs text-gray-500">No upcoming events</p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Page 3: Active Polls */}
+                        {widgetPage === 3 && (
+                          <div className="space-y-4">
+                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                              <h4 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                                <BarChart3 className="w-4 h-4" />
+                                Active Polls
+                              </h4>
+                              <div className="space-y-3">
+                                {activePolls.length > 0 ? (
+                                  activePolls.slice(0, 3).map((poll) => (
+                                    <div key={poll.id} className="text-xs">
+                                      <p className="text-gray-300 mb-2">{poll.question || 'Poll'}</p>
+                                      <div className="flex items-center gap-2 text-gray-400">
+                                        <span>👥 {poll.totalVotes} votes</span>
+                                        <span>⏰ {poll.options.length} options</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-xs text-gray-500">No active polls</p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Mobile-Friendly Widgets Section */}
+              {isMobile && (
+                <div className="p-4 bg-white/5 border-t border-white/10">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-sm font-medium text-white">Community Widgets</h4>
+                    <div className="flex gap-1">
+                      {[0, 1, 2, 3].map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => setWidgetPage(page)}
+                          className={`w-2 h-2 rounded-full transition-colors ${
+                            widgetPage === page ? 'bg-purple-500' : 'bg-white/20'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    {/* Page 0: Community Stats */}
+                    {widgetPage === 0 && (
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-white/5 rounded-lg p-3 text-center">
+                          <div className="text-lg font-bold text-purple-400">{formatNumber(communityStats.totalMembers)}</div>
+                          <div className="text-xs text-gray-400">Members</div>
+                        </div>
+                        <div className="bg-white/5 rounded-lg p-3 text-center">
+                          <div className="text-lg font-bold text-green-400">{formatNumber(communityStats.onlineMembers)}</div>
+                          <div className="text-xs text-gray-400">Online</div>
+                        </div>
+                        <div className="bg-white/5 rounded-lg p-3 text-center">
+                          <div className="text-lg font-bold text-blue-400">{formatNumber(communityStats.totalPosts)}</div>
+                          <div className="text-xs text-gray-400">Posts</div>
+                        </div>
+                        <div className="bg-white/5 rounded-lg p-3 text-center">
+                          <div className="text-lg font-bold text-orange-400">{formatNumber(communityStats.totalPolls)}</div>
+                          <div className="text-xs text-gray-400">Polls</div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Page 1: Recent Activities */}
+                    {widgetPage === 1 && (
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <h5 className="text-sm font-medium text-white mb-2">Recent Activities</h5>
+                        <div className="space-y-2 max-h-24 overflow-y-auto">
+                          {recentActivities.slice(0, 3).map((activity) => (
+                            <div key={activity.id} className="text-xs text-gray-400">
+                              <span className="text-white font-medium">{activity.user}</span> {activity.action}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Page 2: Upcoming Events */}
+                    {widgetPage === 2 && (
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <h5 className="text-sm font-medium text-white mb-2">Upcoming Events</h5>
+                        <div className="space-y-2">
+                          {upcomingEvents.slice(0, 2).map((event) => (
+                            <div key={event.id} className="text-xs">
+                              <p className="text-white font-medium">{event.title}</p>
+                              <p className="text-gray-400">{event.date}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Page 3: Active Polls */}
+                    {widgetPage === 3 && (
+                      <div className="bg-white/5 rounded-lg p-3">
+                        <h5 className="text-sm font-medium text-white mb-2">Active Polls</h5>
+                        <div className="space-y-2">
+                          {activePolls.slice(0, 2).map((poll) => (
+                            <div key={poll.id} className="text-xs">
+                              <p className="text-gray-300">{poll.question || 'Poll'}</p>
+                              <p className="text-gray-400">{poll.totalVotes} votes</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                              )}
+              </div>
+          </motion.div>
+        )}
 
           {/* Channels Tab - Instagram Style */}
           {activeTab === 'channels' && (
@@ -4340,8 +5000,6 @@ const Community: React.FC = () => {
                             : ''
                         }`}
                         onClick={() => setSelectedFriend(friend.id)}
-                        onMouseEnter={() => startPreview(friend.id, setPreviewFriend)}
-                        onMouseLeave={() => endPreview(setPreviewFriend)}
                       >
                         <div className="flex items-center gap-3">
                       <div className="relative">
@@ -5671,10 +6329,10 @@ const Community: React.FC = () => {
                                        <div className="bg-white/5 rounded-lg p-4 border border-white/10">
                                          <p className="text-sm text-gray-300 mb-3 font-medium">{msg.pollData.question}</p>
                                          <div className="space-y-2">
-                                           {msg.pollData.options.map((option, idx) => {
+                                           {msg.pollData?.options.map((option, idx) => {
                                              const optionKey = String.fromCharCode(65 + idx);
-                                             const votes = msg.pollData.votes[optionKey as keyof typeof msg.pollData.votes] || 0;
-                                             const totalVotes = Object.values(msg.pollData.votes).reduce((a, b) => a + b, 0);
+                                             const votes = msg.pollData?.votes[optionKey] || 0;
+                                             const totalVotes = Object.values(msg.pollData?.votes || {}).reduce((a, b) => a + b, 0);
                                              const percentage = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
                                              return (
                                                <button
@@ -5703,15 +6361,15 @@ const Community: React.FC = () => {
                                          <div className="space-y-2 text-sm">
                                            <div className="flex items-center gap-2">
                                              <Clock className="w-4 h-4 text-green-400" />
-                                             <span className="text-gray-300">{msg.eventData.date} at {msg.eventData.time}</span>
+                                             <span className="text-gray-300">{msg.eventData.date} at {msg.eventData.time || 'TBD'}</span>
                                            </div>
                                            <div className="flex items-center gap-2">
                                              <MapPin className="w-4 h-4 text-green-400" />
-                                             <span className="text-gray-300">{msg.eventData.location}</span>
+                                             <span className="text-gray-300">{msg.eventData.location || 'Location TBD'}</span>
                                            </div>
                                            <div className="flex items-center gap-2">
                                              <Users className="w-4 h-4 text-green-400" />
-                                             <span className="text-gray-300">{msg.eventData.attendees.length}/{msg.eventData.maxAttendees} attending</span>
+                                             <span className="text-gray-300">{(msg.eventData.attendees?.length || 0)}/{msg.eventData.maxAttendees || '∞'} attending</span>
                                            </div>
                                            <p className="text-gray-300 mt-3 leading-relaxed">{msg.eventData.description}</p>
                                            <div className="flex gap-2 mt-4">
@@ -5724,7 +6382,7 @@ const Community: React.FC = () => {
                                            </div>
                                          </div>
                                        </div>
-                                     ) : msg.isBot && msg.announcementData ? (
+                                     ) : msg.isBot && 'announcementData' in msg && msg.announcementData ? (
                                        <div className={`rounded-lg p-4 border ${
                                          msg.announcementData.priority === 'urgent' ? 'bg-red-500/10 border-red-500/30' :
                                          msg.announcementData.priority === 'high' ? 'bg-orange-500/10 border-orange-500/30' :
@@ -5754,9 +6412,9 @@ const Community: React.FC = () => {
                                                  msg.announcementData.priority === 'normal' ? 'bg-blue-500/20 text-blue-300' :
                                                  'bg-gray-500/20 text-gray-300'
                                                }`}>
-                                                 {msg.announcementData.priority.toUpperCase()}
+                                                 {msg.announcementData.priority?.toUpperCase() || 'NORMAL'}
                                                </span>
-                                               <span className="text-xs text-gray-400">{msg.announcementData.category}</span>
+                                               <span className="text-xs text-gray-400">{msg.announcementData.category || 'General'}</span>
                                              </div>
                                            </div>
                                          </div>
@@ -5971,10 +6629,10 @@ const Community: React.FC = () => {
                                      {userCreatedPolls.length > 0 ? (
                                        userCreatedPolls.slice(0, 3).map((poll) => (
                                          <div key={poll.id} className="text-xs">
-                                           <p className="text-gray-300 mb-2">{poll.pollData?.question || 'Poll'}</p>
+                                           <p className="text-gray-300 mb-2">{poll.question || 'Poll'}</p>
                                            <div className="flex items-center gap-2 text-gray-400">
-                                             <span>👥 {Object.values(poll.pollData?.votes || {}).reduce((a: any, b: any) => a + b, 0)} votes</span>
-                                             <span>⏰ {poll.time}</span>
+                                             <span>👥 {poll.totalVotes} votes</span>
+                                             <span>⏰ {poll.options.length} options</span>
                                            </div>
                                          </div>
                                        ))
