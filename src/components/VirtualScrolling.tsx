@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 interface VirtualScrollConfig {
   itemHeight: number;

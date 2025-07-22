@@ -13,6 +13,15 @@ import { initializeScrollRestoration } from './utils/scrollUtils';
 // 🚀 Safe Performance Integration (non-blocking)
 import { performanceIntegration } from './utils/performanceIntegration';
 
+// 🎨 Preload Framer Motion to ensure AnimatePresence is available
+let framerMotionLoaded = false;
+import('framer-motion').then(() => {
+  framerMotionLoaded = true;
+  console.log('✅ Framer Motion preloaded successfully');
+}).catch((error) => {
+  console.error('🚨 Framer Motion preload failed:', error);
+});
+
 // 🚨 GLOBAL ERROR HANDLING
 window.addEventListener('error', (event) => {
   console.error('🚨 Global Error:', event.error);
@@ -66,6 +75,7 @@ function showErrorOnScreen(message: string) {
     <p><strong>Time:</strong> ${new Date().toISOString()}</p>
     <p><strong>URL:</strong> ${window.location.href}</p>
     <p><strong>User Agent:</strong> ${navigator.userAgent}</p>
+    <p><strong>Framer Motion Loaded:</strong> ${framerMotionLoaded}</p>
     <hr>
     <h3>Console Logs:</h3>
     <div id="console-logs"></div>
@@ -244,9 +254,18 @@ try {
   console.log('🚀 Starting V12 Circles application...');
   updateLoadingStatus('Starting application...');
   
+  // Wait for Framer Motion to load before rendering
+  const checkFramerMotion = () => {
+    if (framerMotionLoaded) {
+      renderApp();
+    } else {
+      setTimeout(checkFramerMotion, 100);
+    }
+  };
+  
   setTimeout(() => {
     try {
-      renderApp();
+      checkFramerMotion();
     } catch (error) {
       console.error('🚨 Delayed render error:', error);
       showErrorOnScreen('Delayed Render Error: ' + (error instanceof Error ? error.message : String(error)));

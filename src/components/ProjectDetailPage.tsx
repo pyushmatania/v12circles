@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback, memo, useContext, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback, useMemo, memo, useContext } from 'react';
+import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { ThemeContext } from './ThemeContext';
 import { 

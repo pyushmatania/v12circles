@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { TrendingUp, TrendingDown, Zap, Clock, HardDrive, Image, Wifi, MousePointer, Smartphone, AlertCircle } from 'lucide-react';
 import { usePerformanceBenchmark, BenchmarkResult } from '../utils/performanceBenchmark';
 

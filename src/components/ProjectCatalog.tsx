@@ -1,5 +1,6 @@
 import React, { useState, useRef, useMemo, useCallback, useContext } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 import { Film, Music, Tv, Search, Star, Clock, ChevronLeft, ChevronRight, Play, Info, Siren as Fire, Filter, Heart, Share2, X, ArrowRight, Grid, RotateCcw, Globe, MessageSquare, DollarSign, TrendingUp } from 'lucide-react';
 import confetti from 'canvas-confetti';
