@@ -13,6 +13,12 @@ import { initializeScrollRestoration } from './utils/scrollUtils';
 // 🚀 Safe Performance Integration (non-blocking)
 import { performanceIntegration } from './utils/performanceIntegration';
 
+// 🛡️ Global AnimatePresence fallback to prevent production errors
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  window.AnimatePresence = ({ children }: any) => React.createElement(React.Fragment, {}, children);
+}
+
 // 🚨 GLOBAL ERROR HANDLING
 window.addEventListener('error', (event) => {
   console.error('🚨 Global Error:', event.error);

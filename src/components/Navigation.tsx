@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect, useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
-import { AnimatePresence } from 'framer-motion';
+
+// Simple fallback for AnimatePresence
+const AnimatePresence = ({ children }: any) => <>{children}</>;
 import { 
   Home, 
   Film, 

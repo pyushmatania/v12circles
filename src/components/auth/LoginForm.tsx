@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, AlertCircle, CheckCircle, Loader, ArrowLeft } from 'lucide-react';
 import { useAuth } from './useAuth';
 import { useTheme } from '../ThemeContext';
@@ -96,19 +95,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onClose }) =>
         </p>
       </div>
 
-      <AnimatePresence>
-        {showSuccess && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="mb-6 p-4 rounded-xl bg-green-500/20 border border-green-500/30 flex items-center gap-3"
-          >
-            <CheckCircle className="w-5 h-5 text-green-400" />
-            <span className="text-green-300 font-medium">Login successful! Redirecting...</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {showSuccess && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          className="mb-6 p-4 rounded-xl bg-green-500/20 border border-green-500/30 flex items-center gap-3"
+        >
+          <CheckCircle className="w-5 h-5 text-green-400" />
+          <span className="text-green-300 font-medium">Login successful! Redirecting...</span>
+        </motion.div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Email Field */}
