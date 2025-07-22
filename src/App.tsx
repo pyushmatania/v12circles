@@ -1,47 +1,41 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import Hero from './components/Hero';
-import ProblemSolution from './components/ProblemSolution';
-import HowItWorks from './components/HowItWorks';
-import LiveProjects from './components/LiveProjects';
-import WhyThisMatters from './components/WhyThisMatters';
-import TechTrust from './components/TechTrust';
-import Rewards from './components/Rewards';
-import Testimonials from './components/Testimonials';
-import CallToAction from './components/CallToAction';
-import Navigation from './components/Navigation';
-import AuthModal from './components/auth/AuthModal';
-import ToastContainer from './components/auth/ToastNotification';
-import { ThemeProvider } from './components/ThemeProvider';
-import { AuthProvider } from './components/auth/AuthProvider';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from './components/auth/useAuth';
 import { useToast } from './hooks/useToast';
-import DebugPanel from './components/DebugPanel';
-import ErrorBoundary from './components/ErrorBoundary';
+import { useSafePerformance } from './utils/performanceIntegration';
 import { checkReactAvailability } from './utils/reactCheck';
 import { Project } from './types';
 
-// 🚀 Safe Performance Integration
-import { useSafePerformance } from './utils/performanceIntegration';
-import PerformanceToggle from './components/PerformanceToggle';
-import PerformanceTestButton from './components/PerformanceTestButton';
-
-// 🌐 Network Status
-import { useNetworkStatus } from './utils/networkStatus';
-
-// 🚀 Import components directly for instant loading
-import Dashboard from './components/Dashboard';
+// Components
+import Navigation from './components/Navigation';
+import Hero from './components/Hero';
+import ProblemSolution from './components/ProblemSolution';
+import HowItWorks from './components/HowItWorks';
+import Rewards from './components/Rewards';
+import LiveProjects from './components/LiveProjects';
+import WhyThisMatters from './components/WhyThisMatters';
+import TechTrust from './components/TechTrust';
+import Testimonials from './components/Testimonials';
+import CallToAction from './components/CallToAction';
 import ProjectCatalog from './components/ProjectCatalog';
+import Dashboard from './components/Dashboard';
 import Community from './components/Community';
 import Merchandise from './components/Merchandise';
 import ProfilePage from './components/profile/ProfilePage';
-import AdminDashboard from './components/admin/AdminDashboard';
 import PortfolioAnalytics from './components/PortfolioAnalytics';
 import ProjectComparison from './components/ProjectComparison';
-import ProjectDetailPage from './components/ProjectDetailPage';
 import NewsAndUpdates from './components/NewsAndUpdates';
 import NotificationCenter from './components/NotificationCenter';
 import EnhancedSearch from './components/EnhancedSearch';
-
+import ProjectDetailPage from './components/ProjectDetailPage';
+import AdminDashboard from './components/admin/AdminDashboard';
+import AuthModal from './components/auth/AuthModal';
+import ToastContainer from './components/auth/ToastNotification';
+import ErrorBoundary from './components/ErrorBoundary';
+import { ThemeProvider } from './components/ThemeProvider';
+import { AuthProvider } from './components/auth/AuthProvider';
+import DebugPanel from './components/DebugPanel';
+import PerformanceToggle from './components/PerformanceToggle';
+import PerformanceTestButton from './components/PerformanceTestButton';
 
 
 // 🛡️ Type definitions for better type safety
@@ -72,9 +66,6 @@ function AppContent() {
   
   // 🚀 Safe Performance Integration
   const { isEnabled: performanceEnabled, initialize: initializePerformance } = useSafePerformance();
-  
-  // 🌐 Network Status
-  const isOnline = useNetworkStatus();
 
   // 🚀 Memoized constants for performance
   const protectedViews = useMemo(() => ['profile', 'portfolio'] as const, []);
@@ -252,7 +243,6 @@ function AppContent() {
       case 'compare':
         return (
           <ProjectComparison 
-            onTrackInvestment={() => handleViewChange('dashboard')} 
             setCurrentView={handleViewChange}
             onProjectSelect={handleComparisonProjectSelect}
           />
@@ -281,7 +271,6 @@ function AppContent() {
             <Rewards />
             <LiveProjects
               onViewAll={() => handleViewChange('projects')}
-              onTrackInvestment={() => handleViewChange('dashboard')}
               onProjectSelect={handleLiveProjectsSelect}
             />
             <WhyThisMatters onJoin={() => handleAuthRequired('register')} />
@@ -301,7 +290,9 @@ function AppContent() {
     isAuthenticated,
     selectedProject,
     projectDetailTab,
-    handleAuthRequired
+    handleAuthRequired,
+    previousView,
+    searchTerm
   ]);
 
   // 🚀 Memoized navigation props
@@ -312,7 +303,6 @@ function AppContent() {
     onProjectSelect: handleNavigationProjectSelect,
     onSearchViewAll: handleSearchViewAll,
     previousView
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [currentView, handleViewChange, handleAuthRequired, handleNavigationProjectSelect, handleSearchViewAll, previousView]);
 
   // 🚀 Memoized auth modal props
@@ -328,15 +318,10 @@ function AppContent() {
     onClose: removeToast
   }), [toasts, removeToast]);
 
-  // 🚀 Early return for admin view
-  if (adminView) {
-    return adminView;
-  }
-
   return (
     <div className="min-h-screen transition-colors duration-300 overflow-x-hidden">
       <Navigation {...navigationProps} />
-      {renderCurrentView()}
+      {adminView || renderCurrentView()}
       <DebugPanel />
       <PerformanceToggle />
       <PerformanceTestButton />
@@ -351,14 +336,14 @@ function AppContent() {
  * @description Wraps the application with necessary providers and error handling
  */
 function App() {
-  // Safety check for React availability
-  if (!checkReactAvailability()) {
-    console.error('React is not properly loaded');
-    return <div>Loading application...</div>;
-  }
-
   // 🎯 Scroll to top on initial load
   useEffect(() => {
+    // Safety check for React availability
+    if (!checkReactAvailability()) {
+      console.error('React is not properly loaded');
+      return;
+    }
+    
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
     

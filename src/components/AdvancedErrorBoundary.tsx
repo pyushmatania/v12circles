@@ -1,5 +1,30 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
+import { ErrorInfo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Type definitions for external libraries
+declare global {
+  interface Window {
+    Sentry?: {
+      withScope: (callback: (scope: { setTag: (key: string, value: string) => void; setContext: (key: string, context: unknown) => void }) => void) => void;
+      captureException: (error: Error) => void;
+    };
+    LogRocket?: {
+      captureException: (error: unknown) => void;
+    };
+    performanceMonitor?: {
+      getMetrics(): unknown;
+    };
+  }
+  
+  interface Performance {
+    memory?: {
+      usedJSHeapSize: number;
+      totalJSHeapSize: number;
+      jsHeapSizeLimit: number;
+    };
+  }
+}
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -34,7 +59,7 @@ class AdvancedErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
   private enableAutoRecovery: boolean;
   private enableErrorReporting: boolean;
   private errorReportingEndpoint: string;
-  private recoveryTimer: NodeJS.Timeout | null = null;
+  private recoveryTimer: number | null = null;
 
   constructor(props: ErrorBoundaryProps) {
     super(props);
@@ -130,7 +155,7 @@ class AdvancedErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
       timestamp: Date.now(),
       userId: this.getUserId(),
       sessionId: this.getSessionId(),
-      buildVersion: process.env.REACT_APP_VERSION || 'unknown',
+      buildVersion: import.meta.env.VITE_APP_VERSION || 'unknown',
       
       // Context information
       context: {
@@ -149,11 +174,16 @@ class AdvancedErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
   }
 
   private async attemptRecovery(error: Error, type: string) {
+    // Only attempt recovery if auto-recovery is enabled
+    if (!this.enableAutoRecovery) {
+      return;
+    }
+
     this.setState({ isRecovering: true });
 
     switch (type) {
       case 'critical':
-        await this.handleCriticalError(error);
+        await this.handleCriticalError();
         break;
       case 'recoverable':
         await this.handleRecoverableError(error);
@@ -166,7 +196,7 @@ class AdvancedErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
     this.setState({ isRecovering: false });
   }
 
-  private async handleCriticalError(error: Error) {
+  private async handleCriticalError() {
     // For critical errors, try to reload the entire page as last resort
     if (this.state.retryCount < this.maxRetries) {
       this.setState(prev => ({ retryCount: prev.retryCount + 1 }));
@@ -179,7 +209,7 @@ class AdvancedErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
       window.location.reload();
     } else {
       // Show critical error UI
-      this.showCriticalErrorUI(error);
+      this.showCriticalErrorUI();
     }
   }
 
@@ -202,7 +232,7 @@ class AdvancedErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
       this.recordRecoveryAttempt(error, true);
     } else {
       // Show recoverable error UI
-      this.showRecoverableErrorUI(error);
+      this.showRecoverableErrorUI();
     }
   }
 
@@ -234,12 +264,12 @@ class AdvancedErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
     }));
   }
 
-  private showCriticalErrorUI(error: Error) {
+  private showCriticalErrorUI() {
     // Show critical error notification
     this.showErrorNotification('Critical Error', 'A critical error occurred. Please refresh the page.', 'error');
   }
 
-  private showRecoverableErrorUI(error: Error) {
+  private showRecoverableErrorUI() {
     // Show recoverable error notification
     this.showErrorNotification('Error Recovered', 'An error occurred but was automatically recovered.', 'warning');
   }
@@ -273,23 +303,23 @@ class AdvancedErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
     }, 10000);
   }
 
-  private sendToSentry(errorReport: any) {
-    if (typeof Sentry !== 'undefined') {
-      Sentry.withScope(scope => {
+  private sendToSentry(errorReport: { type: string; context: unknown; message: string }) {
+    if (typeof window !== 'undefined' && window.Sentry) {
+      window.Sentry.withScope((scope: { setTag: (key: string, value: string) => void; setContext: (key: string, context: unknown) => void }) => {
         scope.setTag('errorType', errorReport.type);
         scope.setContext('errorDetails', errorReport.context);
-        Sentry.captureException(new Error(errorReport.message));
+        window.Sentry!.captureException(new Error(errorReport.message));
       });
     }
   }
 
-  private sendToLogRocket(errorReport: any) {
-    if (typeof LogRocket !== 'undefined') {
-      LogRocket.captureException(errorReport);
+  private sendToLogRocket(errorReport: { type: string; context: unknown; message: string }) {
+    if (typeof window !== 'undefined' && window.LogRocket) {
+      window.LogRocket.captureException(errorReport);
     }
   }
 
-  private sendToCustomEndpoint(errorReport: any) {
+  private sendToCustomEndpoint(errorReport: { type: string; context: unknown; message: string }) {
     if (this.enableErrorReporting) {
       fetch(this.errorReportingEndpoint, {
         method: 'POST',
@@ -311,25 +341,25 @@ class AdvancedErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
 
   private getLocalStorageSize(): number {
     let total = 0;
-    for (let key in localStorage) {
-      if (localStorage.hasOwnProperty(key)) {
+    for (const key in localStorage) {
+      if (Object.prototype.hasOwnProperty.call(localStorage, key)) {
         total += localStorage[key].length;
       }
     }
     return total;
   }
 
-  private getMemoryUsage(): any {
+  private getMemoryUsage(): Performance['memory'] | null {
     if ('memory' in performance) {
-      return (performance as any).memory;
+      return (performance as Performance & { memory: Performance['memory'] }).memory;
     }
     return null;
   }
 
-  private getPerformanceMetrics(): any {
+  private getPerformanceMetrics(): unknown {
     // Get performance metrics if available
-    if (typeof window !== 'undefined' && (window as any).performanceMonitor) {
-      return (window as any).performanceMonitor.getMetrics();
+    if (typeof window !== 'undefined' && (window as Window & { performanceMonitor?: { getMetrics(): unknown } }).performanceMonitor) {
+      return (window as Window & { performanceMonitor: { getMetrics(): unknown } }).performanceMonitor.getMetrics();
     }
     return null;
   }
@@ -453,7 +483,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
           </p>
 
           {/* Error Details (Development Only) */}
-          {process.env.NODE_ENV === 'development' && error && (
+          {import.meta.env.DEV && error && (
             <details className="mb-6 text-left">
               <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
                 Error Details (Development)

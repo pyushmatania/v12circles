@@ -142,5 +142,38 @@ export interface AdminContextType {
   restoreBackup: (id: string) => Promise<void>;
 } 
 
-// Create context
-export const AdminContext = createContext<AdminContextType | undefined>(undefined); 
+// Create context with proper default value
+const defaultAdminContext: AdminContextType = {
+  projects: [],
+  addProject: () => {},
+  updateProject: () => {},
+  deleteProject: () => {},
+  archiveProject: () => {},
+  
+  merchandiseItems: [],
+  addMerchandiseItem: () => {},
+  updateMerchandiseItem: () => {},
+  deleteMerchandiseItem: () => {},
+  
+  perks: [],
+  addPerk: () => {},
+  updatePerk: () => {},
+  deletePerk: () => {},
+  
+  mediaAssets: [],
+  addMediaAsset: () => {},
+  updateMediaAsset: () => {},
+  deleteMediaAsset: () => {},
+  
+  users: [],
+  updateUserStatus: () => {},
+  
+  activityLogs: [],
+  addActivityLog: () => {},
+  
+  backups: [],
+  createBackup: async () => {},
+  restoreBackup: async () => {}
+};
+
+export const AdminContext = createContext<AdminContextType>(defaultAdminContext); 

@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { AnimatePresence } from 'framer-motion';
-import { TrendingUp, TrendingDown, Zap, Clock, HardDrive, Image, Wifi, MousePointer, Smartphone, AlertCircle } from 'lucide-react';
-import { usePerformanceBenchmark, BenchmarkResult } from '../utils/performanceBenchmark';
+import { 
+  Activity, 
+  Clock, 
+  TrendingUp, 
+  TrendingDown,
+  Zap, 
+  AlertTriangle, 
+  HardDrive,
+  Wifi,
+  Smartphone
+} from 'lucide-react';
+import { usePerformanceBenchmark } from '../utils/performanceBenchmark';
 
 const PerformanceTestResults: React.FC = () => {
   const { runBenchmark, isRunning, results } = usePerformanceBenchmark();
@@ -48,7 +57,7 @@ const PerformanceTestResults: React.FC = () => {
       case 'memoryUsage':
         return <HardDrive className="w-4 h-4" />;
       case 'imageLoadTime':
-        return <Image className="w-4 h-4" />;
+        return <Activity className="w-4 h-4" />;
       case 'apiResponseTime':
         return <Wifi className="w-4 h-4" />;
       case 'touchResponsiveness':
@@ -152,19 +161,11 @@ const PerformanceTestResults: React.FC = () => {
           if (!results) {
             console.warn('⚠️ Results not set, forcing fallback...');
             // Force a simple result if none was set
-            const fallbackResult = {
-              before: { LCP: 1000, FID: 60, CLS: 0.1, FCP: 800, TTFB: 200, memoryUsage: 50, renderTime: 20, imageLoadTime: 100, animationFPS: 58, cacheHitRate: 80, apiResponseTime: 80, timeToInteractive: 1000, scrollPerformance: 88, touchResponsiveness: 15 },
-              after: { LCP: 800, FID: 45, CLS: 0.05, FCP: 650, TTFB: 180, memoryUsage: 40, renderTime: 15, imageLoadTime: 70, animationFPS: 60, cacheHitRate: 85, apiResponseTime: 65, timeToInteractive: 900, scrollPerformance: 92, touchResponsiveness: 12 },
-              improvements: {},
-              overallScore: 75,
-              grade: 'B' as const
-            };
-            // This will trigger a re-render with results
             window.location.reload();
           }
         }, 2000);
         
-      } catch (timeoutError) {
+      } catch {
         console.warn('Benchmark timeout, continuing with results...');
       }
       
@@ -436,28 +437,6 @@ const PerformanceTestResults: React.FC = () => {
                       // Force create results if none exist
                       if (!results) {
                         console.log('🔄 Forcing results creation...');
-                        const forcedResult = {
-                          before: { LCP: 1000, FID: 60, CLS: 0.1, FCP: 800, TTFB: 200, memoryUsage: 50, renderTime: 20, imageLoadTime: 100, animationFPS: 58, cacheHitRate: 80, apiResponseTime: 80, timeToInteractive: 1000, scrollPerformance: 88, touchResponsiveness: 15 },
-                          after: { LCP: 800, FID: 45, CLS: 0.05, FCP: 650, TTFB: 180, memoryUsage: 40, renderTime: 15, imageLoadTime: 70, animationFPS: 60, cacheHitRate: 85, apiResponseTime: 65, timeToInteractive: 900, scrollPerformance: 92, touchResponsiveness: 12 },
-                          improvements: {
-                            LCP: { improvement: 20, status: 'good' as const },
-                            FID: { improvement: 25, status: 'good' as const },
-                            CLS: { improvement: 50, status: 'excellent' as const },
-                            FCP: { improvement: 19, status: 'good' as const },
-                            TTFB: { improvement: 10, status: 'moderate' as const },
-                            memoryUsage: { improvement: 20, status: 'good' as const },
-                            renderTime: { improvement: 25, status: 'good' as const },
-                            imageLoadTime: { improvement: 30, status: 'excellent' as const },
-                            animationFPS: { improvement: 3, status: 'moderate' as const },
-                            cacheHitRate: { improvement: 6, status: 'moderate' as const },
-                            apiResponseTime: { improvement: 19, status: 'good' as const },
-                            timeToInteractive: { improvement: 10, status: 'moderate' as const },
-                            scrollPerformance: { improvement: 5, status: 'moderate' as const },
-                            touchResponsiveness: { improvement: 20, status: 'good' as const }
-                          },
-                          overallScore: 75,
-                          grade: 'B' as const
-                        };
                         // Force a re-render by updating state
                         window.location.reload();
                       }
@@ -472,7 +451,7 @@ const PerformanceTestResults: React.FC = () => {
           ) : (
             <div className="text-center py-12">
               <div className="mb-6">
-                <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+                <AlertTriangle className="w-16 h-16 text-red-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">No Results Available</h3>
                 <p className="text-gray-400">The benchmark completed but no results were generated. Please try running the test again.</p>
               </div>

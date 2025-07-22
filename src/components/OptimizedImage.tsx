@@ -11,7 +11,6 @@ interface OptimizedImageProps {
   priority?: boolean;
   quality?: number;
   sizes?: string;
-  placeholder?: 'blur' | 'empty';
   blurDataURL?: string;
   onLoad?: () => void;
   onError?: () => void;
@@ -35,7 +34,6 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   priority = false,
   quality = 80,
   sizes = '100vw',
-  placeholder = 'blur',
   blurDataURL,
   onLoad,
   onError,
@@ -298,7 +296,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
       </AnimatePresence>
 
       {/* Performance monitoring */}
-      {process.env.NODE_ENV === 'development' && (
+      {import.meta.env.DEV && (
         <div className="absolute top-1 left-1 bg-black/50 text-white text-xs px-1 py-0.5 rounded opacity-0 hover:opacity-100 transition-opacity">
           {format?.format.toUpperCase()} • {width}x{height}
         </div>

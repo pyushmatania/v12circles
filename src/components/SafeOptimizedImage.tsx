@@ -10,8 +10,6 @@ interface SafeOptimizedImageProps {
   className?: string;
   priority?: boolean;
   quality?: number;
-  sizes?: string;
-  placeholder?: 'blur' | 'empty';
   blurDataURL?: string;
   onLoad?: () => void;
   onError?: () => void;
@@ -28,8 +26,6 @@ const SafeOptimizedImage: React.FC<SafeOptimizedImageProps> = ({
   className = '',
   priority = false,
   quality = 80,
-  sizes = '100vw',
-  placeholder = 'blur',
   blurDataURL,
   onLoad,
   onError,

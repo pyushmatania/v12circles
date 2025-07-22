@@ -41,12 +41,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuth();
   }, [mockUser]);
 
-  // Safety check for React availability - after all hooks are called
-  if (typeof React === 'undefined' || !React.useState) {
-    console.error('React is not properly loaded in AuthProvider');
-    return <div>Loading authentication...</div>;
-  }
-
   const login = async (_email: string, _password: string, rememberMe = false) => {
     setIsLoading(true);
     try {
@@ -98,13 +92,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('circles_token');
     localStorage.removeItem('circles_remember');
     
-    // Set user to null and force a re-render
-    setUser(null);
+    // Set logout timestamp for redirect handling
+    localStorage.setItem('logout_timestamp', Date.now().toString());
     
-    // Add a small delay to ensure state updates properly
-    setTimeout(() => {
-      localStorage.setItem('logout_timestamp', Date.now().toString());
-    }, 100);
+    setUser(null);
   };
 
   const updateProfile = async (updates: Partial<User>) => {
@@ -114,24 +105,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
-      setUser({ ...user, ...updates });
+      
+      const updatedUser = { ...user, ...updates };
+      setUser(updatedUser);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const resetPassword = async (_email: string) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    // In real app, send reset email
+    // Simulate password reset
+    await new Promise(resolve => setTimeout(resolve, 1000));
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const changePassword = async (_currentPassword: string, _newPassword: string) => {
-    // Simulate API call
+    // Simulate password change
     await new Promise(resolve => setTimeout(resolve, 1000));
-    // In real app, validate current password and update
   };
 
   const value: AuthContextType = {

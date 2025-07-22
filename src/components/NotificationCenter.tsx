@@ -85,7 +85,7 @@ const mockNotifications: Notification[] = generateRealNotifications();
 
 interface NotificationCenterProps {
   onClose?: () => void;
-  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search') => void;
+  setCurrentView?: (view: 'home' | 'dashboard' | 'projects' | 'community' | 'merch' | 'profile' | 'admin' | 'portfolio' | 'compare' | 'news' | 'notifications' | 'search' | 'project-detail') => void;
 }
 
 const NotificationCenter: React.FC<NotificationCenterProps> = ({ onClose, setCurrentView }) => {

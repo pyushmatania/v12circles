@@ -14,13 +14,14 @@ interface VirtualScrollConfig {
 interface VirtualScrollingProps<T> {
   items: T[];
   itemHeight: number;
+  containerHeight: number;
+  renderItem: (item: T, index: number) => React.ReactNode;
   overscan?: number;
-  buffer?: number;
-  threshold?: number;
+  onLoadMore?: () => Promise<T[]>;
+  hasMore?: boolean;
+  loading?: boolean;
   enableSmoothScrolling?: boolean;
   enableInfiniteScroll?: boolean;
-  onLoadMore?: () => Promise<T[]>;
-  renderItem: (item: T, index: number) => React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
   loadingComponent?: React.ReactNode;
@@ -28,12 +29,10 @@ interface VirtualScrollingProps<T> {
   errorComponent?: React.ReactNode;
 }
 
-const VirtualScrolling = <T extends any>({
+const VirtualScrolling = <T,>({
   items,
   itemHeight,
   overscan = 5,
-  buffer = 50,
-  threshold = 0.8,
   enableSmoothScrolling = true,
   enableInfiniteScroll = false,
   onLoadMore,
@@ -51,18 +50,7 @@ const VirtualScrolling = <T extends any>({
   const [allItems, setAllItems] = useState<T[]>(items);
   
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>();
-
-  // Configuration
-  const config: VirtualScrollConfig = {
-    itemHeight,
-    overscan,
-    buffer,
-    threshold,
-    enableSmoothScrolling,
-    enableInfiniteScroll
-  };
 
   // Calculate visible range
   const visibleRange = useMemo(() => {
@@ -127,12 +115,12 @@ const VirtualScrolling = <T extends any>({
     if (!enableInfiniteScroll || !onLoadMore || isLoading) return;
 
     const shouldLoadMore = 
-      visibleRange.endIndex > allItems.length * threshold;
+      visibleRange.endIndex > allItems.length * 0.8; // Default threshold
 
     if (shouldLoadMore) {
       loadMoreItems();
     }
-  }, [visibleRange.endIndex, allItems.length, threshold, enableInfiniteScroll, onLoadMore, isLoading]);
+  }, [visibleRange.endIndex, allItems.length, enableInfiniteScroll, onLoadMore, isLoading, loadMoreItems]);
 
   // Load more items
   const loadMoreItems = useCallback(async () => {
@@ -143,7 +131,9 @@ const VirtualScrolling = <T extends any>({
       setError(null);
 
       const newItems = await onLoadMore();
-      setAllItems(prev => [...prev, ...newItems]);
+      if (newItems && Array.isArray(newItems)) {
+        setAllItems(prev => [...prev, ...newItems]);
+      }
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Failed to load more items'));
     } finally {
@@ -168,26 +158,10 @@ const VirtualScrolling = <T extends any>({
     scrollToItem(0);
   }, [scrollToItem]);
 
-  // Scroll to bottom
-  const scrollToBottom = useCallback(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    container.scrollTo({
-      top: container.scrollHeight,
-      behavior: enableSmoothScrolling ? 'smooth' : 'auto'
-    });
-  }, [enableSmoothScrolling]);
-
   // Get item position
   const getItemPosition = useCallback((index: number) => {
     return index * itemHeight;
   }, [itemHeight]);
-
-  // Check if item is visible
-  const isItemVisible = useCallback((index: number) => {
-    return index >= visibleRange.startIndex && index <= visibleRange.endIndex;
-  }, [visibleRange]);
 
   // Total height calculation
   const totalHeight = allItems.length * itemHeight;
@@ -265,7 +239,6 @@ const VirtualScrolling = <T extends any>({
       >
         {/* Scrollable content with total height */}
         <div
-          ref={scrollRef}
           style={{
             height: totalHeight,
             position: 'relative'
@@ -359,7 +332,7 @@ const VirtualScrolling = <T extends any>({
       )}
 
       {/* Performance monitoring (development only) */}
-      {process.env.NODE_ENV === 'development' && (
+      {import.meta.env.DEV && (
         <div className="fixed top-4 left-4 bg-black/50 text-white text-xs px-2 py-1 rounded opacity-0 hover:opacity-100 transition-opacity z-50">
           Items: {allItems.length} | Visible: {visibleItems.length} | Scroll: {Math.round(scrollTop)}px
         </div>
@@ -379,7 +352,7 @@ export function useVirtualScrolling<T>(
   const [containerHeight, setContainerHeight] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { itemHeight, overscan, buffer, threshold } = config;
+  const { itemHeight, overscan } = config;
 
   // Calculate visible range
   const visibleRange = useMemo(() => {
