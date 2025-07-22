@@ -49,8 +49,13 @@ export default defineConfig({
             return 'react-vendor';
           }
           
-          // Animation libraries
-          if (id.includes('framer-motion') || id.includes('canvas-confetti')) {
+          // Framer Motion - keep it separate to avoid tree-shaking issues
+          if (id.includes('framer-motion')) {
+            return 'framer-motion';
+          }
+          
+          // Other animation libraries
+          if (id.includes('canvas-confetti')) {
             return 'animation-vendor';
           }
           

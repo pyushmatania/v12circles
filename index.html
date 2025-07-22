@@ -39,6 +39,35 @@
     <meta name="twitter:title" content="Circles - Lights, Camera, Ownership!" />
     <meta name="twitter:description" content="Lights, Camera, Ownership! Invest in movies and music. Earn perks. Back the next blockbuster. Turn your passion into ownership with Circles." />
     <meta name="twitter:image" content="/circles-logo-main.png" />
+    
+    <!-- 🚨 Health Check Script -->
+    <script>
+      // Health check to identify loading issues
+      console.log('🏥 V12 Circles Health Check Started');
+      console.log('🏥 URL:', window.location.href);
+      console.log('🏥 User Agent:', navigator.userAgent);
+      console.log('🏥 Time:', new Date().toISOString());
+      
+      // Check if root element exists
+      if (!document.getElementById('root')) {
+        console.error('🚨 Health Check Failed: Root element not found');
+        document.body.innerHTML = '<div style="color: red; padding: 20px; font-family: monospace;">🚨 Health Check Failed: Root element not found</div>';
+      } else {
+        console.log('✅ Health Check Passed: Root element found');
+      }
+      
+      // Monitor for script loading errors
+      window.addEventListener('error', function(e) {
+        if (e.target && e.target.tagName === 'SCRIPT') {
+          console.error('🚨 Script loading error:', e.target.src, e.error);
+        }
+      });
+      
+      // Monitor for module loading errors
+      window.addEventListener('unhandledrejection', function(e) {
+        console.error('🚨 Module loading error:', e.reason);
+      });
+    </script>
   </head>
   <body>
     <div id="stars" aria-hidden="true"></div>
