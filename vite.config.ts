@@ -1,55 +1,24 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import viteCompression from 'vite-plugin-compression';
-import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // Add this if deploying to a subdirectory
-  // base: '/your-repo-name/',
   plugins: [
     react(),
-    viteCompression({ algorithm: 'brotliCompress', ext: '.br' }),
-    viteCompression({ algorithm: 'gzip', ext: '.gz' }),
-    visualizer({ open: false, filename: 'dist/bundle-analysis.html' })
   ],
-  
-  // Advanced dependency optimization
-  optimizeDeps: {
-    exclude: ['lucide-react'],
-    include: [
-      'react',
-      'react-dom',
-      'framer-motion',
-      'canvas-confetti',
-      'react-dropzone',
-      'react-table'
-    ],
-    // Force pre-bundling for better performance
-    force: true
-  },
-
-  // Elite build configuration
   build: {
-    target: 'esnext',
-    minify: 'esbuild',
-    // Enable CSS code splitting for better caching
-    cssCodeSplit: true,
-    // Optimize chunk size warnings
-    chunkSizeWarningLimit: 800,
-    // Disable sourcemaps in production for smaller bundles
-    sourcemap: false,
-    
     rollupOptions: {
       output: {
-        // Advanced manual chunking strategy
         manualChunks: (id) => {
-          // Core React chunks
-          if (id.includes('react') || id.includes('react-dom')) {
+          // React and React DOM
+          if (id.includes('react') && !id.includes('react-dom')) {
+            return 'react-vendor';
+          }
+          if (id.includes('react-dom')) {
             return 'react-vendor';
           }
           
-          // Framer Motion - keep it separate to avoid tree-shaking issues
+          // Framer Motion - keep it separate and ensure it's not tree-shaken
           if (id.includes('framer-motion')) {
             return 'framer-motion';
           }
@@ -59,84 +28,47 @@ export default defineConfig({
             return 'animation-vendor';
           }
           
-          // UI and icon libraries
-          if (id.includes('lucide-react')) {
-            return 'ui-vendor';
-          }
-          
-          // Utility libraries
-          if (id.includes('react-dropzone') || id.includes('react-table')) {
-            return 'utils-vendor';
-          }
-          
-          // Admin-specific chunks (lazy load)
+          // Admin-related chunks
           if (id.includes('admin') || id.includes('Admin')) {
             return 'admin-vendor';
           }
           
-          // Project-specific chunks
-          if (id.includes('Project') || id.includes('project')) {
+          // Dashboard-related chunks
+          if (id.includes('dashboard') || id.includes('Dashboard')) {
+            return 'dashboard-vendor';
+          }
+          
+          // Project-related chunks
+          if (id.includes('project') || id.includes('Project')) {
             return 'project-vendor';
           }
           
-          // Dashboard chunks
-          if (id.includes('Dashboard') || id.includes('dashboard')) {
-            return 'dashboard-vendor';
+          // Default vendor chunk for other dependencies
+          if (id.includes('node_modules')) {
+            return 'vendor';
           }
         },
-        
-        // Optimized file naming for better caching
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
-          const name = assetInfo.name;
-          if (!name) return 'assets/[ext]/[name]-[hash].[ext]';
-          
-          const info = name.split('.');
-          const ext = info[info.length - 1];
-          
-          // Optimize image assets
-          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(name)) {
-            return `assets/images/[name]-[hash].[ext]`;
-          }
-          
-          // Optimize CSS assets
-          if (ext === 'css') {
-            return `assets/css/[name]-[hash].[ext]`;
-          }
-          
-          // Default asset handling
-          return `assets/[ext]/[name]-[hash].[ext]`;
-        }
       },
     },
+    chunkSizeWarningLimit: 1000,
   },
-
-  // Development optimizations
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'framer-motion',
+      'lucide-react',
+      'canvas-confetti'
+    ],
+    exclude: ['@vite/client', '@vite/env']
+  },
   server: {
-    // Enable HMR with optimized settings
-    hmr: {
-      overlay: false // Disable error overlay for cleaner dev experience
-    },
-    headers: {
-      // Cache images for 1 year
-      'Cache-Control': 'public, max-age=31536000, immutable',
-    },
+    port: 3000,
+    host: true,
   },
-
-  // CSS optimizations
-  css: {
-    // Enable CSS modules for better scoping
-    modules: {
-      localsConvention: 'camelCase'
-    }
+  preview: {
+    port: 3000,
+    host: true,
   },
+})
 
-  // Performance optimizations
-  esbuild: {
-    // Remove console logs in production
-    drop: ['console', 'debugger'],
-    // Optimize for modern browsers
-    target: 'esnext'
-  }
-});

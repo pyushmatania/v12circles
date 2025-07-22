@@ -13,9 +13,6 @@ import { initializeScrollRestoration } from './utils/scrollUtils';
 // 🚀 Safe Performance Integration (non-blocking)
 import { performanceIntegration } from './utils/performanceIntegration';
 
-// 🚨 NUCLEAR FRAMER MOTION FALLBACK - Import this first to ensure it's available
-import './utils/framerMotionFallback';
-
 // 🚨 GLOBAL ERROR HANDLING
 window.addEventListener('error', (event) => {
   console.error('🚨 Global Error:', event.error);

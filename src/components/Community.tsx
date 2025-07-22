@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from '../utils/framerMotionFallback';
+import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { 
   MessageCircle, 
   Heart, 
