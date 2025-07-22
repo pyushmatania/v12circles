@@ -88,7 +88,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
 
     // For external URLs (TMDB, etc.), return as is to preserve quality
     if (originalSrc.includes('tmdb.org') || originalSrc.includes('image.tmdb.org')) {
-      return originalSrc;
+    return originalSrc;
     }
 
     // For local images, apply optimization
@@ -241,11 +241,11 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
       <AnimatePresence>
         {imageSrc && (
           <motion.img
-            ref={imgRef}
+        ref={imgRef}
             src={imageSrc}
-            alt={alt}
-            width={width}
-            height={height}
+        alt={alt}
+        width={width}
+        height={height}
             sizes={responsiveSizes}
             loading={priority ? 'eager' : loading}
             decoding={decoding}

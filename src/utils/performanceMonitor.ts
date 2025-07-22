@@ -59,7 +59,7 @@ class RealUserMonitoring {
   private observers: PerformanceObserver[] = [];
   private config: PerformanceConfig;
   private batchQueue: any[] = [];
-  private flushTimer: NodeJS.Timeout | null = null;
+  private flushTimer: number | null = null;
   private sessionStartTime: number;
   private pageStartTime: number;
   private frameCount = 0;
@@ -501,6 +501,15 @@ class RealUserMonitoring {
 
   // Service Communication
   private sendToMonitoringService(data: any): void {
+    // Only send metrics in development or if endpoint is configured
+    if (!this.config.endpoint || this.config.endpoint === '/api/metrics') {
+      // Log metrics to console in development
+      if (import.meta.env.DEV) {
+        console.log('[Performance] Metrics:', data);
+      }
+      return;
+    }
+
     fetch(this.config.endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

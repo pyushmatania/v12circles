@@ -61,6 +61,12 @@ class SafePerformanceIntegration {
 
   private async initializeMonitoring(): Promise<void> {
     try {
+      // Disable performance monitoring in production to avoid API errors
+      if (import.meta.env.PROD) {
+        console.log('[V12] Performance monitoring disabled in production');
+        return;
+      }
+      
       const { performanceMonitor } = await import('./performanceMonitor');
       console.log('[V12] Performance monitoring initialized');
     } catch (error) {
