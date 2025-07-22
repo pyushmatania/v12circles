@@ -21,12 +21,12 @@ class SafePerformanceIntegration {
     this.config = {
       enabled: true, // Enable in both dev and production for testing
       features: {
-        serviceWorker: true, // Enable in both dev and production
+        serviceWorker: import.meta.env.PROD, // Only enable in production
         imageOptimization: true, // Enable in both dev and production
         caching: true, // Enable in both dev and production
         virtualScrolling: true, // Enable in both dev and production
         mobileOptimizations: true, // Enable in both dev and production
-        monitoring: true // Enable in both dev and production
+        monitoring: false // Disabled to prevent API errors
       }
     };
   }
@@ -85,7 +85,19 @@ class SafePerformanceIntegration {
 
   private async initializeServiceWorker(): Promise<void> {
     try {
+      // Only register Service Worker in production
+      if (!import.meta.env.PROD) {
+        console.log('[V12] Service Worker disabled in development');
+        return;
+      }
+
       if ('serviceWorker' in navigator) {
+        // Unregister any existing Service Workers first
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        for (const registration of registrations) {
+          await registration.unregister();
+        }
+
         const registration = await navigator.serviceWorker.register('/sw.js');
         console.log('[V12] Service Worker registered:', registration);
       }

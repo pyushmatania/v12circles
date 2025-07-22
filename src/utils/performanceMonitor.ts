@@ -501,22 +501,15 @@ class RealUserMonitoring {
 
   // Service Communication
   private sendToMonitoringService(data: any): void {
-    // Only send metrics in development or if endpoint is configured
-    if (!this.config.endpoint || this.config.endpoint === '/api/metrics') {
-      // Log metrics to console in development
-      if (import.meta.env.DEV) {
-        console.log('[Performance] Metrics:', data);
-      }
+    // Disable API calls in production to prevent 404 errors
+    if (import.meta.env.PROD) {
       return;
     }
 
-    fetch(this.config.endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).catch(error => {
-      console.warn('[Performance] Failed to send metrics:', error);
-    });
+    // Only send metrics in development
+    if (import.meta.env.DEV) {
+      console.log('[Performance] Metrics:', data);
+    }
   }
 
   private sendToErrorTracking(data: any): void {
