@@ -1054,6 +1054,9 @@ const Community: React.FC = () => {
   // Static data integration - no API calls
   const [mergedMusicArtists, setMergedMusicArtists] = useState<RealCommunityItem[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  
+  // Immediate loading state
+  const [isLoading, setIsLoading] = useState(true);
 
 
   
@@ -1086,7 +1089,8 @@ const Community: React.FC = () => {
     { id: 20, user: 'Community Bot', message: '📊 POLL RESULTS: Best Movie Snack?\n🍿 Popcorn - 67%\n🍫 Chocolate - 18%\n🥤 Soda - 10%\n🍕 Pizza - 5%\n\nPopcorn jeet gaya! 🎉', time: '4:10 PM', avatar: '🤖', likes: 0, reactions: [], mentions: [], isBot: true, pollResults: { question: 'Best Movie Snack?', results: { '🍿 Popcorn': 67, '🍫 Chocolate': 18, '🥤 Soda': 10, '🍕 Pizza': 5 } } }
   ];
 
-  const [hubChatMessages, setHubChatMessages] = useState<ChatMessage[]>(initialHubChatMessages);
+  const [hubChatMessages, setHubChatMessages] = useState<ChatMessage[]>([]);
+  const [isChatLoading, setIsChatLoading] = useState(true);
 
 
   const [hubChatInput, setHubChatInput] = useState('');
@@ -1966,12 +1970,28 @@ const Community: React.FC = () => {
     setTouchEnd(null);
   }, [touchStart, touchEnd, currentPage, totalPages]);
 
-  // Optimized music artist data processing - memoized to prevent unnecessary re-processing
+  // Immediate data loading - show content instantly
+  const immediateMusicArtists = useMemo(() => {
+    if (communityData.musicArtists.length === 0) return [];
+    
+    // Show first 20 artists immediately with basic data
+    return communityData.musicArtists.slice(0, 20).map(artist => ({
+      ...artist,
+      avatar: artist.avatar.includes('tmdb.org') || artist.avatar.includes('placeholder') || !artist.avatar
+        ? `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop&crop=face&auto=format&q=80`
+        : artist.avatar,
+      cover: artist.cover.includes('tmdb.org') || artist.cover.includes('placeholder') || !artist.cover
+        ? `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop&auto=format&q=80`
+        : artist.cover
+    }));
+  }, [communityData.musicArtists]);
+
+  // Enhanced data processing - runs in background with reduced initial load
   const processedMusicArtists = useMemo(() => {
     if (communityData.musicArtists.length === 0) return [];
     
-    // Only process first 50 artists for better performance
-    const artistsToProcess = communityData.musicArtists.slice(0, 50);
+    // Only process first 20 artists initially for faster loading
+    const artistsToProcess = communityData.musicArtists.slice(0, 20);
     
     // Cache Spotify data lookups to avoid repeated function calls
     const spotifyDataCache = new Map();
@@ -2011,11 +2031,35 @@ const Community: React.FC = () => {
     });
   }, [communityData.musicArtists]);
 
-  // Update merged music artists when processed data changes
+  // Immediate loading - show content instantly
   useEffect(() => {
-    setMergedMusicArtists(processedMusicArtists);
-    setIsDataLoaded(true);
+    setMergedMusicArtists(immediateMusicArtists);
+    setIsLoading(false);
+  }, [immediateMusicArtists]);
+
+  // Enhanced data loading - runs in background
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMergedMusicArtists(processedMusicArtists);
+      setIsDataLoaded(true);
+    }, 100); // Small delay to ensure immediate content shows first
+    
+    return () => clearTimeout(timer);
   }, [processedMusicArtists]);
+
+  // Immediate chat loading
+  useEffect(() => {
+    // Load first 5 messages immediately
+    setHubChatMessages(initialHubChatMessages.slice(0, 5));
+    setIsChatLoading(false);
+    
+    // Load remaining messages with a small delay
+    const timer = setTimeout(() => {
+      setHubChatMessages(initialHubChatMessages);
+    }, 200);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Reset page when category changes with debouncing
   useEffect(() => {
@@ -2867,7 +2911,7 @@ const Community: React.FC = () => {
                   <div className="flex flex-col items-center gap-2">
                     <span>Curated collection with real Spotify data</span>
                     {!isDataLoaded && (
-                      <span className="text-blue-500 text-xs">(Processing music artists...)</span>
+                      <span className="text-blue-500 text-xs">(Enhancing with Spotify data...)</span>
                     )}
                     {isDataLoaded && (
                       <span className="text-green-500 text-xs">✓ Real Spotify images loaded</span>
@@ -2877,6 +2921,14 @@ const Community: React.FC = () => {
                   'Tap to join a community'
                 )}
               </p>
+              
+              {/* Scroll indicator */}
+              <div className="mt-4 text-center">
+                <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+                  <span>Scroll to explore more</span>
+                  <div className="w-3 h-3 border border-gray-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              </div>
             </div>
                         {/* Carousel-style Arrow Navigation + Data Grid Wrapper */}
             <div className="relative max-w-6xl mx-auto">
@@ -2955,8 +3007,8 @@ const Community: React.FC = () => {
                                      onTouchMove={isMobile ? handleTouchMove : undefined}
                                      onTouchEnd={isMobile ? handleTouchEnd : undefined}
                 >
-                  {/* Loading state - only show if no items available */}
-                  {selectedCategory === 'musicArtist' && !isDataLoaded && paginatedItems.length === 0 && (
+                  {/* Loading state - show immediately while data loads */}
+                  {isLoading && paginatedItems.length === 0 && (
                     Array.from({ length: isMobile ? 9 : 12 }).map((_, _index) => (
                       <div key={`loading-${_index}`} className="flex flex-col items-center justify-center gap-3 min-h-[200px] md:min-h-[300px]">
                         <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-gray-700 to-gray-600 animate-pulse" />
@@ -2966,8 +3018,16 @@ const Community: React.FC = () => {
                     ))
                   )}
 
+                  {/* Enhanced loading state for music artists */}
+                  {selectedCategory === 'musicArtist' && !isDataLoaded && paginatedItems.length > 0 && (
+                    <div className="col-span-full flex items-center justify-center gap-2 py-4">
+                      <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+                      <span className="text-green-500 text-sm">Enhancing with Spotify data...</span>
+                    </div>
+                  )}
+
                   {/* General loading state for empty categories */}
-                  {paginatedItems.length === 0 && isDataLoaded && (
+                  {paginatedItems.length === 0 && !isLoading && (
                     <div className="col-span-full flex flex-col items-center justify-center gap-4 min-h-[300px] md:min-h-[400px]">
                       <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
                       <div className="text-center">
@@ -3994,12 +4054,20 @@ const Community: React.FC = () => {
                   
                   {/* Chat Messages */}
                   <div className="hub-chat-messages h-[calc(100vh-200px)] overflow-y-auto p-6 pb-24 space-y-4 scrollbar-thin scrollbar-thumb-purple-500/20 scrollbar-track-transparent">
+                    {/* Loading state */}
+                    {isChatLoading && (
+                      <div className="flex items-center justify-center gap-2 py-8">
+                        <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                        <span className="text-purple-400 text-sm">Loading chat messages...</span>
+                      </div>
+                    )}
+                    
                     {hubChatMessages.map((msg, index) => (
                       <motion.div
                         key={msg.id}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
+                        transition={{ delay: Math.min(index * 0.05, 0.5) }}
                         className={`flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors group ${msg.isOfficial ? 'border-l-4 border-purple-500' : ''} ${msg.isBot ? 'border-l-4 border-blue-500' : ''}`}
                       >
                         <div className="w-10 h-10 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center text-lg overflow-hidden">
@@ -6431,12 +6499,20 @@ const Community: React.FC = () => {
                            
                            {/* Chat Messages */}
                            <div className="hub-chat-messages h-[calc(100vh-200px)] overflow-y-auto p-6 pb-24 space-y-4 scrollbar-thin scrollbar-thumb-purple-500/20 scrollbar-track-transparent">
+                             {/* Loading state */}
+                             {isChatLoading && (
+                               <div className="flex items-center justify-center gap-2 py-8">
+                                 <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+                                 <span className="text-purple-400 text-sm">Loading chat messages...</span>
+                               </div>
+                             )}
+                             
                              {hubChatMessages.map((msg, index) => (
                                <motion.div
                                  key={msg.id}
                                  initial={{ opacity: 0, x: -20 }}
                                  animate={{ opacity: 1, x: 0 }}
-                                 transition={{ delay: index * 0.1 }}
+                                 transition={{ delay: Math.min(index * 0.05, 0.5) }}
                                  className={`flex items-start gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors group ${msg.isOfficial ? 'border-l-4 border-purple-500' : ''} ${msg.isBot ? 'border-l-4 border-blue-500' : ''}`}
                                >
                                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center text-lg overflow-hidden">

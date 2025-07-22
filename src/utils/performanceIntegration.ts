@@ -19,14 +19,14 @@ class SafePerformanceIntegration {
 
   constructor() {
     this.config = {
-      enabled: import.meta.env.DEV ? false : true, // Disabled in dev by default, enabled in production
+      enabled: true, // Enable in both dev and production for testing
       features: {
-        serviceWorker: !import.meta.env.DEV, // Only in production
-        imageOptimization: !import.meta.env.DEV, // Only in production
-        caching: !import.meta.env.DEV, // Only in production
-        virtualScrolling: !import.meta.env.DEV, // Only in production
-        mobileOptimizations: !import.meta.env.DEV, // Only in production
-        monitoring: !import.meta.env.DEV // Only in production
+        serviceWorker: true, // Enable in both dev and production
+        imageOptimization: true, // Enable in both dev and production
+        caching: true, // Enable in both dev and production
+        virtualScrolling: true, // Enable in both dev and production
+        mobileOptimizations: true, // Enable in both dev and production
+        monitoring: true // Enable in both dev and production
       }
     };
   }

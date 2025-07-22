@@ -22,7 +22,6 @@ export default defineConfig({
       'react-dom',
       'framer-motion',
       'canvas-confetti',
-      'gsap',
       'react-dropzone',
       'react-table'
     ],
@@ -51,7 +50,7 @@ export default defineConfig({
           }
           
           // Animation libraries
-          if (id.includes('framer-motion') || id.includes('gsap') || id.includes('canvas-confetti')) {
+          if (id.includes('framer-motion') || id.includes('canvas-confetti')) {
             return 'animation-vendor';
           }
           

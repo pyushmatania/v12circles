@@ -25,6 +25,9 @@ import { useSafePerformance } from './utils/performanceIntegration';
 import PerformanceToggle from './components/PerformanceToggle';
 import PerformanceTestButton from './components/PerformanceTestButton';
 
+// 🌐 Network Status
+import { useNetworkStatus } from './utils/networkStatus';
+
 // 🚀 Import components directly for instant loading
 import Dashboard from './components/Dashboard';
 import ProjectCatalog from './components/ProjectCatalog';
@@ -69,6 +72,9 @@ function AppContent() {
   
   // 🚀 Safe Performance Integration
   const { isEnabled: performanceEnabled, initialize: initializePerformance } = useSafePerformance();
+  
+  // 🌐 Network Status
+  const isOnline = useNetworkStatus();
 
   // 🚀 Memoized constants for performance
   const protectedViews = useMemo(() => ['profile', 'portfolio'] as const, []);
@@ -140,7 +146,12 @@ function AppContent() {
     
     setPreviousView(currentView);
     setCurrentView(view);
-  }, [handleAuthRequired, toast, currentView, protectedViews, saveCurrentViewState]);
+    
+    // Scroll to top for new views (except when returning to previous view)
+    if (view !== previousView) {
+      window.scrollTo(0, 0);
+    }
+  }, [handleAuthRequired, toast, currentView, previousView, protectedViews, saveCurrentViewState]);
 
   // 🚀 Optimized project selection handler
   const handleProjectSelect = useCallback((project: Project, tab?: ProjectDetailTab) => {
@@ -345,6 +356,23 @@ function App() {
     console.error('React is not properly loaded');
     return <div>Loading application...</div>;
   }
+
+  // 🎯 Scroll to top on initial load
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
+    // Also handle browser back/forward navigation
+    const handlePopState = () => {
+      window.scrollTo(0, 0);
+    };
+    
+    window.addEventListener('popstate', handlePopState);
+    
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
 
   return (
     <ErrorBoundary>
