@@ -56,7 +56,7 @@ class NetworkStatusManager {
   public async checkConnectivity(): Promise<boolean> {
     try {
       // Try to fetch a small resource to test connectivity
-      const response = await fetch('/favicon.ico', { 
+      const response = await fetch('/favicon_io/favicon.ico', { 
         method: 'HEAD',
         cache: 'no-cache'
       });
