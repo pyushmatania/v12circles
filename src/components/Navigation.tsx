@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState, useCallback, useEffect, useMemo, memo } from 'react';
-import { motion } from 'framer-motion';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from '../utils/framerMotionFallback';
 import { 
   Home, 
   Film, 
