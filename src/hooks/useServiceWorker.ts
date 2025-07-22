@@ -281,7 +281,7 @@ export const useBackgroundSync = () => {
   const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
-    setIsSupported('serviceWorker' in navigator && 'sync' in (window.ServiceWorkerRegistration.prototype as any));
+    setIsSupported('serviceWorker' in navigator && 'sync' in (window.ServiceWorkerRegistration.prototype as ServiceWorkerRegistration & { sync?: unknown }));
   }, []);
 
   const registerBackgroundSync = useCallback(async (tag: string) => {
@@ -289,7 +289,7 @@ export const useBackgroundSync = () => {
 
     try {
       const registration = await navigator.serviceWorker.ready;
-      await (registration as any).sync.register(tag);
+      await (registration as ServiceWorkerRegistration & { sync: { register(tag: string): Promise<void> } }).sync.register(tag);
       setIsRegistered(true);
       return true;
     } catch (error) {

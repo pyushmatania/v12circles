@@ -1,28 +1,12 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 
-interface MobileOptimizationStrategy {
-  // Touch performance
-  touch: {
-    fastClick: boolean; // 300ms delay removal
-    passiveListeners: boolean; // Scroll performance
-    touchCallout: boolean; // iOS long-press menu
-    userSelect: boolean; // Text selection optimization
-  };
-  
-  // Network optimization
-  network: {
-    adaptiveLoading: boolean; // Adjust based on connection
-    saveData: boolean; // Respect save-data header
-    backgroundSync: boolean; // Background data sync
-    preloadStrategy: 'conservative' | 'aggressive';
-  };
-  
-  // Battery optimization
-  battery: {
-    reducedMotion: boolean; // Respect prefers-reduced-motion
-    frameRateLimit: boolean; // Limit animations on low battery
-    backgroundThrottling: boolean; // Throttle when not visible
-  };
+interface NetworkInformation {
+  effectiveType: string;
+  downlink: number;
+  rtt: number;
+  saveData: boolean;
+  addEventListener: (event: string, listener: () => void) => void;
+  removeEventListener: (event: string, listener: () => void) => void;
 }
 
 interface NetworkInfo {
@@ -113,22 +97,26 @@ export const useMobileOptimizations = (): MobileOptimizations => {
 
     const updateNetworkInfo = () => {
       if ('connection' in navigator) {
-        const connection = (navigator as any).connection;
-        setNetworkInfo({
-          effectiveType: connection.effectiveType || '4g',
-          downlink: connection.downlink || 10,
-          rtt: connection.rtt || 50,
-          saveData: connection.saveData || false
-        });
+        const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+        if (connection) {
+          setNetworkInfo({
+            effectiveType: connection.effectiveType || '4g',
+            downlink: connection.downlink || 10,
+            rtt: connection.rtt || 50,
+            saveData: connection.saveData || false
+          });
+        }
       }
     };
 
     updateNetworkInfo();
 
     if ('connection' in navigator) {
-      const connection = (navigator as any).connection;
-      connection.addEventListener('change', updateNetworkInfo);
-      return () => connection.removeEventListener('change', updateNetworkInfo);
+      const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+      if (connection) {
+        connection.addEventListener('change', updateNetworkInfo);
+        return () => connection.removeEventListener('change', updateNetworkInfo);
+      }
     }
   }, []);
 
@@ -139,7 +127,7 @@ export const useMobileOptimizations = (): MobileOptimizations => {
     const updateBatteryInfo = async () => {
       if ('getBattery' in navigator) {
         try {
-          const battery = await (navigator as any).getBattery();
+          const battery = await (navigator as Navigator & { getBattery(): Promise<BatteryInfo> }).getBattery();
           setBatteryInfo({
             level: battery.level,
             charging: battery.charging,

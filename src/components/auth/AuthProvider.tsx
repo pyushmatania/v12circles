@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuth();
   }, [mockUser]);
 
-  const login = async (_email: string, _password: string, rememberMe = false) => {
+  const login = async (email: string, password: string, rememberMe = false) => {
     setIsLoading(true);
     try {
       // Simulate API call
@@ -113,14 +113,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const resetPassword = async (_email: string) => {
-    // Simulate password reset
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  const resetPassword = async (email: string) => {
+    try {
+      setIsLoading(true);
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error('Failed to send password reset email:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const changePassword = async (_currentPassword: string, _newPassword: string) => {
-    // Simulate password change
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  const changePassword = async (currentPassword: string, newPassword: string) => {
+    try {
+      setIsLoading(true);
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error('Failed to change password:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const value: AuthContextType = {

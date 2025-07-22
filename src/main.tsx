@@ -260,7 +260,7 @@ try {
 
 // 🎯 Initialize scroll restoration
 try {
-  const cleanupScrollRestoration = initializeScrollRestoration();
+  initializeScrollRestoration();
   console.log('✅ Scroll restoration initialized');
 } catch (error) {
   console.error('🚨 Scroll restoration error:', error);
