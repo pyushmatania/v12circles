@@ -1,0 +1,1067 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar utilities */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply transition-colors duration-300;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Dark theme (default) with enhanced cycling shimmer effects */
+  :root {
+    --bg-primary: #121212;
+    --bg-secondary: #1a1a1a;
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+  }
+
+  /* Light theme */
+  .light {
+    --bg-primary: #fdf2f8;
+    --bg-secondary: #fce7f3;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Enhanced Dark theme cycling gradient effects - 2.2 second intervals */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background: #1a1333;
+    will-change: opacity;
+    transition: none !important;
+  }
+
+  /* Dark Theme Gradient 0: Purple-Blue Shimmer */
+  [data-gradient="0"]:not(.light) body::before {
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(123, 47, 189, 0.3) 0%, transparent 70%),
+      radial-gradient(circle at 80% 70%, rgba(47, 128, 237, 0.25) 0%, transparent 70%),
+      radial-gradient(circle at 60% 10%, rgba(139, 92, 246, 0.2) 0%, transparent 60%),
+      radial-gradient(circle at 30% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 65%),
+      #121212;
+    animation: shimmerMove1 8s ease-in-out infinite;
+  }
+
+  /* Dark Theme Gradient 1: Teal-Green Aurora */
+  [data-gradient="1"]:not(.light) body::before {
+    background: 
+      linear-gradient(45deg, rgba(0, 245, 160, 0.3) 0%, rgba(0, 217, 245, 0.25) 100%),
+      radial-gradient(circle at 60% 40%, rgba(0, 245, 160, 0.2) 0%, transparent 70%),
+      radial-gradient(circle at 30% 80%, rgba(6, 182, 212, 0.25) 0%, transparent 60%),
+      radial-gradient(circle at 70% 20%, rgba(20, 184, 166, 0.15) 0%, transparent 65%),
+      #121212;
+    animation: shimmerMove2 8s ease-in-out infinite;
+  }
+
+  /* Dark Theme Gradient 2: Golden-Orange Glow */
+  [data-gradient="2"]:not(.light) body::before {
+    background: 
+      conic-gradient(from 0deg at 50% 50%, rgba(255, 165, 0, 0.3) 0deg, rgba(255, 107, 0, 0.25) 180deg, rgba(255, 165, 0, 0.3) 360deg),
+      radial-gradient(circle at 30% 60%, rgba(255, 165, 0, 0.2) 0%, transparent 70%),
+      radial-gradient(circle at 70% 20%, rgba(251, 146, 60, 0.25) 0%, transparent 60%),
+      radial-gradient(circle at 10% 90%, rgba(245, 101, 101, 0.15) 0%, transparent 65%),
+      #121212;
+    animation: shimmerMove3 8s ease-in-out infinite;
+  }
+
+  /* Dark Theme Gradient 3: Silver-White Sparkle */
+  [data-gradient="3"]:not(.light) body::before {
+    background: 
+      linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(224, 224, 224, 0.25) 100%),
+      radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 70%),
+      radial-gradient(circle at 20% 70%, rgba(248, 250, 252, 0.25) 0%, transparent 60%),
+      radial-gradient(circle at 90% 10%, rgba(226, 232, 240, 0.15) 0%, transparent 65%),
+      #121212;
+    animation: shimmerMove4 8s ease-in-out infinite;
+  }
+
+  /* Dark Theme Gradient 4: Solar Flare */
+  [data-gradient="4"]:not(.light) body::before {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(251, 113, 133, 0.3) 0%, transparent 70%),
+      radial-gradient(circle at 80% 70%, rgba(253, 186, 116, 0.25) 0%, transparent 70%),
+      radial-gradient(circle at 60% 10%, rgba(255, 107, 107, 0.2) 0%, transparent 60%),
+      radial-gradient(circle at 30% 80%, rgba(249, 115, 22, 0.15) 0%, transparent 65%),
+      #121212;
+    animation: shimmerMove1 8s ease-in-out infinite;
+  }
+
+  /* Enhanced floating particles overlay for dark theme */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 1;
+    background: none;
+    will-change: opacity;
+    transition: none !important;
+  }
+
+  /* Dark Theme Particles - Gradient 0: Purple-Blue */
+  [data-gradient="0"]:not(.light) body::after {
+    opacity: 0.3;
+    background-image: 
+      radial-gradient(circle at 15% 25%, rgba(123, 47, 189, 0.6) 2px, transparent 2px),
+      radial-gradient(circle at 85% 75%, rgba(47, 128, 237, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 45% 15%, rgba(139, 92, 246, 0.55) 1px, transparent 1px),
+      radial-gradient(circle at 25% 85%, rgba(168, 85, 247, 0.45) 2px, transparent 2px),
+      radial-gradient(circle at 75% 45%, rgba(99, 102, 241, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 55% 65%, rgba(147, 51, 234, 0.4) 1px, transparent 1px);
+    background-size: 120px 120px, 80px 80px, 150px 150px, 100px 100px, 90px 90px, 110px 110px;
+    animation: particleFloat1 25s linear infinite;
+  }
+
+  /* Dark Theme Particles - Gradient 1: Teal-Green */
+  [data-gradient="1"]:not(.light) body::after {
+    opacity: 0.3;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(0, 245, 160, 0.6) 2px, transparent 2px),
+      radial-gradient(circle at 80% 70%, rgba(0, 217, 245, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 50% 10%, rgba(6, 182, 212, 0.55) 1px, transparent 1px),
+      radial-gradient(circle at 10% 80%, rgba(20, 184, 166, 0.45) 2px, transparent 2px),
+      radial-gradient(circle at 90% 40%, rgba(34, 197, 94, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 60% 60%, rgba(16, 185, 129, 0.4) 1px, transparent 1px);
+    background-size: 110px 110px, 85px 85px, 140px 140px, 95px 95px, 105px 105px, 125px 125px;
+    animation: particleFloat2 22s linear infinite;
+  }
+
+  /* Dark Theme Particles - Gradient 2: Golden-Orange */
+  [data-gradient="2"]:not(.light) body::after {
+    opacity: 0.3;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(255, 165, 0, 0.6) 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, rgba(255, 107, 0, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 45% 5%, rgba(251, 146, 60, 0.55) 1px, transparent 1px),
+      radial-gradient(circle at 5% 75%, rgba(245, 101, 101, 0.45) 2px, transparent 2px),
+      radial-gradient(circle at 85% 35%, rgba(249, 115, 22, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 65% 55%, rgba(234, 88, 12, 0.4) 1px, transparent 1px);
+    background-size: 100px 100px, 130px 130px, 75px 75px, 115px 115px, 95px 95px, 135px 135px;
+    animation: particleFloat3 20s linear infinite;
+  }
+
+  /* Dark Theme Particles - Gradient 3: Silver-White */
+  [data-gradient="3"]:not(.light) body::after {
+    opacity: 0.3;
+    background-image: 
+      radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.6) 2px, transparent 2px),
+      radial-gradient(circle at 70% 80%, rgba(224, 224, 224, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 50% 50%, rgba(248, 250, 252, 0.55) 1px, transparent 1px),
+      radial-gradient(circle at 15% 70%, rgba(241, 245, 249, 0.45) 2px, transparent 2px),
+      radial-gradient(circle at 85% 30%, rgba(226, 232, 240, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 40% 85%, rgba(203, 213, 225, 0.4) 1px, transparent 1px);
+    background-size: 105px 105px, 125px 125px, 85px 85px, 145px 145px, 90px 90px, 115px 115px;
+    animation: particleFloat4 18s linear infinite;
+  }
+
+  /* Dark Theme Particles - Gradient 4: Solar Flare */
+  [data-gradient="4"]:not(.light) body::after {
+    opacity: 0.3;
+    background-image:
+      radial-gradient(circle at 15% 25%, rgba(251, 113, 133, 0.6) 2px, transparent 2px),
+      radial-gradient(circle at 85% 75%, rgba(253, 186, 116, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 45% 15%, rgba(249, 115, 22, 0.55) 1px, transparent 1px),
+      radial-gradient(circle at 25% 85%, rgba(244, 63, 94, 0.45) 2px, transparent 2px),
+      radial-gradient(circle at 75% 45%, rgba(255, 159, 28, 0.5) 1.5px, transparent 1.5px),
+      radial-gradient(circle at 55% 65%, rgba(239, 68, 68, 0.4) 1px, transparent 1px);
+    background-size: 120px 120px, 80px 80px, 150px 150px, 100px 100px, 90px 90px, 110px 110px;
+    animation: particleFloat1 25s linear infinite;
+  }
+
+  /* Enhanced light theme body background - 5 Cycling Gradient Themes */
+  .light body::before {
+    background: #e0e7ff;
+  }
+
+  .light body::after {
+    display: none;
+  }
+
+  .light body {
+    transition: background 2.2s ease-in-out;
+    background: linear-gradient(to bottom right, #fffaf0, #f1f9ff);
+  }
+
+  /* Gradient Theme 0 - Aurora Borealis */
+  .light[data-gradient="0"] body {
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(34, 197, 94, 0.18) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 30% 70%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, 
+        rgba(240, 253, 244, 0.95) 0%,
+        rgba(239, 246, 255, 0.9) 25%,
+        rgba(245, 243, 255, 0.85) 50%,
+        rgba(240, 249, 255, 0.9) 75%,
+        rgba(248, 250, 252, 0.95) 100%
+      );
+    background-attachment: fixed;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  }
+
+  /* Gradient Theme 1 - Sunset Dreams */
+  .light[data-gradient="1"] body {
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(251, 146, 60, 0.18) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(239, 68, 68, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 30% 70%, rgba(245, 101, 101, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, 
+        rgba(255, 251, 235, 0.95) 0%,
+        rgba(254, 242, 242, 0.9) 25%,
+        rgba(253, 242, 248, 0.85) 50%,
+        rgba(255, 228, 230, 0.9) 75%,
+        rgba(255, 245, 245, 0.95) 100%
+      );
+    background-attachment: fixed;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  }
+
+  /* Gradient Theme 2 - Ocean Depths */
+  .light[data-gradient="2"] body {
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.18) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 30% 70%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, 
+        rgba(240, 249, 255, 0.95) 0%,
+        rgba(239, 246, 255, 0.9) 25%,
+        rgba(238, 242, 255, 0.85) 50%,
+        rgba(235, 245, 255, 0.9) 75%,
+        rgba(248, 250, 252, 0.95) 100%
+      );
+    background-attachment: fixed;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  }
+
+  /* Gradient Theme 3 - Mystic Forest */
+  .light[data-gradient="3"] body {
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(34, 197, 94, 0.18) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(101, 163, 13, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(22, 163, 74, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 30% 70%, rgba(132, 204, 22, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, 
+        rgba(240, 253, 244, 0.95) 0%,
+        rgba(247, 254, 231, 0.9) 25%,
+        rgba(236, 253, 245, 0.85) 50%,
+        rgba(240, 253, 250, 0.9) 75%,
+        rgba(248, 250, 252, 0.95) 100%
+      );
+    background-attachment: fixed;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  }
+
+  /* Gradient Theme 4 - Solar Flare */
+  .light[data-gradient="4"] body {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(251, 113, 133, 0.18) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(253, 186, 116, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(249, 115, 22, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 30% 70%, rgba(239, 68, 68, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg,
+        rgba(255, 241, 242, 0.95) 0%,
+        rgba(255, 237, 213, 0.9) 25%,
+        rgba(254, 215, 170, 0.85) 50%,
+        rgba(254, 226, 226, 0.9) 75%,
+        rgba(255, 245, 245, 0.95) 100%
+      );
+    background-attachment: fixed;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  }
+
+  /* Theme-aware backgrounds */
+  .bg-theme-primary {
+    background-color: var(--bg-primary);
+  }
+
+  .bg-theme-secondary {
+    background-color: var(--bg-secondary);
+  }
+
+  .text-theme-primary {
+    color: var(--text-primary);
+  }
+
+  .text-theme-secondary {
+    color: var(--text-secondary);
+  }
+
+  /* Light theme overrides */
+  .light {
+    .bg-black { @apply bg-pink-50; }
+    .bg-gray-900 { @apply bg-pink-50; }
+    .text-white { @apply text-gray-900; }
+    .text-gray-300 { @apply text-gray-600; }
+    
+    /* Enhanced gradient backgrounds for light theme */
+    .bg-gradient-to-br.from-black { 
+      background: linear-gradient(to bottom right, 
+        #ffffff 0%, 
+        #f8fafc 25%, 
+        #f1f5f9 50%, 
+        #e2e8f0 75%, 
+        #cbd5e1 100%
+      ) !important; 
+    }
+    .bg-gradient-to-br.to-black { 
+      background: linear-gradient(to bottom right, 
+        var(--tw-gradient-from), 
+        #f8fafc 50%, 
+        #ffffff 100%
+      ) !important; 
+    }
+    .bg-gradient-to-b.from-black { 
+      background: linear-gradient(to bottom, 
+        #ffffff 0%, 
+        #f8fafc 50%, 
+        #f1f5f9 100%
+      ) !important; 
+    }
+    .bg-gradient-to-b.to-gray-900 { 
+      background: linear-gradient(to bottom, 
+        var(--tw-gradient-from), 
+        #f1f5f9 50%, 
+        #e2e8f0 100%
+      ) !important; 
+    }
+    .bg-gradient-to-br.from-gray-900 { 
+      background: linear-gradient(to bottom right, 
+        #f8fafc 0%, 
+        #f1f5f9 50%, 
+        #e2e8f0 100%
+      ) !important; 
+    }
+    .bg-gradient-to-br.via-purple-900 { 
+      background: linear-gradient(to bottom right, 
+        var(--tw-gradient-from), 
+        #faf5ff 40%, 
+        #f3e8ff 60%, 
+        var(--tw-gradient-to)
+      ) !important; 
+    }
+    .bg-gradient-to-br.via-black { 
+      background: linear-gradient(to bottom right, 
+        var(--tw-gradient-from), 
+        #f8fafc 50%, 
+        var(--tw-gradient-to)
+      ) !important; 
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Custom Glassmorphism */
+  .glass {
+    @apply backdrop-blur-xl bg-white/10 border border-white/20;
+  }
+  
+  .glass-hover {
+    @apply hover:bg-white/20 hover:border-white/30;
+  }
+
+  /* Enhanced glassmorphism for light theme with gradient-aware styling */
+  .light .glass {
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(248, 250, 252, 0.35) 25%,
+      rgba(243, 244, 246, 0.3) 50%,
+      rgba(249, 250, 251, 0.35) 75%,
+      rgba(255, 255, 255, 0.4) 100%
+    );
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    box-shadow: 
+      0 8px 32px rgba(139, 92, 246, 0.1),
+      0 4px 16px rgba(59, 130, 246, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 2.2s ease-in-out;
+  }
+
+  .light .glass-hover {
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(248, 250, 252, 0.45) 25%,
+      rgba(243, 232, 255, 0.4) 50%,
+      rgba(239, 246, 255, 0.45) 75%,
+      rgba(255, 255, 255, 0.5) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 
+      0 12px 40px rgba(139, 92, 246, 0.15),
+      0 6px 20px rgba(59, 130, 246, 0.12),
+      inset 0 2px 0 rgba(255, 255, 255, 0.7),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 2.2s ease-in-out;
+  }
+
+  /* Enhanced glassmorphism for light theme headers and banners */
+  .light-glass-header {
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(248, 250, 252, 0.55) 20%,
+      rgba(243, 232, 255, 0.5) 40%,
+      rgba(239, 246, 255, 0.55) 60%,
+      rgba(255, 255, 255, 0.6) 100%
+    );
+    backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 22px;
+    box-shadow: 
+      0 16px 48px rgba(139, 92, 246, 0.12),
+      0 8px 24px rgba(59, 130, 246, 0.1),
+      0 4px 12px rgba(147, 51, 234, 0.08),
+      inset 0 2px 0 rgba(255, 255, 255, 0.8),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.4);
+    transition: all 2.2s ease-in-out;
+  }
+
+  /* Animated Gradient Backgrounds */
+  .animated-gradient-light {
+    background: linear-gradient(
+      45deg,
+      #FFFAF0 0%,
+      #FDF5E6 12.5%,
+      #FAF0E6 25%,
+      #F5F5DC 37.5%,
+      #FFF8DC 50%,
+      #FFEFD5 62.5%,
+      #FFE4E1 75%,
+      #F0F8FF 87.5%,
+      #FFFAF0 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
+    transition: all 2.2s ease-in-out;
+  }
+
+  .animated-gradient-dark {
+    background: linear-gradient(
+      45deg,
+      #1A1A2E 0%,
+      #16213E 12.5%,
+      #0F3460 25%,
+      #533483 37.5%,
+      #E94560 50%,
+      #533483 62.5%,
+      #0F3460 75%,
+      #16213E 87.5%,
+      #1A1A2E 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+
+  .light ::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-purple-600 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-purple-500;
+  }
+
+  /* Enhanced scrollbar for modal sidebar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thumb-purple-500 {
+    scrollbar-color: #8b5cf6 transparent;
+  }
+
+  .scrollbar-track-gray-300 {
+    scrollbar-color: #8b5cf6 #d1d5db;
+  }
+
+  .light .scrollbar-track-gray-300 {
+    scrollbar-color: #8b5cf6 #f3f4f6;
+  }
+
+  /* Custom scrollbar for webkit browsers */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #8b5cf6;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed;
+  }
+
+  .light .scrollbar-thin::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+
+  .light .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #8b5cf6;
+  }
+
+  .light .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #7c3aed;
+  }
+  
+  /* Hide scrollbar for horizontal scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  
+  /* Remove default focus outlines and add custom ones */
+  button:focus-visible,
+  a:focus-visible {
+    @apply outline-none ring-2 ring-purple-500 ring-offset-2;
+  }
+
+  .light button:focus-visible,
+  .light a:focus-visible {
+    @apply ring-offset-white;
+  }
+
+  /* Line clamp utility */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Modal scroll fix */
+  .modal-open {
+    overflow: hidden;
+  }
+
+.modal-content {
+    overflow-y: auto;
+    max-height: 100vh;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  /* Prevent background scroll when modal is open */
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    overflow: hidden;
+  }
+
+  /* Enhanced gradient text effects for light theme */
+  .gradient-text-light {
+    background: linear-gradient(135deg,
+      #7c3aed 0%,
+      #a855f7 25%,
+      #ec4899 50%,
+      #f59e0b 75%,
+      #ef4444 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Floating gradient orbs for light theme background */
+  .light-gradient-orb-1 {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: float-orb-1 20s ease-in-out infinite;
+  }
+
+  .light-gradient-orb-2 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(35px);
+    animation: float-orb-2 25s ease-in-out infinite;
+  }
+
+  .light-gradient-orb-3 {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(251, 146, 60, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(30px);
+    animation: float-orb-3 30s ease-in-out infinite;
+  }
+
+  /* Gradient Theme Transition Indicator */
+  .gradient-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+
+  .light .gradient-indicator {
+    background: rgba(255, 255, 255, 0.8);
+    color: #374151;
+  }
+}
+
+/* Enhanced dark theme shimmer animations - 2.2 second cycling */
+@keyframes shimmerMove1 {
+  0% { 
+    opacity: 1;
+    transform: translateX(-30%) translateY(-30%) scale(0.8) rotate(0deg);
+  }
+  25% { 
+    opacity: 1;
+    transform: translateX(20%) translateY(20%) scale(1.2) rotate(90deg);
+  }
+  50% { 
+    opacity: 1;
+    transform: translateX(40%) translateY(40%) scale(1.4) rotate(180deg);
+  }
+  75% { 
+    opacity: 1;
+    transform: translateX(60%) translateY(60%) scale(1.1) rotate(270deg);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateX(-30%) translateY(-30%) scale(0.8) rotate(360deg);
+  }
+}
+
+@keyframes shimmerMove2 {
+  0% { 
+    opacity: 1;
+    transform: translateX(60%) translateY(-40%) rotate(0deg) scale(0.9);
+  }
+  25% { 
+    opacity: 1;
+    transform: translateX(40%) translateY(30%) rotate(120deg) scale(1.3);
+  }
+  50% { 
+    opacity: 1;
+    transform: translateX(-20%) translateY(50%) rotate(240deg) scale(1.1);
+  }
+  75% { 
+    opacity: 1;
+    transform: translateX(-40%) translateY(70%) rotate(300deg) scale(1.4);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateX(60%) translateY(-40%) rotate(360deg) scale(0.9);
+  }
+}
+
+@keyframes shimmerMove3 {
+  0% { 
+    opacity: 1;
+    transform: translateX(0%) translateY(60%) scale(0.7) rotate(0deg);
+  }
+  25% { 
+    opacity: 1;
+    transform: translateX(-40%) translateY(40%) scale(1.2) rotate(144deg);
+  }
+  50% { 
+    opacity: 1;
+    transform: translateX(-70%) translateY(20%) scale(1.5) rotate(288deg);
+  }
+  75% { 
+    opacity: 1;
+    
+    transform: translateX(-40%) translateY(-20%) scale(1.1) rotate(360deg);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateX(0%) translateY(60%) scale(0.7) rotate(0deg);
+  }
+}
+
+@keyframes shimmerMove4 {
+  0% { 
+    opacity: 1;
+    transform: translateX(-40%) translateY(40%) scale(0.9) rotate(0deg);
+  }
+  25% { 
+    opacity: 1;
+    transform: translateX(20%) translateY(20%) scale(1.3) rotate(90deg);
+  }
+  50% { 
+    opacity: 1;
+    transform: translateX(50%) translateY(-30%) scale(1.0) rotate(180deg);
+  }
+  75% { 
+    opacity: 1;
+    transform: translateX(80%) translateY(0%) scale(1.2) rotate(270deg);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateX(-40%) translateY(40%) scale(0.9) rotate(360deg);
+  }
+}
+
+/* Enhanced particle float animations for each gradient */
+@keyframes particleFloat1 {
+  0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+  25% { transform: translateY(-25px) translateX(15px) rotate(90deg); }
+  50% { transform: translateY(-15px) translateX(-10px) rotate(180deg); }
+  75% { transform: translateY(-30px) translateX(20px) rotate(270deg); }
+  100% { transform: translateY(0px) translateX(0px) rotate(360deg); }
+}
+
+@keyframes particleFloat2 {
+  0% { transform: translateY(0px) translateX(0px) scale(1) rotate(0deg); }
+  30% { transform: translateY(-20px) translateX(12px) scale(1.2) rotate(120deg); }
+  60% { transform: translateY(-10px) translateX(-15px) scale(0.8) rotate(240deg); }
+  90% { transform: translateY(-25px) translateX(18px) scale(1.1) rotate(320deg); }
+  100% { transform: translateY(0px) translateX(0px) scale(1) rotate(360deg); }
+}
+
+@keyframes particleFloat3 {
+  0% { transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); }
+  20% { transform: translateY(-18px) translateX(8px) rotate(72deg) scale(1.25); }
+  40% { transform: translateY(-10px) translateX(-12px) rotate(144deg) scale(0.75); }
+  60% { transform: translateY(-22px) translateX(15px) rotate(216deg) scale(1.2); }
+  80% { transform: translateY(-6px) translateX(-8px) rotate(288deg) scale(0.9); }
+  100% { transform: translateY(0px) translateX(0px) rotate(360deg) scale(1); }
+}
+
+@keyframes particleFloat4 {
+  0% { transform: translateY(0px) translateX(0px) scale(1) rotate(0deg); }
+  33% { transform: translateY(-22px) translateX(14px) scale(1.3) rotate(120deg); }
+  66% { transform: translateY(-12px) translateX(-18px) scale(0.7) rotate(240deg); }
+  100% { transform: translateY(0px) translateX(0px) scale(1) rotate(360deg); }
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(147, 51, 234, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(147, 51, 234, 0.6); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float-orb-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.1); }
+  50% { transform: translate(-20px, -30px) scale(0.9); }
+  75% { transform: translate(-30px, 20px) scale(1.05); }
+}
+
+@keyframes float-orb-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, 30px) scale(1.15); }
+  66% { transform: translate(25px, -25px) scale(0.85); }
+}
+
+@keyframes float-orb-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(20px, 25px) scale(1.1); }
+  40% { transform: translate(-30px, -15px) scale(0.9); }
+  60% { transform: translate(15px, -30px) scale(1.05); }
+  80% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* Gradient theme pulse animation */
+@keyframes gradientPulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.animate-gradient-pulse {
+  animation: gradientPulse 4s ease-in-out infinite;
+}
+
+/* Film grain effect */
+.film-grain::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25% 25%, #ffffff 1px, transparent 0),
+    radial-gradient(circle at 75% 75%, #ffffff 1px, transparent 0);
+  background-size: 4px 4px;
+  opacity: 0.03;
+  animation: grain 8s steps(10) infinite;
+}
+
+.light .film-grain::before {
+  background-image: 
+    radial-gradient(circle at 25% 25%, #000000 1px, transparent 0),
+    radial-gradient(circle at 75% 75%, #000000 1px, transparent 0);
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1px, -1px); }
+  20% { transform: translate(1px, 1px); }
+  30% { transform: translate(-1px, 1px); }
+  40% { transform: translate(1px, -1px); }
+  50% { transform: translate(-1px, -1px); }
+  60% { transform: translate(1px, 1px); }
+  70% { transform: translate(-1px, 1px); }
+  80% { transform: translate(1px, -1px); }
+  90% { transform: translate(-1px, -1px); }
+}
+
+/* Hotstar-style sidebar animations */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.sidebar-enter {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.sidebar-exit {
+  animation: slideOutLeft 0.3s ease-in;
+}
+
+/* Theme transition */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Enhanced shimmer effect for light theme */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.light-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Subtle starfield background */
+#stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+#stars::before,
+#stars::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+}
+
+#stars::before {
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 3px 3px;
+  animation: starTwinkle 6s linear infinite;
+  opacity: 0.6;
+}
+
+#stars::after {
+  background-image: radial-gradient(white 1.5px, transparent 1.5px);
+  background-size: 6px 6px;
+  animation: starTwinkle 8s linear infinite reverse;
+  opacity: 0.4;
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.3; }
+}
+
+/* Enhanced scrollbar for sidebar */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+.scrollbar-thumb-purple-500 {
+  scrollbar-color: #8b5cf6 transparent;
+}
+.scrollbar-track-gray-300 {
+  scrollbar-color: #8b5cf6 #d1d5db;
+}
+.light .scrollbar-track-gray-300 {
+  scrollbar-color: #8b5cf6 #f3f4f6;
+}
+/* Custom scrollbar for webkit browsers */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #8b5cf6;
+  border-radius: 3px;
+}
+
+html, body {
+  min-height: 100vh;
+  /* Fallback: solid gradient, never transparent */
+  background: linear-gradient(135deg, #1a1333 0%, #1e2a78 100%) !important;
+}
+
+.light html, .light body {
+  background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%) !important;
+}
+
+/* Ensure white text on posters is always pure white */
+.poster-text-white {
+  color: #ffffff !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Override any theme-based text colors for poster overlays */
+[class*="text-white"] {
+  color: #ffffff !important;
+}
+
+/* Stronger drop shadows for better readability */
+.drop-shadow-2xl {
+  filter: drop-shadow(0 25px 25px rgb(0 0 0 / 0.8)) !important;
+}
+
